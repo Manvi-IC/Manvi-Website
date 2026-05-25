@@ -134,7 +134,7 @@ export default function Home() {
             </div>
             <div className="flex flex-col">
               <span className="text-md font-extrabold text-[#0d1527] tracking-tight leading-none">
-                Marvi
+                Manvi
               </span>
               <span className="text-[10px] text-[#f27a1a] font-bold uppercase tracking-wider mt-0.5">
                 International Courier
@@ -295,7 +295,7 @@ export default function Home() {
               </span>
             </h2>
             <p className="text-zinc-400 text-xs sm:text-sm leading-relaxed max-w-md">
-              Expanding your commerce reach. Marvi ensures quick border processing and prompt terminal handling for commercial bulk or personal consignments.
+              Expanding your commerce reach. Manvi ensures quick border processing and prompt terminal handling for commercial bulk or personal consignments.
             </p>
           </div>
 
@@ -863,7 +863,7 @@ export default function Home() {
                 </div>
                 <div className="flex flex-col">
                   <span className="text-[10px] text-zinc-400 font-bold uppercase tracking-wider">Direct Mail</span>
-                  <span className="text-xs font-bold text-[#0d1527]">info@marvi-express.com</span>
+                  <span className="text-xs font-bold text-[#0d1527]">info@manvi-express.com</span>
                 </div>
               </div>
 
@@ -878,7 +878,7 @@ export default function Home() {
             {/* Overlay map marker card */}
             <div className="absolute bottom-6 left-6 bg-[#0d1527] text-white p-4 rounded-2xl shadow-lg border border-white/5 max-w-xs z-10">
               <span className="text-[9px] font-bold text-[#f27a1a] uppercase tracking-wider font-mono">Headquarters Location</span>
-              <h4 className="text-xs font-bold text-white mt-1">Marvi International Hub</h4>
+              <h4 className="text-xs font-bold text-white mt-1">Manvi International Hub</h4>
               <p className="text-[10px] text-zinc-400 mt-1 leading-normal">
                 4th floor, Metro Business Plaza, Central Terminal Road, Mumbai, India.
               </p>
@@ -902,7 +902,7 @@ export default function Home() {
                 </div>
                 <div className="flex flex-col">
                   <span className="text-md font-extrabold text-[#0d1527] tracking-tight leading-none">
-                    Marvi
+                    Manvi
                   </span>
                   <span className="text-[10px] text-white font-bold uppercase tracking-wider mt-0.5">
                     International Courier
@@ -910,7 +910,7 @@ export default function Home() {
                 </div>
               </div>
               <p className="text-orange-50 text-xs leading-relaxed max-w-sm">
-                Marvi International Courier is a premier globally consolidated logistics company. Connecting global borders for businesses and individual shipments safely, transparently, and on time.
+                Manvi International Courier is a premier globally consolidated logistics company. Connecting global borders for businesses and individual shipments safely, transparently, and on time.
               </p>
             </div>
 
@@ -936,7 +936,7 @@ export default function Home() {
                 </span>
                 <span className="flex items-center gap-1.5">
                   <Mail className="h-4 w-4 text-[#0d1527]" />
-                  info@marvi-express.com
+                  info@manvi-express.com
                 </span>
                 <span className="flex items-center gap-1.5">
                   <Phone className="h-4 w-4 text-[#0d1527]" />
@@ -949,7 +949,7 @@ export default function Home() {
 
           {/* Footer bottom bar */}
           <div className="border-t border-white/10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-orange-100">
-            <span>&copy; {new Date().getFullYear()} Marvi International Courier. All rights reserved.</span>
+            <span>&copy; {new Date().getFullYear()} Manvi International Courier. All rights reserved.</span>
             <div className="flex gap-6">
               <span className="hover:underline cursor-pointer">Privacy Policy</span>
               <span className="hover:underline cursor-pointer">Terms of Service</span>
