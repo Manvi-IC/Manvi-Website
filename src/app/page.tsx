@@ -167,7 +167,7 @@ export default function Home() {
         {/* Left Card: Orange Form Box (5 Cols) */}
         <div className="lg:col-span-5 bg-[#f27a1a] text-white p-8 rounded-3xl shadow-xl flex flex-col justify-between relative overflow-hidden">
           {/* Subtle grid background overlay */}
-          <div className="absolute inset-0 bg-white/[0.03] bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px] pointer-events-none" />
+          <div className="absolute inset-0 bg-white/3 bg-[radial-gradient(#fff_1px,transparent_1px)] bg-size-[16px_16px] pointer-events-none" />
           
           <div className="relative z-10 flex flex-col gap-5">
             <span className="text-[11px] font-bold tracking-widest uppercase bg-white/10 w-fit px-2.5 py-0.5 rounded-full">
@@ -276,10 +276,10 @@ export default function Home() {
         </div>
 
         {/* Right Card: Visual Slider/Graphic Box (7 Cols) */}
-        <div className="lg:col-span-7 bg-[#0d1527] rounded-3xl p-8 text-white relative overflow-hidden flex flex-col justify-between min-h-[420px] shadow-xl">
+        <div className="lg:col-span-7 bg-[#0d1527] rounded-3xl p-8 text-white relative overflow-hidden flex flex-col justify-between min-h-105 shadow-xl">
           {/* Warehouse Worker Backdrop Visual Concept using gorgeous dark CSS styling */}
-          <div className="absolute inset-0 bg-gradient-to-tr from-slate-950 via-slate-900 to-indigo-950/60 z-0" />
-          <div className="absolute right-0 bottom-0 w-[400px] h-[350px] opacity-20 bg-[radial-gradient(ellipse_at_bottom_right,_var(--tw-gradient-stops))] from-orange-400 via-indigo-600 to-transparent rounded-tl-full pointer-events-none" />
+          <div className="absolute inset-0 bg-linear-to-tr from-slate-950 via-slate-900 to-indigo-950/60 z-0" />
+          <div className="absolute right-0 bottom-0 w-100 h-87.5 opacity-20 bg-[radial-gradient(ellipse_at_bottom_right,var(--tw-gradient-stops))] from-orange-400 via-indigo-600 to-transparent rounded-tl-full pointer-events-none" />
           
           {/* Conceptual vector graphic of global shipping route overlay */}
           <div className="absolute inset-0 bg-no-repeat bg-center opacity-10 pointer-events-none select-none z-0" style={{ backgroundImage: "url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 1000 600\"><path d=\"M150,150 Q450,50 750,250 T950,50\" fill=\"none\" stroke=\"orange\" stroke-width=\"4\" stroke-dasharray=\"10 5\"/></svg>')" }} />
@@ -290,7 +290,7 @@ export default function Home() {
             </span>
             <h2 className="text-4xl font-extrabold tracking-tight max-w-lg leading-tight mt-1">
               We Don&apos;t Just Move Parcels;<br />
-              <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#f27a1a] to-orange-400 font-black">
+              <span className="bg-clip-text text-transparent bg-linear-to-r from-[#f27a1a] to-orange-400 font-black">
                 We Bridge Distances.
               </span>
             </h2>
@@ -311,7 +311,7 @@ export default function Home() {
             <div className="flex gap-3">
               <a
                 href="#contact"
-                className="px-6 py-2.5 bg-gradient-to-tr from-[#f27a1a] to-orange-500 hover:from-orange-500 hover:to-orange-600 rounded-full text-xs font-bold text-white shadow-lg shadow-orange-500/20 active:scale-95 transition-all flex items-center gap-1"
+                className="px-6 py-2.5 bg-linear-to-tr from-[#f27a1a] to-orange-500 hover:from-orange-500 hover:to-orange-600 rounded-full text-xs font-bold text-white shadow-lg shadow-orange-500/20 active:scale-95 transition-all flex items-center gap-1"
               >
                 Book Now
                 <ArrowRight className="h-3 w-3" />
@@ -396,9 +396,9 @@ export default function Home() {
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           {/* Left panel: Image/Graphic (5 Cols) */}
-          <div className="lg:col-span-5 bg-gradient-to-br from-[#0d1527] to-slate-950 text-white rounded-3xl p-8 relative overflow-hidden min-h-[350px] shadow-lg flex flex-col justify-between">
-            <div className="absolute inset-0 bg-white/[0.02] bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px] pointer-events-none" />
-            <div className="absolute right-0 top-0 w-[200px] h-[200px] bg-[#f27a1a]/10 rounded-full blur-[80px]" />
+          <div className="lg:col-span-5 bg-linear-to-br from-[#0d1527] to-slate-950 text-white rounded-3xl p-8 relative overflow-hidden min-h-87.5 shadow-lg flex flex-col justify-between">
+            <div className="absolute inset-0 bg-white/2 bg-[radial-gradient(#fff_1px,transparent_1px)] bg-size-[16px_16px] pointer-events-none" />
+            <div className="absolute right-0 top-0 w-50 h-50 bg-[#f27a1a]/10 rounded-full blur-[80px]" />
             
             <div className="relative z-10 flex flex-col gap-2">
               <span className="text-[9px] font-bold uppercase text-[#f27a1a] tracking-widest">Global Express</span>
@@ -454,7 +454,7 @@ export default function Home() {
             {activeServiceTab === "personal" && (
               <div className="flex flex-col gap-3">
                 <div className="bg-white border border-slate-100 p-5 rounded-2xl shadow-sm flex items-start gap-4">
-                  <div className="h-10 w-10 rounded-xl bg-orange-50 flex-shrink-0 flex items-center justify-center">
+                  <div className="h-10 w-10 rounded-xl bg-orange-50 shrink-0 flex items-center justify-center">
                     <Truck className="h-5 w-5 text-[#f27a1a]" />
                   </div>
                   <div className="flex flex-col">
@@ -466,7 +466,7 @@ export default function Home() {
                 </div>
 
                 <div className="bg-white border border-slate-100 p-5 rounded-2xl shadow-sm flex items-start gap-4">
-                  <div className="h-10 w-10 rounded-xl bg-orange-50 flex-shrink-0 flex items-center justify-center">
+                  <div className="h-10 w-10 rounded-xl bg-orange-50 shrink-0 flex items-center justify-center">
                     <MapPin className="h-5 w-5 text-[#f27a1a]" />
                   </div>
                   <div className="flex flex-col">
@@ -478,7 +478,7 @@ export default function Home() {
                 </div>
 
                 <div className="bg-white border border-slate-100 p-5 rounded-2xl shadow-sm flex items-start gap-4">
-                  <div className="h-10 w-10 rounded-xl bg-orange-50 flex-shrink-0 flex items-center justify-center">
+                  <div className="h-10 w-10 rounded-xl bg-orange-50 shrink-0 flex items-center justify-center">
                     <ShieldCheck className="h-5 w-5 text-[#f27a1a]" />
                   </div>
                   <div className="flex flex-col">
@@ -495,7 +495,7 @@ export default function Home() {
             {activeServiceTab === "enterprise" && (
               <div className="flex flex-col gap-3">
                 <div className="bg-white border border-slate-100 p-5 rounded-2xl shadow-sm flex items-start gap-4">
-                  <div className="h-10 w-10 rounded-xl bg-orange-50 flex-shrink-0 flex items-center justify-center">
+                  <div className="h-10 w-10 rounded-xl bg-orange-50 shrink-0 flex items-center justify-center">
                     <Plane className="h-5 w-5 text-[#f27a1a]" />
                   </div>
                   <div className="flex flex-col">
@@ -507,7 +507,7 @@ export default function Home() {
                 </div>
 
                 <div className="bg-white border border-slate-100 p-5 rounded-2xl shadow-sm flex items-start gap-4">
-                  <div className="h-10 w-10 rounded-xl bg-orange-50 flex-shrink-0 flex items-center justify-center">
+                  <div className="h-10 w-10 rounded-xl bg-orange-50 shrink-0 flex items-center justify-center">
                     <Scale className="h-5 w-5 text-[#f27a1a]" />
                   </div>
                   <div className="flex flex-col">
@@ -552,9 +552,9 @@ export default function Home() {
             </div>
 
             {/* Box 2 (5 Cols): Plane Image / Visual card */}
-            <div className="md:col-span-5 bg-[#0d1527] text-white p-6 rounded-2xl shadow-sm relative overflow-hidden flex flex-col justify-between min-h-[180px]">
-              <div className="absolute inset-0 bg-gradient-to-tr from-slate-950 to-[#0d1527] z-0" />
-              <div className="absolute right-0 bottom-0 w-[150px] h-[150px] bg-sky-500/10 rounded-full blur-xl pointer-events-none" />
+            <div className="md:col-span-5 bg-[#0d1527] text-white p-6 rounded-2xl shadow-sm relative overflow-hidden flex flex-col justify-between min-h-45">
+              <div className="absolute inset-0 bg-linear-to-tr from-slate-950 to-[#0d1527] z-0" />
+              <div className="absolute right-0 bottom-0 w-37.5 h-37.5 bg-sky-500/10 rounded-full blur-xl pointer-events-none" />
               
               <div className="relative z-10 flex justify-between items-start">
                 <span className="text-[9px] font-bold uppercase text-[#f27a1a] tracking-widest font-mono">Air Cargo Line</span>
@@ -581,8 +581,8 @@ export default function Home() {
             </div>
 
             {/* Box 4 (7 Cols): Customer Volume */}
-            <div className="md:col-span-7 bg-[#f27a1a] text-white p-6 rounded-2xl shadow-sm relative overflow-hidden flex flex-col justify-between min-h-[160px]">
-              <div className="absolute inset-0 bg-gradient-to-tr from-orange-600 to-[#f27a1a] z-0" />
+            <div className="md:col-span-7 bg-[#f27a1a] text-white p-6 rounded-2xl shadow-sm relative overflow-hidden flex flex-col justify-between min-h-40">
+              <div className="absolute inset-0 bg-linear-to-tr from-orange-600 to-[#f27a1a] z-0" />
               
               <div className="relative z-10 flex justify-between items-start">
                 <span className="text-[9px] font-bold uppercase text-white/80 tracking-widest font-mono">Customer base</span>
@@ -683,9 +683,9 @@ export default function Home() {
           </div>
 
           {/* Right panel: Orange 24h refund highlight card (5 Cols) */}
-          <div className="lg:col-span-5 bg-gradient-to-tr from-[#9a3412] to-[#c2410c] text-white p-8 rounded-3xl shadow-lg flex flex-col justify-between min-h-[380px] relative overflow-hidden">
-            <div className="absolute inset-0 bg-white/[0.02] bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px] pointer-events-none" />
-            <div className="absolute right-0 bottom-0 w-[200px] h-[200px] bg-orange-500/10 rounded-full blur-[80px]" />
+          <div className="lg:col-span-5 bg-linear-to-tr from-[#9a3412] to-[#c2410c] text-white p-8 rounded-3xl shadow-lg flex flex-col justify-between min-h-95 relative overflow-hidden">
+            <div className="absolute inset-0 bg-white/2 bg-[radial-gradient(#fff_1px,transparent_1px)] bg-size-[16px_16px] pointer-events-none" />
+            <div className="absolute right-0 bottom-0 w-50 h-50 bg-orange-500/10 rounded-full blur-[80px]" />
 
             <div className="relative z-10 flex flex-col gap-4">
               <span className="text-[10px] font-bold uppercase tracking-widest bg-white/10 w-fit px-2.5 py-0.5 rounded-full">
@@ -725,7 +725,7 @@ export default function Home() {
             <span className="text-[10px] text-[#f27a1a] font-bold uppercase tracking-widest font-mono">Affordable Shipping</span>
             <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
               No Hidden Costs. No Surprises.<br />
-              <span className="bg-clip-text text-transparent bg-gradient-to-r from-white to-zinc-400 font-bold">
+              <span className="bg-clip-text text-transparent bg-linear-to-r from-white to-zinc-400 font-bold">
                 Just Straightforward Logistics.
               </span>
             </h2>
@@ -847,7 +847,7 @@ export default function Home() {
               
               {/* Call detail */}
               <div className="flex items-center gap-4 bg-white border border-slate-100 p-4 rounded-2xl shadow-sm">
-                <div className="h-10 w-10 rounded-xl bg-orange-50 flex items-center justify-center text-[#f27a1a] flex-shrink-0">
+                <div className="h-10 w-10 rounded-xl bg-orange-50 flex items-center justify-center text-[#f27a1a] shrink-0">
                   <Phone className="h-5 w-5" />
                 </div>
                 <div className="flex flex-col">
@@ -858,7 +858,7 @@ export default function Home() {
 
               {/* Email detail */}
               <div className="flex items-center gap-4 bg-white border border-slate-100 p-4 rounded-2xl shadow-sm">
-                <div className="h-10 w-10 rounded-xl bg-orange-50 flex items-center justify-center text-[#f27a1a] flex-shrink-0">
+                <div className="h-10 w-10 rounded-xl bg-orange-50 flex items-center justify-center text-[#f27a1a] shrink-0">
                   <Mail className="h-5 w-5" />
                 </div>
                 <div className="flex flex-col">
@@ -871,7 +871,7 @@ export default function Home() {
           </div>
 
           {/* Right panel: Premium Mock Map Graphic (7 Cols) */}
-          <div className="lg:col-span-7 bg-white border border-slate-100 rounded-3xl p-4 shadow-md overflow-hidden relative min-h-[300px]">
+          <div className="lg:col-span-7 bg-white border border-slate-100 rounded-3xl p-4 shadow-md overflow-hidden relative min-h-75">
             {/* Map Placeholder Visual styling mimicking actual maps */}
             <div className="absolute inset-0 bg-[#e5e9f0] bg-no-repeat bg-cover pointer-events-none opacity-90" style={{ backgroundImage: "url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"800\" height=\"400\" viewBox=\"0 0 800 400\"><rect width=\"800\" height=\"400\" fill=\"%23eef2f6\"/><path d=\"M0,50 L800,50 M0,150 L800,150 M0,280 L800,280 M0,350 L800,350 M120,0 L120,400 M320,0 L320,400 M550,0 L550,400 M700,0 L700,400\" stroke=\"%23cbd5e1\" stroke-width=\"2\"/><circle cx=\"320\" cy=\"150\" r=\"150\" fill=\"none\" stroke=\"%23cbd5e1\" stroke-width=\"1\"/><circle cx=\"320\" cy=\"150\" r=\"8\" fill=\"%23f27a1a\" stroke=\"white\" stroke-width=\"2\"/></svg>')" }} />
             
@@ -931,7 +931,7 @@ export default function Home() {
               <span className="text-xs font-bold text-[#0d1527] uppercase tracking-wider">Office Info</span>
               <div className="flex flex-col gap-2.5 text-xs text-orange-50 font-medium">
                 <span className="flex items-start gap-1.5">
-                  <MapPin className="h-4 w-4 text-[#0d1527] flex-shrink-0 mt-0.5" />
+                  <MapPin className="h-4 w-4 text-[#0d1527] shrink-0 mt-0.5" />
                   Metro Plaza, Mumbai, India.
                 </span>
                 <span className="flex items-center gap-1.5">
