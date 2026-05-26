@@ -11,54 +11,44 @@ import Footer from "@/components/Footer";
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-[#eef0f5] text-[#0f172a] font-sans flex flex-col antialiased">
+    <div className="min-h-screen bg-[#f8f9fa] text-[#0f172a] font-sans flex flex-col antialiased">
       <Header />
 
-      {/* Hero + Action tabs (white bg section) */}
-      <div className="bg-[#eef0f5]">
-        <Hero />
-      </div>
+      <Hero />
 
       {/* Delivery Partners */}
-      <div className="bg-white border-y border-slate-200 py-5 px-6">
-        <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+      <div className="bg-[#f3f4f6] border-y border-slate-200/50 py-8 px-6">
+        <div className="max-w-[1700px] mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex flex-col">
-            <span className="text-[10px] text-[#f27a1a] font-bold uppercase tracking-wider">Strategic Networks</span>
-            <span className="text-sm font-extrabold text-[#0b1220]">Our Delivery Partners All</span>
+            <span className="text-[20px] md:text-[24px] font-extrabold text-[#f27a1a] leading-tight italic">
+              Our Delivery<br />Partners ✈
+            </span>
           </div>
-          <div className="flex flex-wrap items-center gap-8 md:gap-12">
+          <div className="flex flex-wrap items-center gap-10 md:gap-16">
             {["Fedex", "DPD", "Ups", "DHL", "ARAMEX"].map(p => (
-              <span key={p} className="text-xl font-black text-slate-300 hover:text-slate-700 transition-colors tracking-widest font-mono italic select-none">{p}</span>
+              <span key={p} className="text-[20px] md:text-[22px] font-extrabold text-[#1c1f2e] tracking-wide select-none">{p}</span>
             ))}
           </div>
         </div>
       </div>
 
-      {/* Bespoke white bg */}
-      <div className="bg-[#eef0f5]">
-        <Bespoke />
-      </div>
+      <Bespoke />
 
       <WhyWeLead />
 
-      {/* Claims white bg */}
-      <div className="bg-[#eef0f5]">
-        <ClaimPolicy />
-      </div>
+      <ClaimPolicy />
 
-      <NoCosts />
-
-      {/* Prohibited white bg */}
-      <div className="bg-[#eef0f5]">
-        <Prohibited />
+      {/* NoCosts + Prohibited combined in one container */}
+      <div className="max-w-[1700px] w-full mx-auto px-6 py-10 font-sans">
+        <div className="bg-[#eef0f5] rounded-[32px] shadow-sm border border-gray-100 overflow-hidden">
+          <NoCosts />
+          <Prohibited />
+        </div>
       </div>
 
       <FAQ />
 
-      {/* Contact white bg */}
-      <div className="bg-[#eef0f5]">
-        <Contact />
-      </div>
+      <Contact />
 
       <Footer />
     </div>

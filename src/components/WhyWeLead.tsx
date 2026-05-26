@@ -1,87 +1,98 @@
 import Image from "next/image";
-import { Users } from "lucide-react";
 
 export default function WhyWeLead() {
   return (
-    <section className="bg-[#eef0f5] py-16 px-6 border-y border-slate-200">
-      <div className="max-w-6xl mx-auto flex flex-col gap-10">
-        <div className="flex flex-col gap-1">
-          <span className="text-[10px] text-[#f27a1a] font-bold uppercase tracking-widest">Quality Excellence</span>
-          <h2 className="text-2xl font-extrabold text-[#0b1220] tracking-tight">Why We Lead</h2>
+    <section className="w-full mx-auto px-6 py-10 font-sans max-w-[1700px]">
+      <div className="bg-[#eef0f5] rounded-[32px] shadow-sm border border-gray-100 p-10 lg:p-14">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        
+        {/* ROW 1 */}
+        {/* Column 1: Title Block */}
+        <div className="flex flex-col justify-start pt-2">
+          <div className="border border-orange-300/60 text-[#ff8a00] bg-orange-50/30 rounded-full px-4 py-1.5 text-[11px] font-semibold w-fit tracking-wide">
+            The Manvi Advantage
+          </div>
+          <h2 className="text-4xl md:text-[44px] font-extrabold text-[#1c1f2e] mt-4 tracking-tight leading-tight">
+            Why We Lead
+          </h2>
         </div>
-
-        {/* Row 1: 3 cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-          {/* Quick Partnerships - white */}
-          <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col gap-5">
-            <div className="h-9 w-9 rounded-lg bg-orange-50 flex items-center justify-center text-base">🤝</div>
-            <div>
-              <span className="text-xs font-bold text-[#0b1220] uppercase tracking-wider block mb-1.5">Quick Partnerships</span>
-              <p className="text-[11px] text-zinc-500 leading-normal">We establish corporate agreements that simplify cargo routines and lower border entry duties for our partner networks.</p>
-            </div>
+        
+        {/* Column 2: Delivery Success Card */}
+        <div className="bg-white rounded-[32px] p-6 sm:p-8 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)] border border-gray-100 flex flex-col justify-between h-[240px] lg:h-auto">
+          <div className="flex items-center gap-2.5">
+            <span className="text-xl leading-none">📦</span>
+            <span className="font-bold text-[#333b49] text-[15px]">Delivery Success</span>
           </div>
-
-          {/* 98% - dark navy */}
-          <div className="bg-[#0b1220] text-white p-6 rounded-2xl relative overflow-hidden flex flex-col justify-between min-h-45 shadow-sm">
-            <div>
-              <span className="text-[9px] font-bold uppercase text-[#f27a1a] tracking-widest font-mono">Service Success</span>
-            </div>
-            <div>
-              <span className="text-4xl font-black text-[#f27a1a]">98%</span>
-              <span className="text-sm font-bold text-white block mt-1">Customer Satisfaction Score</span>
-              <p className="text-[10px] text-zinc-400 mt-1">Consistently delivering peace of mind across complex global courier transits.</p>
-            </div>
-          </div>
-
-          {/* Airplane photo - dark */}
-          <div className="bg-[#0b1220] rounded-2xl relative overflow-hidden min-h-45 shadow-sm">
-            <Image src="/cargo_airplane.png" alt="Cargo airplane" fill className="object-cover opacity-50" />
-            <div className="absolute inset-0 bg-linear-to-t from-[#0b1220]/80 to-transparent z-10" />
-            <div className="absolute bottom-4 left-4 z-20">
-              <span className="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-1.5">
-                <span className="text-[#f27a1a]">✈</span> Air Transit
-              </span>
-              <p className="text-[10px] text-zinc-400 mt-0.5">Time-critical express networks.</p>
-            </div>
+          <div className="flex flex-col items-end text-right mt-auto pt-6">
+            <span className="text-[36px] sm:text-[42px] font-extrabold text-[#ff8a00] leading-none tracking-tight">98%</span>
+            <div className="w-full h-[1.5px] bg-[#ff8a00]/30 my-4" />
+            <p className="text-[11px] text-gray-500 font-medium leading-relaxed sm:max-w-[85%]">
+              Successful international deliveries completed with accuracy and care.
+            </p>
           </div>
         </div>
+        
+        {/* Column 3 & 4: Airplane Image */}
+        <div className="md:col-span-2 relative rounded-[32px] overflow-hidden h-[240px] lg:h-auto shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)] bg-slate-300 flex items-center justify-center">
+          <span className="text-slate-400 font-semibold uppercase tracking-widest text-xs">Image Placeholder</span>
+        </div>
 
-        {/* Row 2: 3 cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-          {/* Multiple Countries - white */}
-          <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col gap-5">
-            <div className="h-9 w-9 rounded-lg bg-orange-50 flex items-center justify-center text-base">🌐</div>
-            <div>
-              <span className="text-xs font-bold text-[#0b1220] uppercase tracking-wider block mb-1.5">Multiple Countries</span>
-              <p className="text-[11px] text-zinc-500 leading-normal">Delivering to over 220+ countries and sovereign territories worldwide with local clearance support.</p>
-            </div>
+        {/* ROW 2 */}
+        {/* Column 1: Elite Partnerships Card */}
+        <div className="bg-white rounded-[32px] p-6 sm:p-8 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)] border border-gray-100 flex flex-col justify-between min-h-[340px]">
+          <div className="flex items-center gap-2.5">
+            <span className="text-xl leading-none">🌍</span>
+            <span className="font-bold text-[#333b49] text-[15px]">Elite Partnerships</span>
           </div>
-
-          {/* Forklift photo / 1000+ - orange */}
-          <div className="bg-[#f27a1a] text-white p-6 rounded-2xl relative overflow-hidden flex flex-col justify-between min-h-45 shadow-sm">
-            <div className="absolute inset-0 overflow-hidden">
-              <Image src="/warehouse_forklift.png" alt="Warehouse" fill className="object-cover opacity-20" />
-            </div>
-            <div className="relative z-10">
-              <span className="text-[9px] font-bold uppercase text-white/80 tracking-widest font-mono">Consignments Processed</span>
-              <Users className="h-4 w-4 text-[#0b1220] float-right" />
-            </div>
-            <div className="relative z-10">
-              <span className="text-4xl font-black text-[#0b1220]">1000+</span>
-              <span className="text-sm font-bold text-white block mt-1">Customers Daily</span>
-              <p className="text-[10px] text-orange-100 mt-1">Managing corporate accounts and personal express cargo on scheduled routes.</p>
-            </div>
-          </div>
-
-          {/* Real-time updates - white */}
-          <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col gap-5">
-            <div className="h-9 w-9 rounded-lg bg-orange-50 flex items-center justify-center text-base">⏰</div>
-            <div>
-              <span className="text-xs font-bold text-[#0b1220] uppercase tracking-wider block mb-1.5">Real-Time Updates</span>
-              <p className="text-[11px] text-zinc-500 leading-normal">We utilize automated API webhooks. You will receive active SMS updates and tracking logs at each dispatch terminal.</p>
-            </div>
+          <div className="flex flex-col items-end text-right mt-auto pt-8">
+            <h3 className="text-[32px] sm:text-[38px] font-extrabold text-[#ff8a00] leading-[1.1] tracking-tight">
+              Multiple<br/>Countries
+            </h3>
+            <div className="w-full h-[1.5px] bg-[#ff8a00]/30 my-4" />
+            <p className="text-[11px] text-gray-500 font-medium leading-relaxed">
+              Collaboration with world-class carriers including DHL, FedEx, and UPS.
+            </p>
           </div>
         </div>
+        
+        {/* Column 2: Warehouse Image */}
+        <div className="relative rounded-[32px] overflow-hidden min-h-[340px] shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)] bg-slate-300 flex items-center justify-center">
+          <span className="text-slate-400 font-semibold uppercase tracking-widest text-xs">Image Placeholder</span>
+        </div>
+        
+        {/* Column 3: Customs Mastery Card */}
+        <div className="bg-white rounded-[32px] p-6 sm:p-8 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)] border border-gray-100 flex flex-col justify-between min-h-[340px]">
+          <div className="flex items-center gap-2.5">
+            <span className="text-xl leading-none">🚚</span>
+            <span className="font-bold text-[#333b49] text-[15px]">Customs Mastery</span>
+          </div>
+          <div className="flex flex-col items-end text-right mt-auto pt-8">
+            <span className="text-[36px] sm:text-[42px] font-extrabold text-[#ff8a00] leading-none tracking-tight">1000+</span>
+            <div className="w-full h-[1.5px] bg-[#ff8a00]/30 my-4" />
+            <p className="text-[11px] text-gray-500 font-medium leading-relaxed sm:max-w-[90%]">
+              Expert documentation support to navigate global borders effortlessly.
+            </p>
+          </div>
+        </div>
+        
+        {/* Column 4: Technological Edge Card */}
+        <div className="bg-white rounded-[32px] p-6 sm:p-8 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)] border border-gray-100 flex flex-col justify-between min-h-[340px]">
+          <div className="flex items-center gap-2.5">
+            <span className="text-xl leading-none">🤝</span>
+            <span className="font-bold text-[#333b49] text-[15px]">Technological Edge</span>
+          </div>
+          <div className="flex flex-col items-end text-right mt-auto pt-8">
+            <h3 className="text-[32px] sm:text-[38px] font-extrabold text-[#ff8a00] leading-[1.1] tracking-tight">
+              Real-Time<br/>Updates
+            </h3>
+            <div className="w-full h-[1.5px] bg-[#ff8a00]/30 my-4" />
+            <p className="text-[11px] text-gray-500 font-medium leading-relaxed sm:max-w-[90%]">
+              End-to-end, real-time tracking for total peace of mind.
+            </p>
+          </div>
+        </div>
+
+      </div>
       </div>
     </section>
   );

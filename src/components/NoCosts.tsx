@@ -2,16 +2,29 @@ import { ArrowUpRight } from "lucide-react";
 
 export default function NoCosts() {
   return (
-    <section className="bg-[#0b1220] text-white py-10 px-6">
-      <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
-        <div className="flex flex-col gap-1">
-          <span className="text-[10px] text-[#f27a1a] font-bold uppercase tracking-widest">Affordable Shipping</span>
-          <h2 className="text-xl sm:text-2xl font-extrabold tracking-tight">No Hidden Costs. No Surprises. Just Straightforward Logistics.</h2>
+    <div className="p-10 lg:p-14 font-sans">
+      <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_1fr] gap-10 lg:gap-16 items-center">
+        
+        <div className="flex flex-col gap-4">
+          <div className="border border-orange-300/80 text-[#ff8a00] rounded-full px-4 py-1 text-[12px] font-extrabold w-fit tracking-wide bg-transparent">
+            Pricing & Transparency
+          </div>
+          <h2 className="text-[36px] md:text-[44px] font-extrabold text-[#1c1f2e] leading-[1.1] tracking-tight">
+            No Hidden Costs. No Surprises.<br className="hidden md:block"/>
+            Just Straightforward Logistics.
+          </h2>
         </div>
-        <a href="#contact" className="shrink-0 px-5 py-2.5 bg-[#f27a1a] hover:bg-orange-600 rounded-full text-xs font-bold text-white shadow active:scale-95 transition-all flex items-center gap-1.5">
-          View Tariff Rate <ArrowUpRight className="h-4 w-4" />
-        </a>
+        
+        <div className="flex flex-col items-start gap-6 lg:pl-4">
+          <p className="text-[13px] text-gray-500 font-medium leading-relaxed">
+            We Believe In Value-Based Pricing. Our Rates Are Carefully Calculated Based On Destination, Shipment Weight, And Delivery Urgency—So You Only Pay For What Truly Matters. No Hidden Fees, No Surprise Surcharges, And No Unnecessary Overheads. Just Transparent Pricing Built Around Performance, Reliability, And Efficiency.
+          </p>
+          <button className="border-2 border-[#ff8a00] text-[#ff8a00] hover:bg-[#ff8a00] hover:text-white transition-colors duration-300 rounded-md px-6 py-2.5 text-[14.5px] font-extrabold flex items-center gap-1.5 mt-2">
+            Request Rates <ArrowUpRight className="h-[18px] w-[18px]" strokeWidth={2.5} />
+          </button>
+        </div>
+        
       </div>
-    </section>
+    </div>
   );
 }
