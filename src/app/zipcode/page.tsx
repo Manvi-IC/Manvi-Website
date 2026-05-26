@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import Link from "next/link";
 import { MapPin, ArrowUpRight, CheckCircle2, AlertCircle, AlertTriangle } from "lucide-react";
 
 interface ZipItem {
@@ -145,9 +146,6 @@ export default function ZipcodePage() {
             <h1 className="text-[36px] md:text-[44px] font-extrabold text-white leading-tight tracking-tight">
               Serviceable Zipcode
             </h1>
-          </div>
-          <div className="text-white/60 text-sm font-semibold tracking-wide bg-white/10 px-4 py-2 rounded-full border border-white/10">
-            Home / Servicable Zipcode
           </div>
         </div>
       </section>
