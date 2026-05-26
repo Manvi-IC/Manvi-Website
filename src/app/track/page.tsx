@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import Link from "next/link";
 import { Package, ArrowUpRight, MapPin, CheckCircle2, AlertCircle } from "lucide-react";
 
 export default function TrackPage() {
@@ -39,9 +40,6 @@ export default function TrackPage() {
             <h1 className="text-[36px] md:text-[44px] font-extrabold text-white leading-tight tracking-tight">
               Track Shipment
             </h1>
-          </div>
-          <div className="text-white/60 text-sm font-semibold tracking-wide bg-white/10 px-4 py-2 rounded-full border border-white/10">
-            Home / Track Shipment
           </div>
         </div>
       </section>
