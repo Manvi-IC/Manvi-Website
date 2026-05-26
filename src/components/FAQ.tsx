@@ -1,39 +1,92 @@
 "use client";
 import { useState } from "react";
-import { ChevronDown, ChevronUp } from "lucide-react";
 
 const faqs = [
-  { q: "Which Countries Do You Ship To?", a: "We offer express shipping to over 220 countries globally including the USA, UK, UAE, Australia, Canada, Europe, and all major destinations with complete door-to-door tracking." },
-  { q: "How Do I Get A Tracking Code?", a: "Once your shipment is picked up and scanned at our hub, a unique tracking number is instantly generated and sent to you via SMS and Email. You can track it in real-time on our tracking page." },
-  { q: "What Is The Maximum Weight Limit?", a: "We handle shipments of all sizes. For individual parcel express, packages up to 70kg are standard. For heavier enterprise bulk cargo, we provide palletized ocean and air freight solutions with no maximum weight limit." },
-  { q: "Who Handles Custom Clearances?", a: "Our in-house customs clearance experts handle all regulatory paperwork and documentation checks. We prepare customs declarations beforehand to ensure rapid clearance with minimum transit delay." },
-  { q: "Is There A Insurance Cover?", a: "Yes! We offer comprehensive transit insurance cover representing up to 100% of your declared cargo value. This guarantees peace of mind against damage, loss, or customs delays." },
+  {
+    num: "01",
+    q: "Where Can I Send My Packages?",
+    a: "Almost anywhere! We have a strong presence in the USA, Canada, UK, Europe, and Australia. Whether it's a big city or a quiet suburb, we'll get it there."
+  },
+  {
+    num: "02",
+    q: "How Do I Know I'm Getting A Fair Price?",
+    a: "We believe in value. Your quote is based on exactly what you need—considering weight, destination, and how fast you need it delivered. We promise no hidden surprises when it's time to pay."
+  },
+  {
+    num: "03",
+    q: "Can I See Where My Package Is Right Now?",
+    a: "Yes! The moment you ship with us, you'll get a unique tracking number. You can watch your package's journey in real-time, giving you total confidence."
+  },
+  {
+    num: "04",
+    q: "What Happens If There Is A Delay Or A Problem?",
+    a: "We know your shipments are important. If something goes wrong, we are here to help. To ensure a fair and thorough resolution, our team and our global partners (like DHL, FedEx, and UPS) conduct a detailed investigation."
+  },
+  {
+    num: "05",
+    q: "Is There Anything I Cannot Ship?",
+    a: "To keep everyone safe and follow international laws, we cannot ship hazardous chemicals, currency, precious stones, or illegal items. If you aren't sure about an item, just give us a call! We're happy to check for you before you book."
+  }
 ];
 
 export default function FAQ() {
-  const [open, setOpen] = useState<number | null>(null);
+  const [activeIndex, setActiveIndex] = useState<number>(1);
 
   return (
-    <section id="faq" className="bg-white border-y border-slate-100 py-16 px-6">
-      <div className="max-w-4xl mx-auto flex flex-col gap-10">
-        <div className="flex flex-col items-center text-center gap-1.5">
-          <span className="text-[10px] text-[#f27a1a] font-bold uppercase tracking-widest">Help Center</span>
-          <h2 className="text-2xl font-extrabold text-[#0b1220]">Questions? Glad You Asked</h2>
+    <section id="faq" className="max-w-[1700px] w-full mx-auto px-6 mt-6 font-sans">
+      <div className="bg-[#eef0f5] rounded-[32px] px-10 md:px-16 lg:px-20 py-14 md:py-20 shadow-sm border border-gray-100">
+        
+        {/* Badge & Title */}
+        <div className="flex flex-col items-center text-center gap-3 mb-14">
+          <div className="border border-orange-300 text-[#ff8a00] bg-transparent rounded-full px-5 py-1.5 text-[11px] font-bold tracking-wide w-fit">
+            FAQ
+          </div>
+          <h2 className="text-[32px] md:text-[40px] font-extrabold text-[#1c1f2e] tracking-tight mt-1">
+            Questions? Glad You Asked
+          </h2>
         </div>
-        <div className="flex flex-col gap-2.5">
-          {faqs.map((faq, i) => {
-            const isOpen = open === i;
+
+        {/* FAQ Items */}
+        <div className="flex flex-col">
+          {faqs.map((faq, idx) => {
+            const isActive = activeIndex === idx;
             return (
-              <div key={i} className={`border rounded-xl px-5 py-4 cursor-pointer transition-all ${isOpen ? "bg-slate-50 border-slate-200" : "bg-white border-slate-100 hover:bg-slate-50"}`} onClick={() => setOpen(isOpen ? null : i)}>
-                <div className="flex justify-between items-center">
-                  <span className="text-xs font-extrabold text-[#0b1220] uppercase tracking-wider">{faq.q}</span>
-                  {isOpen ? <ChevronUp className="h-4 w-4 text-[#f27a1a]" /> : <ChevronDown className="h-4 w-4 text-zinc-400" />}
+              <div
+                key={idx}
+                onClick={() => setActiveIndex(idx)}
+                className="grid grid-cols-1 lg:grid-cols-[1.1fr_1.9fr] gap-4 lg:gap-16 border-b border-gray-300/40 last:border-b-0 cursor-pointer items-baseline"
+                style={{ padding: isActive ? "2rem 0" : "1.25rem 0" }}
+              >
+                {/* Left: Number + Question */}
+                <div className="flex flex-col gap-0.5 select-none">
+                  <span className="text-[#ff8a00] text-[12px] font-black tracking-widest">
+                    {faq.num}
+                  </span>
+                  <h3
+                    className="font-extrabold text-[#1c1f2e] leading-snug tracking-tight transition-all duration-300"
+                    style={{ fontSize: isActive ? "28px" : "16px" }}
+                  >
+                    {faq.q}
+                  </h3>
                 </div>
-                {isOpen && <p className="text-[11px] text-zinc-500 leading-relaxed mt-3 pt-3 border-t border-slate-200/60">{faq.a}</p>}
+
+                {/* Right: Answer */}
+                <p
+                  className="leading-relaxed select-none transition-all duration-300"
+                  style={{
+                    fontSize: isActive ? "16px" : "13px",
+                    color: isActive ? "#4b5563" : "#9ca3af",
+                    fontStyle: isActive ? "normal" : "italic",
+                    fontWeight: isActive ? 500 : 400,
+                  }}
+                >
+                  {faq.a}
+                </p>
               </div>
             );
           })}
         </div>
+
       </div>
     </section>
   );
