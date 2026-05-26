@@ -17,7 +17,7 @@ export default function Header() {
           </div>
           <div className="flex items-center gap-6">
             <a href="#" className="hover:text-white transition-colors">Servicable Zipcode</a>
-            <a href="#" className="hover:text-white transition-colors">Track Now</a>
+            <Link href="/track" className="hover:text-white transition-colors">Track Now</Link>
             <div className="flex items-center gap-1 hover:text-white transition-colors cursor-pointer">
               Language <ChevronDown className="h-3 w-3" />
             </div>
