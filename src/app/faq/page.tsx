@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import Link from "next/link";
 import { ArrowUpRight, HelpCircle } from "lucide-react";
 
 export default function FAQPage() {
@@ -48,9 +49,6 @@ export default function FAQPage() {
             <h1 className="text-[36px] md:text-[44px] font-extrabold text-white leading-tight tracking-tight">
               FAQ
             </h1>
-          </div>
-          <div className="text-white/60 text-sm font-semibold tracking-wide bg-white/10 px-4 py-2 rounded-full border border-white/10">
-            Home / FAQ
           </div>
         </div>
       </section>
