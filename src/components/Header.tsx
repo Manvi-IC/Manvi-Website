@@ -16,7 +16,7 @@ export default function Header() {
             <span className="text-white/90">+91 7070-506070</span>
           </div>
           <div className="flex items-center gap-6">
-            <a href="#" className="hover:text-white transition-colors">Servicable Zipcode</a>
+            <Link href="/zipcode" className="hover:text-white transition-colors">Servicable Zipcode</Link>
             <Link href="/track" className="hover:text-white transition-colors">Track Now</Link>
             <div className="flex items-center gap-1 hover:text-white transition-colors cursor-pointer">
               Language <ChevronDown className="h-3 w-3" />
@@ -69,8 +69,12 @@ export default function Header() {
               </div>
 
               <Link
-                href="/#contact"
-                className="hover:text-[#f27a1a] transition-colors"
+                href="/contact"
+                className={`transition-colors ${
+                  pathname?.startsWith("/contact")
+                    ? "text-[#f27a1a]"
+                    : "hover:text-[#f27a1a]"
+                }`}
               >
                 Contact Us
               </Link>

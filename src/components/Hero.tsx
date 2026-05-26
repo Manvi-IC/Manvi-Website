@@ -162,10 +162,10 @@ export default function Hero() {
       {/* Action Tabs */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-5">
         {[
-          { icon: <MapPin className="w-4 h-4" />, label: "Serviceable Zipcodes", href: "#" },
+          {icon: <MapPin className="w-4 h-4" />, label: "Serviceable Zipcodes", href: "/zipcode" },
           { icon: <Package className="w-4 h-4" />, label: "Track Shipment", href: "/track" },
           { icon: <Users className="w-4 h-4" />, label: "Our Services", href: "#services" },
-          { icon: <Headphones className="w-4 h-4" />, label: "Contact Us", href: "#contact" },
+          { icon: <Headphones className="w-4 h-4" />, label: "Contact Us", href: "/contact" },
         ].map(tab => (
           <Link
             key={tab.label}
