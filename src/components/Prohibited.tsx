@@ -1,45 +1,52 @@
 import { ArrowUpRight } from "lucide-react";
 
-const items = [
-  { name: "No Plants / Seeds", desc: "Agricultural Control" },
-  { name: "No Corrosives", desc: "Chemical Hazard" },
-  { name: "No Open Liquids", desc: "Leak & Spill Risks" },
-  { name: "No Loose Lithium", desc: "Fire Risk Batteries" },
-  { name: "No High Magnets", desc: "Aviation Interference" },
+const prohibitedItems = [
+  { icon: "🧪", label: "Hazardous chemicals" },
+  { icon: "💵", label: "Negotiable currency" },
+  { icon: "📱", label: "dangerous goods" },
+  { icon: "💎", label: "precious stones" },
+  { icon: "🌿", label: "Illegal or restricted contraband" },
 ];
 
 export default function Prohibited() {
   return (
-    <section id="prohibited" className="max-w-6xl w-full mx-auto px-6 py-16">
-      <div className="flex flex-col items-center text-center gap-2 mb-10">
-        <span className="text-[10px] text-red-500 bg-red-50 border border-red-100 font-bold uppercase tracking-widest px-3 py-0.5 rounded-full">Safety Compliance</span>
-        <h2 className="text-2xl font-extrabold text-[#0b1220]">Prohibited Goods</h2>
-        <p className="text-zinc-500 text-xs max-w-md leading-normal">To maintain safety and satisfy flight regulations, the following items are strictly banned from our express courier network:</p>
-      </div>
+    <div className="px-10 lg:px-14 pb-10 lg:pb-14 pt-4 font-sans border-t border-gray-200/50">
+      <div className="flex flex-col items-center">
+        
+        <div className="flex flex-col items-center text-center gap-1.5">
+          <h2 className="text-[26px] md:text-[30px] font-extrabold text-[#1c1f2e] tracking-tight">
+            Prohibited Goods
+          </h2>
+          <p className="text-[13px] text-gray-500 font-medium tracking-wide">
+            To Maintain The Integrity Of Our Network, We Do Not Transport:
+          </p>
+        </div>
 
-      <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
-        {items.map(item => (
-          <div key={item.name} className="bg-white border border-slate-100 p-5 rounded-2xl shadow-sm hover:shadow-md transition-shadow flex flex-col items-center text-center gap-3">
-            {/* Prohibited icon: circle with slash */}
-            <div className="relative h-12 w-12 rounded-full bg-red-50 border border-red-100 flex items-center justify-center">
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="h-10 w-0.5 bg-red-400/70 rotate-45 rounded-full" />
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 md:gap-10 mt-14 w-full max-w-[900px] mx-auto px-4">
+          {prohibitedItems.map((item, idx) => (
+            <div key={idx} className="flex flex-col items-center justify-start text-center gap-4">
+              
+              {/* Red Crossed-Out Circle */}
+              <div className="relative w-[60px] h-[60px] md:w-[68px] md:h-[68px] flex items-center justify-center">
+                <div className="absolute inset-0 border-[2.5px] border-[#e11d48] rounded-full z-10" />
+                <div className="absolute top-1/2 left-0 w-full h-[2.5px] bg-[#e11d48] -rotate-45 z-20" />
+                <span className="text-3xl md:text-[38px] z-0 drop-shadow-sm leading-none flex items-center justify-center">{item.icon}</span>
               </div>
-              <span className="text-lg relative z-10">📦</span>
+              
+              <span className="text-[11px] text-gray-500 font-extrabold leading-snug w-full px-2 max-w-[140px]">
+                {item.label}
+              </span>
             </div>
-            <div className="flex flex-col">
-              <span className="text-xs font-bold text-[#0b1220]">{item.name}</span>
-              <span className="text-[9px] text-zinc-400 font-bold uppercase tracking-wider mt-0.5">{item.desc}</span>
-            </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
 
-      <div className="text-center mt-8">
-        <a href="#contact" className="text-xs font-extrabold text-[#f27a1a] hover:underline flex items-center justify-center gap-1 uppercase tracking-wider">
-          View Full List of Restricted Cargo <ArrowUpRight className="h-3.5 w-3.5" />
-        </a>
+        <div className="mt-14">
+          <button className="border-2 border-[#ff8a00] text-[#ff8a00] hover:bg-[#ff8a00] hover:text-white transition-colors duration-300 rounded-md px-6 py-2.5 text-[14.5px] font-extrabold flex items-center gap-1.5">
+            Detailed List <ArrowUpRight className="h-[18px] w-[18px]" strokeWidth={2.5} />
+          </button>
+        </div>
+
       </div>
-    </section>
+    </div>
   );
 }
