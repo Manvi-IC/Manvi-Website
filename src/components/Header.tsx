@@ -1,5 +1,5 @@
 "use client";
-import { Phone, ChevronDown } from "lucide-react";
+import { Phone, ChevronDown, ChevronRight } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -97,6 +97,22 @@ export default function Header() {
           </div>
         </div>
       </header>
+
+      {pathname && pathname !== "/" && (
+        <div className="bg-white border-b border-gray-200/80 py-3.5 px-6 shadow-sm relative z-40">
+          <div className="max-w-[1700px] w-full mx-auto flex items-center gap-2 text-xs font-bold text-gray-500">
+            <Link href="/" className="hover:text-[#f27a1a] transition-colors">Home</Link>
+            <ChevronRight className="w-3.5 h-3.5 text-gray-400 shrink-0" />
+            <span className="text-[#f27a1a] font-extrabold uppercase tracking-wide">
+              {pathname === "/about" && "About Us"}
+              {pathname === "/track" && "Track Shipment"}
+              {pathname === "/zipcode" && "Serviceable Zipcode"}
+              {pathname === "/contact" && "Contact Us"}
+              {pathname === "/faq" && "FAQ"}
+            </span>
+          </div>
+        </div>
+      )}
     </>
   );
 }
