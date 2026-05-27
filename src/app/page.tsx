@@ -22,7 +22,7 @@ export default function Home() {
       {/* Delivery Partners */}
       <ScrollReveal>
         <div className="bg-[#f3f4f6] border-y border-slate-200/50 py-8 px-4 sm:px-6">
-          <div className="max-w-[1700px] mx-auto flex flex-col md:flex-row items-center justify-between gap-6 md:gap-10">
+          <div className="max-w-425 mx-auto flex flex-col md:flex-row items-center justify-between gap-6 md:gap-10">
             <div className="flex flex-col text-center md:text-left">
               <span className="text-[20px] md:text-[24px] font-extrabold text-[#f27a1a] leading-tight italic">
                 Our Delivery<br className="hidden md:block" /> Partners ✈
@@ -51,8 +51,8 @@ export default function Home() {
 
       {/* NoCosts + Prohibited combined in one container */}
       <ScrollReveal>
-        <div className="max-w-[1700px] w-full mx-auto px-4 sm:px-6 py-10 font-sans">
-          <div className="bg-[#eef0f5] rounded-[32px] shadow-sm border border-gray-100 overflow-hidden">
+        <div className="max-w-425 w-full mx-auto px-4 sm:px-6 py-10 font-sans">
+          <div className="bg-[#eef0f5] rounded-4xl shadow-sm border border-gray-100 overflow-hidden">
             <NoCosts />
             <Prohibited />
           </div>
