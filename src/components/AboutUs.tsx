@@ -1,6 +1,5 @@
 "use client";
 import { useState } from "react";
-import Link from "next/link";
 
 // ── Icon helpers ────────────────────────────────────────────────────
 const OrangeCircleIcon = ({ children }: { children: React.ReactNode }) => (
@@ -17,9 +16,9 @@ function AboutBanner() {
       style={{
         width: "100%",
         maxWidth: 1239,
-        height: 200,
+        height: "clamp(120px, 25vw, 200px)",
         borderRadius: 16,
-        padding: "28px 24px",
+        padding: "20px 24px",
         margin: "0 auto",
         backgroundImage: `url('/banner.jpg')`,
         backgroundSize: "cover",
@@ -35,7 +34,7 @@ function AboutBanner() {
         }}
       />
       <div className="relative z-10 text-right">
-        <h1 className="text-3xl font-extrabold text-white tracking-wide">
+        <h1 className="font-extrabold text-white tracking-wide text-2xl sm:text-3xl">
           About Us
         </h1>
       </div>
@@ -72,9 +71,8 @@ function SectionCard({
       id={id}
       className="bg-[#F5F5F7] border border-slate-100 scroll-mt-24 w-full"
       style={{
-        minHeight: 195,
         borderRadius: 12,
-        padding: "20px 36px",
+        padding: "20px 20px",
         gap: 12,
       }}
     >
@@ -83,12 +81,14 @@ function SectionCard({
           <img
             src={image}
             alt={title}
-            className="w-48px h-48px rounded-full object-cover shrink-0"
+            className="w-12 h-12 rounded-full object-cover shrink-0"
           />
         ) : (
           <OrangeCircleIcon>{icon}</OrangeCircleIcon>
         )}
-        <h2 className="text-[24px] font-extrabold text-[#272835]">{title}</h2>
+        <h2 className="text-xl sm:text-2xl font-extrabold text-[#272835]">
+          {title}
+        </h2>
       </div>
       <div className="text-[14px] text-[#727C88] leading-relaxed">
         {children}
@@ -110,7 +110,7 @@ function NavCard({
   return (
     <button
       onClick={onClick}
-      className={`w-full flex items-center gap-3 p-4 rounded-xl border transition-all duration-200 ${
+      className={`w-full flex items-center gap-3 p-3 sm:p-4 rounded-xl border transition-all duration-200 ${
         isActive
           ? "bg-white border-[#f27a1a] shadow-sm"
           : "bg-white border-slate-100 hover:border-slate-200 hover:shadow-sm"
@@ -118,7 +118,7 @@ function NavCard({
     >
       <OrangeCircleIcon>✦</OrangeCircleIcon>
       <span
-        className={`text-sm font-semibold ${
+        className={`text-sm font-semibold text-left ${
           isActive ? "text-[#f27a1a]" : "text-slate-700"
         }`}
       >
@@ -141,25 +141,28 @@ export default function AboutUs() {
   return (
     <div className="min-h-screen bg-[#FFFFFF] font-sans text-[#0f172a] antialiased">
       {/* ── Banner ── */}
-      <div className="px-6 pt-6 pb-4">
+      <div className="px-3 sm:px-6 pt-4 sm:pt-6 pb-3 sm:pb-4">
         <AboutBanner />
       </div>
 
-      {/* ── Body: 42% left, 58% right with centered gap ── */}
-      <div className="max-w-7xl mx-auto px-6 pb-16 flex items-start justify-center gap-8">
-        {/* Left sidebar - exactly 42% width */}
-        <aside className="w-[42%] shrink-0 sticky top-6 flex flex-col gap-4">
-          {/* Who Are We card - full width of aside */}
+      {/* ── Body ── */}
+      {/*
+        Mobile  (<lg): single column, sidebar stacks on top, no sticky
+        Desktop (lg+): two columns, sidebar sticky
+      */}
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 pb-10 sm:pb-16 flex flex-col lg:flex-row lg:items-start lg:justify-center gap-5 sm:gap-8">
+        {/* ── Sidebar ── */}
+        <aside className="w-full lg:w-[42%] lg:shrink-0 lg:sticky lg:top-6 flex flex-col gap-4">
+          {/* Who Are We card */}
           <div
             className="bg-[#F5F5F7] border border-slate-100 w-full"
             style={{
               borderRadius: 12,
-              gap: 24,
-              padding: 36,
+              padding: "24px 20px",
               boxShadow: "-2px 0px 12px 0px #24242740",
             }}
           >
-            <h3 className="text-[36px] font-extrabold text-[#272835] mb-2">
+            <h3 className="text-2xl sm:text-[36px] font-extrabold text-[#272835] mb-2">
               Who Are We?
             </h3>
             <p className="text-[14px] text-[#727C88] leading-relaxed">
@@ -170,8 +173,8 @@ export default function AboutUs() {
               Specialise In International Courier Solutions.
             </p>
 
-            {/* Individual Nav Cards - each as separate card */}
-            <div className="mt-6 flex flex-col gap-3">
+            {/* Nav Cards */}
+            <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-2 sm:gap-3">
               {NAV_ITEMS.map((item) => (
                 <NavCard
                   key={item.id}
@@ -183,32 +186,30 @@ export default function AboutUs() {
             </div>
           </div>
 
-          {/* Ready to Ship card - full width of aside */}
+          {/* Ready to Ship card */}
           <div
             className="bg-[#F5F5F7] border border-slate-100 w-full"
             style={{
-              minHeight: 225,
               borderRadius: 12,
-              gap: 24,
-              padding: 36,
+              padding: "24px 20px",
               boxShadow: "-2px 0px 12px 0px #24242740",
             }}
           >
-            <p className="text-[36px] text-[#FF7F00] font-bold uppercase tracking-wider mb-1">
+            <p className="text-2xl sm:text-[36px] text-[#FF7F00] font-bold uppercase tracking-wider mb-1">
               Ready To Ship?
             </p>
             <p className="text-[14px] text-[#727C88] leading-relaxed mb-4">
               Experience The Difference Of A Courier Service That Cares. Join
               The Manvi International Family Today.
             </p>
-            <button className="inline-flex items-center gap-2 bg-[#F5F5F7] text-[#FF7F00] text-[16px] font-bold px-4 py-2 rounded-md border border-[#FF7F00] hover:bg-[#FF7F00] hover:text-white transition-colors">
+            <button className="inline-flex items-center gap-2 bg-[#F5F5F7] text-[#FF7F00] text-[15px] font-bold px-4 py-2 rounded-md border border-[#FF7F00] hover:bg-[#FF7F00] hover:text-white transition-colors">
               Contact Us ↗
             </button>
           </div>
         </aside>
 
-        {/* Right content - exactly 58% width */}
-        <main className="w-[58%] flex flex-col gap-5 min-w-0">
+        {/* ── Main content ── */}
+        <main className="w-full lg:w-[58%] flex flex-col gap-4 sm:gap-5 min-w-0">
           <SectionCard id="vision" title="Our Vision" image="/our-vision.png">
             <p>
               At Manvi International, We Believe That Distance Should Never Be A

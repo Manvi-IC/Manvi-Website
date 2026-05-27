@@ -8,6 +8,7 @@ import Prohibited from "@/components/Prohibited";
 import FAQ from "@/components/FAQ";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
+import ManviChatBot from "@/components/ManviChatBot"; // ← ADD THIS
 
 export default function Home() {
   return (
@@ -51,6 +52,9 @@ export default function Home() {
       <Contact />
 
       <Footer />
+
+      {/* Floating Chat Bot — renders above everything else */}
+      <ManviChatBot /> {/* ← ADD THIS */}
     </div>
   );
 }
