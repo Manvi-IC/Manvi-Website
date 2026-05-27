@@ -8,7 +8,9 @@ import Prohibited from "@/components/Prohibited";
 import FAQ from "@/components/FAQ";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
-import ManviChatBot from "@/components/ManviChatBot"; // ← ADD THIS
+import ManviChatBot from "@/components/ManviChatBot";
+import ManviWhatsApp from "@/components/ManviWhatsApp";
+import ScrollReveal from "@/components/ScrollReveal";
 
 export default function Home() {
   return (
@@ -18,43 +20,58 @@ export default function Home() {
       <Hero />
 
       {/* Delivery Partners */}
-      <div className="bg-[#f3f4f6] border-y border-slate-200/50 py-8 px-6">
-        <div className="max-w-[1700px] mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="flex flex-col">
-            <span className="text-[20px] md:text-[24px] font-extrabold text-[#f27a1a] leading-tight italic">
-              Our Delivery<br />Partners ✈
-            </span>
-          </div>
-          <div className="flex flex-wrap items-center gap-10 md:gap-16">
-            {["Fedex", "DPD", "Ups", "DHL", "ARAMEX"].map(p => (
-              <span key={p} className="text-[20px] md:text-[22px] font-extrabold text-[#1c1f2e] tracking-wide select-none">{p}</span>
-            ))}
+      <ScrollReveal>
+        <div className="bg-[#f3f4f6] border-y border-slate-200/50 py-8 px-4 sm:px-6">
+          <div className="max-w-[1700px] mx-auto flex flex-col md:flex-row items-center justify-between gap-6 md:gap-10">
+            <div className="flex flex-col text-center md:text-left">
+              <span className="text-[20px] md:text-[24px] font-extrabold text-[#f27a1a] leading-tight italic">
+                Our Delivery<br className="hidden md:block" /> Partners ✈
+              </span>
+            </div>
+            <div className="flex flex-wrap items-center justify-center md:justify-end gap-6 sm:gap-10 md:gap-16">
+              {["Fedex", "DPD", "Ups", "DHL", "ARAMEX"].map(p => (
+                <span key={p} className="text-[18px] sm:text-[20px] md:text-[22px] font-extrabold text-[#1c1f2e] tracking-wide select-none">{p}</span>
+              ))}
+            </div>
           </div>
         </div>
-      </div>
+      </ScrollReveal>
 
-      <Bespoke />
+      <ScrollReveal>
+        <Bespoke />
+      </ScrollReveal>
 
-      <WhyWeLead />
+      <ScrollReveal>
+        <WhyWeLead />
+      </ScrollReveal>
 
-      <ClaimPolicy />
+      <ScrollReveal>
+        <ClaimPolicy />
+      </ScrollReveal>
 
       {/* NoCosts + Prohibited combined in one container */}
-      <div className="max-w-[1700px] w-full mx-auto px-6 py-10 font-sans">
-        <div className="bg-[#eef0f5] rounded-[32px] shadow-sm border border-gray-100 overflow-hidden">
-          <NoCosts />
-          <Prohibited />
+      <ScrollReveal>
+        <div className="max-w-[1700px] w-full mx-auto px-4 sm:px-6 py-10 font-sans">
+          <div className="bg-[#eef0f5] rounded-[32px] shadow-sm border border-gray-100 overflow-hidden">
+            <NoCosts />
+            <Prohibited />
+          </div>
         </div>
-      </div>
+      </ScrollReveal>
 
-      <FAQ />
+      <ScrollReveal>
+        <FAQ />
+      </ScrollReveal>
 
-      <Contact />
+      <ScrollReveal>
+        <Contact />
+      </ScrollReveal>
 
       <Footer />
 
       {/* Floating Chat Bot — renders above everything else */}
-      <ManviChatBot /> {/* ← ADD THIS */}
+      <ManviChatBot />
+      <ManviWhatsApp />
     </div>
   );
 }
