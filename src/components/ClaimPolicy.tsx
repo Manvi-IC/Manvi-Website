@@ -3,14 +3,14 @@ import { useState } from "react";
 
 const TagIcon = ({ active }: { active: boolean }) => (
   <div className={`w-10 h-10 sm:w-11 sm:h-11 rounded-full flex items-center justify-center shrink-0 transition-all duration-300 ${active ? "bg-[#fff7ed]" : "bg-[#fff7ed]/35"}`}>
-    <svg 
-      width="20" 
-      height="20" 
-      viewBox="0 0 24 24" 
-      fill={active ? "#ff8a00" : "#ff8a0050"} 
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill={active ? "#ff8a00" : "#ff8a0050"}
       className={`-rotate-45 transform transition-opacity duration-300 ${active ? "opacity-100" : "opacity-40"}`}
     >
-      <path d="M21.71 11.29l-9-9C12.53 2.11 12.28 2 12 2H3c-.55 0-1 .45-1 1v9c0 .28.11.53.29.71l9 9c.39.39 1.02.39 1.41 0l9-9c.39-.38.39-1.01 0-1.42zM6 8c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/>
+      <path d="M21.71 11.29l-9-9C12.53 2.11 12.28 2 12 2H3c-.55 0-1 .45-1 1v9c0 .28.11.53.29.71l9 9c.39.39 1.02.39 1.41 0l9-9c.39-.38.39-1.01 0-1.42zM6 8c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z" />
     </svg>
   </div>
 );
@@ -162,7 +162,7 @@ export default function ClaimPolicy() {
     <section className="w-full mx-auto px-4 sm:px-6 py-10 font-sans max-w-425">
       <div className="bg-[#eef0f5] rounded-4xl shadow-sm border border-gray-100 p-6 sm:p-10 lg:p-14">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14 items-stretch">
-          
+
           {/* Left Column */}
           <div className="flex flex-col">
             <div className="flex flex-col gap-4 mb-8">
@@ -181,14 +181,13 @@ export default function ClaimPolicy() {
               {claimsData.map((item) => {
                 const isActive = activeTab === item.id;
                 return (
-                  <div 
+                  <div
                     key={item.id}
                     onClick={() => setActiveTab(item.id)}
-                    className={`relative p-4 sm:p-5 lg:p-6 rounded-3xl cursor-pointer flex items-center gap-4 sm:gap-5 transition-all duration-300 ${
-                      isActive 
-                        ? "bg-white shadow-[0_8px_30px_rgb(0,0,0,0.04)]" 
+                    className={`relative p-4 sm:p-5 lg:p-6 rounded-3xl cursor-pointer flex items-center gap-4 sm:gap-5 transition-all duration-300 ${isActive
+                        ? "bg-white shadow-[0_8px_30px_rgb(0,0,0,0.04)]"
                         : "bg-white/50 hover:bg-white/70"
-                    }`}
+                      }`}
                   >
                     <TagIcon active={isActive} />
                     <div className="flex flex-col pr-6 sm:pr-8">
@@ -199,7 +198,7 @@ export default function ClaimPolicy() {
                         {item.subtext}
                       </p>
                     </div>
-                    
+
                     {/* Active Orange Bar */}
                     {isActive && (
                       <div className="absolute right-0 top-1/2 -translate-y-1/2 w-1 sm:w-1.25 h-7.5 sm:h-9 bg-[#ff8a00] rounded-l-full" />
@@ -216,15 +215,15 @@ export default function ClaimPolicy() {
               <h3 className="text-white text-[22px] sm:text-[24px] md:text-[26px] font-bold leading-[1.3] tracking-tight">
                 {currentData.panelTitle}
               </h3>
-              
+
               <div className="flex flex-col gap-4 sm:gap-5 mt-8 sm:mt-10">
                 {currentData.details.map((detail, idx) => (
                   <div key={idx} className="bg-white rounded-[20px] sm:rounded-3xl p-5 sm:p-6 lg:p-8 shadow-[0_4px_20px_rgba(0,0,0,0.02)] flex flex-col gap-3">
                     <span className="text-[#ff8a00] text-[12px] sm:text-[13px] font-extrabold tracking-wider">{detail.num}</span>
                     <h4 className="text-[15px] sm:text-[17px] font-extrabold text-[#1c1f2e]">{detail.title}</h4>
-                    
+
                     {detail.desc && (
-                      <p 
+                      <p
                         className="text-[12px] sm:text-[13px] text-gray-500 font-medium leading-relaxed"
                         dangerouslySetInnerHTML={{ __html: detail.desc }}
                       />
@@ -238,7 +237,7 @@ export default function ClaimPolicy() {
                               <DiamondIcon />
                               <span>{sub.label}</span>
                             </div>
-                            <p 
+                            <p
                               className="text-[12px] sm:text-[13px] text-gray-500 font-medium leading-relaxed"
                               dangerouslySetInnerHTML={{ __html: sub.text }}
                             />
@@ -251,7 +250,6 @@ export default function ClaimPolicy() {
               </div>
             </div>
           </div>
-
         </div>
       </div>
     </section>
