@@ -33,9 +33,9 @@ export default function TrackPage() {
       <Header />
 
       {/* Banner Section */}
-      <section className="relative bg-[#0b1220] overflow-hidden min-h-[220px] flex items-center py-12 px-6">
+      <section className="relative bg-[#0b1220] overflow-hidden min-h-55 flex items-center py-12 px-6">
         <div className="absolute inset-0 z-0 opacity-20 bg-[url('https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=2000&q=80')] bg-cover bg-center" />
-        <div className="max-w-[1700px] w-full mx-auto flex flex-col md:flex-row justify-between items-start md:items-center relative z-10 gap-4">
+        <div className="max-w-425 w-full mx-auto flex flex-col md:flex-row justify-between items-start md:items-center relative z-10 gap-4">
           <div>
             <h1 className="text-[36px] md:text-[44px] font-extrabold text-white leading-tight tracking-tight">
               Track Shipment
@@ -45,12 +45,12 @@ export default function TrackPage() {
       </section>
 
       {/* Main Content Area */}
-      <main className="flex-grow max-w-[1700px] w-full mx-auto px-6 py-12">
+      <main className="flex-grow max-w-425 w-full mx-auto px-6 py-12">
         {!hasSearched ? (
           // Initial Form View
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
             {/* Left Box: Form */}
-            <div className="lg:col-span-7 bg-[#eef0f5] rounded-[32px] p-8 lg:p-14 shadow-sm border border-gray-200/50 flex flex-col justify-between">
+            <div className="lg:col-span-7 bg-[#eef0f5] rounded-4xl p-8 lg:p-14 shadow-sm border border-gray-200/50 flex flex-col justify-between">
               <div className="flex flex-col gap-5">
                 <h2 className="text-[28px] md:text-[34px] font-extrabold text-[#1c1f2e] leading-tight tracking-tight">
                   Track Your Shipment<br />In Real Time
@@ -93,7 +93,7 @@ export default function TrackPage() {
             </div>
 
             {/* Right Box: Help Card */}
-            <div className="lg:col-span-5 bg-[#eef0f5] rounded-[32px] p-8 lg:p-14 shadow-sm border border-gray-200/50 flex flex-col items-center justify-center text-center">
+            <div className="lg:col-span-5 bg-[#eef0f5] rounded-4xl p-8 lg:p-14 shadow-sm border border-gray-200/50 flex flex-col items-center justify-center text-center">
               <div className="max-w-md flex flex-col items-center gap-6">
                 <h2 className="text-[32px] md:text-[38px] font-extrabold text-[#f27a1a] tracking-tight">
                   Need Help?
@@ -115,7 +115,7 @@ export default function TrackPage() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             
             {/* Left Box: Tracking Timeline & Details */}
-            <div className="lg:col-span-7 bg-[#eef0f5] rounded-[32px] p-8 lg:p-10 shadow-sm border border-gray-200/50 flex flex-col gap-6">
+            <div className="lg:col-span-7 bg-[#eef0f5] rounded-4xl p-8 lg:p-10 shadow-sm border border-gray-200/50 flex flex-col gap-6">
               
               {/* Header Box */}
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white/60 rounded-2xl p-5 border border-white/50">
@@ -257,7 +257,7 @@ export default function TrackPage() {
             {/* Right Box: Satellite Map & Help Card */}
             <div className="lg:col-span-5 flex flex-col gap-8">
               {/* Styled Satellite Map container */}
-              <div className="w-full aspect-[4/3] rounded-[32px] overflow-hidden bg-slate-200 relative border border-gray-200 shadow-sm min-h-[300px]">
+              <div className="w-full aspect-[4/3] rounded-4xl overflow-hidden bg-slate-200 relative border border-gray-200 shadow-sm min-h-75">
                 {/* Embed high fidelity visual or use premium highres map placeholder background */}
                 <iframe
                   src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d112061.64417734135!2d77.10896253457031!3d28.613939100000003!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390cfd5b347eb62d%3A0xa1f13f1737e90c88!2sNew%20Delhi%2C%20Delhi%2C%20India!5e0!3m2!1sen!2sus!4v1700000000000!5m2!1sen!2sus"
@@ -275,7 +275,7 @@ export default function TrackPage() {
               </div>
 
               {/* Help Card */}
-              <div className="bg-[#eef0f5] rounded-[32px] p-8 lg:p-14 shadow-sm border border-gray-200/50 flex flex-col items-center justify-center text-center">
+              <div className="bg-[#eef0f5] rounded-4xl p-8 lg:p-14 shadow-sm border border-gray-200/50 flex flex-col items-center justify-center text-center">
                 <div className="max-w-md flex flex-col items-center gap-6">
                   <h2 className="text-[32px] md:text-[38px] font-extrabold text-[#f27a1a] tracking-tight">
                     Need Help?
