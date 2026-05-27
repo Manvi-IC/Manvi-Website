@@ -2,7 +2,7 @@
 import { useState } from "react";
 
 const TagIcon = ({ active }: { active: boolean }) => (
-  <div className={`w-[40px] h-[40px] sm:w-[44px] sm:h-[44px] rounded-full flex items-center justify-center shrink-0 transition-all duration-300 ${active ? "bg-[#fff7ed]" : "bg-[#fff7ed]/35"}`}>
+  <div className={`w-10 h-10 sm:w-11 sm:h-11 rounded-full flex items-center justify-center shrink-0 transition-all duration-300 ${active ? "bg-[#fff7ed]" : "bg-[#fff7ed]/35"}`}>
     <svg 
       width="20" 
       height="20" 
@@ -16,8 +16,8 @@ const TagIcon = ({ active }: { active: boolean }) => (
 );
 
 const DiamondIcon = () => (
-  <div className="w-[16px] h-[16px] sm:w-[18px] sm:h-[18px] rounded-full border-2 border-[#ff8a00] flex items-center justify-center shrink-0 bg-white">
-    <div className="w-[6px] h-[6px] sm:w-[7px] sm:h-[7px] rotate-45 bg-[#ff8a00]" />
+  <div className="w-4 h-4 sm:w-4.5 sm:h-4.5 rounded-full border-2 border-[#ff8a00] flex items-center justify-center shrink-0 bg-white">
+    <div className="w-1.5 h-1.5 sm:w-1.75 sm:h-1.75 rotate-45 bg-[#ff8a00]" />
   </div>
 );
 
@@ -159,8 +159,8 @@ export default function ClaimPolicy() {
   const currentData = claimsData.find(d => d.id === activeTab) || claimsData[0];
 
   return (
-    <section className="w-full mx-auto px-4 sm:px-6 py-10 font-sans max-w-[1700px]">
-      <div className="bg-[#eef0f5] rounded-[32px] shadow-sm border border-gray-100 p-6 sm:p-10 lg:p-14">
+    <section className="w-full mx-auto px-4 sm:px-6 py-10 font-sans max-w-425">
+      <div className="bg-[#eef0f5] rounded-4xl shadow-sm border border-gray-100 p-6 sm:p-10 lg:p-14">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14 items-stretch">
           
           {/* Left Column */}
@@ -184,7 +184,7 @@ export default function ClaimPolicy() {
                   <div 
                     key={item.id}
                     onClick={() => setActiveTab(item.id)}
-                    className={`relative p-4 sm:p-5 lg:p-6 rounded-[24px] cursor-pointer flex items-center gap-4 sm:gap-5 transition-all duration-300 ${
+                    className={`relative p-4 sm:p-5 lg:p-6 rounded-3xl cursor-pointer flex items-center gap-4 sm:gap-5 transition-all duration-300 ${
                       isActive 
                         ? "bg-white shadow-[0_8px_30px_rgb(0,0,0,0.04)]" 
                         : "bg-white/50 hover:bg-white/70"
@@ -202,7 +202,7 @@ export default function ClaimPolicy() {
                     
                     {/* Active Orange Bar */}
                     {isActive && (
-                      <div className="absolute right-0 top-1/2 -translate-y-1/2 w-[4px] sm:w-[5px] h-[30px] sm:h-[36px] bg-[#ff8a00] rounded-l-full" />
+                      <div className="absolute right-0 top-1/2 -translate-y-1/2 w-1 sm:w-1.25 h-7.5 sm:h-9 bg-[#ff8a00] rounded-l-full" />
                     )}
                   </div>
                 );
@@ -211,7 +211,7 @@ export default function ClaimPolicy() {
           </div>
 
           {/* Right Column: Dynamic Panel */}
-          <div className="bg-[#c26d46] rounded-[32px] p-6 sm:p-8 lg:p-12 shadow-[0_10px_40px_-10px_rgba(194,109,70,0.4)] flex flex-col h-full justify-between mt-6 lg:mt-0">
+          <div className="bg-[#c26d46] rounded-4xl p-6 sm:p-8 lg:p-12 shadow-[0_10px_40px_-10px_rgba(194,109,70,0.4)] flex flex-col h-full justify-between mt-6 lg:mt-0">
             <div>
               <h3 className="text-white text-[22px] sm:text-[24px] md:text-[26px] font-bold leading-[1.3] tracking-tight">
                 {currentData.panelTitle}
@@ -219,7 +219,7 @@ export default function ClaimPolicy() {
               
               <div className="flex flex-col gap-4 sm:gap-5 mt-8 sm:mt-10">
                 {currentData.details.map((detail, idx) => (
-                  <div key={idx} className="bg-white rounded-[20px] sm:rounded-[24px] p-5 sm:p-6 lg:p-8 shadow-[0_4px_20px_rgba(0,0,0,0.02)] flex flex-col gap-3">
+                  <div key={idx} className="bg-white rounded-[20px] sm:rounded-3xl p-5 sm:p-6 lg:p-8 shadow-[0_4px_20px_rgba(0,0,0,0.02)] flex flex-col gap-3">
                     <span className="text-[#ff8a00] text-[12px] sm:text-[13px] font-extrabold tracking-wider">{detail.num}</span>
                     <h4 className="text-[15px] sm:text-[17px] font-extrabold text-[#1c1f2e]">{detail.title}</h4>
                     
