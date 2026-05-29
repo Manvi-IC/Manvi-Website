@@ -24,7 +24,8 @@ export const metadata: Metadata = {
     template: "%s | Manvi International Courier",
     default: "Manvi International Courier",
   },
-  description: "Reliable and fast international courier & logistics services delivering worldwide including USA, Canada, UK, Europe, and Australia.",
+  description:
+    "Reliable and fast international courier & logistics services delivering worldwide including USA, Canada, UK, Europe, and Australia.",
   openGraph: {
     type: "website",
     url: "https://m-website-alpha.vercel.app",
@@ -32,8 +33,8 @@ export const metadata: Metadata = {
     images: [
       {
         url: "/opengraph2.png",
-        width: 1200,
-        height: 630,
+        width: 2000,
+        height: 1500,
         alt: "Manvi International Courier",
         type: "image/png",
       },
@@ -56,7 +57,9 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} ${leagueSpartan.variable} h-full antialiased`}
       suppressHydrationWarning
     >
-      <body className="min-h-full flex flex-col" suppressHydrationWarning>{children}</body>
+      <body className="min-h-full flex flex-col" suppressHydrationWarning>
+        {children}
+      </body>
     </html>
   );
 }
