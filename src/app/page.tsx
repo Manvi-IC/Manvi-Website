@@ -14,7 +14,7 @@ import ScrollReveal from "@/components/ScrollReveal";
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-[#f8f9fa] text-[#0f172a] font-sans flex flex-col antialiased">
+    <div className="min-h-screen bg-[#f8f9fa] text-[#0f172a] font-sans flex flex-col antialiased overflow-x-hidden">
       <Header />
 
       <Hero />
@@ -25,12 +25,18 @@ export default function Home() {
           <div className="max-w-425 mx-auto flex flex-col md:flex-row items-center justify-between gap-6 md:gap-10">
             <div className="flex flex-col text-center md:text-left">
               <span className="text-[20px] md:text-[24px] font-extrabold text-[#f27a1a] leading-tight italic">
-                Our Delivery<br className="hidden md:block" /> Partners ✈
+                Our Delivery
+                <br className="hidden md:block" /> Partners ✈
               </span>
             </div>
             <div className="flex flex-wrap items-center justify-center md:justify-end gap-6 sm:gap-10 md:gap-16">
-              {["Fedex", "DPD", "UPS", "DHL", "ARAMEX"].map(p => (
-                <span key={p} className="text-[18px] sm:text-[20px] md:text-[22px] font-extrabold text-[#1c1f2e] tracking-wide select-none">{p}</span>
+              {["ARAMEX", "DHL", "DPD", "Fedex", "UPS"].map((p) => (
+                <span
+                  key={p}
+                  className="text-[18px] sm:text-[20px] md:text-[22px] font-extrabold text-[#1c1f2e] tracking-wide select-none"
+                >
+                  {p}
+                </span>
               ))}
             </div>
           </div>

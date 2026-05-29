@@ -24,9 +24,6 @@ export default function Header() {
             >
               Servicable Zipcode
             </Link>
-            <Link href="/track" className="hover:text-white transition-colors">
-              Track Now
-            </Link>
             <div className="flex items-center gap-1 hover:text-white transition-colors cursor-pointer">
               Language <ChevronDown className="h-3 w-3" />
             </div>
@@ -96,6 +93,17 @@ export default function Header() {
               </div>
 
               <Link
+                href="/track"
+                className={`transition-colors ${
+                  pathname?.startsWith("/track")
+                    ? "text-[#f27a1a]"
+                    : "hover:text-[#f27a1a]"
+                }`}
+              >
+                Track Now
+              </Link>
+
+              <Link
                 href="/contact"
                 className={`transition-colors ${
                   pathname?.startsWith("/contact")
@@ -106,21 +114,6 @@ export default function Header() {
                 Contact Us
               </Link>
             </nav>
-
-            {/* Grid menu icon */}
-            <div className="w-10 h-10 bg-[#f27a1a] rounded-xl flex items-center justify-center cursor-pointer hover:bg-orange-600 transition-colors">
-              <svg width="18" height="18" viewBox="0 0 16 16" fill="white">
-                <rect x="0" y="0" width="4" height="4" rx="1" />
-                <rect x="6" y="0" width="4" height="4" rx="1" />
-                <rect x="12" y="0" width="4" height="4" rx="1" />
-                <rect x="0" y="6" width="4" height="4" rx="1" />
-                <rect x="6" y="6" width="4" height="4" rx="1" />
-                <rect x="12" y="6" width="4" height="4" rx="1" />
-                <rect x="0" y="12" width="4" height="4" rx="1" />
-                <rect x="6" y="12" width="4" height="4" rx="1" />
-                <rect x="12" y="12" width="4" height="4" rx="1" />
-              </svg>
-            </div>
           </div>
 
           {/* Mobile Menu Toggle */}

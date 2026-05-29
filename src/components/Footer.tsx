@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function Footer() {
   return (
-    <footer className="bg-[#f27a1a] text-white pt-16 pb-8 px-6 font-sans">
+    <footer className="bg-[#f27a1a] text-white pt-16 pb-8 px-6 font-sans rounded-t-2xl">
       <div className="max-w-425 mx-auto flex flex-col gap-10">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-10 lg:gap-16">
           {/* Column 1: Brand */}
@@ -50,8 +50,7 @@ export default function Footer() {
               Connecting Families, Bridging Distances
             </p>
             <p className="text-white/70 text-[12px] leading-relaxed max-w-sm">
-              in 2023 by promoters with their 20+ years of experience in the
-              express and freight industry.
+              Trusted by 10,000+ happy customers and with over 50,000 successful international shipments, we deliver fast, secure, and seamless courier and freight solutions you can rely on.
             </p>
 
             {/* Social Icons */}
