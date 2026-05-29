@@ -33,8 +33,8 @@ export const metadata: Metadata = {
     images: [
       {
         url: "/opengraph2.png",
-        width: 2000,
-        height: 1500,
+        // width: 1200,
+        // height: 630,
         alt: "Manvi International Courier",
         type: "image/png",
       },
