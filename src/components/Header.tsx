@@ -23,6 +23,25 @@ export default function Header() {
               <span className="text-white/90">Info@manvicourier.com</span>
             </div>
           </div>
+
+          {/* Marquee offer strip */}
+          <div className="hidden md:flex flex-1 mx-6 overflow-hidden relative">
+            {/* Confetti dots */}
+
+            <marquee
+              behavior="scroll"
+              direction="left"
+              scrollamount="3"
+              className="text-[12px] font-extrabold tracking-wide"
+              style={{ color: "#f27a1a" }}
+            >
+              🎉 Send Shipment to USA @ ₹679 per KG &nbsp;•&nbsp; T&amp;C
+              Applied &nbsp;•&nbsp; 🎊 Send Shipment to USA @ ₹679 per KG
+              &nbsp;•&nbsp; T&amp;C Applied &nbsp;•&nbsp; 🎉 Send Shipment to
+              USA @ ₹679 per KG &nbsp;•&nbsp; T&amp;C Applied &nbsp;•&nbsp;
+            </marquee>
+          </div>
+
           <div className="hidden sm:flex items-center gap-6">
             <Link
               href="/zipcode"
