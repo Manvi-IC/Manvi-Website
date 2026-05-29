@@ -19,6 +19,7 @@ const leagueSpartan = League_Spartan({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://m-website-alpha.vercel.app"),
   title: {
     template: "%s | Manvi International Courier",
     default: "Manvi International Courier",
@@ -26,9 +27,11 @@ export const metadata: Metadata = {
   description: "Reliable and fast international courier & logistics services delivering worldwide including USA, Canada, UK, Europe, and Australia.",
   openGraph: {
     type: "website",
+    url: "https://m-website-alpha.vercel.app",
+    siteName: "Manvi International Courier",
     images: [
       {
-        url: "/opengraph.png",
+        url: "/opengraph2.png",
         width: 1200,
         height: 630,
         alt: "Manvi International Courier",
@@ -37,6 +40,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
+    images: ["/opengraph2.png"],
   },
 };
 
