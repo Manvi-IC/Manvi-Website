@@ -113,9 +113,16 @@ export default function Header() {
                 About Us
               </Link>
 
-              <div className="flex items-center gap-1 cursor-pointer hover:text-[#f27a1a] transition-colors">
-                Services <ChevronDown className="h-3.5 w-3.5 opacity-70" />
-              </div>
+              <Link
+                href="/services"
+                className={`flex items-center gap-1 transition-colors ${
+                  pathname?.startsWith("/services")
+                    ? "text-[#f27a1a]"
+                    : "hover:text-[#f27a1a]"
+                }`}
+              >
+                Services
+              </Link>
 
               <Link
                 href="/track"
@@ -126,6 +133,17 @@ export default function Header() {
                 }`}
               >
                 Track Now
+              </Link>
+
+              <Link
+                href="/quote"
+                className={`transition-colors ${
+                  pathname?.startsWith("/quote")
+                    ? "text-[#f27a1a]"
+                    : "hover:text-[#f27a1a]"
+                }`}
+              >
+                Get Quote
               </Link>
 
               <Link
@@ -191,6 +209,13 @@ export default function Header() {
               Track Shipment
             </Link>
             <Link
+              href="/quote"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className={`pb-2 border-b border-gray-100 ${pathname?.startsWith("/quote") ? "text-[#f27a1a]" : ""}`}
+            >
+              Get Quote
+            </Link>
+            <Link
               href="/zipcode"
               onClick={() => setIsMobileMenuOpen(false)}
               className={`pb-2 border-b border-gray-100 ${pathname?.startsWith("/zipcode") ? "text-[#f27a1a]" : ""}`}
@@ -222,6 +247,7 @@ export default function Header() {
               {pathname === "/contact" && "Contact Us"}
               {pathname === "/quote" && "Get a Quote"}
               {pathname === "/faq" && "FAQ"}
+              {pathname === "/services" && "Services"}
             </span>
           </div>
         </div>

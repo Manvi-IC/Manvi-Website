@@ -19,8 +19,25 @@ const leagueSpartan = League_Spartan({
 });
 
 export const metadata: Metadata = {
-  title: "Manvi International Courier",
+  title: {
+    template: "%s | Manvi International Courier",
+    default: "Manvi International Courier",
+  },
   description: "Reliable and fast international courier & logistics services delivering worldwide including USA, Canada, UK, Europe, and Australia.",
+  openGraph: {
+    type: "website",
+    images: [
+      {
+        url: "/opengraph.png",
+        width: 1200,
+        height: 630,
+        alt: "Manvi International Courier",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+  },
 };
 
 export default function RootLayout({

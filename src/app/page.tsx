@@ -8,8 +8,9 @@ import Prohibited from "@/components/Prohibited";
 import FAQ from "@/components/FAQ";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
-import ManviChatBot from "@/components/ManviChatBot";
-import ManviWhatsApp from "@/components/ManviWhatsApp";
+import dynamic from "next/dynamic";
+const ManviChatBot = dynamic(() => import("@/components/ManviChatBot"));
+const ManviWhatsApp = dynamic(() => import("@/components/ManviWhatsApp"));
 import ScrollReveal from "@/components/ScrollReveal";
 
 export default function Home() {

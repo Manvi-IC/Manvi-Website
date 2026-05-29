@@ -50,6 +50,7 @@ export default function Hero() {
               <input
                 type="text"
                 placeholder="Pick Up Location"
+                aria-label="Pick Up Location"
                 value={pickup}
                 onChange={(e) => setPickup(e.target.value)}
                 className="bg-white text-[#333] text-[13px] font-medium rounded-xl px-4 py-3 focus:outline-none placeholder:text-gray-400"
@@ -57,6 +58,7 @@ export default function Hero() {
               <input
                 type="text"
                 placeholder="Drop Location"
+                aria-label="Drop Location"
                 value={drop}
                 onChange={(e) => setDrop(e.target.value)}
                 className="bg-white text-[#333] text-[13px] font-medium rounded-xl px-4 py-3 focus:outline-none placeholder:text-gray-400"
@@ -66,6 +68,7 @@ export default function Hero() {
               <input
                 type="number"
                 placeholder="Weight (Kg)"
+                aria-label="Weight in Kilograms"
                 value={weight}
                 onChange={(e) => setWeight(e.target.value)}
                 min="0.1"
@@ -75,6 +78,7 @@ export default function Hero() {
               <select
                 value={service}
                 onChange={(e) => setService(e.target.value)}
+                aria-label="Select Service Type"
                 className="bg-white text-[#333] text-[13px] font-medium rounded-xl px-4 py-3 focus:outline-none appearance-none"
               >
                 <option value="">Service</option>
@@ -87,6 +91,7 @@ export default function Hero() {
               <input
                 type="text"
                 placeholder="Content"
+                aria-label="Package Content"
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
                 className="bg-white text-[#333] text-[13px] font-medium rounded-xl px-4 py-3 focus:outline-none placeholder:text-gray-400"
@@ -138,6 +143,7 @@ export default function Hero() {
               src="/hero-right.jpg"
               alt="Manvi Legacy"
               fill
+              sizes="(max-width: 1024px) 100vw, 50vw"
               className="object-cover object-center"
               priority
             />
@@ -176,6 +182,7 @@ export default function Hero() {
                   className="w-7 h-7 sm:w-8 sm:h-8 text-white z-10 relative"
                   viewBox="0 0 24 24"
                   fill="currentColor"
+                  aria-hidden
                 >
                   <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" />
                   <path d="M12 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.168L2 22l4.832-1.438A9.955 9.955 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2z" />
@@ -185,6 +192,7 @@ export default function Hero() {
                 <svg
                   className="absolute inset-0 w-full h-full animate-[spin_12s_linear_infinite]"
                   viewBox="0 0 100 100"
+                  aria-hidden
                 >
                   <path
                     id="heroCircleText"
@@ -245,7 +253,7 @@ export default function Hero() {
           {
             icon: <Users className="w-4 h-4" />,
             label: "Our Services",
-            href: "#services",
+            href: "/services",
           },
           {
             icon: <Headphones className="w-4 h-4" />,
