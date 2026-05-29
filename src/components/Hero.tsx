@@ -32,7 +32,7 @@ export default function Hero() {
       {/* Main Hero Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
         {/* Left: Orange Form Card */}
-        <div className="bg-[#f27a1a] rounded-[28px] p-6 sm:p-8 lg:p-10 flex flex-col justify-between min-h-110">
+        <div className="bg-[#f27a1a] rounded-[28px] p-6 sm:p-8 lg:p-10 flex flex-col justify-between min-h-110 shadow-xl">
           <div className="flex flex-col gap-4">
             <h1 className="text-[32px] sm:text-[36px] md:text-[42px] font-extrabold text-white leading-[1.1] tracking-tight uppercase">
               CONNECTING CONTINENTS,
@@ -131,9 +131,9 @@ export default function Hero() {
         </div>
 
         {/* Right: Dark Image Card */}
-        <div className="relative rounded-[16px] overflow-hidden min-h-[485px] lg:h-[485px] flex flex-col justify-between">
+        <div className="relative rounded-[16px] min-h-[485px] lg:h-[485px] flex flex-col justify-between">
           {/* Background image + overlays */}
-          <div className="absolute inset-0">
+          <div className="absolute inset-0 rounded-[16px] rounded-bl-[18px] overflow-hidden">
             <Image
               src="/hero-right.jpg"
               alt="Manvi Legacy"
@@ -154,7 +154,7 @@ export default function Hero() {
           </div>
 
           {/* Top content */}
-          <div className="relative z-10 p-6 sm:p-8 lg:p-10 flex flex-col gap-3">
+          <div className="relative z-10 p-6 sm:p-8 lg:p-10 flex flex-col gap-3 ">
             <span className="text-[11px] font-bold tracking-wider bg-white/15 text-white/90 border border-white/20 w-fit px-3 py-1 rounded-full">
               The Manvi Legacy
             </span>
@@ -166,22 +166,11 @@ export default function Hero() {
           </div>
 
           {/* Bottom row */}
-          <div className="relative z-10 p-6 sm:p-8 lg:p-10 flex flex-col sm:flex-row items-end justify-between gap-6 sm:gap-0">
+          <div className="relative z-10 p-6 sm:p-8 lg:p-10 flex flex-col  sm:flex-row items-end justify-between gap-6 sm:gap-0">
             {/* Cutout corner circle */}
-            {/* Quarter-circle white shape anchored at bottom-left creates the cutout illusion */}
-            <div className="absolute bottom-0 left-0 w-28 h-28 sm:w-36 sm:h-36 bg-white rounded-tr-full flex items-end justify-start pointer-events-none z-20">
+            <div className="absolute -bottom-4 -left-4 w-34 h-34 sm:w-36 sm:h-36 bg-[#f8f9fa] rounded-full  flex items-center justify-center pointer-events-none z-20">
               {/* Orange spinning WhatsApp circle */}
-              <div
-                className="relative flex items-center justify-center rounded-full"
-                style={{
-                  width: "clamp(80px, 11vw, 110px)",
-                  height: "clamp(80px, 11vw, 110px)",
-                  flexShrink: 0,
-                }}
-              >
-                {/* Orange background */}
-                <div className="absolute inset-0 bg-[#f27a1a] rounded-full" />
-
+              <div className="w-20 h-20 sm:w-28 sm:h-28 bg-[#f27a1a] rounded-full relative flex items-center justify-center shadow-lg pointer-events-auto cursor-pointer hover:scale-105 transition-transform duration-300 z-50">
                 {/* WhatsApp icon */}
                 <svg
                   className="w-7 h-7 sm:w-8 sm:h-8 text-white z-10 relative"
@@ -222,7 +211,7 @@ export default function Hero() {
             </div>
 
             {/* Spacer matching circle width so dots/button stay right-aligned */}
-            <div className="w-28 sm:w-36 flex-shrink-0" />
+            <div className="w-24 sm:w-32 flex-shrink-0" />
 
             {/* Carousel dots + Read More */}
             <div className="flex items-center gap-6 w-full sm:w-auto justify-between sm:justify-end">
