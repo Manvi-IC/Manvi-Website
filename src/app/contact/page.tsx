@@ -183,7 +183,7 @@ export default function ContactPage() {
               <div className="flex items-start gap-3 mt-2">
                 <MapPin className="w-4 h-4 text-[#f27a1a] mt-1 shrink-0" />
                 <div className="text-[14px] font-semibold text-gray-500 leading-relaxed">
-                  Address: <span className="text-[#f27a1a] font-bold">Manvi International, Second Floor, New Delhi, Delhi 1100, India</span>
+                  Address: <span className="text-[#f27a1a] font-bold">C-699, Palam Extension, Sector 7, Dwarka, New Delhi, 110077</span>
                 </div>
               </div>
             </div>
