@@ -24,6 +24,16 @@ export const metadata: Metadata = {
     default: "Manvi International Courier",
   },
   description: "Reliable and fast international courier & logistics services delivering worldwide including USA, Canada, UK, Europe, and Australia.",
+  openGraph: {
+    images: [
+      {
+        url: "/opengraph.png",
+        width: 1200,
+        height: 630,
+        alt: "Manvi International Courier",
+      },
+    ],
+  },
 };
 
 export default function RootLayout({
