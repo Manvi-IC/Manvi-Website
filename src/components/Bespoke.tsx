@@ -21,14 +21,16 @@ export default function Bespoke() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           
           {/* Left Side: Symmetrical Image with Read More Cutout */}
-          <div className="relative w-full h-75 sm:h-100 md:h-125 lg:h-145 rounded-4xl overflow-hidden bg-slate-100 shadow-md shrink-0">
-            <Image 
-              src="/warehouse_worker.png" 
-              alt="Bespoke Shipping Solutions" 
-              fill 
-              className="object-cover object-center transition-transform duration-700 hover:scale-105"
-              priority
-            />
+          <div className="relative w-full h-75 sm:h-100 md:h-125 lg:h-145 shrink-0">
+            <div className="absolute inset-0 rounded-4xl overflow-hidden bg-slate-100 shadow-md">
+              <Image 
+                src="/warehouse_worker.png" 
+                alt="Bespoke Shipping Solutions" 
+                fill 
+                className="object-cover object-center transition-transform duration-700 hover:scale-105"
+                priority
+              />
+            </div>
             
             {/* Bottom Right Cutout Illusion */}
             <div className="absolute -bottom-6 -right-6 w-32 h-32 sm:w-40 sm:h-40 bg-[#eef0f5] rounded-full flex items-center justify-center pointer-events-none">
