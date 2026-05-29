@@ -1,3 +1,4 @@
+"use client";
 import { ArrowUpRight } from "lucide-react";
 
 const prohibitedItems = [
@@ -41,9 +42,12 @@ export default function Prohibited() {
         </div>
 
         <div className="mt-14">
-          <button className="border-2 border-[#ff8a00] text-[#ff8a00] hover:bg-[#ff8a00] hover:text-white transition-colors duration-300 rounded-md px-6 py-2.5 text-[14.5px] font-extrabold flex items-center gap-1.5">
-            Detailed List <ArrowUpRight className="h-[18px] w-[18px]" strokeWidth={2.5} />
-          </button>
+          <button
+  onClick={() => window.open("/content_allowed.pdf", "_blank")}
+  className="border-2 border-[#ff8a00] text-[#ff8a00] hover:bg-[#ff8a00] hover:text-white transition-colors duration-300 rounded-md px-6 py-2.5 text-[14.5px] font-extrabold flex items-center gap-1.5"
+>
+  Detailed List <ArrowUpRight className="h-[18px] w-[18px]" strokeWidth={2.5} />
+</button>
         </div>
 
       </div>

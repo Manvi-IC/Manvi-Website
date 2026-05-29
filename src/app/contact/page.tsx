@@ -148,19 +148,19 @@ export default function ContactPage() {
                 <div className="flex items-start sm:items-center gap-3">
                   <Mail className="w-4 h-4 text-[#f27a1a] mt-1 sm:mt-0 shrink-0" />
                   <div className="text-[14px] font-semibold text-gray-500">
-                    General Inquiries: <span className="text-[#f27a1a] font-bold">Info@manviinternational.Com</span>
+                    General Inquiries: <span className="text-[#f27a1a] font-bold">Info@manvicourier.com</span>
                   </div>
                 </div>
                 <div className="flex items-start sm:items-center gap-3">
                   <Mail className="w-4 h-4 text-[#f27a1a] mt-1 sm:mt-0 shrink-0" />
                   <div className="text-[14px] font-semibold text-gray-500">
-                    Business & Partnerships: <span className="text-[#f27a1a] font-bold">Sales@manviinternational.Com</span>
+                    Business & Partnerships: <span className="text-[#f27a1a] font-bold">Sales@manvicourier.com</span>
                   </div>
                 </div>
                 <div className="flex items-start sm:items-center gap-3">
                   <Mail className="w-4 h-4 text-[#f27a1a] mt-1 sm:mt-0 shrink-0" />
                   <div className="text-[14px] font-semibold text-gray-500">
-                    Claims & Refunds: <span className="text-[#f27a1a] font-bold">Info@Manviinternational.Com</span>
+                    Claims & Refunds: <span className="text-[#f27a1a] font-bold">Info@manvicourier.com</span>
                   </div>
                 </div>
               </div>
@@ -183,7 +183,7 @@ export default function ContactPage() {
               <div className="flex items-start gap-3 mt-2">
                 <MapPin className="w-4 h-4 text-[#f27a1a] mt-1 shrink-0" />
                 <div className="text-[14px] font-semibold text-gray-500 leading-relaxed">
-                  Address: <span className="text-[#f27a1a] font-bold">Manvi International, Second Floor, New Delhi, Delhi 1100, India</span>
+                  Address: <span className="text-[#f27a1a] font-bold">C-699, Palam Extension, Sector 7, Dwarka, New Delhi, 110077</span>
                 </div>
               </div>
             </div>
