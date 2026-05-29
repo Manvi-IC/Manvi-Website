@@ -111,6 +111,17 @@ export default function Header() {
               </Link>
 
               <Link
+                href="/quote"
+                className={`transition-colors ${
+                  pathname?.startsWith("/quote")
+                    ? "text-[#f27a1a]"
+                    : "hover:text-[#f27a1a]"
+                }`}
+              >
+                Get Quote
+              </Link>
+
+              <Link
                 href="/contact"
                 className={`transition-colors ${
                   pathname?.startsWith("/contact")
@@ -171,6 +182,13 @@ export default function Header() {
               className={`pb-2 border-b border-gray-100 ${pathname?.startsWith("/track") ? "text-[#f27a1a]" : ""}`}
             >
               Track Shipment
+            </Link>
+            <Link
+              href="/quote"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className={`pb-2 border-b border-gray-100 ${pathname?.startsWith("/quote") ? "text-[#f27a1a]" : ""}`}
+            >
+              Get Quote
             </Link>
             <Link
               href="/zipcode"
