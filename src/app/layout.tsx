@@ -19,7 +19,10 @@ const leagueSpartan = League_Spartan({
 });
 
 export const metadata: Metadata = {
-  title: "Manvi International Courier",
+  title: {
+    template: "%s | Manvi International Courier",
+    default: "Manvi International Courier",
+  },
   description: "Reliable and fast international courier & logistics services delivering worldwide including USA, Canada, UK, Europe, and Australia.",
 };
 
