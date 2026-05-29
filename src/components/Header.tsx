@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { Phone, ChevronDown, ChevronRight, X } from "lucide-react";
+import { Phone, ChevronDown, ChevronRight, X, Mail } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -13,9 +13,15 @@ export default function Header() {
       {/* Top utility bar */}
       <div className="bg-[#0b1220] text-zinc-400 text-[11px] font-medium py-2.5 px-4 sm:px-6 border-b border-white/5">
         <div className="max-w-425 mx-auto flex justify-between items-center">
-          <div className="flex items-center gap-2">
-            <Phone className="h-3 w-3 text-white" />
-            <span className="text-white/90">+91 7070-506070</span>
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2">
+              <Phone className="h-3 w-3 text-white" />
+              <span className="text-white/90">+91 7070-506070</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Mail className="h-3 w-3 text-white" />
+              <span className="text-white/90">Info@manvicourier.com</span>
+            </div>
           </div>
           <div className="hidden sm:flex items-center gap-6">
             <Link
