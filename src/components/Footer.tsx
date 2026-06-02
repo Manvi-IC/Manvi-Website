@@ -1,7 +1,11 @@
+"use client";
 import { Phone, Mail, MapPin } from "lucide-react";
 import Link from "next/link";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function Footer() {
+  const { t } = useLanguage();
+
   return (
     <footer className="bg-[#f27a1a] text-white pt-16 pb-8 px-6 font-sans rounded-t-2xl">
       <div className="max-w-425 mx-auto flex flex-col gap-10">
@@ -47,16 +51,16 @@ export default function Footer() {
               </div>
             </div>
             <p className="text-white/80 text-[13px] italic leading-relaxed max-w-sm">
-              Connecting Families, Bridging Distances
+              {t.footer_tagline}
             </p>
             <p className="text-white/70 text-[12px] leading-relaxed max-w-sm">
-              Trusted by 10,000+ happy customers and with over 50,000 successful international shipments, we deliver fast, secure, and seamless courier and freight solutions you can rely on.
+              {t.footer_desc}
             </p>
 
             {/* Social Icons */}
             <div className="flex items-center gap-4 mt-2">
               <span className="text-white/80 text-[13px] font-semibold">
-                Social Network
+                {t.footer_social}
               </span>
               <div className="flex gap-3">
                 {/* Facebook */}
@@ -89,19 +93,6 @@ export default function Footer() {
                     <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
                   </svg>
                 </a>
-                {/* Twitter */}
-                {/* <a
-                  href="#"
-                  className="text-white hover:text-white/70 transition-colors"
-                >
-                  <svg
-                    className="w-4 h-4"
-                    fill="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z" />
-                  </svg>
-                </a> */}
                 {/* Globe */}
                 <a
                   href="#"
@@ -127,40 +118,40 @@ export default function Footer() {
           <div className="md:col-span-3 flex flex-col gap-5">
             <div className="flex flex-col gap-3">
               <h3 className="text-[18px] font-extrabold text-white">
-                Quick Links
+                {t.footer_quick_links}
               </h3>
               <div className="w-full h-[1px] bg-white/30" />
             </div>
             <div className="flex flex-col gap-3 text-[14px] text-white/85 font-medium">
               <Link href="/" className="hover:text-white transition-colors">
-                Home
+                {t.nav_home}
               </Link>
               <Link
                 href="/about"
                 className="hover:text-white transition-colors"
               >
-                About Us
+                {t.nav_about}
               </Link>
               <Link
                 href="/services"
                 className="hover:text-white transition-colors"
               >
-                Services
+                {t.nav_services}
               </Link>
               <Link
                 href="/track"
                 className="hover:text-white transition-colors"
               >
-                Tracking
+                {t.nav_track_shipment}
               </Link>
               <Link
                 href="/quote"
                 className="hover:text-white transition-colors"
               >
-                Get Quote
+                {t.nav_quote}
               </Link>
               <Link href="/faq" className="hover:text-white transition-colors">
-                FAQ
+                {t.bc_faq}
               </Link>
             </div>
           </div>
@@ -169,7 +160,7 @@ export default function Footer() {
           <div className="md:col-span-4 flex flex-col gap-5">
             <div className="flex flex-col gap-3">
               <h3 className="text-[18px] font-extrabold text-white">
-                Office Info
+                {t.footer_office_info}
               </h3>
               <div className="w-full h-[1px] bg-white/30" />
             </div>
@@ -201,7 +192,7 @@ export default function Footer() {
         <div className="border-t border-white/20 pt-6 flex flex-col sm:flex-row items-center justify-center gap-8 text-[13px] text-white/80">
           <span>&copy; 2024</span>
           <span className="font-semibold">Manvi International Courier</span>
-          <span>All rights reserved.</span>
+          <span>{t.footer_rights}</span>
         </div>
       </div>
     </footer>

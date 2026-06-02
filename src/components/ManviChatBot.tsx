@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import { useLanguage, Language } from "@/context/LanguageContext";
 
 // ── Brand color ──────────────────────────────────────────────
 const BRAND = "#C76645";
@@ -12,36 +13,176 @@ interface Message {
   sender: "bot" | "user";
 }
 
-const QUICK_OPTIONS = [
-  "Track my package",
-  "Serviceable Zip codes",
-  "Refund Policies",
-  "Contact Us",
-  "Quick FAQ",
-];
-
-const BOT_RESPONSES: Record<string, string> = {
-  "Track my package":
-    "Please share your tracking number and I'll look it up for you right away! 📦",
-  "Serviceable Zip codes":
-    "We currently service 15,000+ zip codes across the country. Enter your zip code to check availability.",
-  "Refund Policies":
-    "Refunds are processed within 5–7 business days. Items must be returned in original condition. Need help with a specific order?",
-  "Contact Us":
-    "You can reach us at support@manvi.com or call 1-800-MANVI-00 (Mon–Sat, 9am–6pm).",
-  "Quick FAQ":
-    "Here are our top FAQs:\n• Delivery takes 3–7 days\n• Free shipping on orders ₹500+\n• Returns accepted within 30 days",
+const chatbotTranslations: Record<Language, {
+  welcome: string;
+  options: string[];
+  responses: Record<string, string>;
+  input_placeholder: string;
+  default_response: string;
+  send_fallback: string;
+  bot_title: string;
+  online: string;
+}> = {
+  en: {
+    bot_title: "Manvi Chat Bot",
+    online: "Online",
+    welcome: "Hi! How can I help you today?",
+    options: [
+      "Track my package",
+      "Serviceable Zip codes",
+      "Refund Policies",
+      "Contact Us",
+      "Quick FAQ",
+    ],
+    responses: {
+      "Track my package":
+        "Please share your tracking number and I'll look it up for you right away! 📦",
+      "Serviceable Zip codes":
+        "We currently service 15,000+ zip codes across the country. Enter your zip code to check availability.",
+      "Refund Policies":
+        "Refunds are processed within 5–7 business days. Items must be returned in original condition. Need help with a specific order?",
+      "Contact Us":
+        "You can reach us at support@manvi.com or call +91 7070-506070 (Mon–Sat, 9am–6pm).",
+      "Quick FAQ":
+        "Here are our top FAQs:\n• Delivery takes 3–7 days\n• Free shipping on orders ₹500+\n• Returns accepted within 30 days",
+    },
+    input_placeholder: "Type your query here...",
+    default_response: "Let me connect you with a specialist for that!",
+    send_fallback: "Thanks for your message! Our team will get back to you shortly.",
+  },
+  hi: {
+    bot_title: "मानवी चैट बॉट",
+    online: "ऑनलाइन",
+    welcome: "नमस्ते! आज मैं आपकी क्या सहायता कर सकता हूँ?",
+    options: [
+      "मेरा पैकेज ट्रैक करें",
+      "सेवा योग्य पिनकोड",
+      "रिफंड नीतियां",
+      "संपर्क करें",
+      "त्वरित प्रश्न",
+    ],
+    responses: {
+      "मेरा पैकेज ट्रैक करें":
+        "कृपया अपना ट्रैकिंग नंबर साझा करें और मैं इसे तुरंत खोजूँगा! 📦",
+      "सेवा योग्य पिनकोड":
+        "हम वर्तमान में देश भर में 15,000+ पिनकोड पर सेवा प्रदान करते हैं। उपलब्धता जांचने के लिए अपना पिनकोड दर्ज करें।",
+      "रिफंड नीतियां":
+        "रिफंड 5-7 कार्य दिवसों के भीतर संसाधित किए जाते हैं। सामान मूल स्थिति में लौटाया जाना चाहिए।",
+      "संपर्क करें":
+        "आप हमसे support@manvi.com पर संपर्क कर सकते हैं या +91 7070-506070 (सोम-शनि, सुबह 9 बजे से शाम 6 बजे तक) पर कॉल कर सकते हैं।",
+      "त्वरित प्रश्न":
+        "यहाँ हमारे मुख्य प्रश्न हैं:\n• डिलीवरी में 3-7 दिन लगते हैं\n• ₹500+ के ऑर्डर पर मुफ्त शिपिंग\n• 30 दिनों के भीतर रिटर्न स्वीकार्य है",
+    },
+    input_placeholder: "अपनी पूछताछ यहाँ लिखें...",
+    default_response: "मुझे इसके लिए आपको एक विशेषज्ञ से जोड़ने दें!",
+    send_fallback: "आपके संदेश के लिए धन्यवाद! हमारी टीम जल्द ही आपसे संपर्क करेगी।",
+  },
+  pa: {
+    bot_title: "ਮਾਨਵੀ ਚੈਟ ਬੋਟ",
+    online: "ਔਨਲਾਈਨ",
+    welcome: "ਸਤਿ ਸ੍ਰੀ ਅਕਾਲ! ਅੱਜ ਮੈਂ ਤੁਹਾਡੀ ਕੀ ਮਦਦ ਕਰ ਸਕਦਾ ਹਾਂ?",
+    options: [
+      "ਮੇਰਾ ਪੈਕੇਜ ਟ੍ਰੈਕ ਕਰੋ",
+      "ਸੇਵਾ ਯੋਗ ਪਿੰਨ ਕੋਡ",
+      "ਰਿਫੰਡ ਨੀਤੀਆਂ",
+      "ਸੰਪਰਕ ਕਰੋ",
+      "ਤੁਰੰਤ ਸਵਾਲ",
+    ],
+    responses: {
+      "ਮੇਰਾ ਪੈਕੇਜ ਟ੍ਰੈਕ ਕਰੋ":
+        "ਕਿਰਪਾ ਕਰਕੇ ਆਪਣਾ ਟ੍ਰੈਕਿੰਗ ਨੰਬਰ ਸਾਂਝਾ ਕਰੋ ਅਤੇ ਮੈਂ ਇਸਨੂੰ ਤੁਰੰਤ ਲੱਭਾਂਗਾ! 📦",
+      "ਸੇਵਾ ਯੋਗ ਪਿੰਨ ਕੋਡ":
+        "ਅਸੀਂ ਵਰਤਮਾਨ ਵਿੱਚ ਦੇਸ਼ ਭਰ ਵਿੱਚ 15,000+ ਪਿੰਨ ਕੋਡਾਂ ਦੀ ਸੇਵਾ ਕਰਦੇ ਹਾਂ। ਉਪਲਬਧਤਾ ਦੀ ਜਾਂਚ ਕਰਨ ਲਈ ਆਪਣਾ ਪਿੰਨ ਕੋਡ ਦਰਜ ਕਰੋ।",
+      "ਰਿਫੰਡ ਨੀਤੀਆਂ":
+        "ਰਿਫੰਡ 5-7 ਕਾਰੋਬਾਰੀ ਦਿਨਾਂ ਦੇ ਅੰਦਰ ਪ੍ਰੋਸੈਸ ਕੀਤੇ ਜਾਂਦੇ ਹਨ। ਚੀਜ਼ਾਂ ਅਸਲ ਸਥਿਤੀ ਵਿੱਚ ਵਾਪਸ ਕੀਤੀਆਂ ਜਾਣੀਆਂ ਚਾਹੀਦੀਆਂ ਹਨ।",
+      "ਸੰਪਰਕ ਕਰੋ":
+        "ਤੁਸੀਂ support@manvi.com 'ਤੇ ਸਾਡੇ ਤੱਕ ਪਹੁੰਚ ਸਕਦੇ ਹੋ ਜਾਂ +91 7070-506070 (ਸੋਮ-ਸ਼ਨੀ, ਸਵੇਰੇ 9 ਵਜੇ ਤੋਂ ਸ਼ਾਮ 6 ਵਜੇ ਤੱਕ) 'ਤੇ ਕਾਲ ਕਰ ਸਕਦੇ ਹੋ।",
+      "ਤੁਰੰਤ ਸਵਾਲ":
+        "ਇੱਥੇ ਸਾਡੇ ਮੁੱਖ ਸਵਾਲ ਹਨ:\n• ਡਿਲਿਵਰੀ ਲਈ 3-7 ਦਿਨ ਲੱਗਦੇ ਹਨ\n• ₹500+ ਦੇ ਆਰਡਰਾਂ 'ਤੇ ਮੁਫ਼ਤ ਸ਼ਿਪਿੰਗ\n• 30 ਦਿਨਾਂ ਦੇ ਅੰਦਰ ਵਾਪਸੀ ਸਵੀਕਾਰਯੋਗ ਹੈ",
+    },
+    input_placeholder: "ਆਪਣੀ ਪੁੱਛਗਿੱਛ ਇੱਥੇ ਲਿਖੋ...",
+    default_response: "ਮੈਨੂੰ ਇਸਦੇ ਲਈ ਤੁਹਾਨੂੰ ਇੱਕ ਮਾਹਰ ਨਾਲ ਜੋੜਨ ਦਿਓ!",
+    send_fallback: "ਤੁਹਾਡੇ ਸੰਦੇਸ਼ ਲਈ ਧੰਨਵਾਦ! ਸਾਡੀ ਟੀਮ ਜਲਦੀ ਹੀ ਤੁਹਾਡੇ ਨਾਲ ਸੰਪਰਕ ਕਰੇਗੀ।",
+  },
+  fr: {
+    bot_title: "Chat Bot Manvi",
+    online: "En ligne",
+    welcome: "Bonjour ! Comment puis-je vous aider aujourd'hui ?",
+    options: [
+      "Suivre mon colis",
+      "Codes postaux desservis",
+      "Politiques de remboursement",
+      "Contactez-nous",
+      "FAQ rapide",
+    ],
+    responses: {
+      "Suivre mon colis":
+        "Veuillez partager votre numéro de suivi et je le chercherai tout de suite ! 📦",
+      "Codes postaux desservis":
+        "Nous desservons actuellement plus de 15 000 codes postaux à travers le pays. Entrez votre code postal pour vérifier.",
+      "Politiques de remboursement":
+        "Les remboursements sont traités sous 5 à 7 jours ouvrables. Les articles doivent être retournés dans leur état d'origine.",
+      "Contactez-nous":
+        "Vous pouvez nous joindre à support@manvi.com ou appeler le +91 7070-506070 (Lun-Sam, 9h-18h).",
+      "FAQ rapide":
+        "Voici nos principales FAQ :\n• La livraison prend 3 à 7 jours\n• Livraison gratuite dès 500 ₹\n• Retours acceptés sous 30 jours",
+    },
+    input_placeholder: "Tapez votre requête ici...",
+    default_response: "Laissez-moi vous mettre en relation avec un spécialiste !",
+    send_fallback: "Merci pour votre message ! Notre équipe reviendra vers vous sous peu.",
+  },
+  es: {
+    bot_title: "Chat Bot de Manvi",
+    online: "En línea",
+    welcome: "¡Hola! ¿Cómo puedo ayudarte hoy?",
+    options: [
+      "Rastrear mi paquete",
+      "Códigos postales disponibles",
+      "Políticas de reembolso",
+      "Contáctanos",
+      "Preguntas frecuentes rápidas",
+    ],
+    responses: {
+      "Rastrear mi paquete":
+        "¡Por favor comparte tu número de seguimiento y lo buscaré de inmediato! 📦",
+      "Códigos postales disponibles":
+        "Actualmente servimos a más de 15,000 códigos postales en todo el país. Introduce tu código postal para verificar.",
+      "Políticas de reembolso":
+        "Los reembolsos se procesan dentro de 5 a 7 días hábiles. Los artículos deben devolverse en su estado original.",
+      "Contáctanos":
+        "Puedes escribirnos a support@manvi.com o llamar al +91 7070-506070 (Lun-Sáb, 9am-6pm).",
+      "Preguntas frecuentes rápidas":
+        "Aquí están nuestras principales preguntas frecuentes:\n• La entrega demora de 3 a 7 días\n• Envío gratis en pedidos de ₹500+\n• Se aceptan devoluciones dentro de los 30 días",
+    },
+    input_placeholder: "Escribe tu consulta aquí...",
+    default_response: "¡Permíteme conectarte con un especialista para eso!",
+    send_fallback: "¡Gracias por tu mensaje! Nuestro equipo se pondrá en contacto contigo pronto.",
+  },
 };
 
 export default function ManviChatBot() {
+  const { language } = useLanguage();
+  const lang: Language = language || "en";
+  const t = chatbotTranslations[lang] || chatbotTranslations.en;
+
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
-    { id: 0, text: "Hi! How can I help you today?", sender: "bot" },
+    { id: 0, text: t.welcome, sender: "bot" },
   ]);
   const [inputValue, setInputValue] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  // Sync initial message when language changes
+  useEffect(() => {
+    setMessages((prev) => {
+      if (prev.length === 1 && prev[0].id === 0) {
+        return [{ id: 0, text: t.welcome, sender: "bot" }];
+      }
+      return prev;
+    });
+  }, [lang, t.welcome]);
 
   useEffect(() => {
     if (isOpen) {
@@ -60,7 +201,7 @@ export default function ManviChatBot() {
     setTimeout(() => {
       setIsTyping(false);
       addMessage(
-        BOT_RESPONSES[option] ?? "Let me connect you with a specialist for that!",
+        t.responses[option] ?? t.default_response,
         "bot"
       );
     }, 900);
@@ -75,7 +216,7 @@ export default function ManviChatBot() {
     setTimeout(() => {
       setIsTyping(false);
       addMessage(
-        "Thanks for your message! Our team will get back to you shortly.",
+        t.send_fallback,
         "bot"
       );
     }, 1000);
@@ -133,7 +274,6 @@ export default function ManviChatBot() {
       {isOpen && (
         <div
           style={{
-            /* Exact spec: 400 × 468, border-radius 18px, padding 8px, gap 12px */
             position: "fixed",
             bottom: "24px",
             right: "24px",
@@ -142,7 +282,7 @@ export default function ManviChatBot() {
             height: "468px",
             borderRadius: "18px",
             padding: "8px",
-            gap: "12px",               /* gap between inner sections */
+            gap: "12px",
             display: "flex",
             flexDirection: "column",
             background: "#ffffff",
@@ -155,7 +295,7 @@ export default function ManviChatBot() {
           {/* ── Header ── */}
           <div
             style={{
-              borderRadius: "12px",          /* inner radius = outer - padding */
+              borderRadius: "12px",
               background: `linear-gradient(135deg, ${BRAND} 0%, ${BRAND_DARK} 100%)`,
               padding: "10px 14px",
               display: "flex",
@@ -181,11 +321,11 @@ export default function ManviChatBot() {
               </div>
               <div>
                 <p style={{ color: "white", fontWeight: 700, fontSize: "15px", margin: 0, lineHeight: 1.2 }}>
-                  Manvi Chat Bot
+                  {t.bot_title}
                 </p>
                 <span style={{ display: "flex", alignItems: "center", gap: "4px" }}>
                   <span style={{ width: "8px", height: "8px", borderRadius: "50%", background: "#86efac", display: "inline-block" }} />
-                  <span style={{ color: "rgba(255,255,255,0.8)", fontSize: "11px" }}>Online</span>
+                  <span style={{ color: "rgba(255,255,255,0.8)", fontSize: "11px" }}>{t.online}</span>
                 </span>
               </div>
             </div>
@@ -260,7 +400,7 @@ export default function ManviChatBot() {
             {/* Quick option chips */}
             {showQuickOptions && (
               <div style={{ display: "flex", flexWrap: "wrap", gap: "7px", paddingLeft: "34px", paddingTop: "2px" }}>
-                {QUICK_OPTIONS.map((opt) => (
+                {t.options.map((opt) => (
                   <button
                     key={opt}
                     onClick={() => handleQuickOption(opt)}
@@ -344,7 +484,7 @@ export default function ManviChatBot() {
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               onKeyDown={handleKeyDown}
-              placeholder="Type your query here..."
+              placeholder={t.input_placeholder}
               style={{
                 flex: 1, border: "none", outline: "none",
                 background: "transparent", fontSize: "13px",

@@ -1,0 +1,1140 @@
+"use client";
+import { createContext, useContext, useState, ReactNode } from "react";
+
+export type Language = "en" | "hi" | "pa" | "fr" | "es";
+
+export interface Translations {
+  // Header / Nav
+  nav_about: string;
+  nav_services: string;
+  nav_track: string;
+  nav_quote: string;
+  nav_contact: string;
+  nav_home: string;
+  nav_zipcode: string;
+  nav_language: string;
+  nav_track_shipment: string;
+
+  // Breadcrumb labels
+  bc_about: string;
+  bc_track: string;
+  bc_zipcode: string;
+  bc_contact: string;
+  bc_quote: string;
+  bc_faq: string;
+  bc_services: string;
+
+  // Hero
+  hero_headline: string;
+  hero_subtext: string;
+  hero_pickup: string;
+  hero_drop: string;
+  hero_weight: string;
+  hero_service: string;
+  hero_content: string;
+  hero_get_quote: string;
+  hero_estimated_cost: string;
+  hero_est_delivery: string;
+  hero_days: string;
+  hero_read_more: string;
+  hero_legacy_badge: string;
+  hero_legacy_heading: string;
+  hero_legacy_highlight: string;
+  hero_whatsapp: string;
+  hero_doc_express: string;
+  hero_parcel_shipping: string;
+  hero_cargo_express: string;
+  hero_serviceable_zipcodes: string;
+  hero_our_services: string;
+  hero_contact_us: string;
+
+  // Delivery Partners
+  partners_title: string;
+
+  // Bespoke
+  bespoke_badge: string;
+  bespoke_title: string;
+  bespoke_acc1_num: string;
+  bespoke_acc1_title: string;
+  bespoke_acc1_desc: string;
+  bespoke_acc1_card1_title: string;
+  bespoke_acc1_card1_desc: string;
+  bespoke_acc1_card2_title: string;
+  bespoke_acc1_card2_desc: string;
+  bespoke_acc1_card3_title: string;
+  bespoke_acc1_card3_desc: string;
+  bespoke_acc2_num: string;
+  bespoke_acc2_title: string;
+  bespoke_acc2_desc: string;
+  bespoke_acc2_card1_title: string;
+  bespoke_acc2_card1_desc: string;
+  bespoke_acc2_card2_title: string;
+  bespoke_acc2_card2_desc: string;
+  bespoke_acc2_card3_title: string;
+  bespoke_acc2_card3_desc: string;
+
+  // WhyWeLead
+  wwl_badge: string;
+  wwl_title: string;
+  wwl_card1_label: string;
+  wwl_card1_desc: string;
+  wwl_card2_label: string;
+  wwl_card2_stat: string;
+  wwl_card2_desc: string;
+  wwl_card3_label: string;
+  wwl_card3_stat: string;
+  wwl_card3_desc: string;
+  wwl_card4_label: string;
+  wwl_card4_stat: string;
+  wwl_card4_desc: string;
+
+  // ClaimPolicy
+  claim_badge: string;
+  claim_title: string;
+  claim_intro: string;
+  claim_tab1_title: string;
+  claim_tab1_subtext: string;
+  claim_tab1_panelTitle: string;
+  claim_tab1_d1_num: string;
+  claim_tab1_d1_title: string;
+  claim_tab1_d1_desc: string;
+  claim_tab1_d2_num: string;
+  claim_tab1_d2_title: string;
+  claim_tab1_d2_desc: string;
+  claim_tab1_d3_num: string;
+  claim_tab1_d3_title: string;
+  claim_tab1_d3_desc: string;
+  claim_tab2_title: string;
+  claim_tab2_subtext: string;
+  claim_tab2_panelTitle: string;
+  claim_tab2_d1_num: string;
+  claim_tab2_d1_title: string;
+  claim_tab2_d1_desc: string;
+  claim_tab2_d2_num: string;
+  claim_tab2_d2_title: string;
+  claim_tab2_d2_desc: string;
+  claim_tab2_d3_num: string;
+  claim_tab2_d3_title: string;
+  claim_tab2_d3_desc: string;
+  claim_tab3_title: string;
+  claim_tab3_subtext: string;
+  claim_tab3_panelTitle: string;
+  claim_tab4_title: string;
+  claim_tab4_subtext: string;
+  claim_tab4_panelTitle: string;
+  claim_tab4_d1_num: string;
+  claim_tab4_d1_title: string;
+  claim_tab4_d1_desc: string;
+  claim_tab4_d2_num: string;
+  claim_tab4_d2_title: string;
+  claim_tab4_d2_desc: string;
+
+  // NoCosts
+  nocost_badge: string;
+  nocost_title: string;
+  nocost_desc: string;
+  nocost_btn: string;
+
+  // Prohibited
+  prohibited_title: string;
+  prohibited_desc: string;
+  prohibited_item1: string;
+  prohibited_item2: string;
+  prohibited_item3: string;
+  prohibited_item4: string;
+  prohibited_item5: string;
+  prohibited_btn: string;
+
+  // FAQ
+  faq_badge: string;
+  faq_title: string;
+  faq_q1: string;
+  faq_a1: string;
+  faq_q2: string;
+  faq_a2: string;
+  faq_q3: string;
+  faq_a3: string;
+  faq_q4: string;
+  faq_a4: string;
+  faq_q5: string;
+  faq_a5: string;
+
+  // Contact
+  contact_badge: string;
+  contact_title: string;
+  contact_desc: string;
+  contact_call: string;
+  contact_whatsapp: string;
+  contact_info: string;
+
+  // Footer
+  footer_tagline: string;
+  footer_desc: string;
+  footer_social: string;
+  footer_quick_links: string;
+  footer_office_info: string;
+  footer_rights: string;
+}
+
+const translations: Record<Language, Translations> = {
+  en: {
+    nav_about: "About Us",
+    nav_services: "Services",
+    nav_track: "Track Now",
+    nav_quote: "Get Quote",
+    nav_contact: "Contact Us",
+    nav_home: "Home",
+    nav_zipcode: "Servicable Zipcode",
+    nav_language: "Language",
+    nav_track_shipment: "Track Shipment",
+    bc_about: "About Us",
+    bc_track: "Track Shipment",
+    bc_zipcode: "Serviceable Zipcode",
+    bc_contact: "Contact Us",
+    bc_quote: "Get a Quote",
+    bc_faq: "FAQ",
+    bc_services: "Services",
+    hero_headline: "CONNECTING CONTINENTS, DELIVERING TRUST.",
+    hero_subtext:
+      "Send documents, parcels, food items, gifts, or commercial shipments worldwide with confidence.",
+    hero_pickup: "Pick Up Location",
+    hero_drop: "Drop Location",
+    hero_weight: "Weight (Kg)",
+    hero_service: "Service",
+    hero_content: "Content",
+    hero_get_quote: "Get Quote",
+    hero_estimated_cost: "Estimated Cost",
+    hero_est_delivery: "Est. Delivery",
+    hero_days: "Days",
+    hero_read_more: "Read More",
+    hero_legacy_badge: "The Manvi Legacy",
+    hero_legacy_heading: "We Don't Just Move Parcels;",
+    hero_legacy_highlight: "We Bridge Distances.",
+    hero_whatsapp: "•Whatsapp Us •Whatsapp Us •",
+    hero_doc_express: "Document Express",
+    hero_parcel_shipping: "Parcel Shipping",
+    hero_cargo_express: "Cargo Express",
+    hero_serviceable_zipcodes: "Serviceable Zipcodes",
+    hero_our_services: "Our Services",
+    hero_contact_us: "Contact Us",
+    partners_title: "Our Delivery\nPartners ✈",
+    bespoke_badge: "Our Services",
+    bespoke_title: "Bespoke Shipping Solutions.",
+    bespoke_acc1_num: "01",
+    bespoke_acc1_title: "Global Personal Logistics",
+    bespoke_acc1_desc:
+      "Reliable logistics for individuals moving cargo or personal items worldwide.",
+    bespoke_acc1_card1_title: "Door-to-Door Delivery",
+    bespoke_acc1_card1_desc:
+      "Fast and secure package pickups directly from your doorstep.",
+    bespoke_acc1_card2_title: "Global Baggage Shipping",
+    bespoke_acc1_card2_desc:
+      "Moving your personal baggage across borders hassle-free.",
+    bespoke_acc1_card3_title: "Customs Clearance Support",
+    bespoke_acc1_card3_desc:
+      "Assistance with standard customs documentation for smooth arrivals.",
+    bespoke_acc2_num: "02",
+    bespoke_acc2_title: "Enterprise & Bulk Solutions",
+    bespoke_acc2_desc:
+      "Optimizing supply chains for businesses that demand precision.",
+    bespoke_acc2_card1_title: "Strategic Bulk Shipping",
+    bespoke_acc2_card1_desc:
+      "High-volume transit with optimized cost-structures.",
+    bespoke_acc2_card2_title: "Account Management",
+    bespoke_acc2_card2_desc:
+      "Dedicated experts to navigate your commercial logistics.",
+    bespoke_acc2_card3_title: "Seamless Integration",
+    bespoke_acc2_card3_desc:
+      "Regular pickups tailored to your business rhythm.",
+    wwl_badge: "The Manvi Advantage",
+    wwl_title: "Why We Lead",
+    wwl_card1_label: "Delivery Success",
+    wwl_card1_desc:
+      "Successful international deliveries completed with accuracy and care.",
+    wwl_card2_label: "Elite Partnerships",
+    wwl_card2_stat: "Multiple\nCountries",
+    wwl_card2_desc:
+      "Collaboration with world-class carriers including DHL, FedEx, and UPS.",
+    wwl_card3_label: "Customs Mastery",
+    wwl_card3_stat: "1000+",
+    wwl_card3_desc:
+      "Expert documentation support to navigate global borders effortlessly.",
+    wwl_card4_label: "Technological Edge",
+    wwl_card4_stat: "Real-Time\nUpdates",
+    wwl_card4_desc: "End-to-end, real-time tracking for total peace of mind.",
+    claim_badge: "Comprehensive Policies",
+    claim_title: "Our Refund And Loss Claim Policy",
+    claim_intro:
+      "Manvi International Is Committed To Providing Reliable International Logistics Services. However, In The Event Of Transit Irregularities, The Following Policy Outlines The Formal Procedures, Timelines, And Conditions For The Resolution Of Claims.",
+    claim_tab1_title: "General Claim Provisions",
+    claim_tab1_subtext:
+      "All Claims For Refunds Or Losses Must Undergo A Formal Investigation Process.",
+    claim_tab1_panelTitle:
+      "All Claims For Refunds Or Losses Must Undergo A Formal Investigation Process.",
+    claim_tab1_d1_num: "01",
+    claim_tab1_d1_title: "Mandatory Investigation Window",
+    claim_tab1_d1_desc:
+      "A minimum of 25 business days is required to process any claim.",
+    claim_tab1_d2_num: "02",
+    claim_tab1_d2_title: "Settlement Protocol",
+    claim_tab1_d2_desc:
+      'Under no circumstances will claims be settled "on the spot" or prior to the completion of the formal verification process.',
+    claim_tab1_d3_num: "03",
+    claim_tab1_d3_title: "Third-Party Dependency",
+    claim_tab1_d3_desc:
+      'As an international logistics provider, Manvi International\'s claim resolution is strictly contingent upon the official investigation reports and confirmation from our global courier partners, including but not limited to <strong class="font-extrabold text-[#1c1f2e]">DHL, FedEx, and UPS</strong>',
+    claim_tab2_title: "Return To Origin (RTO) Shipments",
+    claim_tab2_subtext:
+      "Returned Shipments For Non-Delivery, Incorrect Addresses, Or Refusal Qualify For Refunds.",
+    claim_tab2_panelTitle:
+      "Shipments That Are Returned To The Point Of Origin Due To Non-Delivery, Incorrect Address, Or Receiver Refusal Are Eligible For A Streamlined Refund Process.",
+    claim_tab2_d1_num: "01",
+    claim_tab2_d1_title: "Processing Timeline",
+    claim_tab2_d1_desc:
+      'Refunds for RTO shipments will be initiated within <strong class="font-extrabold text-[#1c1f2e]">2 to 3 working days</strong>',
+    claim_tab2_d2_num: "02",
+    claim_tab2_d2_title: "Verification Requirement",
+    claim_tab2_d2_desc:
+      "The processing window commences only after the physical receipt and successful verification of the shipment at our facility.",
+    claim_tab2_d3_num: "03",
+    claim_tab2_d3_title: "Condition",
+    claim_tab2_d3_desc:
+      "The shipment must be intact and meet the criteria for a return-based refund as per the initial service agreement.",
+    claim_tab3_title: "Claims For Lost, Damaged, Or Destroyed Shipments",
+    claim_tab3_subtext:
+      "Guidelines For Handling Lost, Damaged, Destroyed, Or Carrier-Delayed Shipments.",
+    claim_tab3_panelTitle:
+      "In The Event Of A Shipment Being Lost, Damaged, Destroyed, Or Significantly Delayed Due To Carrier-Related Issues, The Following Protocols Apply:",
+    claim_tab4_title: "General Claim Provisions",
+    claim_tab4_subtext: "When Manvi International Is Not Responsible",
+    claim_tab4_panelTitle:
+      "In Some Cases, Delays Or Losses May Occur Due To Factors Outside Our Control. These Conditions Are Explained Below.",
+    claim_tab4_d1_num: "01",
+    claim_tab4_d1_title: "Force Majeure",
+    claim_tab4_d1_desc:
+      "Manvi International is not liable for delays or losses caused by circumstances beyond our control, including but not limited to customs seizures, weather disruptions, or political instability.",
+    claim_tab4_d2_num: "02",
+    claim_tab4_d2_title: "Carrier Confirmation",
+    claim_tab4_d2_desc:
+      'No claim for loss or destruction will be approved until the respective carrier (DHL, FedEx, or UPS) officially declares the shipment as "Lost" or "Damaged" in their global tracking system.',
+    nocost_badge: "Pricing & Transparency",
+    nocost_title:
+      "No Hidden Costs. No Surprises.\nJust Straightforward Logistics.",
+    nocost_desc:
+      "We Believe In Value-Based Pricing. Our Rates Are Carefully Calculated Based On Destination, Shipment Weight, And Delivery Urgency—So You Only Pay For What Truly Matters. No Hidden Fees, No Surprise Surcharges, And No Unnecessary Overheads. Just Transparent Pricing Built Around Performance, Reliability, And Efficiency.",
+    nocost_btn: "Request Rates",
+    prohibited_title: "Prohibited Goods",
+    prohibited_desc:
+      "To Maintain The Integrity Of Our Network, We Do Not Transport:",
+    prohibited_item1: "Hazardous chemicals",
+    prohibited_item2: "Negotiable currency",
+    prohibited_item3: "dangerous goods",
+    prohibited_item4: "precious stones",
+    prohibited_item5: "Illegal or restricted contraband",
+    prohibited_btn: "Detailed List",
+    faq_badge: "FAQ",
+    faq_title: "Questions? Glad You Asked",
+    faq_q1: "Where Can I Send My Packages?",
+    faq_a1:
+      "Almost anywhere! We have a strong presence in the USA, Canada, UK, Europe, and Australia. Whether it's a big city or a quiet suburb, we'll get it there.",
+    faq_q2: "How Do I Know I'm Getting A Fair Price?",
+    faq_a2:
+      "We believe in value. Your quote is based on exactly what you need—considering weight, destination, and how fast you need it delivered. We promise no hidden surprises when it's time to pay.",
+    faq_q3: "Can I See Where My Package Is Right Now?",
+    faq_a3:
+      "Yes! The moment you ship with us, you'll get a unique tracking number. You can watch your package's journey in real-time, giving you total confidence.",
+    faq_q4: "What Happens If There Is A Delay Or A Problem?",
+    faq_a4:
+      "We know your shipments are important. If something goes wrong, we are here to help. To ensure a fair and thorough resolution, our team and our global partners (like DHL, FedEx, and UPS) conduct a detailed investigation.",
+    faq_q5: "Is There Anything I Cannot Ship?",
+    faq_a5:
+      "To keep everyone safe and follow international laws, we cannot ship hazardous chemicals, currency, precious stones, or illegal items. If you aren't sure about an item, just give us a call! We're happy to check for you before you book.",
+    contact_badge: "Get In Touch",
+    contact_title: "We're Here For You",
+    contact_desc:
+      "We believe in value. Your quote is based on exactly what you need—considering weight, destination, and how fast you need it delivered. We promise no hidden surprises when it's time to pay.",
+    contact_call: "Call Us",
+    contact_whatsapp: "Whatsapp Us",
+    contact_info: "Contact Info",
+    footer_tagline: "Connecting Families, Bridging Distances",
+    footer_desc:
+      "Trusted by 10,000+ happy customers and with over 50,000 successful international shipments, we deliver fast, secure, and seamless courier and freight solutions you can rely on.",
+    footer_social: "Social Network",
+    footer_quick_links: "Quick Links",
+    footer_office_info: "Office Info",
+    footer_rights: "All rights reserved.",
+  },
+
+  hi: {
+    nav_about: "हमारे बारे में",
+    nav_services: "सेवाएं",
+    nav_track: "अभी ट्रैक करें",
+    nav_quote: "कोटेशन लें",
+    nav_contact: "संपर्क करें",
+    nav_home: "होम",
+    nav_zipcode: "सेवा योग्य पिनकोड",
+    nav_language: "भाषा",
+    nav_track_shipment: "शिपमेंट ट्रैक करें",
+    bc_about: "हमारे बारे में",
+    bc_track: "शिपमेंट ट्रैक करें",
+    bc_zipcode: "सेवा योग्य पिनकोड",
+    bc_contact: "संपर्क करें",
+    bc_quote: "कोटेशन लें",
+    bc_faq: "सामान्य प्रश्न",
+    bc_services: "सेवाएं",
+    hero_headline: "महाद्वीपों को जोड़ना, विश्वास पहुंचाना।",
+    hero_subtext:
+      "दुनिया भर में दस्तावेज़, पार्सल, खाद्य सामग्री, उपहार या वाणिज्यिक शिपमेंट आत्मविश्वास के साथ भेजें।",
+    hero_pickup: "पिकअप स्थान",
+    hero_drop: "डिलीवरी स्थान",
+    hero_weight: "वजन (किग्रा)",
+    hero_service: "सेवा",
+    hero_content: "सामग्री",
+    hero_get_quote: "कोटेशन लें",
+    hero_estimated_cost: "अनुमानित लागत",
+    hero_est_delivery: "अनुमानित डिलीवरी",
+    hero_days: "दिन",
+    hero_read_more: "और पढ़ें",
+    hero_legacy_badge: "मानवी विरासत",
+    hero_legacy_heading: "हम सिर्फ पार्सल नहीं भेजते;",
+    hero_legacy_highlight: "हम दूरियां मिटाते हैं।",
+    hero_whatsapp: "•व्हाट्सएप करें •व्हाट्सएप करें •",
+    hero_doc_express: "दस्तावेज़ एक्सप्रेस",
+    hero_parcel_shipping: "पार्सल शिपिंग",
+    hero_cargo_express: "कार्गो एक्सप्रेस",
+    hero_serviceable_zipcodes: "सेवा योग्य पिनकोड",
+    hero_our_services: "हमारी सेवाएं",
+    hero_contact_us: "संपर्क करें",
+    partners_title: "हमारे डिलीवरी\nसाझेदार ✈",
+    bespoke_badge: "हमारी सेवाएं",
+    bespoke_title: "विशेष शिपिंग समाधान।",
+    bespoke_acc1_num: "01",
+    bespoke_acc1_title: "वैश्विक व्यक्तिगत लॉजिस्टिक्स",
+    bespoke_acc1_desc:
+      "दुनिया भर में व्यक्तिगत सामान ले जाने वाले व्यक्तियों के लिए विश्वसनीय लॉजिस्टिक्स।",
+    bespoke_acc1_card1_title: "डोर-टू-डोर डिलीवरी",
+    bespoke_acc1_card1_desc:
+      "सीधे आपके दरवाज़े से तेज़ और सुरक्षित पार्सल पिकअप।",
+    bespoke_acc1_card2_title: "वैश्विक सामान शिपिंग",
+    bespoke_acc1_card2_desc:
+      "सीमाओं के पार आपका निजी सामान बिना किसी परेशानी के ले जाना।",
+    bespoke_acc1_card3_title: "कस्टम क्लीयरेंस सहायता",
+    bespoke_acc1_card3_desc:
+      "सुगम आगमन के लिए मानक कस्टम दस्तावेज़ीकरण में सहायता।",
+    bespoke_acc2_num: "02",
+    bespoke_acc2_title: "एंटरप्राइज़ और बल्क समाधान",
+    bespoke_acc2_desc:
+      "सटीकता की मांग करने वाले व्यवसायों के लिए आपूर्ति श्रृंखला का अनुकूलन।",
+    bespoke_acc2_card1_title: "रणनीतिक बल्क शिपिंग",
+    bespoke_acc2_card1_desc:
+      "अनुकूलित लागत संरचनाओं के साथ उच्च-मात्रा पारगमन।",
+    bespoke_acc2_card2_title: "खाता प्रबंधन",
+    bespoke_acc2_card2_desc:
+      "आपकी वाणिज्यिक लॉजिस्टिक्स को संभालने के लिए समर्पित विशेषज्ञ।",
+    bespoke_acc2_card3_title: "निर्बाध एकीकरण",
+    bespoke_acc2_card3_desc: "आपके व्यवसाय की लय के अनुसार नियमित पिकअप।",
+    wwl_badge: "मानवी का लाभ",
+    wwl_title: "हम क्यों आगे हैं",
+    wwl_card1_label: "डिलीवरी सफलता",
+    wwl_card1_desc: "सटीकता और देखभाल के साथ सफल अंतर्राष्ट्रीय डिलीवरी।",
+    wwl_card2_label: "श्रेष्ठ साझेदारी",
+    wwl_card2_stat: "कई\nदेश",
+    wwl_card2_desc: "DHL, FedEx और UPS सहित विश्व स्तरीय वाहकों के साथ सहयोग।",
+    wwl_card3_label: "कस्टम महारत",
+    wwl_card3_stat: "1000+",
+    wwl_card3_desc:
+      "वैश्विक सीमाओं को आसानी से पार करने के लिए विशेषज्ञ दस्तावेज़ सहायता।",
+    wwl_card4_label: "तकनीकी बढ़त",
+    wwl_card4_stat: "रियल-टाइम\nअपडेट",
+    wwl_card4_desc: "पूर्ण मन की शांति के लिए एंड-टू-एंड, रियल-टाइम ट्रैकिंग।",
+    claim_badge: "व्यापक नीतियां",
+    claim_title: "हमारी धनवापसी और हानि दावा नीति",
+    claim_intro:
+      "मानवी इंटरनेशनल विश्वसनीय अंतर्राष्ट्रीय लॉजिस्टिक्स सेवाएं प्रदान करने के लिए प्रतिबद्ध है। हालांकि, पारगमन अनियमितताओं की स्थिति में, निम्नलिखित नीति दावों के समाधान के लिए औपचारिक प्रक्रियाओं, समयसीमाओं और शर्तों को रेखांकित करती है।",
+    claim_tab1_title: "सामान्य दावा प्रावधान",
+    claim_tab1_subtext:
+      "धनवापसी या हानि के सभी दावों को औपचारिक जांच प्रक्रिया से गुजरना होगा।",
+    claim_tab1_panelTitle:
+      "धनवापसी या हानि के सभी दावों को औपचारिक जांच प्रक्रिया से गुजरना होगा।",
+    claim_tab1_d1_num: "01",
+    claim_tab1_d1_title: "अनिवार्य जांच विंडो",
+    claim_tab1_d1_desc:
+      "किसी भी दावे को प्रोसेस करने के लिए न्यूनतम 25 कार्यदिवस आवश्यक हैं।",
+    claim_tab1_d2_num: "02",
+    claim_tab1_d2_title: "निपटान प्रोटोकॉल",
+    claim_tab1_d2_desc:
+      'किसी भी परिस्थिति में दावों का निपटारा "तत्काल" या औपचारिक सत्यापन प्रक्रिया पूरी होने से पहले नहीं किया जाएगा।',
+    claim_tab1_d3_num: "03",
+    claim_tab1_d3_title: "तृतीय-पक्ष निर्भरता",
+    claim_tab1_d3_desc:
+      'एक अंतर्राष्ट्रीय लॉजिस्टिक्स प्रदाता के रूप में, मानवी इंटरनेशनल का दावा समाधान हमारे वैश्विक कूरियर साझेदारों की आधिकारिक जांच रिपोर्ट पर निर्भर है, जिसमें <strong class="font-extrabold text-[#1c1f2e]">DHL, FedEx और UPS</strong> शामिल हैं।',
+    claim_tab2_title: "मूल स्थान पर वापसी (RTO) शिपमेंट",
+    claim_tab2_subtext:
+      "गैर-डिलीवरी, गलत पते या इनकार के लिए वापस किए गए शिपमेंट धनवापसी के योग्य हैं।",
+    claim_tab2_panelTitle:
+      "गैर-डिलीवरी, गलत पते या प्राप्तकर्ता के इनकार के कारण मूल स्थान पर वापस किए गए शिपमेंट सुव्यवस्थित धनवापसी प्रक्रिया के लिए पात्र हैं।",
+    claim_tab2_d1_num: "01",
+    claim_tab2_d1_title: "प्रोसेसिंग समयसीमा",
+    claim_tab2_d1_desc:
+      'RTO शिपमेंट के लिए धनवापसी <strong class="font-extrabold text-[#1c1f2e]">2 से 3 कार्यदिवसों</strong> के भीतर शुरू की जाएगी।',
+    claim_tab2_d2_num: "02",
+    claim_tab2_d2_title: "सत्यापन आवश्यकता",
+    claim_tab2_d2_desc:
+      "प्रोसेसिंग विंडो हमारी सुविधा पर शिपमेंट की भौतिक प्राप्ति और सफल सत्यापन के बाद ही शुरू होती है।",
+    claim_tab2_d3_num: "03",
+    claim_tab2_d3_title: "शर्त",
+    claim_tab2_d3_desc:
+      "शिपमेंट अक्षुण्ण होनी चाहिए और प्रारंभिक सेवा समझौते के अनुसार वापसी-आधारित धनवापसी के मानदंडों को पूरा करना चाहिए।",
+    claim_tab3_title: "खोए, क्षतिग्रस्त या नष्ट शिपमेंट के दावे",
+    claim_tab3_subtext:
+      "खोए, क्षतिग्रस्त, नष्ट या वाहक द्वारा विलंबित शिपमेंट को संभालने के दिशानिर्देश।",
+    claim_tab3_panelTitle:
+      "शिपमेंट के खो जाने, क्षतिग्रस्त होने, नष्ट होने या वाहक संबंधी मुद्दों के कारण महत्वपूर्ण विलंब की स्थिति में, निम्नलिखित प्रोटोकॉल लागू होते हैं:",
+    claim_tab4_title: "सामान्य दावा प्रावधान",
+    claim_tab4_subtext: "जब मानवी इंटरनेशनल जिम्मेदार नहीं है",
+    claim_tab4_panelTitle:
+      "कुछ मामलों में, हमारे नियंत्रण से बाहर के कारकों के कारण देरी या हानि हो सकती है। इन शर्तों को नीचे समझाया गया है।",
+    claim_tab4_d1_num: "01",
+    claim_tab4_d1_title: "फोर्स मेजर",
+    claim_tab4_d1_desc:
+      "मानवी इंटरनेशनल हमारे नियंत्रण से परे परिस्थितियों के कारण होने वाली देरी या हानि के लिए उत्तरदायी नहीं है, जिसमें कस्टम जब्ती, मौसम व्यवधान या राजनीतिक अस्थिरता शामिल है।",
+    claim_tab4_d2_num: "02",
+    claim_tab4_d2_title: "वाहक पुष्टि",
+    claim_tab4_d2_desc:
+      'हानि या विनाश के लिए कोई भी दावा तब तक स्वीकृत नहीं किया जाएगा जब तक संबंधित वाहक (DHL, FedEx या UPS) शिपमेंट को अपने वैश्विक ट्रैकिंग सिस्टम में आधिकारिक रूप से "खोया" या "क्षतिग्रस्त" घोषित न कर दे।',
+    nocost_badge: "मूल्य निर्धारण और पारदर्शिता",
+    nocost_title: "कोई छिपी लागत नहीं। कोई आश्चर्य नहीं।\nबस सीधा लॉजिस्टिक्स।",
+    nocost_desc:
+      "हम मूल्य-आधारित मूल्य निर्धारण में विश्वास रखते हैं। हमारी दरें गंतव्य, शिपमेंट वजन और डिलीवरी की तात्कालिकता के आधार पर सावधानीपूर्वक गणना की जाती हैं—इसलिए आप केवल वही भुगतान करते हैं जो वास्तव में मायने रखता है। कोई छिपा शुल्क नहीं, कोई आश्चर्यजनक अधिभार नहीं, और कोई अनावश्यक ओवरहेड नहीं। प्रदर्शन, विश्वसनीयता और दक्षता के आसपास पारदर्शी मूल्य निर्धारण।",
+    nocost_btn: "दरें अनुरोध करें",
+    prohibited_title: "प्रतिबंधित सामान",
+    prohibited_desc:
+      "हमारे नेटवर्क की अखंडता बनाए रखने के लिए, हम परिवहन नहीं करते:",
+    prohibited_item1: "खतरनाक रसायन",
+    prohibited_item2: "परक्राम्य मुद्रा",
+    prohibited_item3: "खतरनाक सामान",
+    prohibited_item4: "कीमती पत्थर",
+    prohibited_item5: "अवैध या प्रतिबंधित माल",
+    prohibited_btn: "विस्तृत सूची",
+    faq_badge: "सामान्य प्रश्न",
+    faq_title: "प्रश्न? हमें खुशी है कि आपने पूछा",
+    faq_q1: "मैं अपने पैकेज कहाँ भेज सकता हूँ?",
+    faq_a1:
+      "लगभग कहीं भी! USA, कनाडा, UK, यूरोप और ऑस्ट्रेलिया में हमारी मजबूत उपस्थिति है। चाहे बड़ा शहर हो या शांत उपनगर, हम इसे वहां पहुंचाएंगे।",
+    faq_q2: "मुझे कैसे पता चलेगा कि मुझे उचित मूल्य मिल रहा है?",
+    faq_a2:
+      "हम मूल्य में विश्वास करते हैं। आपका कोटेशन वजन, गंतव्य और डिलीवरी की गति के आधार पर बिल्कुल उस पर आधारित है जो आपको चाहिए। हम भुगतान के समय कोई छिपा आश्चर्य नहीं का वादा करते हैं।",
+    faq_q3: "क्या मैं अभी देख सकता हूँ कि मेरा पैकेज कहाँ है?",
+    faq_a3:
+      "हाँ! जैसे ही आप हमारे साथ शिप करते हैं, आपको एक अनूठा ट्रैकिंग नंबर मिलेगा। आप रियल-टाइम में अपने पैकेज की यात्रा देख सकते हैं, जिससे आपको पूरा आत्मविश्वास मिलता है।",
+    faq_q4: "यदि कोई देरी या समस्या हो तो क्या होगा?",
+    faq_a4:
+      "हम जानते हैं कि आपके शिपमेंट महत्वपूर्ण हैं। यदि कुछ गलत होता है, तो हम यहाँ मदद के लिए हैं। उचित और संपूर्ण समाधान सुनिश्चित करने के लिए, हमारी टीम और हमारे वैश्विक साझेदार (जैसे DHL, FedEx और UPS) एक विस्तृत जांच करते हैं।",
+    faq_q5: "क्या कुछ ऐसा है जो मैं शिप नहीं कर सकता?",
+    faq_a5:
+      "सभी को सुरक्षित रखने और अंतर्राष्ट्रीय कानूनों का पालन करने के लिए, हम खतरनाक रसायन, मुद्रा, कीमती पत्थर या अवैध वस्तुएं शिप नहीं कर सकते। यदि आप किसी वस्तु के बारे में सुनिश्चित नहीं हैं, तो बस हमें कॉल करें! हम बुकिंग से पहले आपके लिए जांचने में खुश हैं।",
+    contact_badge: "संपर्क करें",
+    contact_title: "हम आपके लिए यहाँ हैं",
+    contact_desc:
+      "हम मूल्य में विश्वास करते हैं। आपका कोटेशन वजन, गंतव्य और डिलीवरी की गति के आधार पर बिल्कुल उस पर आधारित है जो आपको चाहिए। हम भुगतान के समय कोई छिपा आश्चर्य नहीं का वादा करते हैं।",
+    contact_call: "हमें कॉल करें",
+    contact_whatsapp: "व्हाट्सएप करें",
+    contact_info: "संपर्क जानकारी",
+    footer_tagline: "परिवारों को जोड़ना, दूरियां मिटाना",
+    footer_desc:
+      "10,000+ खुश ग्राहकों द्वारा भरोसेमंद और 50,000 से अधिक सफल अंतर्राष्ट्रीय शिपमेंट के साथ, हम तेज़, सुरक्षित और निर्बाध कूरियर और माल समाधान प्रदान करते हैं।",
+    footer_social: "सोशल नेटवर्क",
+    footer_quick_links: "त्वरित लिंक",
+    footer_office_info: "कार्यालय जानकारी",
+    footer_rights: "सर्वाधिकार सुरक्षित।",
+  },
+
+  pa: {
+    nav_about: "ਸਾਡੇ ਬਾਰੇ",
+    nav_services: "ਸੇਵਾਵਾਂ",
+    nav_track: "ਹੁਣੇ ਟਰੈਕ ਕਰੋ",
+    nav_quote: "ਕੋਟੇਸ਼ਨ ਲਓ",
+    nav_contact: "ਸੰਪਰਕ ਕਰੋ",
+    nav_home: "ਹੋਮ",
+    nav_zipcode: "ਸੇਵਾ ਯੋਗ ਪਿੰਨਕੋਡ",
+    nav_language: "ਭਾਸ਼ਾ",
+    nav_track_shipment: "ਸ਼ਿਪਮੈਂਟ ਟਰੈਕ ਕਰੋ",
+    bc_about: "ਸਾਡੇ ਬਾਰੇ",
+    bc_track: "ਸ਼ਿਪਮੈਂਟ ਟਰੈਕ ਕਰੋ",
+    bc_zipcode: "ਸੇਵਾ ਯੋਗ ਪਿੰਨਕੋਡ",
+    bc_contact: "ਸੰਪਰਕ ਕਰੋ",
+    bc_quote: "ਕੋਟੇਸ਼ਨ ਲਓ",
+    bc_faq: "ਅਕਸਰ ਪੁੱਛੇ ਜਾਂਦੇ ਸਵਾਲ",
+    bc_services: "ਸੇਵਾਵਾਂ",
+    hero_headline: "ਮਹਾਂਦੀਪਾਂ ਨੂੰ ਜੋੜਨਾ, ਭਰੋਸਾ ਪਹੁੰਚਾਉਣਾ।",
+    hero_subtext:
+      "ਦਸਤਾਵੇਜ਼, ਪਾਰਸਲ, ਖਾਣ-ਪੀਣ ਦਾ ਸਾਮਾਨ, ਤੋਹਫ਼ੇ ਜਾਂ ਵਪਾਰਕ ਸ਼ਿਪਮੈਂਟ ਵਿਸ਼ਵਾਸ ਨਾਲ ਭੇਜੋ।",
+    hero_pickup: "ਪਿਕਅੱਪ ਸਥਾਨ",
+    hero_drop: "ਡਿਲੀਵਰੀ ਸਥਾਨ",
+    hero_weight: "ਭਾਰ (ਕਿਲੋ)",
+    hero_service: "ਸੇਵਾ",
+    hero_content: "ਸਮੱਗਰੀ",
+    hero_get_quote: "ਕੋਟੇਸ਼ਨ ਲਓ",
+    hero_estimated_cost: "ਅਨੁਮਾਨਿਤ ਲਾਗਤ",
+    hero_est_delivery: "ਅਨੁਮਾਨਿਤ ਡਿਲੀਵਰੀ",
+    hero_days: "ਦਿਨ",
+    hero_read_more: "ਹੋਰ ਪੜ੍ਹੋ",
+    hero_legacy_badge: "ਮਾਨਵੀ ਵਿਰਾਸਤ",
+    hero_legacy_heading: "ਅਸੀਂ ਸਿਰਫ਼ ਪਾਰਸਲ ਨਹੀਂ ਭੇਜਦੇ;",
+    hero_legacy_highlight: "ਅਸੀਂ ਦੂਰੀਆਂ ਮਿਟਾਉਂਦੇ ਹਾਂ।",
+    hero_whatsapp: "•ਵਟਸਐਪ ਕਰੋ •ਵਟਸਐਪ ਕਰੋ •",
+    hero_doc_express: "ਦਸਤਾਵੇਜ਼ ਐਕਸਪ੍ਰੈਸ",
+    hero_parcel_shipping: "ਪਾਰਸਲ ਸ਼ਿਪਿੰਗ",
+    hero_cargo_express: "ਕਾਰਗੋ ਐਕਸਪ੍ਰੈਸ",
+    hero_serviceable_zipcodes: "ਸੇਵਾ ਯੋਗ ਪਿੰਨਕੋਡ",
+    hero_our_services: "ਸਾਡੀਆਂ ਸੇਵਾਵਾਂ",
+    hero_contact_us: "ਸੰਪਰਕ ਕਰੋ",
+    partners_title: "ਸਾਡੇ ਡਿਲੀਵਰੀ\nਸਾਂਝੇਦਾਰ ✈",
+    bespoke_badge: "ਸਾਡੀਆਂ ਸੇਵਾਵਾਂ",
+    bespoke_title: "ਵਿਸ਼ੇਸ਼ ਸ਼ਿਪਿੰਗ ਹੱਲ।",
+    bespoke_acc1_num: "01",
+    bespoke_acc1_title: "ਵਿਸ਼ਵਵਿਆਪੀ ਨਿੱਜੀ ਲੌਜਿਸਟਿਕਸ",
+    bespoke_acc1_desc:
+      "ਵਿਸ਼ਵ ਭਰ ਵਿੱਚ ਨਿੱਜੀ ਸਾਮਾਨ ਲਿਜਾਣ ਵਾਲੇ ਵਿਅਕਤੀਆਂ ਲਈ ਭਰੋਸੇਯੋਗ ਲੌਜਿਸਟਿਕਸ।",
+    bespoke_acc1_card1_title: "ਦਰਵਾਜ਼ੇ ਤੋਂ ਦਰਵਾਜ਼ੇ ਡਿਲੀਵਰੀ",
+    bespoke_acc1_card1_desc:
+      "ਸਿੱਧੇ ਤੁਹਾਡੇ ਦਰਵਾਜ਼ੇ ਤੋਂ ਤੇਜ਼ ਅਤੇ ਸੁਰੱਖਿਅਤ ਪਾਰਸਲ ਪਿਕਅੱਪ।",
+    bespoke_acc1_card2_title: "ਵਿਸ਼ਵ ਸਾਮਾਨ ਸ਼ਿਪਿੰਗ",
+    bespoke_acc1_card2_desc:
+      "ਸਰਹੱਦਾਂ ਪਾਰ ਤੁਹਾਡਾ ਨਿੱਜੀ ਸਾਮਾਨ ਬਿਨਾਂ ਕਿਸੇ ਪਰੇਸ਼ਾਨੀ ਦੇ।",
+    bespoke_acc1_card3_title: "ਕਸਟਮ ਕਲੀਅਰੈਂਸ ਸਹਾਇਤਾ",
+    bespoke_acc1_card3_desc:
+      "ਸੁਚਾਰੂ ਆਗਮਨ ਲਈ ਮਿਆਰੀ ਕਸਟਮ ਦਸਤਾਵੇਜ਼ੀਕਰਨ ਵਿੱਚ ਸਹਾਇਤਾ।",
+    bespoke_acc2_num: "02",
+    bespoke_acc2_title: "ਐਂਟਰਪ੍ਰਾਈਜ਼ ਅਤੇ ਬਲਕ ਹੱਲ",
+    bespoke_acc2_desc:
+      "ਸਟੀਕਤਾ ਦੀ ਮੰਗ ਕਰਨ ਵਾਲੇ ਕਾਰੋਬਾਰਾਂ ਲਈ ਸਪਲਾਈ ਚੇਨ ਨੂੰ ਅਨੁਕੂਲਿਤ ਕਰਨਾ।",
+    bespoke_acc2_card1_title: "ਰਣਨੀਤਕ ਬਲਕ ਸ਼ਿਪਿੰਗ",
+    bespoke_acc2_card1_desc: "ਅਨੁਕੂਲਿਤ ਲਾਗਤ ਢਾਂਚਿਆਂ ਨਾਲ ਵੱਡੇ ਪੱਧਰ ਦੀ ਆਵਾਜਾਈ।",
+    bespoke_acc2_card2_title: "ਖਾਤਾ ਪ੍ਰਬੰਧਨ",
+    bespoke_acc2_card2_desc:
+      "ਤੁਹਾਡੀ ਵਪਾਰਕ ਲੌਜਿਸਟਿਕਸ ਨੂੰ ਸੰਭਾਲਣ ਲਈ ਸਮਰਪਿਤ ਮਾਹਰ।",
+    bespoke_acc2_card3_title: "ਨਿਰਵਿਘਨ ਏਕੀਕਰਨ",
+    bespoke_acc2_card3_desc: "ਤੁਹਾਡੀ ਕਾਰੋਬਾਰੀ ਤਾਲ ਅਨੁਸਾਰ ਨਿਯਮਿਤ ਪਿਕਅੱਪ।",
+    wwl_badge: "ਮਾਨਵੀ ਦਾ ਫ਼ਾਇਦਾ",
+    wwl_title: "ਅਸੀਂ ਕਿਉਂ ਅਗਵਾਈ ਕਰਦੇ ਹਾਂ",
+    wwl_card1_label: "ਡਿਲੀਵਰੀ ਸਫਲਤਾ",
+    wwl_card1_desc: "ਸ਼ੁੱਧਤਾ ਅਤੇ ਦੇਖਭਾਲ ਨਾਲ ਸਫਲ ਅੰਤਰਰਾਸ਼ਟਰੀ ਡਿਲੀਵਰੀ।",
+    wwl_card2_label: "ਉੱਤਮ ਸਾਂਝੇਦਾਰੀ",
+    wwl_card2_stat: "ਕਈ\nਦੇਸ਼",
+    wwl_card2_desc: "DHL, FedEx ਅਤੇ UPS ਸਮੇਤ ਵਿਸ਼ਵ ਪੱਧਰੀ ਕੈਰੀਅਰਾਂ ਨਾਲ ਸਹਿਯੋਗ।",
+    wwl_card3_label: "ਕਸਟਮ ਮੁਹਾਰਤ",
+    wwl_card3_stat: "1000+",
+    wwl_card3_desc:
+      "ਵਿਸ਼ਵ ਸਰਹੱਦਾਂ ਨੂੰ ਆਸਾਨੀ ਨਾਲ ਪਾਰ ਕਰਨ ਲਈ ਮਾਹਰ ਦਸਤਾਵੇਜ਼ ਸਹਾਇਤਾ।",
+    wwl_card4_label: "ਤਕਨੀਕੀ ਬੜ੍ਹਤ",
+    wwl_card4_stat: "ਰੀਅਲ-ਟਾਈਮ\nਅੱਪਡੇਟ",
+    wwl_card4_desc:
+      "ਪੂਰੀ ਮਾਨਸਿਕ ਸ਼ਾਂਤੀ ਲਈ ਸ਼ੁਰੂ ਤੋਂ ਅੰਤ ਤੱਕ ਰੀਅਲ-ਟਾਈਮ ਟਰੈਕਿੰਗ।",
+    claim_badge: "ਵਿਆਪਕ ਨੀਤੀਆਂ",
+    claim_title: "ਸਾਡੀ ਵਾਪਸੀ ਅਤੇ ਨੁਕਸਾਨ ਦਾਅਵਾ ਨੀਤੀ",
+    claim_intro:
+      "ਮਾਨਵੀ ਇੰਟਰਨੈਸ਼ਨਲ ਭਰੋਸੇਯੋਗ ਅੰਤਰਰਾਸ਼ਟਰੀ ਲੌਜਿਸਟਿਕਸ ਸੇਵਾਵਾਂ ਪ੍ਰਦਾਨ ਕਰਨ ਲਈ ਵਚਨਬੱਧ ਹੈ। ਹਾਲਾਂਕਿ, ਆਵਾਜਾਈ ਅਨਿਯਮਿਤਤਾਵਾਂ ਦੀ ਸਥਿਤੀ ਵਿੱਚ, ਹੇਠਾਂ ਦਿੱਤੀ ਨੀਤੀ ਦਾਅਵਿਆਂ ਦੇ ਹੱਲ ਲਈ ਰਸਮੀ ਪ੍ਰਕਿਰਿਆਵਾਂ ਦੀ ਰੂਪਰੇਖਾ ਦਿੰਦੀ ਹੈ।",
+    claim_tab1_title: "ਆਮ ਦਾਅਵਾ ਉਪਬੰਧ",
+    claim_tab1_subtext:
+      "ਵਾਪਸੀ ਜਾਂ ਨੁਕਸਾਨ ਦੇ ਸਾਰੇ ਦਾਅਵਿਆਂ ਨੂੰ ਰਸਮੀ ਜਾਂਚ ਪ੍ਰਕਿਰਿਆ ਵਿੱਚੋਂ ਲੰਘਣਾ ਪਵੇਗਾ।",
+    claim_tab1_panelTitle:
+      "ਵਾਪਸੀ ਜਾਂ ਨੁਕਸਾਨ ਦੇ ਸਾਰੇ ਦਾਅਵਿਆਂ ਨੂੰ ਰਸਮੀ ਜਾਂਚ ਪ੍ਰਕਿਰਿਆ ਵਿੱਚੋਂ ਲੰਘਣਾ ਪਵੇਗਾ।",
+    claim_tab1_d1_num: "01",
+    claim_tab1_d1_title: "ਲਾਜ਼ਮੀ ਜਾਂਚ ਵਿੰਡੋ",
+    claim_tab1_d1_desc:
+      "ਕਿਸੇ ਵੀ ਦਾਅਵੇ ਦੀ ਪ੍ਰਕਿਰਿਆ ਕਰਨ ਲਈ ਘੱਟੋ-ਘੱਟ 25 ਕਾਰੋਬਾਰੀ ਦਿਨ ਲੋੜੀਂਦੇ ਹਨ।",
+    claim_tab1_d2_num: "02",
+    claim_tab1_d2_title: "ਨਿਪਟਾਰਾ ਪ੍ਰੋਟੋਕੋਲ",
+    claim_tab1_d2_desc:
+      'ਕਿਸੇ ਵੀ ਹਾਲਤ ਵਿੱਚ ਦਾਅਵਿਆਂ ਦਾ ਨਿਪਟਾਰਾ "ਤੁਰੰਤ" ਜਾਂ ਰਸਮੀ ਤਸਦੀਕ ਪ੍ਰਕਿਰਿਆ ਪੂਰੀ ਹੋਣ ਤੋਂ ਪਹਿਲਾਂ ਨਹੀਂ ਕੀਤਾ ਜਾਵੇਗਾ।',
+    claim_tab1_d3_num: "03",
+    claim_tab1_d3_title: "ਤੀਜੀ-ਧਿਰ ਨਿਰਭਰਤਾ",
+    claim_tab1_d3_desc:
+      'ਇੱਕ ਅੰਤਰਰਾਸ਼ਟਰੀ ਲੌਜਿਸਟਿਕਸ ਪ੍ਰਦਾਤਾ ਵਜੋਂ, ਮਾਨਵੀ ਇੰਟਰਨੈਸ਼ਨਲ ਦਾ ਦਾਅਵਾ ਹੱਲ ਸਾਡੇ ਵਿਸ਼ਵ ਕੂਰੀਅਰ ਸਾਂਝੇਦਾਰਾਂ ਤੋਂ ਅਧਿਕਾਰਤ ਜਾਂਚ ਰਿਪੋਰਟਾਂ \'ਤੇ ਨਿਰਭਰ ਕਰਦਾ ਹੈ, ਜਿਸ ਵਿੱਚ <strong class="font-extrabold text-[#1c1f2e]">DHL, FedEx ਅਤੇ UPS</strong> ਸ਼ਾਮਲ ਹਨ।',
+    claim_tab2_title: "ਮੂਲ ਸਥਾਨ ਵਾਪਸੀ (RTO) ਸ਼ਿਪਮੈਂਟ",
+    claim_tab2_subtext:
+      "ਗੈਰ-ਡਿਲੀਵਰੀ, ਗਲਤ ਪਤੇ ਜਾਂ ਇਨਕਾਰ ਲਈ ਵਾਪਸ ਕੀਤੇ ਸ਼ਿਪਮੈਂਟ ਵਾਪਸੀ ਦੇ ਯੋਗ ਹਨ।",
+    claim_tab2_panelTitle:
+      "ਗੈਰ-ਡਿਲੀਵਰੀ, ਗਲਤ ਪਤੇ ਜਾਂ ਪ੍ਰਾਪਤਕਰਤਾ ਦੇ ਇਨਕਾਰ ਕਾਰਨ ਮੂਲ ਸਥਾਨ 'ਤੇ ਵਾਪਸ ਕੀਤੇ ਸ਼ਿਪਮੈਂਟ ਸੁਚਾਰੂ ਵਾਪਸੀ ਪ੍ਰਕਿਰਿਆ ਲਈ ਯੋਗ ਹਨ।",
+    claim_tab2_d1_num: "01",
+    claim_tab2_d1_title: "ਪ੍ਰਕਿਰਿਆ ਸਮਾਂ-ਸੀਮਾ",
+    claim_tab2_d1_desc:
+      'RTO ਸ਼ਿਪਮੈਂਟਾਂ ਲਈ ਵਾਪਸੀ <strong class="font-extrabold text-[#1c1f2e]">2 ਤੋਂ 3 ਕਾਰੋਬਾਰੀ ਦਿਨਾਂ</strong> ਵਿੱਚ ਸ਼ੁਰੂ ਕੀਤੀ ਜਾਵੇਗੀ।',
+    claim_tab2_d2_num: "02",
+    claim_tab2_d2_title: "ਤਸਦੀਕ ਲੋੜ",
+    claim_tab2_d2_desc:
+      "ਪ੍ਰਕਿਰਿਆ ਵਿੰਡੋ ਕੇਵਲ ਸਾਡੀ ਸੁਵਿਧਾ 'ਤੇ ਸ਼ਿਪਮੈਂਟ ਦੀ ਭੌਤਿਕ ਪ੍ਰਾਪਤੀ ਅਤੇ ਸਫਲ ਤਸਦੀਕ ਤੋਂ ਬਾਅਦ ਸ਼ੁਰੂ ਹੁੰਦੀ ਹੈ।",
+    claim_tab2_d3_num: "03",
+    claim_tab2_d3_title: "ਸ਼ਰਤ",
+    claim_tab2_d3_desc:
+      "ਸ਼ਿਪਮੈਂਟ ਬਰਕਰਾਰ ਹੋਣੀ ਚਾਹੀਦੀ ਹੈ ਅਤੇ ਸ਼ੁਰੂਆਤੀ ਸੇਵਾ ਸਮਝੌਤੇ ਅਨੁਸਾਰ ਵਾਪਸੀ-ਅਧਾਰਿਤ ਵਾਪਸੀ ਦੇ ਮਾਪਦੰਡਾਂ ਨੂੰ ਪੂਰਾ ਕਰਨਾ ਚਾਹੀਦਾ ਹੈ।",
+    claim_tab3_title: "ਗੁੰਮ, ਖਰਾਬ ਜਾਂ ਨਸ਼ਟ ਸ਼ਿਪਮੈਂਟਾਂ ਦੇ ਦਾਅਵੇ",
+    claim_tab3_subtext:
+      "ਗੁੰਮ, ਖਰਾਬ, ਨਸ਼ਟ ਜਾਂ ਕੈਰੀਅਰ ਦੁਆਰਾ ਦੇਰੀ ਨਾਲ ਕੀਤੇ ਸ਼ਿਪਮੈਂਟਾਂ ਦੇ ਪ੍ਰਬੰਧਨ ਲਈ ਦਿਸ਼ਾ-ਨਿਰਦੇਸ਼।",
+    claim_tab3_panelTitle:
+      "ਕਿਸੇ ਸ਼ਿਪਮੈਂਟ ਦੇ ਗੁੰਮ, ਖਰਾਬ, ਨਸ਼ਟ ਜਾਂ ਕੈਰੀਅਰ-ਸੰਬੰਧੀ ਮੁੱਦਿਆਂ ਕਾਰਨ ਮਹੱਤਵਪੂਰਨ ਦੇਰੀ ਦੀ ਸਥਿਤੀ ਵਿੱਚ, ਹੇਠਾਂ ਦਿੱਤੇ ਪ੍ਰੋਟੋਕੋਲ ਲਾਗੂ ਹੁੰਦੇ ਹਨ:",
+    claim_tab4_title: "ਆਮ ਦਾਅਵਾ ਉਪਬੰਧ",
+    claim_tab4_subtext: "ਜਦੋਂ ਮਾਨਵੀ ਇੰਟਰਨੈਸ਼ਨਲ ਜ਼ਿੰਮੇਵਾਰ ਨਹੀਂ ਹੈ",
+    claim_tab4_panelTitle:
+      "ਕੁਝ ਮਾਮਲਿਆਂ ਵਿੱਚ, ਸਾਡੇ ਨਿਯੰਤਰਣ ਤੋਂ ਬਾਹਰ ਦੇ ਕਾਰਕਾਂ ਕਾਰਨ ਦੇਰੀ ਜਾਂ ਨੁਕਸਾਨ ਹੋ ਸਕਦਾ ਹੈ। ਇਹਨਾਂ ਸ਼ਰਤਾਂ ਦੀ ਵਿਆਖਿਆ ਹੇਠਾਂ ਕੀਤੀ ਗਈ ਹੈ।",
+    claim_tab4_d1_num: "01",
+    claim_tab4_d1_title: "ਫੋਰਸ ਮੇਜੇਅਰ",
+    claim_tab4_d1_desc:
+      "ਮਾਨਵੀ ਇੰਟਰਨੈਸ਼ਨਲ ਸਾਡੇ ਨਿਯੰਤਰਣ ਤੋਂ ਪਰੇ ਹਾਲਾਤਾਂ ਕਾਰਨ ਹੋਣ ਵਾਲੀ ਦੇਰੀ ਜਾਂ ਨੁਕਸਾਨ ਲਈ ਜ਼ਿੰਮੇਵਾਰ ਨਹੀਂ ਹੈ।",
+    claim_tab4_d2_num: "02",
+    claim_tab4_d2_title: "ਕੈਰੀਅਰ ਪੁਸ਼ਟੀ",
+    claim_tab4_d2_desc:
+      'ਨੁਕਸਾਨ ਜਾਂ ਵਿਨਾਸ਼ ਲਈ ਕੋਈ ਵੀ ਦਾਅਵਾ ਉਦੋਂ ਤੱਕ ਮਨਜ਼ੂਰ ਨਹੀਂ ਕੀਤਾ ਜਾਵੇਗਾ ਜਦੋਂ ਤੱਕ ਸੰਬੰਧਿਤ ਕੈਰੀਅਰ (DHL, FedEx ਜਾਂ UPS) ਸ਼ਿਪਮੈਂਟ ਨੂੰ ਅਧਿਕਾਰਤ ਤੌਰ \'ਤੇ "ਗੁੰਮ" ਜਾਂ "ਖਰਾਬ" ਘੋਸ਼ਿਤ ਨਹੀਂ ਕਰਦਾ।',
+    nocost_badge: "ਕੀਮਤ ਅਤੇ ਪਾਰਦਰਸ਼ਿਤਾ",
+    nocost_title:
+      "ਕੋਈ ਲੁਕਵੀਂ ਲਾਗਤ ਨਹੀਂ। ਕੋਈ ਹੈਰਾਨੀ ਨਹੀਂ।\nਬੱਸ ਸਿੱਧਾ ਲੌਜਿਸਟਿਕਸ।",
+    nocost_desc:
+      "ਅਸੀਂ ਮੁੱਲ-ਅਧਾਰਿਤ ਕੀਮਤ ਵਿੱਚ ਵਿਸ਼ਵਾਸ ਕਰਦੇ ਹਾਂ। ਸਾਡੀਆਂ ਦਰਾਂ ਮੰਜ਼ਿਲ, ਸ਼ਿਪਮੈਂਟ ਭਾਰ ਅਤੇ ਡਿਲੀਵਰੀ ਦੀ ਜ਼ਰੂਰਤ ਦੇ ਆਧਾਰ 'ਤੇ ਸਾਵਧਾਨੀ ਨਾਲ ਗਣਨਾ ਕੀਤੀਆਂ ਜਾਂਦੀਆਂ ਹਨ। ਕੋਈ ਲੁਕਿਆ ਚਾਰਜ ਨਹੀਂ, ਕੋਈ ਅਚਾਨਕ ਸਰਚਾਰਜ ਨਹੀਂ।",
+    nocost_btn: "ਦਰਾਂ ਦੀ ਬੇਨਤੀ ਕਰੋ",
+    prohibited_title: "ਪਾਬੰਦੀਸ਼ੁਦਾ ਸਾਮਾਨ",
+    prohibited_desc: "ਸਾਡੇ ਨੈੱਟਵਰਕ ਦੀ ਅਖੰਡਤਾ ਬਣਾਈ ਰੱਖਣ ਲਈ, ਅਸੀਂ ਇਹ ਨਹੀਂ ਭੇਜਦੇ:",
+    prohibited_item1: "ਖਤਰਨਾਕ ਰਸਾਇਣ",
+    prohibited_item2: "ਪਰਕਰਾਮਯੋਗ ਮੁਦਰਾ",
+    prohibited_item3: "ਖਤਰਨਾਕ ਸਾਮਾਨ",
+    prohibited_item4: "ਕੀਮਤੀ ਪੱਥਰ",
+    prohibited_item5: "ਗੈਰਕਾਨੂੰਨੀ ਜਾਂ ਪਾਬੰਦੀਸ਼ੁਦਾ ਮਾਲ",
+    prohibited_btn: "ਵਿਸਤ੍ਰਿਤ ਸੂਚੀ",
+    faq_badge: "ਅਕਸਰ ਪੁੱਛੇ ਜਾਂਦੇ ਸਵਾਲ",
+    faq_title: "ਸਵਾਲ? ਚੰਗਾ ਲੱਗਾ ਕਿ ਤੁਸੀਂ ਪੁੱਛਿਆ",
+    faq_q1: "ਮੈਂ ਆਪਣੇ ਪੈਕੇਜ ਕਿੱਥੇ ਭੇਜ ਸਕਦਾ ਹਾਂ?",
+    faq_a1:
+      "ਲਗਭਗ ਕਿਤੇ ਵੀ! USA, ਕੈਨੇਡਾ, UK, ਯੂਰਪ ਅਤੇ ਆਸਟ੍ਰੇਲੀਆ ਵਿੱਚ ਸਾਡੀ ਮਜ਼ਬੂਤ ਮੌਜੂਦਗੀ ਹੈ।",
+    faq_q2: "ਮੈਨੂੰ ਕਿਵੇਂ ਪਤਾ ਚੱਲੇਗਾ ਕਿ ਮੈਨੂੰ ਉਚਿਤ ਕੀਮਤ ਮਿਲ ਰਹੀ ਹੈ?",
+    faq_a2:
+      "ਅਸੀਂ ਮੁੱਲ ਵਿੱਚ ਵਿਸ਼ਵਾਸ ਕਰਦੇ ਹਾਂ। ਤੁਹਾਡਾ ਕੋਟੇਸ਼ਨ ਭਾਰ, ਮੰਜ਼ਿਲ ਅਤੇ ਡਿਲੀਵਰੀ ਦੀ ਗਤੀ ਦੇ ਆਧਾਰ 'ਤੇ ਹੈ। ਕੋਈ ਲੁਕਿਆ ਖਰਚਾ ਨਹੀਂ।",
+    faq_q3: "ਕੀ ਮੈਂ ਹੁਣੇ ਦੇਖ ਸਕਦਾ ਹਾਂ ਕਿ ਮੇਰਾ ਪੈਕੇਜ ਕਿੱਥੇ ਹੈ?",
+    faq_a3:
+      "ਹਾਂ! ਜਿਵੇਂ ਹੀ ਤੁਸੀਂ ਸਾਡੇ ਨਾਲ ਸ਼ਿਪ ਕਰਦੇ ਹੋ, ਤੁਹਾਨੂੰ ਇੱਕ ਵਿਲੱਖਣ ਟਰੈਕਿੰਗ ਨੰਬਰ ਮਿਲੇਗਾ।",
+    faq_q4: "ਜੇ ਕੋਈ ਦੇਰੀ ਜਾਂ ਸਮੱਸਿਆ ਹੋਵੇ ਤਾਂ ਕੀ ਹੋਵੇਗਾ?",
+    faq_a4:
+      "ਅਸੀਂ ਜਾਣਦੇ ਹਾਂ ਕਿ ਤੁਹਾਡੇ ਸ਼ਿਪਮੈਂਟ ਮਹੱਤਵਪੂਰਨ ਹਨ। ਜੇ ਕੁਝ ਗਲਤ ਹੁੰਦਾ ਹੈ, ਅਸੀਂ ਮਦਦ ਲਈ ਇੱਥੇ ਹਾਂ।",
+    faq_q5: "ਕੀ ਕੁਝ ਅਜਿਹਾ ਹੈ ਜੋ ਮੈਂ ਭੇਜ ਨਹੀਂ ਸਕਦਾ?",
+    faq_a5:
+      "ਸਾਰਿਆਂ ਨੂੰ ਸੁਰੱਖਿਅਤ ਰੱਖਣ ਅਤੇ ਅੰਤਰਰਾਸ਼ਟਰੀ ਕਾਨੂੰਨਾਂ ਦੀ ਪਾਲਣਾ ਕਰਨ ਲਈ, ਅਸੀਂ ਖਤਰਨਾਕ ਰਸਾਇਣ, ਮੁਦਰਾ, ਕੀਮਤੀ ਪੱਥਰ ਜਾਂ ਗੈਰਕਾਨੂੰਨੀ ਵਸਤੂਆਂ ਨਹੀਂ ਭੇਜ ਸਕਦੇ।",
+    contact_badge: "ਸੰਪਰਕ ਕਰੋ",
+    contact_title: "ਅਸੀਂ ਤੁਹਾਡੇ ਲਈ ਇੱਥੇ ਹਾਂ",
+    contact_desc:
+      "ਅਸੀਂ ਮੁੱਲ ਵਿੱਚ ਵਿਸ਼ਵਾਸ ਕਰਦੇ ਹਾਂ। ਤੁਹਾਡਾ ਕੋਟੇਸ਼ਨ ਭਾਰ, ਮੰਜ਼ਿਲ ਅਤੇ ਡਿਲੀਵਰੀ ਦੀ ਗਤੀ ਦੇ ਆਧਾਰ 'ਤੇ ਹੈ। ਭੁਗਤਾਨ ਸਮੇਂ ਕੋਈ ਲੁਕਿਆ ਖਰਚਾ ਨਹੀਂ।",
+    contact_call: "ਸਾਨੂੰ ਕਾਲ ਕਰੋ",
+    contact_whatsapp: "ਵਟਸਐਪ ਕਰੋ",
+    contact_info: "ਸੰਪਰਕ ਜਾਣਕਾਰੀ",
+    footer_tagline: "ਪਰਿਵਾਰਾਂ ਨੂੰ ਜੋੜਨਾ, ਦੂਰੀਆਂ ਮਿਟਾਉਣਾ",
+    footer_desc:
+      "10,000+ ਖੁਸ਼ ਗਾਹਕਾਂ ਦੁਆਰਾ ਭਰੋਸੇਯੋਗ ਅਤੇ 50,000 ਤੋਂ ਵੱਧ ਸਫਲ ਅੰਤਰਰਾਸ਼ਟਰੀ ਸ਼ਿਪਮੈਂਟਾਂ ਦੇ ਨਾਲ, ਅਸੀਂ ਤੇਜ਼, ਸੁਰੱਖਿਅਤ ਅਤੇ ਨਿਰਵਿਘਨ ਕੂਰੀਅਰ ਹੱਲ ਪ੍ਰਦਾਨ ਕਰਦੇ ਹਾਂ।",
+    footer_social: "ਸੋਸ਼ਲ ਨੈੱਟਵਰਕ",
+    footer_quick_links: "ਤੇਜ਼ ਲਿੰਕ",
+    footer_office_info: "ਦਫ਼ਤਰ ਜਾਣਕਾਰੀ",
+    footer_rights: "ਸਾਰੇ ਅਧਿਕਾਰ ਸੁਰੱਖਿਅਤ।",
+  },
+
+  fr: {
+    nav_about: "À propos",
+    nav_services: "Services",
+    nav_track: "Suivre maintenant",
+    nav_quote: "Obtenir un devis",
+    nav_contact: "Nous contacter",
+    nav_home: "Accueil",
+    nav_zipcode: "Code postal desservi",
+    nav_language: "Langue",
+    nav_track_shipment: "Suivre l'envoi",
+    bc_about: "À propos de nous",
+    bc_track: "Suivre l'envoi",
+    bc_zipcode: "Code postal desservi",
+    bc_contact: "Nous contacter",
+    bc_quote: "Obtenir un devis",
+    bc_faq: "FAQ",
+    bc_services: "Services",
+    hero_headline: "CONNECTER LES CONTINENTS, LIVRER LA CONFIANCE.",
+    hero_subtext:
+      "Envoyez des documents, colis, denrées, cadeaux ou expéditions commerciales dans le monde entier en toute confiance.",
+    hero_pickup: "Lieu de collecte",
+    hero_drop: "Lieu de livraison",
+    hero_weight: "Poids (Kg)",
+    hero_service: "Service",
+    hero_content: "Contenu",
+    hero_get_quote: "Obtenir un devis",
+    hero_estimated_cost: "Coût estimé",
+    hero_est_delivery: "Livraison est.",
+    hero_days: "Jours",
+    hero_read_more: "Lire plus",
+    hero_legacy_badge: "L'héritage Manvi",
+    hero_legacy_heading: "Nous ne transportons pas que des colis ;",
+    hero_legacy_highlight: "Nous rapprochons les distances.",
+    hero_whatsapp: "•WhatsApp •WhatsApp •",
+    hero_doc_express: "Express documents",
+    hero_parcel_shipping: "Expédition de colis",
+    hero_cargo_express: "Cargo express",
+    hero_serviceable_zipcodes: "Codes postaux desservis",
+    hero_our_services: "Nos services",
+    hero_contact_us: "Nous contacter",
+    partners_title: "Nos partenaires\nde livraison ✈",
+    bespoke_badge: "Nos services",
+    bespoke_title: "Solutions d'expédition sur mesure.",
+    bespoke_acc1_num: "01",
+    bespoke_acc1_title: "Logistique personnelle mondiale",
+    bespoke_acc1_desc:
+      "Logistique fiable pour les particuliers transportant des marchandises ou articles personnels dans le monde entier.",
+    bespoke_acc1_card1_title: "Livraison porte-à-porte",
+    bespoke_acc1_card1_desc:
+      "Collecte rapide et sécurisée directement à votre porte.",
+    bespoke_acc1_card2_title: "Expédition de bagages mondiaux",
+    bespoke_acc1_card2_desc:
+      "Transport de vos bagages personnels à travers les frontières sans tracas.",
+    bespoke_acc1_card3_title: "Assistance au dédouanement",
+    bespoke_acc1_card3_desc:
+      "Aide avec la documentation douanière standard pour des arrivées fluides.",
+    bespoke_acc2_num: "02",
+    bespoke_acc2_title: "Solutions entreprise et en gros",
+    bespoke_acc2_desc:
+      "Optimisation des chaînes d'approvisionnement pour les entreprises exigeant la précision.",
+    bespoke_acc2_card1_title: "Expédition en gros stratégique",
+    bespoke_acc2_card1_desc:
+      "Transit à grand volume avec des structures de coûts optimisées.",
+    bespoke_acc2_card2_title: "Gestion de compte",
+    bespoke_acc2_card2_desc:
+      "Experts dédiés pour gérer votre logistique commerciale.",
+    bespoke_acc2_card3_title: "Intégration transparente",
+    bespoke_acc2_card3_desc:
+      "Collectes régulières adaptées au rythme de votre entreprise.",
+    wwl_badge: "L'avantage Manvi",
+    wwl_title: "Pourquoi nous menons",
+    wwl_card1_label: "Succès de livraison",
+    wwl_card1_desc:
+      "Livraisons internationales réussies avec précision et soin.",
+    wwl_card2_label: "Partenariats d'élite",
+    wwl_card2_stat: "Plusieurs\npays",
+    wwl_card2_desc:
+      "Collaboration avec des transporteurs de classe mondiale : DHL, FedEx et UPS.",
+    wwl_card3_label: "Maîtrise douanière",
+    wwl_card3_stat: "1000+",
+    wwl_card3_desc:
+      "Support documentaire expert pour naviguer les frontières mondiales sans effort.",
+    wwl_card4_label: "Avantage technologique",
+    wwl_card4_stat: "Mises à jour\nen temps réel",
+    wwl_card4_desc:
+      "Suivi en temps réel de bout en bout pour une tranquillité d'esprit totale.",
+    claim_badge: "Politiques complètes",
+    claim_title: "Notre politique de remboursement et de réclamation",
+    claim_intro:
+      "Manvi International s'engage à fournir des services logistiques internationaux fiables. Cependant, en cas d'irrégularités de transit, la politique suivante décrit les procédures formelles, délais et conditions pour la résolution des réclamations.",
+    claim_tab1_title: "Dispositions générales des réclamations",
+    claim_tab1_subtext:
+      "Toutes les réclamations de remboursement ou de perte doivent passer par un processus d'enquête formel.",
+    claim_tab1_panelTitle:
+      "Toutes les réclamations de remboursement ou de perte doivent passer par un processus d'enquête formel.",
+    claim_tab1_d1_num: "01",
+    claim_tab1_d1_title: "Fenêtre d'enquête obligatoire",
+    claim_tab1_d1_desc:
+      "Un minimum de 25 jours ouvrables est nécessaire pour traiter toute réclamation.",
+    claim_tab1_d2_num: "02",
+    claim_tab1_d2_title: "Protocole de règlement",
+    claim_tab1_d2_desc:
+      'En aucun cas les réclamations ne seront réglées "sur place" ou avant la fin du processus de vérification formel.',
+    claim_tab1_d3_num: "03",
+    claim_tab1_d3_title: "Dépendance tierce",
+    claim_tab1_d3_desc:
+      'En tant que prestataire logistique international, la résolution des réclamations de Manvi International dépend des rapports d\'enquête de nos partenaires, notamment <strong class="font-extrabold text-[#1c1f2e]">DHL, FedEx et UPS</strong>.',
+    claim_tab2_title: "Retour à l'origine (RTO)",
+    claim_tab2_subtext:
+      "Les envois retournés pour non-livraison, adresse incorrecte ou refus sont éligibles au remboursement.",
+    claim_tab2_panelTitle:
+      "Les envois retournés au point d'origine en raison de non-livraison, d'adresse incorrecte ou de refus du destinataire sont éligibles à un processus de remboursement simplifié.",
+    claim_tab2_d1_num: "01",
+    claim_tab2_d1_title: "Délai de traitement",
+    claim_tab2_d1_desc:
+      'Les remboursements pour les envois RTO seront initiés dans <strong class="font-extrabold text-[#1c1f2e]">2 à 3 jours ouvrables</strong>.',
+    claim_tab2_d2_num: "02",
+    claim_tab2_d2_title: "Exigence de vérification",
+    claim_tab2_d2_desc:
+      "La fenêtre de traitement commence uniquement après la réception physique et la vérification réussie de l'envoi dans nos installations.",
+    claim_tab2_d3_num: "03",
+    claim_tab2_d3_title: "Condition",
+    claim_tab2_d3_desc:
+      "L'envoi doit être intact et répondre aux critères de remboursement basé sur le retour conformément à l'accord de service initial.",
+    claim_tab3_title: "Réclamations pour envois perdus, endommagés ou détruits",
+    claim_tab3_subtext:
+      "Directives pour la gestion des envois perdus, endommagés, détruits ou retardés par le transporteur.",
+    claim_tab3_panelTitle:
+      "En cas d'envoi perdu, endommagé, détruit ou significativement retardé en raison de problèmes liés au transporteur, les protocoles suivants s'appliquent :",
+    claim_tab4_title: "Dispositions générales des réclamations",
+    claim_tab4_subtext: "Quand Manvi International n'est pas responsable",
+    claim_tab4_panelTitle:
+      "Dans certains cas, des retards ou pertes peuvent survenir en raison de facteurs hors de notre contrôle. Ces conditions sont expliquées ci-dessous.",
+    claim_tab4_d1_num: "01",
+    claim_tab4_d1_title: "Force majeure",
+    claim_tab4_d1_desc:
+      "Manvi International n'est pas responsable des retards ou pertes causés par des circonstances hors de notre contrôle, notamment les saisies douanières, perturbations météorologiques ou instabilité politique.",
+    claim_tab4_d2_num: "02",
+    claim_tab4_d2_title: "Confirmation du transporteur",
+    claim_tab4_d2_desc:
+      'Aucune réclamation de perte ou destruction ne sera approuvée avant que le transporteur concerné (DHL, FedEx ou UPS) ne déclare officiellement l\'envoi "Perdu" ou "Endommagé".',
+    nocost_badge: "Tarification et transparence",
+    nocost_title:
+      "Aucun coût caché. Aucune surprise.\nJuste une logistique simple.",
+    nocost_desc:
+      "Nous croyons en une tarification basée sur la valeur. Nos tarifs sont soigneusement calculés en fonction de la destination, du poids et de l'urgence. Aucun frais caché, aucune surcharge surprenante, et aucun surcoût inutile. Juste une tarification transparente axée sur la performance, la fiabilité et l'efficacité.",
+    nocost_btn: "Demander les tarifs",
+    prohibited_title: "Marchandises interdites",
+    prohibited_desc:
+      "Pour maintenir l'intégrité de notre réseau, nous ne transportons pas :",
+    prohibited_item1: "Produits chimiques dangereux",
+    prohibited_item2: "Devises négociables",
+    prohibited_item3: "Marchandises dangereuses",
+    prohibited_item4: "Pierres précieuses",
+    prohibited_item5: "Contrebande illégale ou restreinte",
+    prohibited_btn: "Liste détaillée",
+    faq_badge: "FAQ",
+    faq_title: "Des questions ? Nous sommes ravis que vous demandiez",
+    faq_q1: "Où puis-je envoyer mes colis ?",
+    faq_a1:
+      "Presque n'importe où ! Nous avons une forte présence aux États-Unis, au Canada, au Royaume-Uni, en Europe et en Australie.",
+    faq_q2: "Comment savoir si j'obtiens un prix équitable ?",
+    faq_a2:
+      "Nous croyons en la valeur. Votre devis est basé exactement sur vos besoins — poids, destination et délai de livraison. Aucune surprise cachée.",
+    faq_q3: "Puis-je voir où se trouve mon colis maintenant ?",
+    faq_a3:
+      "Oui ! Dès que vous expédiez avec nous, vous recevrez un numéro de suivi unique. Suivez votre colis en temps réel.",
+    faq_q4: "Que se passe-t-il en cas de retard ou de problème ?",
+    faq_a4:
+      "Nous savons que vos envois sont importants. En cas de problème, nous sommes là pour vous aider. Notre équipe et nos partenaires (DHL, FedEx, UPS) mènent une enquête détaillée.",
+    faq_q5: "Y a-t-il des articles que je ne peux pas expédier ?",
+    faq_a5:
+      "Pour la sécurité de tous et le respect des lois internationales, nous ne pouvons pas expédier de produits chimiques dangereux, de devises, de pierres précieuses ou d'articles illégaux. Appelez-nous en cas de doute !",
+    contact_badge: "Nous contacter",
+    contact_title: "Nous sommes là pour vous",
+    contact_desc:
+      "Nous croyons en la valeur. Votre devis est basé exactement sur vos besoins — poids, destination et délai de livraison. Nous promettons aucune surprise cachée lors du paiement.",
+    contact_call: "Appelez-nous",
+    contact_whatsapp: "WhatsApp",
+    contact_info: "Coordonnées",
+    footer_tagline: "Connecter les familles, rapprocher les distances",
+    footer_desc:
+      "Approuvé par plus de 10 000 clients satisfaits et avec plus de 50 000 expéditions internationales réussies, nous livrons des solutions rapides, sécurisées et transparentes.",
+    footer_social: "Réseau social",
+    footer_quick_links: "Liens rapides",
+    footer_office_info: "Infos bureau",
+    footer_rights: "Tous droits réservés.",
+  },
+
+  es: {
+    nav_about: "Sobre nosotros",
+    nav_services: "Servicios",
+    nav_track: "Rastrear ahora",
+    nav_quote: "Obtener cotización",
+    nav_contact: "Contacto",
+    nav_home: "Inicio",
+    nav_zipcode: "Código postal disponible",
+    nav_language: "Idioma",
+    nav_track_shipment: "Rastrear envío",
+    bc_about: "Sobre nosotros",
+    bc_track: "Rastrear envío",
+    bc_zipcode: "Código postal disponible",
+    bc_contact: "Contacto",
+    bc_quote: "Obtener cotización",
+    bc_faq: "Preguntas frecuentes",
+    bc_services: "Servicios",
+    hero_headline: "CONECTANDO CONTINENTES, ENTREGANDO CONFIANZA.",
+    hero_subtext:
+      "Envía documentos, paquetes, alimentos, regalos o envíos comerciales en todo el mundo con confianza.",
+    hero_pickup: "Lugar de recogida",
+    hero_drop: "Lugar de entrega",
+    hero_weight: "Peso (Kg)",
+    hero_service: "Servicio",
+    hero_content: "Contenido",
+    hero_get_quote: "Obtener cotización",
+    hero_estimated_cost: "Costo estimado",
+    hero_est_delivery: "Entrega est.",
+    hero_days: "Días",
+    hero_read_more: "Leer más",
+    hero_legacy_badge: "El legado Manvi",
+    hero_legacy_heading: "No solo movemos paquetes;",
+    hero_legacy_highlight: "Acortamos distancias.",
+    hero_whatsapp: "•WhatsApp •WhatsApp •",
+    hero_doc_express: "Documentos express",
+    hero_parcel_shipping: "Envío de paquetes",
+    hero_cargo_express: "Carga express",
+    hero_serviceable_zipcodes: "Códigos postales disponibles",
+    hero_our_services: "Nuestros servicios",
+    hero_contact_us: "Contacto",
+    partners_title: "Nuestros socios\nde entrega ✈",
+    bespoke_badge: "Nuestros servicios",
+    bespoke_title: "Soluciones de envío a medida.",
+    bespoke_acc1_num: "01",
+    bespoke_acc1_title: "Logística personal global",
+    bespoke_acc1_desc:
+      "Logística confiable para personas que mueven carga o artículos personales en todo el mundo.",
+    bespoke_acc1_card1_title: "Entrega puerta a puerta",
+    bespoke_acc1_card1_desc:
+      "Recogida rápida y segura directamente desde tu puerta.",
+    bespoke_acc1_card2_title: "Envío global de equipaje",
+    bespoke_acc1_card2_desc:
+      "Mueve tu equipaje personal a través de fronteras sin complicaciones.",
+    bespoke_acc1_card3_title: "Apoyo en despacho aduanero",
+    bespoke_acc1_card3_desc:
+      "Asistencia con documentación aduanera estándar para llegadas fluidas.",
+    bespoke_acc2_num: "02",
+    bespoke_acc2_title: "Soluciones empresariales y a granel",
+    bespoke_acc2_desc:
+      "Optimizando cadenas de suministro para empresas que exigen precisión.",
+    bespoke_acc2_card1_title: "Envío masivo estratégico",
+    bespoke_acc2_card1_desc:
+      "Tránsito de alto volumen con estructuras de costos optimizadas.",
+    bespoke_acc2_card2_title: "Gestión de cuenta",
+    bespoke_acc2_card2_desc:
+      "Expertos dedicados para gestionar tu logística comercial.",
+    bespoke_acc2_card3_title: "Integración perfecta",
+    bespoke_acc2_card3_desc:
+      "Recogidas regulares adaptadas al ritmo de tu negocio.",
+    wwl_badge: "La ventaja Manvi",
+    wwl_title: "Por qué somos líderes",
+    wwl_card1_label: "Éxito en entregas",
+    wwl_card1_desc:
+      "Entregas internacionales exitosas completadas con precisión y cuidado.",
+    wwl_card2_label: "Asociaciones de élite",
+    wwl_card2_stat: "Múltiples\npaíses",
+    wwl_card2_desc:
+      "Colaboración con transportistas de clase mundial: DHL, FedEx y UPS.",
+    wwl_card3_label: "Dominio aduanero",
+    wwl_card3_stat: "1000+",
+    wwl_card3_desc:
+      "Soporte experto en documentación para cruzar fronteras globales sin esfuerzo.",
+    wwl_card4_label: "Ventaja tecnológica",
+    wwl_card4_stat: "Actualizaciones\nen tiempo real",
+    wwl_card4_desc:
+      "Seguimiento en tiempo real de extremo a extremo para total tranquilidad.",
+    claim_badge: "Políticas integrales",
+    claim_title: "Nuestra política de reembolso y reclamaciones",
+    claim_intro:
+      "Manvi International está comprometida a proporcionar servicios logísticos internacionales confiables. Sin embargo, ante irregularidades en el tránsito, la siguiente política describe los procedimientos formales, plazos y condiciones para la resolución de reclamaciones.",
+    claim_tab1_title: "Disposiciones generales de reclamaciones",
+    claim_tab1_subtext:
+      "Todas las reclamaciones de reembolso o pérdida deben pasar por un proceso de investigación formal.",
+    claim_tab1_panelTitle:
+      "Todas las reclamaciones de reembolso o pérdida deben pasar por un proceso de investigación formal.",
+    claim_tab1_d1_num: "01",
+    claim_tab1_d1_title: "Ventana de investigación obligatoria",
+    claim_tab1_d1_desc:
+      "Se requiere un mínimo de 25 días hábiles para procesar cualquier reclamación.",
+    claim_tab1_d2_num: "02",
+    claim_tab1_d2_title: "Protocolo de liquidación",
+    claim_tab1_d2_desc:
+      'Bajo ninguna circunstancia se resolverán reclamaciones "en el momento" ni antes de completar el proceso de verificación formal.',
+    claim_tab1_d3_num: "03",
+    claim_tab1_d3_title: "Dependencia de terceros",
+    claim_tab1_d3_desc:
+      'Como proveedor logístico internacional, la resolución de reclamaciones de Manvi International depende de los informes de investigación de nuestros socios, incluyendo <strong class="font-extrabold text-[#1c1f2e]">DHL, FedEx y UPS</strong>.',
+    claim_tab2_title: "Envíos retornados al origen (RTO)",
+    claim_tab2_subtext:
+      "Los envíos devueltos por no entrega, dirección incorrecta o rechazo califican para reembolso.",
+    claim_tab2_panelTitle:
+      "Los envíos devueltos al punto de origen por no entrega, dirección incorrecta o rechazo del destinatario son elegibles para un proceso de reembolso simplificado.",
+    claim_tab2_d1_num: "01",
+    claim_tab2_d1_title: "Plazo de procesamiento",
+    claim_tab2_d1_desc:
+      'Los reembolsos para envíos RTO se iniciarán en <strong class="font-extrabold text-[#1c1f2e]">2 a 3 días hábiles</strong>.',
+    claim_tab2_d2_num: "02",
+    claim_tab2_d2_title: "Requisito de verificación",
+    claim_tab2_d2_desc:
+      "La ventana de procesamiento comienza solo después de la recepción física y verificación exitosa del envío en nuestras instalaciones.",
+    claim_tab2_d3_num: "03",
+    claim_tab2_d3_title: "Condición",
+    claim_tab2_d3_desc:
+      "El envío debe estar intacto y cumplir los criterios para un reembolso basado en devolución según el acuerdo de servicio inicial.",
+    claim_tab3_title: "Reclamaciones por envíos perdidos, dañados o destruidos",
+    claim_tab3_subtext:
+      "Directrices para gestionar envíos perdidos, dañados, destruidos o retrasados por el transportista.",
+    claim_tab3_panelTitle:
+      "En caso de que un envío sea perdido, dañado, destruido o significativamente retrasado debido a problemas del transportista, se aplican los siguientes protocolos:",
+    claim_tab4_title: "Disposiciones generales de reclamaciones",
+    claim_tab4_subtext: "Cuando Manvi International no es responsable",
+    claim_tab4_panelTitle:
+      "En algunos casos, los retrasos o pérdidas pueden ocurrir por factores fuera de nuestro control. Estas condiciones se explican a continuación.",
+    claim_tab4_d1_num: "01",
+    claim_tab4_d1_title: "Fuerza mayor",
+    claim_tab4_d1_desc:
+      "Manvi International no es responsable de retrasos o pérdidas causados por circunstancias fuera de nuestro control, incluyendo incautaciones aduaneras, interrupciones climáticas o inestabilidad política.",
+    claim_tab4_d2_num: "02",
+    claim_tab4_d2_title: "Confirmación del transportista",
+    claim_tab4_d2_desc:
+      'Ninguna reclamación de pérdida o destrucción será aprobada hasta que el transportista respectivo (DHL, FedEx o UPS) declare oficialmente el envío como "Perdido" o "Dañado".',
+    nocost_badge: "Precios y transparencia",
+    nocost_title: "Sin costos ocultos. Sin sorpresas.\nSolo logística directa.",
+    nocost_desc:
+      "Creemos en precios basados en el valor. Nuestras tarifas se calculan cuidadosamente según el destino, el peso del envío y la urgencia de entrega. Sin tarifas ocultas, sin recargos inesperados y sin gastos generales innecesarios. Solo precios transparentes construidos en torno al rendimiento, la confiabilidad y la eficiencia.",
+    nocost_btn: "Solicitar tarifas",
+    prohibited_title: "Mercancías prohibidas",
+    prohibited_desc:
+      "Para mantener la integridad de nuestra red, no transportamos:",
+    prohibited_item1: "Productos químicos peligrosos",
+    prohibited_item2: "Moneda negociable",
+    prohibited_item3: "Mercancías peligrosas",
+    prohibited_item4: "Piedras preciosas",
+    prohibited_item5: "Contrabando ilegal o restringido",
+    prohibited_btn: "Lista detallada",
+    faq_badge: "Preguntas frecuentes",
+    faq_title: "¿Preguntas? Nos alegra que preguntes",
+    faq_q1: "¿Dónde puedo enviar mis paquetes?",
+    faq_a1:
+      "¡Casi a cualquier lugar! Tenemos una fuerte presencia en EE.UU., Canadá, Reino Unido, Europa y Australia.",
+    faq_q2: "¿Cómo sé que estoy obteniendo un precio justo?",
+    faq_a2:
+      "Creemos en el valor. Tu cotización se basa exactamente en lo que necesitas: peso, destino y velocidad de entrega. Sin sorpresas ocultas.",
+    faq_q3: "¿Puedo ver dónde está mi paquete ahora mismo?",
+    faq_a3:
+      "¡Sí! En el momento en que envíes con nosotros, recibirás un número de seguimiento único. Sigue tu paquete en tiempo real.",
+    faq_q4: "¿Qué pasa si hay un retraso o un problema?",
+    faq_a4:
+      "Sabemos que tus envíos son importantes. Si algo sale mal, estamos aquí para ayudar. Nuestro equipo y socios globales (DHL, FedEx, UPS) realizan una investigación detallada.",
+    faq_q5: "¿Hay algo que no pueda enviar?",
+    faq_a5:
+      "Para mantener a todos seguros y cumplir con las leyes internacionales, no podemos enviar productos químicos peligrosos, moneda, piedras preciosas o artículos ilegales. ¡Llámanos si tienes dudas!",
+    contact_badge: "Contáctanos",
+    contact_title: "Estamos aquí para ti",
+    contact_desc:
+      "Creemos en el valor. Tu cotización se basa exactamente en lo que necesitas: peso, destino y velocidad de entrega. Sin sorpresas ocultas al pagar.",
+    contact_call: "Llámanos",
+    contact_whatsapp: "WhatsApp",
+    contact_info: "Información de contacto",
+    footer_tagline: "Conectando familias, acortando distancias",
+    footer_desc:
+      "De confianza para más de 10,000 clientes satisfechos y con más de 50,000 envíos internacionales exitosos, entregamos soluciones de mensajería rápidas, seguras y fluidas.",
+    footer_social: "Red social",
+    footer_quick_links: "Enlaces rápidos",
+    footer_office_info: "Información de oficina",
+    footer_rights: "Todos los derechos reservados.",
+  },
+};
+
+interface LanguageContextType {
+  language: Language;
+  setLanguage: (lang: Language) => void;
+  t: Translations;
+}
+
+const LanguageContext = createContext<LanguageContextType>({
+  language: "en",
+  setLanguage: () => {},
+  t: translations.en,
+});
+
+export function LanguageProvider({ children }: { children: ReactNode }) {
+  const [language, setLanguage] = useState<Language>("en");
+
+  return (
+    <LanguageContext.Provider
+      value={{ language, setLanguage, t: translations[language] }}
+    >
+      {children}
+    </LanguageContext.Provider>
+  );
+}
+
+export function useLanguage() {
+  return useContext(LanguageContext);
+}

@@ -3,8 +3,10 @@ import { useState } from "react";
 import { ArrowUpRight, Users, Package, Headphones, MapPin } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function Hero() {
+  const { t } = useLanguage();
   const [pickup, setPickup] = useState("");
   const [drop, setDrop] = useState("");
   const [weight, setWeight] = useState("");
@@ -35,13 +37,10 @@ export default function Hero() {
         <div className="bg-[#f27a1a] rounded-[28px] p-6 sm:p-8 lg:p-10 flex flex-col justify-between min-h-110 shadow-xl">
           <div className="flex flex-col gap-4">
             <h1 className="text-[32px] sm:text-[36px] md:text-[42px] font-extrabold text-white leading-[1.1] tracking-tight uppercase">
-              CONNECTING CONTINENTS,
-              <br />
-              DELIVERING TRUST.
+              {t.hero_headline}
             </h1>
             <p className="text-white/80 text-[13px] leading-relaxed max-w-md">
-              Send documents, parcels, food items, gifts, or commercial
-              shipments worldwide with confidence.
+              {t.hero_subtext}
             </p>
           </div>
 
@@ -49,16 +48,16 @@ export default function Hero() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <input
                 type="text"
-                placeholder="Pick Up Location"
-                aria-label="Pick Up Location"
+                placeholder={t.hero_pickup}
+                aria-label={t.hero_pickup}
                 value={pickup}
                 onChange={(e) => setPickup(e.target.value)}
                 className="bg-white text-[#333] text-[13px] font-medium rounded-xl px-4 py-3 focus:outline-none placeholder:text-gray-400"
               />
               <input
                 type="text"
-                placeholder="Drop Location"
-                aria-label="Drop Location"
+                placeholder={t.hero_drop}
+                aria-label={t.hero_drop}
                 value={drop}
                 onChange={(e) => setDrop(e.target.value)}
                 className="bg-white text-[#333] text-[13px] font-medium rounded-xl px-4 py-3 focus:outline-none placeholder:text-gray-400"
@@ -67,8 +66,8 @@ export default function Hero() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <input
                 type="number"
-                placeholder="Weight (Kg)"
-                aria-label="Weight in Kilograms"
+                placeholder={t.hero_weight}
+                aria-label={t.hero_weight}
                 value={weight}
                 onChange={(e) => setWeight(e.target.value)}
                 min="0.1"
@@ -81,16 +80,16 @@ export default function Hero() {
                 aria-label="Select Service Type"
                 className="bg-white text-[#333] text-[13px] font-medium rounded-xl px-4 py-3 focus:outline-none appearance-none"
               >
-                <option value="">Service</option>
-                <option value="document">Document Express</option>
-                <option value="parcel">Parcel Shipping</option>
-                <option value="express">Cargo Express</option>
+                <option value="">{t.hero_service}</option>
+                <option value="document">{t.hero_doc_express}</option>
+                <option value="parcel">{t.hero_parcel_shipping}</option>
+                <option value="express">{t.hero_cargo_express}</option>
               </select>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-[1fr_auto] gap-3">
               <input
                 type="text"
-                placeholder="Content"
+                placeholder={t.hero_content}
                 aria-label="Package Content"
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
@@ -100,7 +99,8 @@ export default function Hero() {
                 type="submit"
                 className="bg-[#0b1220] hover:bg-slate-800 text-white font-bold text-[13px] py-3 px-6 rounded-xl transition-all active:scale-95 cursor-pointer flex items-center justify-center gap-1.5"
               >
-                Get Quote <ArrowUpRight className="h-4 w-4" strokeWidth={2.5} />
+                {t.hero_get_quote}{" "}
+                <ArrowUpRight className="h-4 w-4" strokeWidth={2.5} />
               </button>
             </div>
           </form>
@@ -110,7 +110,7 @@ export default function Hero() {
               <div className="flex justify-between items-center">
                 <div>
                   <span className="text-[9px] text-[#f27a1a] font-bold uppercase tracking-wider block">
-                    Estimated Cost
+                    {t.hero_estimated_cost}
                   </span>
                   <span className="text-lg font-extrabold text-white">
                     ₹{quote.price.toLocaleString("en-IN")}
@@ -118,10 +118,10 @@ export default function Hero() {
                 </div>
                 <div className="text-right">
                   <span className="text-[9px] text-zinc-400 block">
-                    Est. Delivery
+                    {t.hero_est_delivery}
                   </span>
                   <span className="text-sm font-bold text-white">
-                    {quote.days} Days
+                    {quote.days} {t.hero_days}
                   </span>
                 </div>
                 <button
@@ -162,12 +162,12 @@ export default function Hero() {
           {/* Top content */}
           <div className="relative z-10 p-6 sm:p-8 lg:p-10 flex flex-col gap-3 ">
             <span className="text-[11px] font-bold tracking-wider bg-white/15 text-white/90 border border-white/20 w-fit px-3 py-1 rounded-full">
-              The Manvi Legacy
+              {t.hero_legacy_badge}
             </span>
             <h2 className="text-[30px] sm:text-[34px] md:text-[40px] font-extrabold text-white leading-[1.15] tracking-tight mt-2">
-              We Don&apos;t Just Move Parcels;
+              {t.hero_legacy_heading}
               <br />
-              We <span className="text-[#f27a1a]">Bridge Distances.</span>
+              <span className="text-[#f27a1a]">{t.hero_legacy_highlight}</span>
             </h2>
           </div>
 
@@ -211,7 +211,7 @@ export default function Hero() {
                       }}
                       textLength="239"
                     >
-                      •Whatsapp Us •Whatsapp Us •
+                      {t.hero_whatsapp}
                     </textPath>
                   </text>
                 </svg>
@@ -230,7 +230,7 @@ export default function Hero() {
                 <div className="w-2 h-2 rounded-full bg-white/40" />
               </div>
               <button className="border border-white/50 text-white text-[12px] font-semibold px-5 py-2 rounded-lg hover:bg-white/10 transition-colors">
-                Read More
+                {t.hero_read_more}
               </button>
             </div>
           </div>
@@ -242,27 +242,27 @@ export default function Hero() {
         {[
           {
             icon: <MapPin className="w-4 h-4" />,
-            label: "Serviceable Zipcodes",
+            label: t.hero_serviceable_zipcodes,
             href: "/zipcode",
           },
           {
             icon: <Package className="w-4 h-4" />,
-            label: "Track Shipment",
+            label: t.nav_track_shipment,
             href: "/track",
           },
           {
             icon: <Users className="w-4 h-4" />,
-            label: "Our Services",
+            label: t.hero_our_services,
             href: "/services",
           },
           {
             icon: <Headphones className="w-4 h-4" />,
-            label: "Contact Us",
+            label: t.hero_contact_us,
             href: "/contact",
           },
         ].map((tab) => (
           <Link
-            key={tab.label}
+            key={tab.href}
             href={tab.href}
             className="flex items-center justify-center gap-2 sm:gap-3 bg-[#0b1220] hover:bg-[#f27a1a] rounded-[14px] sm:rounded-2xl text-[12px] sm:text-[14px] font-semibold text-white py-3 sm:py-4 transition-all text-center px-2"
           >
