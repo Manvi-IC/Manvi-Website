@@ -26,9 +26,11 @@ export default function Header() {
 
           {/* Marquee offer strip */}
           <div className="hidden md:flex flex-1 mx-6 overflow-hidden relative">
-            {/* Confetti dots */}
-
-            <marquee
+        {/* Confetti dots */}
+        {(() => {
+          const Marquee = 'marquee' as any;
+          return (
+            <Marquee
               behavior="scroll"
               direction="left"
               scrollamount="3"
@@ -39,8 +41,10 @@ export default function Header() {
               Applied &nbsp;•&nbsp; 🎊 Send Shipment to USA @ ₹679 per KG
               &nbsp;•&nbsp; T&amp;C Applied &nbsp;•&nbsp; 🎉 Send Shipment to
               USA @ ₹679 per KG &nbsp;•&nbsp; T&amp;C Applied &nbsp;•&nbsp;
-            </marquee>
-          </div>
+            </Marquee>
+          ) as any;
+        })()}
+      </div>
 
           <div className="hidden sm:flex items-center gap-6">
             <Link
