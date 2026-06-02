@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useLanguage, Language } from "@/context/LanguageContext";
 
 const WhatsAppIcon = ({ width = 16, height = 16, fill = "currentColor", className = "" }) => (
   <svg 
@@ -15,11 +16,59 @@ const WhatsAppIcon = ({ width = 16, height = 16, fill = "currentColor", classNam
   </svg>
 );
 
+const whatsappTranslations: Record<Language, {
+  team: string;
+  hello: string;
+  query: string;
+  btn_text: string;
+  prefill_text: string;
+}> = {
+  en: {
+    team: "Customer Care Team",
+    hello: "Hi there !!",
+    query: "How can we help you today?",
+    btn_text: "Start Whatsapp Chat",
+    prefill_text: "Hi! I have a query about your services.",
+  },
+  hi: {
+    team: "ग्राहक सहायता टीम",
+    hello: "नमस्ते !!",
+    query: "आज हम आपकी क्या मदद कर सकते हैं?",
+    btn_text: "व्हाट्सएप चैट शुरू करें",
+    prefill_text: "नमस्ते! मेरी आपकी सेवाओं के बारे में एक पूछताछ है।",
+  },
+  pa: {
+    team: "ਗਾਹਕ ਸਹਾਇਤਾ ਟੀਮ",
+    hello: "ਸਤਿ ਸ੍ਰੀ ਅਕਾਲ !!",
+    query: "ਅੱਜ ਅਸੀਂ ਤੁਹਾਡੀ ਕੀ ਮਦਦ ਕਰ ਸਕਦੇ ਹਾਂ?",
+    btn_text: "ਵਟਸਐਪ ਚੈਟ ਸ਼ੁਰੂ ਕਰੋ",
+    prefill_text: "ਸਤਿ ਸ੍ਰੀ ਅਕਾਲ! ਮੇਰੀ ਤੁਹਾਡੀਆਂ ਸੇਵਾਵਾਂ ਬਾਰੇ ਇੱਕ ਪੁੱਛਗਿੱਛ ਹੈ।",
+  },
+  fr: {
+    team: "Équipe Service Client",
+    hello: "Bonjour !!",
+    query: "Comment pouvons-nous vous aider aujourd'hui ?",
+    btn_text: "Démarrer la discussion",
+    prefill_text: "Bonjour ! J'ai une question concernant vos services.",
+  },
+  es: {
+    team: "Equipo de Atención al Cliente",
+    hello: "¡Hola!",
+    query: "¿Cómo podemos ayudarte hoy?",
+    btn_text: "Iniciar chat de Whatsapp",
+    prefill_text: "¡Hola! Tengo una consulta sobre sus servicios.",
+  }
+};
+
 export default function ManviWhatsApp() {
+  const { language } = useLanguage();
+  const lang: Language = language || "en";
+  const t = whatsappTranslations[lang] || whatsappTranslations.en;
+
   const [isOpen, setIsOpen] = useState(false);
 
   const handleStartChat = () => {
-    window.open("https://wa.me/917070506070?text=Hi!%20I%20have%20a%20query%20about%20your%20services.", "_blank");
+    window.open(`https://wa.me/917070506070?text=${encodeURIComponent(t.prefill_text)}`, "_blank");
   };
 
   return (
@@ -53,7 +102,7 @@ export default function ManviWhatsApp() {
                 </svg>
               </div>
               <span className="font-extrabold text-[#1c1f2e] text-[15px] tracking-tight">
-                Customer Care Team
+                {t.team}
               </span>
             </div>
             {/* Close Button */}
@@ -71,12 +120,12 @@ export default function ManviWhatsApp() {
           {/* Chat Body Card */}
           <div className="bg-[#f0ece7] rounded-[20px] p-4 flex flex-col shadow-inner">
             <span className="text-[10px] text-gray-400 font-bold uppercase tracking-wider mb-1.5 block">
-              Customer Care Team
+              {t.team}
             </span>
             <div className="bg-white rounded-[14px] p-3.5 shadow-sm text-[#1c1f2e] text-[13px] font-medium leading-relaxed max-w-[92%]">
-              Hi there !!
+              {t.hello}
               <br />
-              How can we help you today?
+              {t.query}
             </div>
           </div>
 
@@ -86,7 +135,7 @@ export default function ManviWhatsApp() {
             className="w-full bg-black hover:bg-neutral-800 text-white font-bold text-[14px] py-3.5 px-4 rounded-full flex items-center justify-center gap-2.5 shadow-md transition-all duration-200 hover:scale-[1.02] active:scale-95"
           >
             <WhatsAppIcon width={18} height={18} fill="white" />
-            <span>Start Whatsapp Chat</span>
+            <span>{t.btn_text}</span>
           </button>
         </div>
       )}

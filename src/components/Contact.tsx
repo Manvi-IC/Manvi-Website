@@ -1,6 +1,10 @@
+"use client";
 import { Phone, MessageSquare } from "lucide-react";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function Contact() {
+  const { t } = useLanguage();
+
   return (
     <section
       id="contact"
@@ -12,16 +16,13 @@ export default function Contact() {
           {/* Left: Badge + Title + Description */}
           <div className="flex flex-col gap-4">
             <div className="border border-orange-300 text-[#ff8a00] bg-transparent rounded-full px-4 py-1 text-[12px] font-bold tracking-wide w-fit">
-              Get In Touch
+              {t.contact_badge}
             </div>
             <h2 className="text-[32px] md:text-[38px] font-extrabold text-[#1c1f2e] tracking-tight leading-tight">
-              We&apos;re Here For You
+              {t.contact_title}
             </h2>
             <p className="text-[13px] text-gray-400 font-medium leading-relaxed max-w-[95%]">
-              We believe in value. Your quote is based on exactly what you
-              need—considering weight, destination, and how fast you need it
-              delivered. We promise no hidden surprises when it&apos;s time to
-              pay.
+              {t.contact_desc}
             </p>
           </div>
 
@@ -32,7 +33,7 @@ export default function Contact() {
             </div>
             <div className="flex flex-col gap-1">
               <span className="text-[18px] font-extrabold text-[#1c1f2e]">
-                Call Us
+                {t.contact_call}
               </span>
               <span className="text-[14px] text-gray-500 font-medium">
                 +91 7070-506070
@@ -41,7 +42,7 @@ export default function Contact() {
                 href="#"
                 className="text-[14px] text-[#ff8a00] font-semibold underline underline-offset-2 hover:text-orange-600 transition-colors"
               >
-                Whatsapp Us
+                {t.contact_whatsapp}
               </a>
             </div>
           </div>
@@ -53,7 +54,7 @@ export default function Contact() {
             </div>
             <div className="flex flex-col gap-1">
               <span className="text-[18px] font-extrabold text-[#1c1f2e]">
-                Contact Info
+                {t.contact_info}
               </span>
               <span className="text-[14px] text-gray-500 font-medium">
                 info@manvicourier.com
