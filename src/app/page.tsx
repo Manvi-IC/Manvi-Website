@@ -1,3 +1,4 @@
+"use client";
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import Bespoke from "@/components/Bespoke";
@@ -12,8 +13,11 @@ import dynamic from "next/dynamic";
 const ManviChatBot = dynamic(() => import("@/components/ManviChatBot"));
 const ManviWhatsApp = dynamic(() => import("@/components/ManviWhatsApp"));
 import ScrollReveal from "@/components/ScrollReveal";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function Home() {
+  const { t } = useLanguage();
+
   return (
     <div className="min-h-screen bg-[#f8f9fa] text-[#0f172a] font-sans flex flex-col antialiased overflow-x-hidden">
       <Header />
@@ -25,9 +29,8 @@ export default function Home() {
         <div className="bg-[#f3f4f6] border-y border-slate-200/50 py-8 px-4 sm:px-6">
           <div className="max-w-425 mx-auto flex flex-col md:flex-row items-center justify-between gap-6 md:gap-10">
             <div className="flex flex-col text-center md:text-left">
-              <span className="text-[20px] md:text-[24px] font-extrabold text-[#f27a1a] leading-tight italic">
-                Our Delivery
-                <br className="hidden md:block" /> Partners ✈
+              <span className="text-[20px] md:text-[24px] font-extrabold text-[#f27a1a] leading-tight italic whitespace-pre-line">
+                {t.partners_title}
               </span>
             </div>
             <div className="flex flex-wrap items-center justify-center md:justify-end gap-6 sm:gap-10 md:gap-16">
