@@ -4,13 +4,16 @@ import { useState } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Link from "next/link";
+import { MapPin, ArrowUpRight, CheckCircle2, AlertCircle, AlertTriangle } from "lucide-react";
+import { checkZipcodeAction } from "./actions";
+        import { useLanguage, Language } from "@/context/LanguageContext";
+
 import {
   MapPin,
   ArrowUpRight,
   CheckCircle2,
   AlertTriangle,
 } from "lucide-react";
-import { useLanguage, Language } from "@/context/LanguageContext";
 
 interface ZipItem {
   zip: string;
@@ -150,12 +153,19 @@ export default function ZipcodePage() {
 
   const [query, setQuery] = useState("");
   const [status, setStatus] = useState<"idle" | "success" | "fail">("idle");
-  const [matchDetails, setMatchDetails] = useState("");
   const [cities, setCities] = useState<CityGroup[]>(initialCities);
 
-  const handleCheck = (e: React.FormEvent) => {
+  // Detailed success state variables
+  const [matchedCountry, setMatchedCountry] = useState("");
+  const [matchedPostcode, setMatchedPostcode] = useState("");
+  const [matchedDeliveryTime, setMatchedDeliveryTime] = useState("");
+  const [matchedIsRemote, setMatchedIsRemote] = useState(false);
+  const [matchedDetails, setMatchedDetails] = useState("");
+  const [matchedNotes, setMatchedNotes] = useState("");
+
+  const handleCheck = async (e: React.FormEvent) => {
     e.preventDefault();
-    const cleanQuery = query.trim().toLowerCase();
+    const cleanQuery = query.trim();
 
     if (!cleanQuery) {
       setStatus("idle");
@@ -163,94 +173,50 @@ export default function ZipcodePage() {
       return;
     }
 
-    if (
-      cleanQuery.includes("90002") ||
-      cleanQuery.includes("90001") ||
-      cleanQuery.includes("los angeles") ||
-      cleanQuery.includes("la")
-    ) {
-      setStatus("success");
-      setMatchDetails("Los Angeles, CA – 90002");
-      setCities([
-        {
-          city: "Los Angeles, CA",
-          items: [
-            { zip: "90001", days: `7-11 ${t.business_days}` },
+    try {
+      const result = await checkZipcodeAction(cleanQuery);
+      
+      if (result.status === "success") {
+        setStatus("success");
+        setMatchedCountry(result.country || "");
+        setMatchedPostcode(result.postcode || cleanQuery.toUpperCase());
+        setMatchedDeliveryTime(result.deliveryTime || "Serviceable");
+        setMatchedIsRemote(!!result.isRemote);
+        setMatchedDetails(result.details || "");
+        setMatchedNotes(result.notes || "");
+        
+        if (result.matches && result.matches.length > 0) {
+          setCities([
             {
-              zip: "90002",
-              days: `7-11 ${t.business_days}`,
-              highlighted: true,
-            },
+              city: `Matches for "${cleanQuery}"`,
+              items: result.matches.map(m => ({
+                zip: m.zip,
+                days: m.days,
+                highlighted: true
+              }))
+            }
+          ]);
+        } else {
+          setCities([
             {
-              zip: "90002",
-              days: `6-10 ${t.business_days}`,
-              highlighted: true,
+              city: result.country || "Search Match",
+              items: [
+                {
+                  zip: result.postcode || cleanQuery.toUpperCase(),
+                  days: result.deliveryTime || "Serviceable",
+                  highlighted: true
+                }
+              ]
             },
-            {
-              zip: "90002",
-              days: `7-11 ${t.business_days}`,
-              highlighted: true,
-            },
-          ],
-        },
-        {
-          city: "Chicago, IL",
-          items: [
-            { zip: "60601", days: `6-9 ${t.business_days}` },
-            { zip: "60601", days: `6-9 ${t.business_days}` },
-            { zip: "60601", days: `6-9 ${t.business_days}` },
-          ],
-        },
-      ]);
-    } else if (cleanQuery.includes("60601") || cleanQuery.includes("chicago")) {
-      setStatus("success");
-      setMatchDetails("Chicago, IL – 60601");
-      setCities([
-        {
-          city: "Chicago, IL",
-          items: [
-            { zip: "60601", days: `6-9 ${t.business_days}`, highlighted: true },
-            { zip: "60601", days: `6-9 ${t.business_days}`, highlighted: true },
-            { zip: "60601", days: `6-9 ${t.business_days}`, highlighted: true },
-          ],
-        },
-        {
-          city: "Los Angeles, CA",
-          items: [
-            { zip: "90001", days: `7-11 ${t.business_days}` },
-            { zip: "90002", days: `7-11 ${t.business_days}` },
-            { zip: "90002", days: `6-10 ${t.business_days}` },
-          ],
-        },
-      ]);
-    } else if (
-      cleanQuery.includes("10001") ||
-      cleanQuery.includes("10002") ||
-      cleanQuery.includes("new york") ||
-      cleanQuery.includes("ny")
-    ) {
-      setStatus("success");
-      setMatchDetails("New York, NY – 10001");
-      setCities([
-        {
-          city: "New York, NY",
-          items: [
-            { zip: "10001", days: `6-9 ${t.business_days}`, highlighted: true },
-            { zip: "10002", days: `6-9 ${t.business_days}`, highlighted: true },
-            { zip: "10001", days: `6-9 ${t.business_days}`, highlighted: true },
-            { zip: "10001", days: `6-9 ${t.business_days}`, highlighted: true },
-          ],
-        },
-        {
-          city: "Los Angeles, CA",
-          items: [
-            { zip: "90001", days: `7-11 ${t.business_days}` },
-            { zip: "90002", days: `7-11 ${t.business_days}` },
-            { zip: "90002", days: `6-10 ${t.business_days}` },
-          ],
-        },
-      ]);
-    } else {
+            ...initialCities
+          ]);
+        }
+      } else {
+        setStatus("fail");
+        setCities(initialCities);
+      }
+    } catch (err) {
+      console.error("Error validating zipcode:", err);
       setStatus("fail");
       setCities(initialCities);
     }
@@ -306,14 +272,20 @@ export default function ZipcodePage() {
 
               {/* Status Alert Cards */}
               {status === "success" && (
-                <div className="bg-[#ecfdf5] border border-[#10b981] rounded-2xl p-5 flex flex-col gap-1.5 shadow-sm">
+                <div className="bg-[#ecfdf5] border border-[#10b981] rounded-2xl p-5 flex flex-col gap-2.5 shadow-sm">
                   <div className="flex items-center gap-2 text-[#059669] font-extrabold text-[14px]">
                     <CheckCircle2 className="w-5 h-5 shrink-0" />
                     <span>{t.success_msg}</span>
                   </div>
-                  <span className="text-[13px] text-gray-500 font-semibold pl-7">
-                    {matchDetails}
-                  </span>
+                  
+                  <div className="text-[13px] text-gray-600 font-semibold pl-7 flex flex-col gap-1.5 border-t border-emerald-100/50 pt-2.5">
+                    <div><span className="text-gray-400">Country:</span> {matchedCountry}</div>
+                    {matchedPostcode && <div><span className="text-gray-400">Postcode/Area:</span> {matchedPostcode}</div>}
+                    {matchedDeliveryTime && <div><span className="text-gray-400">Est. Delivery:</span> {matchedDeliveryTime}</div>}
+                    <div><span className="text-gray-400">Zone Type:</span> {matchedIsRemote ? "Remote Area (Surcharges may apply)" : "Standard Zone"}</div>
+                    {matchedDetails && <div className="text-xs text-gray-500 italic mt-1 font-medium">{matchedDetails}</div>}
+                    {matchedNotes && <div className="text-xs text-gray-500 bg-emerald-50/50 p-2.5 rounded-lg mt-1 font-medium leading-relaxed">{matchedNotes}</div>}
+                  </div>
                 </div>
               )}
 
