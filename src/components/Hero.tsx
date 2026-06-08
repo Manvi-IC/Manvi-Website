@@ -1,9 +1,14 @@
 "use client";
 import { useState } from "react";
-import { ArrowUpRight, Users, Package, Headphones, MapPin } from "lucide-react";
-import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { useLanguage } from "@/context/LanguageContext";
+
+interface Quote {
+  price: number;
+  days: number;
+}
 
 export default function Hero() {
   const { t } = useLanguage();
@@ -12,174 +17,133 @@ export default function Hero() {
   const [weight, setWeight] = useState("");
   const [service, setService] = useState("");
   const [content, setContent] = useState("");
-  const [quote, setQuote] = useState<{ price: number; days: number } | null>(
-    null,
-  );
+  const [quote, setQuote] = useState<Quote | null>(null);
+  const [showForm, setShowForm] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const w = Number(weight) || 1;
-    const svcMul: Record<string, number> = {
-      document: 0.85,
-      parcel: 1.1,
-      express: 1.4,
-    };
+    const svcMul: Record<string, number> = { document: 0.85, parcel: 1.1, express: 1.4 };
     const price = Math.round((w * 480 + 300) * (svcMul[service] ?? 1));
     const days = service === "express" ? 3 : 5;
     setQuote({ price, days });
   };
 
   return (
-    <section className="max-w-425 w-full mx-auto px-4 sm:px-6 py-6 font-sans">
-      {/* Main Hero Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
-        {/* Left: Orange Form Card */}
-        <div className="bg-[#f27a1a] rounded-[28px] p-6 sm:p-8 lg:p-10 flex flex-col justify-between min-h-110 shadow-xl">
-          <div className="flex flex-col gap-4">
-            <h1 className="text-[32px] sm:text-[36px] md:text-[42px] font-extrabold text-white leading-[1.1] tracking-tight uppercase">
-              {t.hero_headline}
+    <section 
+      className="w-full mx-auto font-sans"
+      style={{
+        maxWidth: "1700px",
+        paddingTop: "24px",
+        paddingBottom: "24px",
+        paddingLeft: "0px",
+        paddingRight: "0px",
+      }}
+    >
+      {/* Hero Card — exact dimensions: width 100%, height 533 */}
+      <div
+        className="relative w-full overflow-hidden"
+        style={{
+          width: "100%",
+          height: "533px",
+          borderRadius: "28px",
+        }}
+      >
+        {/* Background image - full coverage */}
+        <Image
+          src="/hero-right.jpg"
+          alt="Manvi Legacy Courier"
+          fill
+          sizes="100vw"
+          className="object-cover object-center"
+          priority
+        />
+
+        {/* Overlay layer 1: solid black with opacity */}
+        <div
+          className="absolute inset-0"
+          style={{ background: "rgba(0,0,0,0.5)" }}
+        />
+
+        {/* Overlay layer 2: directional gradient */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.72) 54.84%)",
+          }}
+        />
+
+        {/* Content */}
+        <div className="relative z-10 h-full flex flex-col justify-between p-8 sm:p-10 lg:p-12">
+          {/* Top: badge + headline + subtext */}
+          <div className="flex flex-col gap-4 max-w-2xl">
+            {/* Badge */}
+            <span
+              className="text-[11px] font-bold tracking-widest text-white/90 w-fit px-3 py-1.5 rounded-full flex items-center gap-1.5"
+              style={{
+                background: "rgba(255,255,255,0.12)",
+                border: "1px solid rgba(255,255,255,0.22)",
+              }}
+            >
+              🌐 International Courier Service
+            </span>
+
+            {/* Headline */}
+            <h1
+              className="text-white font-extrabold leading-[1.1] tracking-tight"
+              style={{ fontSize: "clamp(28px, 4vw, 52px)" }}
+            >
+              Your Parcel, Picked Up
+              <br />
+              In India —{" "}
+              <span style={{ color: "#f27a1a" }}>Delivered To</span>
+              <br />
+              <span style={{ color: "#f27a1a" }}>Your Door Worldwide.</span>
             </h1>
-            <p className="text-white/80 text-[13px] leading-relaxed max-w-md">
-              {t.hero_subtext}
+
+            {/* Sub-text */}
+            <p
+              className="text-white/75 text-[14px] leading-relaxed max-w-lg"
+              style={{ textShadow: "0 1px 3px rgba(0,0,0,0.4)" }}
+            >
+              Documents, Gifts, Parcels, And Commercial Shipments To The USA,
+              UK, Canada, Australia And Beyond. Doorstep Pickup. Customs
+              Handled. Real-Time Tracking.
             </p>
           </div>
 
-          <form onSubmit={handleSubmit} className="flex flex-col gap-3 mt-6">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <input
-                type="text"
-                placeholder={t.hero_pickup}
-                aria-label={t.hero_pickup}
-                value={pickup}
-                onChange={(e) => setPickup(e.target.value)}
-                className="bg-white text-[#333] text-[13px] font-medium rounded-xl px-4 py-3 focus:outline-none placeholder:text-gray-400"
-              />
-              <input
-                type="text"
-                placeholder={t.hero_drop}
-                aria-label={t.hero_drop}
-                value={drop}
-                onChange={(e) => setDrop(e.target.value)}
-                className="bg-white text-[#333] text-[13px] font-medium rounded-xl px-4 py-3 focus:outline-none placeholder:text-gray-400"
-              />
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <input
-                type="number"
-                placeholder={t.hero_weight}
-                aria-label={t.hero_weight}
-                value={weight}
-                onChange={(e) => setWeight(e.target.value)}
-                min="0.1"
-                step="0.1"
-                className="bg-white text-[#333] text-[13px] font-medium rounded-xl px-4 py-3 focus:outline-none placeholder:text-gray-400"
-              />
-              <select
-                value={service}
-                onChange={(e) => setService(e.target.value)}
-                aria-label="Select Service Type"
-                className="bg-white text-[#333] text-[13px] font-medium rounded-xl px-4 py-3 focus:outline-none appearance-none"
+          {/* Bottom: CTAs + stats */}
+          <div className="flex flex-col gap-5">
+            {/* CTA Buttons */}
+            <div className="flex flex-wrap items-center gap-3">
+              {/* Get Quote Button - Now links to /quote page */}
+              <Link
+                href="/quote"
+                className="flex items-center gap-2 font-bold text-[14px] px-5 py-3 rounded-full transition-all active:scale-95 no-underline"
+                style={{
+                  background: "#f27a1a",
+                  color: "#fff",
+                  border: "none",
+                  boxShadow: "0 4px 18px rgba(242,122,26,0.45)",
+                }}
               >
-                <option value="">{t.hero_service}</option>
-                <option value="document">{t.hero_doc_express}</option>
-                <option value="parcel">{t.hero_parcel_shipping}</option>
-                <option value="express">{t.hero_cargo_express}</option>
-              </select>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-[1fr_auto] gap-3">
-              <input
-                type="text"
-                placeholder={t.hero_content}
-                aria-label="Package Content"
-                value={content}
-                onChange={(e) => setContent(e.target.value)}
-                className="bg-white text-[#333] text-[13px] font-medium rounded-xl px-4 py-3 focus:outline-none placeholder:text-gray-400"
-              />
-              <button
-                type="submit"
-                className="bg-[#0b1220] hover:bg-slate-800 text-white font-bold text-[13px] py-3 px-6 rounded-xl transition-all active:scale-95 cursor-pointer flex items-center justify-center gap-1.5"
+                Get Quote <ArrowUpRight className="w-4 h-4" strokeWidth={2.5} />
+              </Link>
+
+              <a
+                href="https://wa.me/919999999999"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 font-bold text-[14px] px-5 py-3 rounded-full transition-all active:scale-95 no-underline"
+                style={{
+                  background: "#25D366",
+                  color: "#fff",
+                  boxShadow: "0 4px 18px rgba(37,211,102,0.35)",
+                }}
               >
-                {t.hero_get_quote}{" "}
-                <ArrowUpRight className="h-4 w-4" strokeWidth={2.5} />
-              </button>
-            </div>
-          </form>
-
-          {quote && (
-            <div className="mt-4 p-4 bg-[#0b1220]/90 rounded-xl border border-white/10">
-              <div className="flex justify-between items-center">
-                <div>
-                  <span className="text-[9px] text-[#f27a1a] font-bold uppercase tracking-wider block">
-                    {t.hero_estimated_cost}
-                  </span>
-                  <span className="text-lg font-extrabold text-white">
-                    ₹{quote.price.toLocaleString("en-IN")}
-                  </span>
-                </div>
-                <div className="text-right">
-                  <span className="text-[9px] text-zinc-400 block">
-                    {t.hero_est_delivery}
-                  </span>
-                  <span className="text-sm font-bold text-white">
-                    {quote.days} {t.hero_days}
-                  </span>
-                </div>
-                <button
-                  onClick={() => setQuote(null)}
-                  className="text-zinc-500 hover:text-white text-xs ml-2"
-                >
-                  ✕
-                </button>
-              </div>
-            </div>
-          )}
-        </div>
-
-        {/* Right: Dark Image Card */}
-        <div className="relative rounded-[16px] min-h-[485px] lg:h-[485px] flex flex-col justify-between">
-          {/* Background image + overlays */}
-          <div className="absolute inset-0 rounded-[16px] rounded-bl-[18px] overflow-hidden">
-            <Image
-              src="/hero-right.jpg"
-              alt="Manvi Legacy"
-              fill
-              sizes="(max-width: 1024px) 100vw, 50vw"
-              className="object-cover object-center"
-              priority
-            />
-            {/* Solid 50% black overlay */}
-            <div className="absolute inset-0 bg-black/50" />
-            {/* Directional gradient overlay */}
-            <div
-              className="absolute inset-0"
-              style={{
-                background:
-                  "linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.72) 54.84%)",
-              }}
-            />
-          </div>
-
-          {/* Top content */}
-          <div className="relative z-10 p-6 sm:p-8 lg:p-10 flex flex-col gap-3 ">
-            <span className="text-[11px] font-bold tracking-wider bg-white/15 text-white/90 border border-white/20 w-fit px-3 py-1 rounded-full">
-              {t.hero_legacy_badge}
-            </span>
-            <h2 className="text-[30px] sm:text-[34px] md:text-[40px] font-extrabold text-white leading-[1.15] tracking-tight mt-2">
-              {t.hero_legacy_heading}
-              <br />
-              <span className="text-[#f27a1a]">{t.hero_legacy_highlight}</span>
-            </h2>
-          </div>
-
-          {/* Bottom row */}
-          <div className="relative z-10 p-6 sm:p-8 lg:p-10 flex flex-col  sm:flex-row items-end justify-between gap-6 sm:gap-0">
-            {/* Cutout corner circle */}
-            <div className="absolute -bottom-4 -left-4 w-34 h-34 sm:w-36 sm:h-36 bg-[#f8f9fa] rounded-full  flex items-center justify-center pointer-events-none z-20">
-              {/* Orange spinning WhatsApp circle */}
-              <div className="w-20 h-20 sm:w-28 sm:h-28 bg-[#f27a1a] rounded-full relative flex items-center justify-center shadow-lg pointer-events-auto cursor-pointer hover:scale-105 transition-transform duration-300 z-50">
-                {/* WhatsApp icon */}
                 <svg
-                  className="w-7 h-7 sm:w-8 sm:h-8 text-white z-10 relative"
+                  className="w-[18px] h-[18px]"
                   viewBox="0 0 24 24"
                   fill="currentColor"
                   aria-hidden
@@ -187,86 +151,69 @@ export default function Hero() {
                   <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" />
                   <path d="M12 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.168L2 22l4.832-1.438A9.955 9.955 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2z" />
                 </svg>
-
-                {/* Spinning circular text */}
-                <svg
-                  className="absolute inset-0 w-full h-full animate-[spin_12s_linear_infinite]"
-                  viewBox="0 0 100 100"
-                  aria-hidden
-                >
-                  <path
-                    id="heroCircleText"
-                    d="M 50,50 m -38,0 a 38,38 0 1,1 76,0 a 38,38 0 1,1 -76,0"
-                    fill="none"
-                  />
-                  <text>
-                    <textPath
-                      href="#heroCircleText"
-                      startOffset="0"
-                      style={{
-                        fontSize: "11px",
-                        fill: "white",
-                        fontWeight: "bold",
-                        letterSpacing: "0.12em",
-                      }}
-                      textLength="239"
-                    >
-                      {t.hero_whatsapp}
-                    </textPath>
-                  </text>
-                </svg>
-              </div>
+                WhatsApp Us
+              </a>
             </div>
 
-            {/* Spacer matching circle width so dots/button stay right-aligned */}
-            <div className="w-24 sm:w-32 flex-shrink-0" />
-
-            {/* Carousel dots + Read More */}
-            <div className="flex items-center gap-6 w-full sm:w-auto justify-between sm:justify-end">
-              <div className="flex gap-1.5">
-                <div className="w-2 h-2 rounded-full bg-[#f27a1a]" />
-                <div className="w-2 h-2 rounded-full bg-[#f27a1a]" />
-                <div className="w-2 h-2 rounded-full bg-white/40" />
-                <div className="w-2 h-2 rounded-full bg-white/40" />
+            {/* Trust Stats */}
+            <div className="flex flex-col gap-1">
+              <div className="flex items-center gap-2">
+                <div className="flex gap-0.5">
+                  {[...Array(5)].map((_, i) => (
+                    <svg
+                      key={i}
+                      className="w-4 h-4"
+                      viewBox="0 0 24 24"
+                      fill="#f27a1a"
+                      aria-hidden
+                    >
+                      <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                    </svg>
+                  ))}
+                </div>
+                <span className="text-white/80 text-[13px] font-medium">
+                  Trusted By 10,000+ Families Worldwide
+                </span>
               </div>
-              <button className="border border-white/50 text-white text-[12px] font-semibold px-5 py-2 rounded-lg hover:bg-white/10 transition-colors">
-                {t.hero_read_more}
-              </button>
+              <p
+                className="text-[14px] font-extrabold"
+                style={{ color: "#f27a1a" }}
+              >
+                50,000+ Shipments Delivered
+              </p>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Action Tabs */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mt-5">
+      {/* Action Tabs - with bg color #FF7F00 */}
+      <div 
+        className="grid grid-cols-2 md:grid-cols-4 gap-3" 
+        style={{ 
+          marginTop: "24px",
+          gap: "24px"
+        }}
+      >
         {[
-          {
-            icon: <MapPin className="w-4 h-4" />,
-            label: t.hero_serviceable_zipcodes,
-            href: "/zipcode",
-          },
-          {
-            icon: <Package className="w-4 h-4" />,
-            label: t.nav_track_shipment,
-            href: "/track",
-          },
-          {
-            icon: <Users className="w-4 h-4" />,
-            label: t.hero_our_services,
-            href: "/services",
-          },
-          {
-            icon: <Headphones className="w-4 h-4" />,
-            label: t.hero_contact_us,
-            href: "/contact",
-          },
+          { label: "Serviceable Zipcodes", href: "/zipcode", icon: "📍" },
+          { label: "Track Shipment", href: "/track", icon: "📦" },
+          { label: "Our Services", href: "/services", icon: "👥" },
+          { label: "Contact Us", href: "/contact", icon: "🎧" },
         ].map((tab) => (
           <Link
             key={tab.href}
             href={tab.href}
-            className="flex items-center justify-center gap-2 sm:gap-3 bg-[#0b1220] hover:bg-[#f27a1a] rounded-[14px] sm:rounded-2xl text-[12px] sm:text-[14px] font-semibold text-white py-3 sm:py-4 transition-all text-center px-2"
+            className="flex items-center justify-center gap-2 rounded-2xl text-[13px] font-semibold text-white py-4 transition-all text-center px-3 no-underline"
+            style={{ background: "#FF7F00" }}
+            onMouseEnter={(e) =>
+              (e.currentTarget.style.background = "#e67200")
+            }
+            onMouseLeave={(e) =>
+              (e.currentTarget.style.background = "#FF7F00")
+            }
           >
-            {tab.icon} <span className="truncate">{tab.label}</span>
+            <span>{tab.icon}</span>
+            <span className="truncate">{tab.label}</span>
           </Link>
         ))}
       </div>
