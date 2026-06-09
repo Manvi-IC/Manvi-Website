@@ -6,14 +6,7 @@ import Footer from "@/components/Footer";
 import Link from "next/link";
 import { MapPin, ArrowUpRight, CheckCircle2, AlertCircle, AlertTriangle } from "lucide-react";
 import { checkZipcodeAction } from "./actions";
-        import { useLanguage, Language } from "@/context/LanguageContext";
-
-import {
-  MapPin,
-  ArrowUpRight,
-  CheckCircle2,
-  AlertTriangle,
-} from "lucide-react";
+import { useLanguage, Language } from "@/context/LanguageContext";
 
 interface ZipItem {
   zip: string;
@@ -175,7 +168,7 @@ export default function ZipcodePage() {
 
     try {
       const result = await checkZipcodeAction(cleanQuery);
-      
+
       if (result.status === "success") {
         setStatus("success");
         setMatchedCountry(result.country || "");
@@ -184,7 +177,7 @@ export default function ZipcodePage() {
         setMatchedIsRemote(!!result.isRemote);
         setMatchedDetails(result.details || "");
         setMatchedNotes(result.notes || "");
-        
+
         if (result.matches && result.matches.length > 0) {
           setCities([
             {
@@ -277,7 +270,7 @@ export default function ZipcodePage() {
                     <CheckCircle2 className="w-5 h-5 shrink-0" />
                     <span>{t.success_msg}</span>
                   </div>
-                  
+
                   <div className="text-[13px] text-gray-600 font-semibold pl-7 flex flex-col gap-1.5 border-t border-emerald-100/50 pt-2.5">
                     <div><span className="text-gray-400">Country:</span> {matchedCountry}</div>
                     {matchedPostcode && <div><span className="text-gray-400">Postcode/Area:</span> {matchedPostcode}</div>}
@@ -339,11 +332,10 @@ export default function ZipcodePage() {
                   {group.items.map((item, iIdx) => (
                     <div
                       key={iIdx}
-                      className={`flex justify-between items-center px-6 py-4.5 rounded-2xl border transition-all ${
-                        item.highlighted
+                      className={`flex justify-between items-center px-6 py-4.5 rounded-2xl border transition-all ${item.highlighted
                           ? "bg-[#fff7ed] border-[#fed7aa] shadow-sm"
                           : "bg-white border-gray-100 shadow-sm"
-                      }`}
+                        }`}
                     >
                       <div className="flex items-center gap-3">
                         <div className="w-2 h-2 rounded-full bg-[#f27a1a] shrink-0" />
