@@ -375,7 +375,7 @@ export default function Header() {
         </div>
       )}
 
-      {pathname && pathname !== "/" && (
+      {pathname && pathname !== "/" && pathname !== "/campaign" && (
         <div className="bg-white border-b border-gray-200/80 py-3.5 px-4 sm:px-6 shadow-sm relative z-30">
           <div className="max-w-425 w-full mx-auto flex items-center gap-2 text-xs font-bold text-gray-500">
             <Link href="/" className="hover:text-[#f27a1a] transition-colors">
