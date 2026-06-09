@@ -3,7 +3,7 @@ import Footer from "@/components/Footer";
 import CampaignPage from "@/components/CampaignPage";
 
 export const metadata = {
-  title: "Campaign — Manvi International Courier",
+  title: "Campaign, Manvi International Courier",
   description:
     "Send your parcel from India to the USA, UK, Canada, Australia and worldwide. Doorstep pickup in Delhi. Customs handled. Real-time tracking.",
 };

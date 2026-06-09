@@ -4,9 +4,11 @@ import {
   MapPin,
   Receipt,
   Phone,
+  ChevronDown,
 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
+import { useState, useEffect } from "react";
 
 // ─── DATA ────────────────────────────────────────────────────────────────────
 const STEPS = [
@@ -18,7 +20,7 @@ const STEPS = [
   {
     num: "2",
     title: "We pick it up in India",
-    desc: "Our team collects from your home, a shop, or a relative's doorstep — doorstep pickup across India.",
+    desc: "Our team collects from your home, a shop, or a relative's doorstep; doorstep pickup across India.",
   },
   {
     num: "3",
@@ -28,7 +30,7 @@ const STEPS = [
   {
     num: "4",
     title: "Delivered to your door",
-    desc: "Your parcel arrives overseas — fully tracked end-to-end, right to your doorstep.",
+    desc: "Your parcel arrives overseas, fully tracked end-to-end, right to your doorstep.",
   },
 ];
 
@@ -41,14 +43,17 @@ const PICKUP_CITIES = [
   "Mumbai",
 ];
 
-const DESTINATIONS = ["USA", "UK", "Canada", "Australia"];
-const PARTNERS = ["Fedex", "DPD", "UPS", "DHL", "ARAMEX"];
+// Issue #7: Alphabetical order — Australia, Canada, UK, USA
+const DESTINATIONS = ["Australia", "Canada", "UK", "USA"];
+
+// Issue #6 + #8: Aramex (not ARAMEX); consistent order: DHL, FedEx, UPS, Aramex, DPD
+const PARTNERS = ["DHL", "FedEx", "UPS", "Aramex", "DPD"];
 
 const STATS = [
-  { value: "98%", label: "DELIVERY SUCCESS RATE" },
-  { value: "50K+", label: "SHIPMENTS DELIVERED" },
-  { value: "10K+", label: "HAPPY CUSTOMERS" },
-  { value: "1000+", label: "CUSTOMS CASES HANDLED" },
+  { value: "98%", label: "Delivery Success Rate" },
+  { value: "50K+", label: "Shipments Delivered" },
+  { value: "10K+", label: "Happy Customers" },
+  { value: "1,000+", label: "Customs Cases Handled" },
 ];
 
 const TESTIMONIALS = [
@@ -70,7 +75,7 @@ const TESTIMONIALS = [
   {
     name: "Hardeep S.",
     location: "Sydney, Australia",
-    text: "Sent a parcel of clothes and dry fruits to my mother in Sydney. Arrived before the festival. Excellent service — highly recommend.",
+    text: "Sent a parcel of clothes and dry fruits to my mother in Sydney. Arrived before the festival. Excellent service, highly recommend.",
   },
 ];
 
@@ -83,9 +88,10 @@ const FAQS = [
   {
     num: "02",
     q: "How Much Does It Cost?",
-    a: "Pricing depends on destination, weight, and service type. Parcel shipping to the USA starts from ₹679/kg. ",
+    a: "Pricing depends on destination, weight, and service type. Parcel shipping to the USA starts from ₹679/kg.",
     link: { text: "Get a quick quote", href: "/quote" },
-    afterLink: " or message us on WhatsApp for an exact price — no hidden charges.",
+    afterLink:
+      " or message us on WhatsApp for an exact price; no hidden charges.",
   },
   {
     num: "03",
@@ -100,7 +106,7 @@ const FAQS = [
   {
     num: "05",
     q: "What Can't Be Shipped?",
-    a: "Hazardous chemicals, negotiable currency, precious stones, and prohibited or illegal goods. If you're unsure about a specific item, ask us before booking — we'll confirm.",
+    a: "Hazardous chemicals, negotiable currency, precious stones, and prohibited or illegal goods. If you're unsure about a specific item, ask us before booking; we'll confirm.",
   },
   {
     num: "06",
@@ -108,6 +114,30 @@ const FAQS = [
     a: "Payment options are shared once your quote is confirmed on WhatsApp. You only pay when you're happy with the details. Secure payment links provided.",
   },
 ];
+
+// ─── OFFER END DATE (72 hours from a fixed anchor) ──────────────────────────
+// Set your real campaign deadline here (ISO string, local time)
+const OFFER_END = new Date("2026-06-20T23:59:59");
+
+function useCountdown(target: Date) {
+  const calc = () => {
+    const diff = target.getTime() - Date.now();
+    if (diff <= 0) return { d: 0, h: 0, m: 0, s: 0 };
+    const s = Math.floor(diff / 1000);
+    return {
+      d: Math.floor(s / 86400),
+      h: Math.floor((s % 86400) / 3600),
+      m: Math.floor((s % 3600) / 60),
+      s: s % 60,
+    };
+  };
+  const [time, setTime] = useState(calc);
+  useEffect(() => {
+    const id = setInterval(() => setTime(calc()), 1000);
+    return () => clearInterval(id);
+  }, []);
+  return time;
+}
 
 // ─── STAR RATING ─────────────────────────────────────────────────────────────
 function Stars({ count = 5 }) {
@@ -128,8 +158,76 @@ function Stars({ count = 5 }) {
   );
 }
 
+// ─── COMPACT TIMER ────────────────────────────────────────────────────────────
+function CompactTimer() {
+  const { d, h, m, s } = useCountdown(OFFER_END);
+  const pad = (n: number) => String(n).padStart(2, "0");
+
+  return (
+    <div
+      className="w-full flex items-center justify-between flex-wrap gap-4 px-6 py-4 rounded-xl"
+      style={{ background: "#fff7ed", border: "1px solid #f97316" }}
+    >
+      {/* Label */}
+      <div className="flex items-center gap-2">
+        <span className="text-[18px]">🔥</span>
+        <div>
+          <p className="text-[13px] font-extrabold text-[#0a111e] leading-none">
+            Limited-Time Offer
+          </p>
+          <p className="text-[11px] text-[#777] mt-0.5">
+            ₹679/kg to USA — ends soon
+          </p>
+        </div>
+      </div>
+
+      {/* Clock blocks */}
+      <div className="flex items-center gap-2">
+        {[
+          { val: pad(d), label: "Days" },
+          { val: pad(h), label: "Hrs" },
+          { val: pad(m), label: "Min" },
+          { val: pad(s), label: "Sec" },
+        ].map((unit, i) => (
+          <div key={unit.label} className="flex items-center gap-2">
+            <div className="flex flex-col items-center">
+              <span
+                className="text-[22px] font-extrabold leading-none tabular-nums"
+                style={{ color: "#e77419" }}
+              >
+                {unit.val}
+              </span>
+              <span className="text-[9px] font-bold text-[#888] uppercase tracking-wider mt-0.5">
+                {unit.label}
+              </span>
+            </div>
+            {i < 3 && (
+              <span className="text-[18px] font-extrabold text-[#e77419] -mt-2 select-none">
+                :
+              </span>
+            )}
+          </div>
+        ))}
+      </div>
+
+      {/* CTA */}
+      <a
+        href="https://wa.me/917070506070"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="flex items-center gap-1.5 text-[13px] font-bold px-4 py-2 rounded-full text-white no-underline transition-transform hover:scale-105 shrink-0"
+        style={{ background: "#e77419" }}
+      >
+        Claim Offer <ArrowUpRight className="w-3.5 h-3.5" strokeWidth={2.5} />
+      </a>
+    </div>
+  );
+}
+
 // ─── MAIN PAGE ────────────────────────────────────────────────────────────────
 export default function CampaignPage() {
+  const [activeIndex, setActiveIndex] = useState<number>(0);
+
   return (
     <main className="w-full font-sans bg-white flex flex-col pb-16">
       {/* ── 1. HERO ── */}
@@ -166,7 +264,8 @@ export default function CampaignPage() {
                   border: "1px solid rgba(255,255,255,0.25)",
                 }}
               >
-                <span className="text-[14px]">🌍</span> International Courier Service
+                <span className="text-[14px]">🌍</span> International Courier
+                Service
               </span>
               <h1
                 className="text-white font-extrabold leading-[1.15] tracking-tight"
@@ -174,14 +273,14 @@ export default function CampaignPage() {
               >
                 Your Parcel, Picked Up
                 <br />
-                In India — <span className="text-[#e77419]">Delivered To</span>
+                In India, <span className="text-[#e77419]">Delivered To</span>
                 <br />
                 <span className="text-[#e77419]">Your Door Worldwide.</span>
               </h1>
               <p className="text-[15px] text-white/80 max-w-2xl leading-relaxed font-normal">
-                Documents, Gifts, Parcels, And Commercial Shipments To The USA,
-                UK, Canada, Australia And Beyond. Doorstep Pickup. Customs
-                Handled. Real-Time Tracking.
+                Documents, gifts, parcels, and commercial shipments to the USA,
+                UK, Canada, Australia and beyond. Doorstep pickup. Customs
+                handled. Real-time tracking.
               </p>
             </div>
             <div className="flex flex-col gap-4 mt-6">
@@ -194,7 +293,8 @@ export default function CampaignPage() {
                     border: "1px solid rgba(255,255,255,0.2)",
                   }}
                 >
-                  Get Quote <ArrowUpRight className="w-4 h-4" strokeWidth={2.5} />
+                  Get Quote{" "}
+                  <ArrowUpRight className="w-4 h-4" strokeWidth={2.5} />
                 </Link>
                 <a
                   href="https://wa.me/917070506070"
@@ -212,28 +312,28 @@ export default function CampaignPage() {
                     fill="#0a111e"
                     aria-hidden
                   >
-                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" />
-                    <path d="M12 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.168L2 22l4.832-1.438A9.955 9.955 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2z" />
+                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.335-1.662c1.746.953 3.71 1.458 5.704 1.459h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
                   </svg>
                   WhatsApp Us
                 </a>
               </div>
-              <div className="flex flex-col sm:flex-row sm:items-center gap-x-4 gap-y-2 mt-2">
+              {/* Issue #10: phone format +91 7070 506070; Issue #11: "Trusted by" lowercase b */}
+              <div className="flex flex-col sm:flex-row sm:items-center gap-x-4 gap-y-2">
                 <div className="flex items-center gap-2">
                   <Stars />
                   <span className="text-[13px] text-white/80 font-medium">
-                    Trusted By 10,000+ Families Worldwide
+                    Trusted by 10,000+ Families Worldwide
                   </span>
                 </div>
-                <span className="text-[14px] font-bold text-[#e77419]">
+                {/* <span className="text-[14px] font-bold text-[#e77419]">
                   50,000+ Shipments Delivered
-                </span>
+                </span> */}
               </div>
             </div>
           </div>
         </div>
 
-        {/* Action Tabs — ALL orange */}
+        {/* Action Tabs */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-5 mt-5">
           {[
             { label: "Serviceable Zipcodes", href: "/zipcode" },
@@ -261,6 +361,7 @@ export default function CampaignPage() {
       </section>
 
       {/* ── 2. TRUSTED DELIVERY PARTNERS (FULL WIDTH GRAY BAR) ── */}
+      {/* Issue #8: consistent order DHL, FedEx, UPS, Aramex, DPD */}
       <section className="w-full bg-[#e5e6eb] py-6 mt-4">
         <div className="w-full mx-auto px-4 sm:px-6 flex justify-around items-center gap-50">
           <div className="flex">
@@ -272,10 +373,7 @@ export default function CampaignPage() {
           </div>
           <div className="flex items-center gap-30">
             {PARTNERS.map((p) => (
-              <span
-                key={p}
-                className="text-2xl font-extrabold text-[#0a111e]"
-              >
+              <span key={p} className="text-2xl font-extrabold text-[#0a111e]">
                 {p}
               </span>
             ))}
@@ -291,10 +389,12 @@ export default function CampaignPage() {
               How It Works
             </span>
             <h2 className="text-[34px] font-extrabold text-[#0a111e] leading-tight">
-              Ship In Four Simple Steps
+              Ship in Four Simple Steps
             </h2>
+            {/* Issue #9: removed em-dash, use semicolon */}
             <p className="text-[15px] text-[#666] mt-3 max-w-2xl leading-relaxed">
-              No complicated forms. Just WhatsApp us your details and we handle the rest — pickup to delivery.
+              No complicated forms. Just WhatsApp us your details and we handle
+              the rest; pickup to delivery.
             </p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -326,10 +426,10 @@ export default function CampaignPage() {
         <div className="bg-[#e5e6eb] rounded-xl p-8 sm:p-14">
           <div className="text-center mb-12">
             <span className="inline-block border bg-[#FF7F001F] border-[#e77419] text-[#e77419] px-5 py-1.5 rounded-full text-[12px] font-semibold tracking-wide mb-5">
-              Where We Pick Up And Deliver
+              Where We Pick Up and Deliver
             </span>
             <h2 className="text-[34px] font-extrabold text-[#0a111e] leading-tight">
-              Where We Pick Up And Deliver
+              Where We Pick Up and Deliver
             </h2>
           </div>
 
@@ -339,8 +439,10 @@ export default function CampaignPage() {
               <p className="text-[16px] font-bold text-[#0a111e] mb-3">
                 📍 Pickup Across India
               </p>
+              {/* Issue #9: removed em-dash */}
               <p className="text-[14px] text-[#666] leading-relaxed mb-6">
-                We specialise in North India — with pan-India pickup available on request.
+                We specialise in North India, with pan-India pickup available on
+                request.
               </p>
               <div className="flex flex-wrap gap-2.5">
                 {PICKUP_CITIES.map((c) => (
@@ -361,7 +463,7 @@ export default function CampaignPage() {
               </div>
             </div>
 
-            {/* Delivery Destinations */}
+            {/* Delivery Destinations — Issue #7: alphabetical */}
             <div className="bg-white rounded-3xl p-8 shadow-sm flex flex-col h-full justify-between">
               <div>
                 <p className="text-[16px] font-bold text-[#0a111e] mb-5">
@@ -385,9 +487,10 @@ export default function CampaignPage() {
                   </span>
                 </div>
               </div>
+              {/* Issue #8+#9: consistent carrier order, comma instead of dash */}
               <p className="text-[13px] text-[#666] leading-relaxed mt-6">
-                Delivered via our trusted global carrier network — DHL, FedEx, UPS,
-                Aramex, DPD.
+                Delivered via our trusted global carrier network: DHL, FedEx,
+                UPS, Aramex, DPD.
               </p>
             </div>
           </div>
@@ -397,19 +500,20 @@ export default function CampaignPage() {
             <p className="text-[15px] font-bold text-[#0a111e] mb-2">
               🎁 What You Can Ship
             </p>
+            {/* Issue #9: removed em-dash at end */}
             <p className="text-[12.5px] text-[#777] leading-[1.6]">
-              Rakhis And Festival Gifts · Sweets &amp; Dry Fruits · Gift Hampers ·
-              Clothing &amp; Ethnic Wear · Business Documents · Commercial Samples ·
-              Personal Parcels. Not Sure About An Item?{" "}
+              Rakhis and festival gifts, sweets &amp; dry fruits, gift hampers,
+              clothing &amp; ethnic wear, business documents, commercial
+              samples, personal parcels. Not sure about an item?{" "}
               <a
                 href="https://wa.me/917070506070"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-[#e77419] font-bold underline"
               >
-                Ask Us On WhatsApp
-              </a>{" "}
-              — We&apos;ll Confirm Before You Book.
+                Ask us on WhatsApp
+              </a>
+              ; we&apos;ll confirm before you book.
             </p>
           </div>
         </div>
@@ -417,27 +521,36 @@ export default function CampaignPage() {
 
       {/* ── 5. STATS ── */}
       <section className="w-full max-w-[1400px] mx-auto px-4 sm:px-6 py-10">
-        <div
-          className="rounded-xl p-12"
-          style={{ background: "#FF7F0052" }}
-        >
+        <div className="rounded-xl p-12" style={{ background: "#FF7F0052" }}>
           <p className="text-center text-[#0a111e] text-[20px] font-extrabold mb-10">
-            Numbers That Speak For Themselves
+            Numbers That Speak for Themselves
           </p>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
-            {STATS.map((s) => (
-              <div
-                key={s.label}
-                className="flex flex-col items-center gap-4 text-center"
-              >
-                <span className="text-[56px] font-bold leading-none text-[#e77419]">
-                  {s.value}
-                </span>
-                <span className="text-[13px] font-bold text-[#555] uppercase tracking-wide">
-                  {s.label}
-                </span>
-              </div>
-            ))}
+          <div className="grid grid-cols-2 lg:grid-cols-4">
+            {STATS.map((s, idx) => {
+              let borderClass = "";
+              if (idx === 0) {
+                borderClass =
+                  "border-r border-b lg:border-b-0 border-[#e77419]/30";
+              } else if (idx === 1) {
+                borderClass =
+                  "border-b lg:border-r lg:border-b-0 border-[#e77419]/30";
+              } else if (idx === 2) {
+                borderClass = "border-r border-[#e77419]/30";
+              }
+              return (
+                <div
+                  key={s.label}
+                  className={`flex flex-col items-center gap-4 text-center py-6 px-4 ${borderClass}`}
+                >
+                  <span className="text-[56px] font-bold leading-none text-[#e77419]">
+                    {s.value}
+                  </span>
+                  <span className="text-[13px] font-bold text-[#555] uppercase tracking-wide">
+                    {s.label}
+                  </span>
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -450,7 +563,7 @@ export default function CampaignPage() {
               From Our Customers
             </span>
             <h2 className="text-[32px] font-extrabold text-[#0a111e]">
-              Trusted By Families Worldwide
+              Trusted by Families Worldwide
             </h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -485,8 +598,15 @@ export default function CampaignPage() {
         </div>
       </section>
 
-      {/* ── 7. FAQ ── */}
+      {/* ── 7. TIMER + FAQ ── */}
+      {/* Issue #3+#4: Compact countdown timer above FAQs */}
       <section className="w-full max-w-[1400px] mx-auto px-4 sm:px-6 py-10">
+        {/* Compact Timer */}
+        <div className="mb-6">
+          <CompactTimer />
+        </div>
+
+        {/* Issue #2: Claude-style interactive accordion FAQ */}
         <div className="bg-[#e5e6eb] rounded-xl p-8 sm:p-14">
           <div className="text-center mb-12">
             <span className="inline-block border border-[#e77419] text-[#e77419] px-4 py-1.5 rounded-full text-[12px] font-bold mb-4">
@@ -496,30 +616,53 @@ export default function CampaignPage() {
               Questions? Glad You Asked
             </h2>
           </div>
+
+          {/* Accordion rows */}
           <div className="flex flex-col">
-            {FAQS.map((f, i) => (
-              <div
-                key={i}
-                className="grid grid-cols-1 md:grid-cols-12 gap-6 py-6 border-b border-gray-200 last:border-0 items-start"
-              >
-                <div className="md:col-span-1">
-                  <span className="text-[14px] font-bold text-[#e77419]">
-                    {f.num}
-                  </span>
-                </div>
-                <div className="md:col-span-4">
-                  <h3 className="text-[16px] font-bold text-[#0a111e] leading-snug">
-                    {f.q}
-                  </h3>
-                </div>
-                <div className="md:col-span-7">
-                  <p className="text-[15px] text-[#666] leading-relaxed">
+            {FAQS.map((f, i) => {
+              const isActive = activeIndex === i;
+              return (
+                <div
+                  key={i}
+                  onClick={() => setActiveIndex(isActive ? -1 : i)}
+                  className="grid grid-cols-1 lg:grid-cols-[1.1fr_1.9fr] gap-4 lg:gap-16 border-b border-gray-300/40 last:border-b-0 cursor-pointer items-baseline select-none"
+                  style={{ padding: isActive ? "2rem 0" : "1.25rem 0" }}
+                >
+                  {/* Left: Number + Question */}
+                  <div className="flex flex-col gap-0.5">
+                    <span className="text-[#e77419] text-[12px] font-black tracking-widest">
+                      {f.num}
+                    </span>
+                    <h3
+                      className="font-extrabold text-[#0a111e] leading-snug tracking-tight transition-all duration-300 flex items-start justify-between gap-3"
+                      style={{ fontSize: isActive ? "22px" : "16px" }}
+                    >
+                      <span>{f.q}</span>
+                      <ChevronDown
+                        className={`w-5 h-5 text-[#e77419] shrink-0 mt-0.5 transition-transform duration-300 ${
+                          isActive ? "rotate-180" : ""
+                        }`}
+                      />
+                    </h3>
+                  </div>
+
+                  {/* Right: Answer */}
+                  <p
+                    className="leading-relaxed transition-all duration-300"
+                    style={{
+                      fontSize: isActive ? "15px" : "13px",
+                      color: isActive ? "#4b5563" : "#9ca3af",
+                      fontStyle: isActive ? "normal" : "italic",
+                      fontWeight: isActive ? 500 : 400,
+                    }}
+                  >
                     {f.a}
                     {f.link && (
                       <>
                         <Link
                           href={f.link.href}
                           className="text-[#e77419] font-bold underline ml-1"
+                          onClick={(e) => e.stopPropagation()}
                         >
                           {f.link.text}
                         </Link>
@@ -528,8 +671,8 @@ export default function CampaignPage() {
                     )}
                   </p>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
@@ -541,11 +684,12 @@ export default function CampaignPage() {
           style={{ background: "#FF7F0052" }}
         >
           <h2 className="text-[36px] font-bold text-[#0a111e] leading-tight">
-            Send Your Parcel From India Today.
+            Send Your Parcel from India Today.
           </h2>
+          {/* Issue #9: removed em-dash in CTA */}
           <p className="text-[16px] text-[#666] leading-relaxed max-w-2xl mx-auto mt-4 mb-10">
-            Tell Us Where It Is In India And Where It Needs To Go. We&apos;ll
-            Handle Everything Else — Pickup To Delivery.
+            Tell us where it is in India and where it needs to go. We&apos;ll
+            handle everything else; pickup to delivery.
           </p>
           <div className="flex flex-wrap gap-4 justify-center items-center">
             {/* Get Quote */}
@@ -574,12 +718,11 @@ export default function CampaignPage() {
                 fill="#0a111e"
                 aria-hidden
               >
-                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" />
-                <path d="M12 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.168L2 22l4.832-1.438A9.955 9.955 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2z" />
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.335-1.662c1.746.953 3.71 1.458 5.704 1.459h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
               </svg>
               WhatsApp Us
             </a>
-            {/* Call */}
+            {/* Call — Issue #10: consistent phone format +91 7070 506070 */}
             <a
               href="tel:+917070506070"
               className="flex items-center gap-2 font-bold text-[15px] px-8 py-4 rounded-full no-underline transition-transform hover:scale-105"
@@ -590,7 +733,7 @@ export default function CampaignPage() {
               }}
             >
               <Phone className="w-4 h-4" />
-              Call +91 7070506070
+              Call +91 7070 506070
             </a>
           </div>
         </div>

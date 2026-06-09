@@ -181,7 +181,7 @@ const localTranslations: Record<
       "We Don't Just Ship, We Strategise. By Integrating World-Class Technology With A Deep Understanding Of Global Logistics, We Ensure Your Shipment Is Handled With The Highest Standards Of Safety And Speed.",
     edge_t1: "Global Reach, Local Roots:",
     edge_b1:
-      "From Our Delhi Headquarters, We Reach Over 225+ Countries, Including The USA, UK, Canada, And Australia.",
+      "From Our Delhi Headquarters, We Reach Over 195 Countries, Including The USA, UK, Canada, And Australia.",
     edge_t2: "Tier-1 Partnerships:",
     edge_b2:
       "We Leverage The Global Infrastructure Of Industry Leaders Like DHL, FedEx, And UPS To Offer You Premium Service At Competitive Rates.",
@@ -215,7 +215,7 @@ const localTranslations: Record<
       "At Manvi International, Your Investment Is Always Protected. Our rigorous claim policy ensures that any damage or loss is handled swiftly and fairly.",
     claim_1: "Claims Must Be Raised Within 7 Days Of Delivery",
     claim_2: "Full Documentation Required For Processing",
-    claim_3: "Refunds Processed Within 10–14 Business Days",
+    claim_3: "Refunds Processed In A Minimum Of 25 Business Days",
     claim_4: "Dedicated Support Team For Every Claim",
   },
   hi: {
@@ -243,7 +243,7 @@ const localTranslations: Record<
       "हम केवल शिपिंग नहीं करते, हम रणनीति बनाते हैं। वैश्विक लॉजिस्टिक्स की गहरी समझ के साथ विश्व स्तरीय तकनीक को एकीकृत करके, हम यह सुनिश्चित करते हैं कि आपका शिपमेंट सुरक्षा और गति के उच्चतम मानकों के साथ संभाला जाए।",
     edge_t1: "वैश्विक पहुंच, स्थानीय जड़ें:",
     edge_b1:
-      "हमारे दिल्ली मुख्यालय से, हम अमेरिका, ब्रिटेन, कनाडा और ऑस्ट्रेलिया सहित 225 से अधिक देशों तक पहुंचते हैं।",
+      "हमारे दिल्ली मुख्यालय से, हम अमेरिका, ब्रिटेन, कनाडा और ऑस्ट्रेलिया सहित 195 देशों तक पहुंचते हैं।",
     edge_t2: "टियर-1 साझेदारी:",
     edge_b2:
       "हम आपको प्रतिस्पर्धी दरों पर प्रीमियम सेवा प्रदान करने के लिए डीएचएल, फेडेक्स और यूपीएस जैसे उद्योग जगत के दिग्गजों के वैश्विक बुनियादी ढांचे का लाभ उठाते हैं।",
@@ -277,7 +277,7 @@ const localTranslations: Record<
       "मानवी इंटरनेशनल में, आपका निवेश हमेशा सुरक्षित रहता है। हमारी कठोर दावा नीति यह सुनिश्चित करती है कि किसी भी क्षति या नुकसान को तेजी से और निष्पक्ष रूप से हल किया जाए।",
     claim_1: "दावे वितरण के 7 दिनों के भीतर उठाए जाने चाहिए",
     claim_2: "प्रसंस्करण के लिए पूर्ण दस्तावेज़ीकरण की आवश्यकता है",
-    claim_3: "रिफंड 10-14 व्यावसायिक दिनों के भीतर संसाधित किए जाते हैं",
+    claim_3: "रिफंड प्रक्रिया में कम से कम 25 कार्य दिवस लगते हैं",
     claim_4: "हर दावे के लिए समर्पित सहायता टीम",
   },
   pa: {
@@ -305,7 +305,7 @@ const localTranslations: Record<
       "ਅਸੀਂ ਸਿਰਫ ਸ਼ਿਪਿੰਗ ਨਹੀਂ ਕਰਦੇ, ਅਸੀਂ ਰਣਨੀਤੀ ਬਣਾਉਂਦੇ ਹਾਂ। ਗਲੋਬਲ ਲੌਜਿਸਟਿਕਸ ਦੀ ਡੂੰਘੀ ਸਮਝ ਦੇ ਨਾਲ ਵਿਸ਼ਵ ਪੱਧਰੀ ਤਕਨਾਲੋਜੀ ਨੂੰ ਜੋੜ ਕੇ, ਅਸੀਂ ਇਹ ਯਕੀਨੀ ਬਣਾਉਂਦੇ ਹਾਂ ਕਿ ਤੁਹਾਡੀ ਸ਼ਿਪਮੈਂਟ ਸੁਰੱਖਿਆ ਅਤੇ ਗਤੀ ਦੇ ਉੱਚੇ ਮਿਆਰਾਂ ਨਾਲ ਸੰਭਾਲੀ ਜਾਵੇ।",
     edge_t1: "ਗਲੋਬਲ ਪਹੁੰਚ, ਸਥਾਨਕ ਜੜ੍ਹਾਂ:",
     edge_b1:
-      "ਸਾਡੇ ਦਿੱਲੀ ਦੇ ਮੁੱਖ ਦਫਤਰ ਤੋਂ, ਅਸੀਂ ਅਮਰੀਕਾ, ਯੂਕੇ, ਕੈਨੇਡਾ ਅਤੇ ਆਸਟ੍ਰੇਲੀਆ ਸਮੇਤ 225 ਤੋਂ ਵੱਧ ਦੇਸ਼ਾਂ ਤੱਕ ਪਹੁੰਚਦੇ ਹਾਂ।",
+      "ਸਾਡੇ ਦਿੱਲੀ ਦੇ ਮੁੱਖ ਦਫਤਰ ਤੋਂ, ਅਸੀਂ ਅਮਰੀਕਾ, ਯੂਕੇ, ਕੈਨੇਡਾ ਅਤੇ ਆਸਟ੍ਰੇਲੀਆ ਸਮੇਤ 195 ਦੇਸ਼ਾਂ ਤੱਕ ਪਹੁੰਚਦੇ ਹਾਂ।",
     edge_t2: "ਟਾਇਰ-1 ਭਾਈਵਾਲੀ:",
     edge_b2:
       "ਅਸੀਂ ਤੁਹਾਨੂੰ ਪ੍ਰਤੀਯੋਗੀ ਦਰਾਂ 'ਤੇ ਪ੍ਰੀਮੀਅਮ ਸੇਵਾ ਦੀ ਪੇਸ਼ਕਸ਼ ਕਰਨ ਲਈ DHL, FedEx ਅਤੇ UPS ਵਰਗੇ ਉਦਯੋਗ ਦੇ ਪ੍ਰਮੁੱਖ ਨੇਤਾਵਾਂ ਦੇ ਗਲੋਬਲ ਬੁਨਿਆਦੀ ਢਾਂਚੇ ਦਾ ਲਾਭ ਉਠਾਉਂਦੇ ਹਾਂ।",
@@ -339,7 +339,7 @@ const localTranslations: Record<
       "ਮਾਨਵੀ ਇੰਟਰਨੈਸ਼ਨਲ ਵਿੱਚ, ਤੁਹਾਡਾ ਨਿਵੇਸ਼ ਹਮੇਸ਼ਾ ਸੁਰੱਖਿਅਤ ਰਹਿੰਦਾ ਹੈ। ਸਾਡੀ ਸਖ਼ਤ ਦਾਅਵਾ ਨੀਤੀ ਇਹ ਯਕੀਨੀ ਬਣਾਉਂਦੀ ਹੈ ਕਿ ਕਿਸੇ ਵੀ ਨੁਕਸਾਨ ਨੂੰ ਤੇਜ਼ੀ ਨਾਲ ਅਤੇ ਨਿਰਪੱਖਤਾ ਨਾਲ ਹੱਲ ਕੀਤਾ ਜਾਵੇ।",
     claim_1: "ਦਾਅਵੇ ਡਿਲਿਵਰੀ ਦੇ 7 ਦਿਨਾਂ ਦੇ ਅੰਦਰ ਕੀਤੇ ਜਾਣੇ ਚਾਹੀਦੇ ਹਨ",
     claim_2: "ਪ੍ਰੋਸੈਸਿੰਗ ਲਈ ਪੂਰੇ ਦਸਤਾਵੇਜ਼ਾਂ ਦੀ ਲੋੜ ਹੈ",
-    claim_3: "ਰਿਫੰਡ 10-14 ਕਾਰੋਬਾਰੀ ਦਿਨਾਂ ਦੇ ਅੰਦਰ ਪ੍ਰੋਸੈਸ ਕੀਤੇ ਜਾਂਦੇ ਹਨ",
+    claim_3: "ਰਿਫੰਡ ਪ੍ਰਕਿਰਿਆ ਵਿੱਚ ਘੱਟੋ-ਘੱਟ 25 ਕਾਰੋਬਾਰੀ ਦਿਨ ਲੱਗਦੇ ਹਨ",
     claim_4: "ਹਰ ਦਾਅਵੇ ਲਈ ਸਮਰਪਿਤ ਸਹਾਇਤਾ ਟੀਮ",
   },
   fr: {
@@ -367,7 +367,7 @@ const localTranslations: Record<
       "Nous ne nous contentons pas d'expédier, nous élaborons des stratégies. En intégrant une technologie de classe mondiale à une connaissance approfondie de la logistique mondiale, nous veillons à ce que votre envoi soit traité selon les normes les plus élevées de sécurité et de rapidité.",
     edge_t1: "Portée mondiale, racines locales :",
     edge_b1:
-      "Depuis notre siège de Delhi, nous desservons plus de 225 pays, dont les États-Unis, le Royaume-Uni, le Canada et l'Australie.",
+      "Depuis notre siège de Delhi, nous desservons plus de 195 pays, dont les États-Unis, le Royaume-Uni, le Canada et l'Australie.",
     edge_t2: "Partenariats de niveau 1 :",
     edge_b2:
       "Nous exploitons l'infrastructure mondiale de leaders du secteur comme DHL, FedEx et UPS pour vous offrir un service premium à des tarifs compétitifs.",
@@ -402,7 +402,7 @@ const localTranslations: Record<
     claim_1:
       "Les réclamations doivent être formulées dans les 7 jours suivant la livraison",
     claim_2: "Documentation complète requise pour le traitement",
-    claim_3: "Remboursements traités sous 10 à 14 jours ouvrables",
+    claim_3: "Remboursements traités dans un minimum de 25 jours ouvrables",
     claim_4: "Équipe d'assistance dédiée pour chaque réclamation",
   },
   es: {
@@ -431,7 +431,7 @@ const localTranslations: Record<
       "No solo enviamos, creamos estrategias. Al integrar tecnología de primer nivel con un profundo conocimiento de la logística global, garantizamos que su envío se gestione con los más altos estándares de seguridad y rapidez.",
     edge_t1: "Alcance global, raíces locales:",
     edge_b1:
-      "Desde nuestra sede en Delhi, llegamos a más de 225 países, incluidos EE. UU., Reino Unido, Canadá y Australia.",
+      "Desde nuestra sede en Delhi, llegamos a más de 195 países, incluidos EE. UU., Reino Unido, Canadá y Australia.",
     edge_t2: "Asociaciones de nivel 1:",
     edge_b2:
       "Aprovechamos la infraestructura global de líderes de la industria como DHL, FedEx y UPS para ofrecerle un servicio premium a tarifas competitivas.",
@@ -466,7 +466,7 @@ const localTranslations: Record<
     claim_1:
       "Las reclamaciones deben presentarse dentro de los 7 días posteriores a la entrega",
     claim_2: "Documentación completa requerida para el procesamiento",
-    claim_3: "Reembolsos procesados en un plazo de 10 a 14 días hábiles",
+    claim_3: "Reembolsos procesados en un mínimo de 25 días hábiles",
     claim_4: "Equipo de soporte dedicado para cada reclamación",
   },
 };
