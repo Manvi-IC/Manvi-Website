@@ -1,0 +1,600 @@
+"use client";
+import {
+  ArrowUpRight,
+  MapPin,
+  Receipt,
+  Phone,
+} from "lucide-react";
+import Link from "next/link";
+import Image from "next/image";
+
+// ─── DATA ────────────────────────────────────────────────────────────────────
+const STEPS = [
+  {
+    num: "1",
+    title: "WhatsApp us your details",
+    desc: "Tell us what you're sending, where it is in India, and your delivery address overseas.",
+  },
+  {
+    num: "2",
+    title: "We pick it up in India",
+    desc: "Our team collects from your home, a shop, or a relative's doorstep — doorstep pickup across India.",
+  },
+  {
+    num: "3",
+    title: "We pack, ship and handle customs",
+    desc: "Professionally packed, securely shipped, and all customs paperwork managed for you.",
+  },
+  {
+    num: "4",
+    title: "Delivered to your door",
+    desc: "Your parcel arrives overseas — fully tracked end-to-end, right to your doorstep.",
+  },
+];
+
+const PICKUP_CITIES = [
+  "Punjab",
+  "Delhi NCR",
+  "Haryana",
+  "Rajasthan",
+  "Gujarat",
+  "Mumbai",
+];
+
+const DESTINATIONS = ["USA", "UK", "Canada", "Australia"];
+const PARTNERS = ["Fedex", "DPD", "UPS", "DHL", "ARAMEX"];
+
+const STATS = [
+  { value: "98%", label: "DELIVERY SUCCESS RATE" },
+  { value: "50K+", label: "SHIPMENTS DELIVERED" },
+  { value: "10K+", label: "HAPPY CUSTOMERS" },
+  { value: "1000+", label: "CUSTOMS CASES HANDLED" },
+];
+
+const TESTIMONIALS = [
+  {
+    name: "Anjali M.",
+    location: "Birmingham, UK",
+    text: "My brother's gift was sitting at our home in Ludhiana. They picked it up and it reached me in Toronto within days. I cried a little, honestly.",
+  },
+  {
+    name: "Raj P.",
+    location: "London, UK",
+    text: "I was nervous about sending sweets overseas, but everything arrived perfectly. The WhatsApp updates kept me calm the whole time.",
+  },
+  {
+    name: "Simran K.",
+    location: "Toronto, Canada",
+    text: "My brother's gift was sitting at our home in Ludhiana. They picked it up and it reached me in Toronto within days. I cried a little, honestly.",
+  },
+  {
+    name: "Hardeep S.",
+    location: "Sydney, Australia",
+    text: "Sent a parcel of clothes and dry fruits to my mother in Sydney. Arrived before the festival. Excellent service — highly recommend.",
+  },
+];
+
+const FAQS = [
+  {
+    num: "01",
+    q: "Where Can I Send My Packages?",
+    a: "Almost anywhere! We have a strong presence in the USA, Canada, UK, Europe, and Australia. Whether it's a big city or a quiet suburb, we'll get it there.",
+  },
+  {
+    num: "02",
+    q: "How Much Does It Cost?",
+    a: "Pricing depends on destination, weight, and service type. Parcel shipping to the USA starts from ₹679/kg. ",
+    link: { text: "Get a quick quote", href: "/quote" },
+    afterLink: " or message us on WhatsApp for an exact price — no hidden charges.",
+  },
+  {
+    num: "03",
+    q: "How Long Does Delivery Take?",
+    a: "Most shipments arrive within a few days to two weeks depending on destination and service level. We guarantee on-time delivery when you order within our confirmed service windows.",
+  },
+  {
+    num: "04",
+    q: "Can I Track My Shipment?",
+    a: "Yes. You'll receive a tracking number the moment your parcel is collected. Track live at manvicourier.com/track. We also send WhatsApp updates at every stage.",
+  },
+  {
+    num: "05",
+    q: "What Can't Be Shipped?",
+    a: "Hazardous chemicals, negotiable currency, precious stones, and prohibited or illegal goods. If you're unsure about a specific item, ask us before booking — we'll confirm.",
+  },
+  {
+    num: "06",
+    q: "How Do I Pay?",
+    a: "Payment options are shared once your quote is confirmed on WhatsApp. You only pay when you're happy with the details. Secure payment links provided.",
+  },
+];
+
+// ─── STAR RATING ─────────────────────────────────────────────────────────────
+function Stars({ count = 5 }) {
+  return (
+    <div className="flex gap-1">
+      {[...Array(count)].map((_, i) => (
+        <svg
+          key={i}
+          className="w-4 h-4"
+          viewBox="0 0 24 24"
+          fill="#e77419"
+          aria-hidden
+        >
+          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+        </svg>
+      ))}
+    </div>
+  );
+}
+
+// ─── MAIN PAGE ────────────────────────────────────────────────────────────────
+export default function CampaignPage() {
+  return (
+    <main className="w-full font-sans bg-white flex flex-col pb-16">
+      {/* ── 1. HERO ── */}
+      <section className="w-full max-w-[1400px] mx-auto px-4 sm:px-6 py-6">
+        <div
+          className="relative w-full overflow-hidden"
+          style={{ height: "485px", borderRadius: "20px" }}
+        >
+          <Image
+            src="/hero-right.jpg"
+            alt="Manvi International Courier"
+            fill
+            sizes="100vw"
+            className="object-cover object-center"
+            priority
+          />
+          <div
+            className="absolute inset-0"
+            style={{ background: "rgba(0,0,0,0.4)" }}
+          />
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                "linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.85) 80%)",
+            }}
+          />
+          <div className="relative z-10 h-full flex flex-col justify-between p-8 sm:p-12 lg:p-14">
+            <div className="flex flex-col gap-4 max-w-3xl">
+              <span
+                className="text-[12px] text-white/90 px-3.5 py-1.5 rounded-full flex items-center gap-1.5 w-fit font-medium tracking-wide"
+                style={{
+                  background: "rgba(10,17,30,0.5)",
+                  border: "1px solid rgba(255,255,255,0.25)",
+                }}
+              >
+                <span className="text-[14px]">🌍</span> International Courier Service
+              </span>
+              <h1
+                className="text-white font-extrabold leading-[1.15] tracking-tight"
+                style={{ fontSize: "clamp(34px, 4.5vw, 56px)" }}
+              >
+                Your Parcel, Picked Up
+                <br />
+                In India — <span className="text-[#e77419]">Delivered To</span>
+                <br />
+                <span className="text-[#e77419]">Your Door Worldwide.</span>
+              </h1>
+              <p className="text-[15px] text-white/80 max-w-2xl leading-relaxed font-normal">
+                Documents, Gifts, Parcels, And Commercial Shipments To The USA,
+                UK, Canada, Australia And Beyond. Doorstep Pickup. Customs
+                Handled. Real-Time Tracking.
+              </p>
+            </div>
+            <div className="flex flex-col gap-4 mt-6">
+              <div className="flex flex-wrap gap-4">
+                <Link
+                  href="/quote"
+                  className="flex items-center gap-2 font-bold text-[15px] px-7 py-3.5 rounded-full text-white no-underline transition-transform hover:scale-105"
+                  style={{
+                    background: "#e77419",
+                    border: "1px solid rgba(255,255,255,0.2)",
+                  }}
+                >
+                  Get Quote <ArrowUpRight className="w-4 h-4" strokeWidth={2.5} />
+                </Link>
+                <a
+                  href="https://wa.me/917070506070"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 font-bold text-[15px] px-7 py-3.5 rounded-full no-underline transition-transform hover:scale-105"
+                  style={{
+                    background: "#23c961",
+                    color: "#0a111e",
+                  }}
+                >
+                  <svg
+                    className="w-[18px] h-[18px]"
+                    viewBox="0 0 24 24"
+                    fill="#0a111e"
+                    aria-hidden
+                  >
+                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" />
+                    <path d="M12 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.168L2 22l4.832-1.438A9.955 9.955 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2z" />
+                  </svg>
+                  WhatsApp Us
+                </a>
+              </div>
+              <div className="flex flex-col sm:flex-row sm:items-center gap-x-4 gap-y-2 mt-2">
+                <div className="flex items-center gap-2">
+                  <Stars />
+                  <span className="text-[13px] text-white/80 font-medium">
+                    Trusted By 10,000+ Families Worldwide
+                  </span>
+                </div>
+                <span className="text-[14px] font-bold text-[#e77419]">
+                  50,000+ Shipments Delivered
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Action Tabs — ALL orange */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-5 mt-5">
+          {[
+            { label: "Serviceable Zipcodes", href: "/zipcode" },
+            { label: "Track Shipment", href: "/track" },
+            { label: "Our Services", href: "/services" },
+            { label: "Contact Us", href: "/contact" },
+          ].map((tab, idx) => {
+            return (
+              <Link
+                key={tab.href}
+                href={tab.href}
+                className="flex items-center justify-center gap-2.5 rounded-[14px] text-[15px] font-semibold text-white py-4.5 px-4 transition-transform hover:scale-[1.02] no-underline shadow-sm"
+                style={{ background: "#e77419", minHeight: "64px" }}
+              >
+                {idx === 1 ? (
+                  <Receipt className="w-5 h-5 shrink-0" strokeWidth={2.5} />
+                ) : (
+                  <MapPin className="w-5 h-5 shrink-0" strokeWidth={2.5} />
+                )}
+                {tab.label}
+              </Link>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* ── 2. TRUSTED DELIVERY PARTNERS (FULL WIDTH GRAY BAR) ── */}
+      <section className="w-full bg-[#e5e6eb] py-6 mt-4">
+        <div className="w-full mx-auto px-4 sm:px-6 flex justify-around items-center gap-50">
+          <div className="flex">
+            <span className="text-2xl font-extrabold text-[#e77419] leading-snug block">
+              Trusted Delivery
+              <br className="hidden md:block" />
+              Partners ✈️
+            </span>
+          </div>
+          <div className="flex items-center gap-30">
+            {PARTNERS.map((p) => (
+              <span
+                key={p}
+                className="text-2xl font-extrabold text-[#0a111e]"
+              >
+                {p}
+              </span>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── 3. HOW IT WORKS ── */}
+      <section className="w-full max-w-[1400px] mx-auto px-4 sm:px-6 py-10">
+        <div className="bg-[#F7F7F8] rounded-xl p-8 sm:p-14">
+          <div className="mb-10">
+            <span className="inline-block border border-[#e77419] text-[#e77419] px-5 py-1.5 bg-[#FF7F001F] rounded-full text-[12px] font-semibold tracking-wide mb-5">
+              How It Works
+            </span>
+            <h2 className="text-[34px] font-extrabold text-[#0a111e] leading-tight">
+              Ship In Four Simple Steps
+            </h2>
+            <p className="text-[15px] text-[#666] mt-3 max-w-2xl leading-relaxed">
+              No complicated forms. Just WhatsApp us your details and we handle the rest — pickup to delivery.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            {STEPS.map((step, i) => (
+              <div
+                key={i}
+                className="flex flex-col p-8 rounded-3xl bg-white shadow-sm"
+              >
+                <div
+                  className="w-8 h-8 rounded-full flex items-center justify-center text-white font-bold text-[14px] shrink-0 mb-4"
+                  style={{ background: "#e77419" }}
+                >
+                  {step.num}
+                </div>
+                <h3 className="text-[17px] font-bold text-[#0a111e] mb-2">
+                  {step.title}
+                </h3>
+                <p className="text-[14px] text-[#666] leading-relaxed">
+                  {step.desc}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── 4. WHERE WE PICK UP AND DELIVER ── */}
+      <section className="w-full max-w-[1400px] mx-auto px-4 sm:px-6 py-4">
+        <div className="bg-[#e5e6eb] rounded-xl p-8 sm:p-14">
+          <div className="text-center mb-12">
+            <span className="inline-block border bg-[#FF7F001F] border-[#e77419] text-[#e77419] px-5 py-1.5 rounded-full text-[12px] font-semibold tracking-wide mb-5">
+              Where We Pick Up And Deliver
+            </span>
+            <h2 className="text-[34px] font-extrabold text-[#0a111e] leading-tight">
+              Where We Pick Up And Deliver
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Pickup Across India */}
+            <div className="bg-white rounded-3xl p-8 shadow-sm flex flex-col h-full">
+              <p className="text-[16px] font-bold text-[#0a111e] mb-3">
+                📍 Pickup Across India
+              </p>
+              <p className="text-[14px] text-[#666] leading-relaxed mb-6">
+                We specialise in North India — with pan-India pickup available on request.
+              </p>
+              <div className="flex flex-wrap gap-2.5">
+                {PICKUP_CITIES.map((c) => (
+                  <span
+                    key={c}
+                    className="text-[13px] font-medium px-5 py-1.5 rounded-full bg-[#FF7F001F] text-[#0a111e]"
+                    style={{ border: "1px solid #e77419" }}
+                  >
+                    {c}
+                  </span>
+                ))}
+                <span
+                  className="text-[13px] font-semibold px-5 py-1.5 rounded-full text-white"
+                  style={{ background: "#e77419" }}
+                >
+                  + Pan-India
+                </span>
+              </div>
+            </div>
+
+            {/* Delivery Destinations */}
+            <div className="bg-white rounded-3xl p-8 shadow-sm flex flex-col h-full justify-between">
+              <div>
+                <p className="text-[16px] font-bold text-[#0a111e] mb-5">
+                  ✈️ Delivery Destinations
+                </p>
+                <div className="flex flex-wrap gap-2.5">
+                  {DESTINATIONS.map((d) => (
+                    <span
+                      key={d}
+                      className="text-[13px] font-medium px-5 py-1.5 rounded-full bg-[#FF7F001F] text-[#0a111e]"
+                      style={{ border: "1px solid #e77419" }}
+                    >
+                      {d}
+                    </span>
+                  ))}
+                  <span
+                    className="text-[13px] font-semibold px-5 py-1.5 rounded-full text-white"
+                    style={{ background: "#e77419" }}
+                  >
+                    + Worldwide
+                  </span>
+                </div>
+              </div>
+              <p className="text-[13px] text-[#666] leading-relaxed mt-6">
+                Delivered via our trusted global carrier network — DHL, FedEx, UPS,
+                Aramex, DPD.
+              </p>
+            </div>
+          </div>
+
+          {/* What You Can Ship */}
+          <div className="mt-6 bg-white rounded-3xl p-6 sm:px-8 sm:py-6 shadow-sm">
+            <p className="text-[15px] font-bold text-[#0a111e] mb-2">
+              🎁 What You Can Ship
+            </p>
+            <p className="text-[12.5px] text-[#777] leading-[1.6]">
+              Rakhis And Festival Gifts · Sweets &amp; Dry Fruits · Gift Hampers ·
+              Clothing &amp; Ethnic Wear · Business Documents · Commercial Samples ·
+              Personal Parcels. Not Sure About An Item?{" "}
+              <a
+                href="https://wa.me/917070506070"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[#e77419] font-bold underline"
+              >
+                Ask Us On WhatsApp
+              </a>{" "}
+              — We&apos;ll Confirm Before You Book.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ── 5. STATS ── */}
+      <section className="w-full max-w-[1400px] mx-auto px-4 sm:px-6 py-10">
+        <div
+          className="rounded-xl p-12"
+          style={{ background: "#FF7F0052" }}
+        >
+          <p className="text-center text-[#0a111e] text-[20px] font-extrabold mb-10">
+            Numbers That Speak For Themselves
+          </p>
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
+            {STATS.map((s) => (
+              <div
+                key={s.label}
+                className="flex flex-col items-center gap-4 text-center"
+              >
+                <span className="text-[56px] font-bold leading-none text-[#e77419]">
+                  {s.value}
+                </span>
+                <span className="text-[13px] font-bold text-[#555] uppercase tracking-wide">
+                  {s.label}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── 6. TESTIMONIALS ── */}
+      <section className="w-full max-w-[1400px] mx-auto px-4 sm:px-6 py-4">
+        <div className="bg-[#e5e6eb] rounded-xl p-8 sm:p-14">
+          <div className="mb-10 text-center sm:text-left">
+            <span className="inline-block border border-[#e77419] text-[#e77419] px-4 py-1.5 rounded-full text-[12px] font-bold mb-4">
+              From Our Customers
+            </span>
+            <h2 className="text-[32px] font-extrabold text-[#0a111e]">
+              Trusted By Families Worldwide
+            </h2>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            {TESTIMONIALS.map((t, i) => (
+              <div
+                key={i}
+                className="flex flex-col gap-4 p-8 rounded-2xl bg-white shadow-sm"
+              >
+                <span className="text-[40px] text-[#e77419] font-serif leading-none select-none">
+                  &#x201C;&#x201C;
+                </span>
+                <p className="text-[15px] text-[#666] leading-relaxed italic mb-4">
+                  {t.text}
+                </p>
+                <div className="flex items-center gap-4 mt-auto">
+                  <div
+                    className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-[14px] shrink-0"
+                    style={{ background: "#e77419" }}
+                  >
+                    {t.name[0]}
+                  </div>
+                  <div className="flex flex-col">
+                    <p className="text-[14px] font-bold text-[#0a111e]">
+                      {t.name}
+                    </p>
+                    <p className="text-[12px] text-[#666]">{t.location}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── 7. FAQ ── */}
+      <section className="w-full max-w-[1400px] mx-auto px-4 sm:px-6 py-10">
+        <div className="bg-[#e5e6eb] rounded-xl p-8 sm:p-14">
+          <div className="text-center mb-12">
+            <span className="inline-block border border-[#e77419] text-[#e77419] px-4 py-1.5 rounded-full text-[12px] font-bold mb-4">
+              FAQ
+            </span>
+            <h2 className="text-[32px] font-extrabold text-[#0a111e]">
+              Questions? Glad You Asked
+            </h2>
+          </div>
+          <div className="flex flex-col">
+            {FAQS.map((f, i) => (
+              <div
+                key={i}
+                className="grid grid-cols-1 md:grid-cols-12 gap-6 py-6 border-b border-gray-200 last:border-0 items-start"
+              >
+                <div className="md:col-span-1">
+                  <span className="text-[14px] font-bold text-[#e77419]">
+                    {f.num}
+                  </span>
+                </div>
+                <div className="md:col-span-4">
+                  <h3 className="text-[16px] font-bold text-[#0a111e] leading-snug">
+                    {f.q}
+                  </h3>
+                </div>
+                <div className="md:col-span-7">
+                  <p className="text-[15px] text-[#666] leading-relaxed">
+                    {f.a}
+                    {f.link && (
+                      <>
+                        <Link
+                          href={f.link.href}
+                          className="text-[#e77419] font-bold underline ml-1"
+                        >
+                          {f.link.text}
+                        </Link>
+                        {f.afterLink}
+                      </>
+                    )}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── 8. BOTTOM CTA ── */}
+      <section className="w-full max-w-[1400px] mx-auto px-4 sm:px-6 py-4 mb-8">
+        <div
+          className="rounded-xl p-16 text-center"
+          style={{ background: "#FF7F0052" }}
+        >
+          <h2 className="text-[36px] font-bold text-[#0a111e] leading-tight">
+            Send Your Parcel From India Today.
+          </h2>
+          <p className="text-[16px] text-[#666] leading-relaxed max-w-2xl mx-auto mt-4 mb-10">
+            Tell Us Where It Is In India And Where It Needs To Go. We&apos;ll
+            Handle Everything Else — Pickup To Delivery.
+          </p>
+          <div className="flex flex-wrap gap-4 justify-center items-center">
+            {/* Get Quote */}
+            <Link
+              href="/quote"
+              className="flex items-center gap-2 font-bold text-[15px] px-8 py-4 rounded-full text-white no-underline transition-transform hover:scale-105"
+              style={{
+                background: "#e77419",
+              }}
+            >
+              Get Quote <ArrowUpRight className="w-4 h-4" strokeWidth={2.5} />
+            </Link>
+            {/* WhatsApp */}
+            <a
+              href="https://wa.me/917070506070"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 font-bold text-[15px] px-8 py-4 rounded-full text-[#0a111e] no-underline transition-transform hover:scale-105"
+              style={{
+                background: "#23c961",
+              }}
+            >
+              <svg
+                className="w-[18px] h-[18px]"
+                viewBox="0 0 24 24"
+                fill="#0a111e"
+                aria-hidden
+              >
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" />
+                <path d="M12 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.168L2 22l4.832-1.438A9.955 9.955 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2z" />
+              </svg>
+              WhatsApp Us
+            </a>
+            {/* Call */}
+            <a
+              href="tel:+917070506070"
+              className="flex items-center gap-2 font-bold text-[15px] px-8 py-4 rounded-full no-underline transition-transform hover:scale-105"
+              style={{
+                background: "transparent",
+                color: "#e77419",
+                border: "2px solid #e77419",
+              }}
+            >
+              <Phone className="w-4 h-4" />
+              Call +91 7070506070
+            </a>
+          </div>
+        </div>
+      </section>
+    </main>
+  );
+}

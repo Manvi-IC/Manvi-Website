@@ -7,7 +7,6 @@ import Link from "next/link";
 
 import { checkZipcodeAction } from "./actions";
 import { useLanguage, Language } from "@/context/LanguageContext";
-
 import {
   MapPin,
   ArrowUpRight,
@@ -365,11 +364,10 @@ export default function ZipcodePage() {
                   {group.items.map((item, iIdx) => (
                     <div
                       key={iIdx}
-                      className={`flex justify-between items-center px-6 py-4.5 rounded-2xl border transition-all ${
-                        item.highlighted
+                      className={`flex justify-between items-center px-6 py-4.5 rounded-2xl border transition-all ${item.highlighted
                           ? "bg-[#fff7ed] border-[#fed7aa] shadow-sm"
                           : "bg-white border-gray-100 shadow-sm"
-                      }`}
+                        }`}
                     >
                       <div className="flex items-center gap-3">
                         <div className="w-2 h-2 rounded-full bg-[#f27a1a] shrink-0" />
