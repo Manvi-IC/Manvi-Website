@@ -4,9 +4,15 @@ import { useState } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Link from "next/link";
-import { MapPin, ArrowUpRight, CheckCircle2, AlertCircle, AlertTriangle } from "lucide-react";
+
 import { checkZipcodeAction } from "./actions";
 import { useLanguage, Language } from "@/context/LanguageContext";
+import {
+  MapPin,
+  ArrowUpRight,
+  CheckCircle2,
+  AlertTriangle,
+} from "lucide-react";
 
 interface ZipItem {
   zip: string;
@@ -182,12 +188,12 @@ export default function ZipcodePage() {
           setCities([
             {
               city: `Matches for "${cleanQuery}"`,
-              items: result.matches.map(m => ({
+              items: result.matches.map((m) => ({
                 zip: m.zip,
                 days: m.days,
-                highlighted: true
-              }))
-            }
+                highlighted: true,
+              })),
+            },
           ]);
         } else {
           setCities([
@@ -197,11 +203,11 @@ export default function ZipcodePage() {
                 {
                   zip: result.postcode || cleanQuery.toUpperCase(),
                   days: result.deliveryTime || "Serviceable",
-                  highlighted: true
-                }
-              ]
+                  highlighted: true,
+                },
+              ],
             },
-            ...initialCities
+            ...initialCities,
           ]);
         }
       } else {
@@ -272,12 +278,38 @@ export default function ZipcodePage() {
                   </div>
 
                   <div className="text-[13px] text-gray-600 font-semibold pl-7 flex flex-col gap-1.5 border-t border-emerald-100/50 pt-2.5">
-                    <div><span className="text-gray-400">Country:</span> {matchedCountry}</div>
-                    {matchedPostcode && <div><span className="text-gray-400">Postcode/Area:</span> {matchedPostcode}</div>}
-                    {matchedDeliveryTime && <div><span className="text-gray-400">Est. Delivery:</span> {matchedDeliveryTime}</div>}
-                    <div><span className="text-gray-400">Zone Type:</span> {matchedIsRemote ? "Remote Area (Surcharges may apply)" : "Standard Zone"}</div>
-                    {matchedDetails && <div className="text-xs text-gray-500 italic mt-1 font-medium">{matchedDetails}</div>}
-                    {matchedNotes && <div className="text-xs text-gray-500 bg-emerald-50/50 p-2.5 rounded-lg mt-1 font-medium leading-relaxed">{matchedNotes}</div>}
+                    <div>
+                      <span className="text-gray-400">Country:</span>{" "}
+                      {matchedCountry}
+                    </div>
+                    {matchedPostcode && (
+                      <div>
+                        <span className="text-gray-400">Postcode/Area:</span>{" "}
+                        {matchedPostcode}
+                      </div>
+                    )}
+                    {matchedDeliveryTime && (
+                      <div>
+                        <span className="text-gray-400">Est. Delivery:</span>{" "}
+                        {matchedDeliveryTime}
+                      </div>
+                    )}
+                    <div>
+                      <span className="text-gray-400">Zone Type:</span>{" "}
+                      {matchedIsRemote
+                        ? "Remote Area (Surcharges may apply)"
+                        : "Standard Zone"}
+                    </div>
+                    {matchedDetails && (
+                      <div className="text-xs text-gray-500 italic mt-1 font-medium">
+                        {matchedDetails}
+                      </div>
+                    )}
+                    {matchedNotes && (
+                      <div className="text-xs text-gray-500 bg-emerald-50/50 p-2.5 rounded-lg mt-1 font-medium leading-relaxed">
+                        {matchedNotes}
+                      </div>
+                    )}
                   </div>
                 </div>
               )}
