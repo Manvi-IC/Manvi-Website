@@ -403,7 +403,7 @@ export default function ContactPage() {
                   <div className="text-[14px] font-semibold text-gray-500">
                     {t.phone_label}{" "}
                     <span className="text-[#f27a1a] font-bold">
-                      +91 7070506070
+                      +91 7070 506070
                     </span>
                   </div>
                 </div>
@@ -539,6 +539,14 @@ export default function ContactPage() {
                   className="text-[#f27a1a] font-bold text-[14px] flex items-center gap-1 hover:underline"
                 >
                   UPS Tracking <ArrowUpRight className="w-3.5 h-3.5" />
+                </a>
+                <a
+                  href="https://www.aramex.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[#f27a1a] font-bold text-[14px] flex items-center gap-1 hover:underline"
+                >
+                  Aramex Tracking <ArrowUpRight className="w-3.5 h-3.5" />
                 </a>
               </div>
             </div>

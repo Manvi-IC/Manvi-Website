@@ -448,7 +448,7 @@ export default function ServicesPage() {
       active: false,
     },
     {
-      name: "Fedex",
+      name: "FedEx",
       icon: <Zap className="w-5 h-5 text-[#f27a1a]" />,
       active: false,
     },
@@ -503,7 +503,7 @@ export default function ServicesPage() {
         {
           dest: "New Zealand",
           weight: "30kg/box",
-          duty: "Up to AUD 800",
+          duty: "Up to NZD 1,000",
           delivery: "5-7 working days",
         },
         {
@@ -542,7 +542,7 @@ export default function ServicesPage() {
         {
           dest: "New Zealand",
           weight: "30kg/box",
-          duty: "Up to AUD 800",
+          duty: "Up to NZD 1,000",
           delivery: "7-9 working days",
         },
         {
@@ -581,7 +581,7 @@ export default function ServicesPage() {
         {
           dest: "New Zealand",
           weight: "30kg/box",
-          duty: "Up to AUD 800",
+          duty: "Up to NZD 1,000",
           delivery: "6-8 working days",
         },
         {
