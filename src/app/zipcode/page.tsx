@@ -46,15 +46,15 @@ const localTranslations: Record<
     banner_title: "Serviceable Zipcode",
     card_title: "Check Delivery\nAvailability In Your Area",
     card_subtitle:
-      "Enter Your City Or Zip Code Below To Instantly Check If We Deliver To Your Location.",
-    input_placeholder: "Enter City Or Pincode",
+      "Enter Your International ZIP Code Or Indian PIN Code Below To Instantly Check If We Deliver To Your Location.",
+    input_placeholder: "Enter ZIP Code (Intl) / PIN Code (India)",
     btn_check: "Check Availability",
     success_msg: "Great News! We Serve Your Area",
     fail_msg: "We're Not There Yet",
     fail_submsg: "But Don't Worry... We're Expanding Soon!",
     need_assistance: "Need Assistance With\nYour ZIP Code?",
     assistance_subtitle:
-      "Not Sure About Your PIN Code? Enter Your City Name Instead.",
+      "Not Sure About Your ZIP/PIN Code? Enter Your City Name Instead.",
     contact_btn: "Contact Support",
     business_days: "Business Days",
   },
@@ -135,8 +135,8 @@ export default function ZipcodePage() {
       items: [
         { zip: "10001", days: `6-9 ${t.business_days}` },
         { zip: "10002", days: `6-9 ${t.business_days}` },
-        { zip: "10001", days: `6-9 ${t.business_days}` },
-        { zip: "10001", days: `6-9 ${t.business_days}` },
+        { zip: "10003", days: `6-9 ${t.business_days}` },
+        { zip: "10004", days: `6-9 ${t.business_days}` },
       ],
     },
     {
@@ -144,8 +144,8 @@ export default function ZipcodePage() {
       items: [
         { zip: "90001", days: `7-11 ${t.business_days}` },
         { zip: "90002", days: `7-11 ${t.business_days}` },
-        { zip: "90002", days: `6-10 ${t.business_days}` },
-        { zip: "90002", days: `7-11 ${t.business_days}` },
+        { zip: "90003", days: `6-10 ${t.business_days}` },
+        { zip: "90004", days: `7-11 ${t.business_days}` },
       ],
     },
   ];

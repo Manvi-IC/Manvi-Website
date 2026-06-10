@@ -54,7 +54,7 @@ const localTranslations: Record<
     btn_track: "Track Shipment",
     need_help: "Need Help?",
     help_desc:
-      "If You're Experiencing Delays Or Cannot Locate Your Tracking Details, Our Customer Support Team Is Available 24/7 To Assist You.",
+      "If You're Experiencing Delays Or Cannot Locate Your Tracking Details, Our Customer Support Team Is Available Monday To Saturday To Assist You.",
     contact_support_btn: "Contact Support",
     err_empty: "Please enter a tracking number.",
     back_btn: "Search Another Shipment",
@@ -84,7 +84,7 @@ const localTranslations: Record<
     btn_track: "ट्रैक शिपमेंट",
     need_help: "सहायता चाहिए?",
     help_desc:
-      "यदि आपको देरी का सामना करना पड़ रहा है या ट्रैकिंग विवरण नहीं मिल रहे हैं, तो हमारी टीम सहायता के लिए 24/7 उपलब्ध है।",
+      "यदि आपको देरी का सामना करना पड़ रहा है या ट्रैकिंग विवरण नहीं मिल रहे हैं, तो हमारी टीम सहायता के लिए उपलब्ध है।",
     contact_support_btn: "सहायता टीम से संपर्क करें",
     err_empty: "कृपया एक ट्रैकिंग नंबर दर्ज करें।",
     back_btn: "अन्य शिपमेंट खोजें",
@@ -144,7 +144,7 @@ const localTranslations: Record<
     btn_track: "Suivre l'envoi",
     need_help: "Besoin d'aide ?",
     help_desc:
-      "Si vous rencontrez des retards ou ne trouvez pas vos détails de suivi, notre équipe est disponible 24/7.",
+      "Si vous rencontrez des retards ou ne trouvez pas vos détails de suivi, notre équipe est disponible pour vous aider.",
     contact_support_btn: "Contacter le support",
     err_empty: "Veuillez entrer un numéro de suivi.",
     back_btn: "Rechercher un autre envoi",
@@ -174,7 +174,7 @@ const localTranslations: Record<
     btn_track: "Rastrear envío",
     need_help: "¿Necesita ayuda?",
     help_desc:
-      "Si tiene demoras o no encuentra los detalles de seguimiento, nuestro equipo está a su disposición 24/7.",
+      "Si tiene demoras o no encuentra los detalles de seguimiento, nuestro equipo está a su disposición.",
     contact_support_btn: "Contactar a soporte",
     err_empty: "Por favor ingrese un número de seguimiento.",
     back_btn: "Buscar otro envío",

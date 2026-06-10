@@ -8,7 +8,7 @@ export default function Prohibited() {
   const prohibitedItems = [
     { icon: "🧪", label: t.prohibited_item1 },
     { icon: "💵", label: t.prohibited_item2 },
-    { icon: "📱", label: t.prohibited_item3 },
+    { icon: "⚠️", label: t.prohibited_item3 },
     { icon: "💎", label: t.prohibited_item4 },
     { icon: "🌿", label: t.prohibited_item5 },
   ];

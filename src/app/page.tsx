@@ -34,7 +34,7 @@ export default function Home() {
               </span>
             </div>
             <div className="flex flex-wrap items-center justify-center md:justify-end gap-6 sm:gap-10 md:gap-16">
-              {["ARAMEX", "DHL", "DPD", "Fedex", "UPS"].map((p) => (
+              {["DHL", "FedEx", "UPS", "Aramex", "DPD"].map((p) => (
                 <span
                   key={p}
                   className="text-[18px] sm:text-[20px] md:text-[22px] font-extrabold text-[#1c1f2e] tracking-wide select-none"

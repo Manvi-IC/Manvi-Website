@@ -282,7 +282,7 @@ const translations: Record<Language, Translations> = {
     claim_tab1_d3_num: "03",
     claim_tab1_d3_title: "Third-Party Dependency",
     claim_tab1_d3_desc:
-      'As an international logistics provider, Manvi International\'s claim resolution is strictly contingent upon the official investigation reports and confirmation from our global courier partners, including but not limited to <strong class="font-extrabold text-[#1c1f2e]">DHL, FedEx, and UPS</strong>',
+      'As an international logistics provider, Manvi International\'s claim resolution is strictly contingent upon the official investigation reports and confirmation from our global courier partners, including but not limited to <strong class="font-extrabold text-[#1c1f2e]">DHL, FedEx, UPS, and Aramex</strong>',
     claim_tab2_title: "Return To Origin (RTO) Shipments",
     claim_tab2_subtext:
       "Returned Shipments For Non-Delivery, Incorrect Addresses, Or Refusal Qualify For Refunds.",
@@ -439,7 +439,7 @@ const translations: Record<Language, Translations> = {
     wwl_card1_desc: "सटीकता और देखभाल के साथ सफल अंतर्राष्ट्रीय डिलीवरी।",
     wwl_card2_label: "श्रेष्ठ साझेदारी",
     wwl_card2_stat: "कई\nदेश",
-    wwl_card2_desc: "DHL, FedEx और UPS सहित विश्व स्तरीय वाहकों के साथ सहयोग।",
+    wwl_card2_desc: "DHL, FedEx, UPS और Aramex सहित विश्व स्तरीय वाहकों के साथ सहयोग।",
     wwl_card3_label: "कस्टम महारत",
     wwl_card3_stat: "1000+",
     wwl_card3_desc:
@@ -622,7 +622,7 @@ const translations: Record<Language, Translations> = {
     wwl_card1_desc: "ਸ਼ੁੱਧਤਾ ਅਤੇ ਦੇਖਭਾਲ ਨਾਲ ਸਫਲ ਅੰਤਰਰਾਸ਼ਟਰੀ ਡਿਲੀਵਰੀ।",
     wwl_card2_label: "ਉੱਤਮ ਸਾਂਝੇਦਾਰੀ",
     wwl_card2_stat: "ਕਈ\nਦੇਸ਼",
-    wwl_card2_desc: "DHL, FedEx ਅਤੇ UPS ਸਮੇਤ ਵਿਸ਼ਵ ਪੱਧਰੀ ਕੈਰੀਅਰਾਂ ਨਾਲ ਸਹਿਯੋਗ।",
+    wwl_card2_desc: "DHL, FedEx, UPS ਅਤੇ Aramex ਸਮੇਤ ਵਿਸ਼ਵ ਪੱਧਰੀ ਕੈਰੀਅਰਾਂ ਨਾਲ ਸਹਿਯੋਗ।",
     wwl_card3_label: "ਕਸਟਮ ਮੁਹਾਰਤ",
     wwl_card3_stat: "1000+",
     wwl_card3_desc:
