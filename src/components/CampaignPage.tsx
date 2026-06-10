@@ -269,11 +269,11 @@ export default function CampaignPage() {
               </span>
               <h1
                 className="text-white font-extrabold leading-[1.15] tracking-tight"
-                style={{ fontSize: "clamp(34px, 4.5vw, 56px)" }}
+                style={{ fontSize: "clamp(34px, 2vw, 56px)" }}
               >
                 Your Parcel, Picked Up
                 <br />
-                In India, <span className="text-[#e77419]">Delivered To</span>
+                In India : <span className="text-[#e77419]">Delivered To</span>
                 <br />
                 <span className="text-[#e77419]">Your Door Worldwide.</span>
               </h1>
@@ -317,20 +317,20 @@ export default function CampaignPage() {
                   WhatsApp Us
                 </a>
               </div>
-              {/* Issue #10: phone format +91 7070 506070; Issue #11: "Trusted by" lowercase b */}
-              <div className="flex flex-col sm:flex-row sm:items-center gap-x-4 gap-y-2">
-                <div className="flex items-center gap-2">
-                  <Stars />
-                  <span className="text-[13px] text-white/80 font-medium">
-                    Trusted by 10,000+ Families Worldwide
-                  </span>
-                </div>
-                {/* <span className="text-[14px] font-bold text-[#e77419]">
-                  50,000+ Shipments Delivered
-                </span> */}
-              </div>
+
             </div>
           </div>
+        </div>
+        <div className="flex flex-col sm:flex-row sm:items-center gap-x-4 gap-y-2 mt-2">
+          <div className="flex items-center gap-2">
+            <Stars />
+            <span className="text-[13px] text-black/80 font-medium">
+              Trusted By 10,000+ Families Worldwide
+            </span>
+          </div>
+          <span className="text-[14px] font-bold text-[#e77419]">
+            50,000+ Shipments Delivered
+          </span>
         </div>
 
         {/* Action Tabs */}
@@ -639,9 +639,8 @@ export default function CampaignPage() {
                     >
                       <span>{f.q}</span>
                       <ChevronDown
-                        className={`w-5 h-5 text-[#e77419] shrink-0 mt-0.5 transition-transform duration-300 ${
-                          isActive ? "rotate-180" : ""
-                        }`}
+                        className={`w-5 h-5 text-[#e77419] shrink-0 mt-0.5 transition-transform duration-300 ${isActive ? "rotate-180" : ""
+                          }`}
                       />
                     </h3>
                   </div>
