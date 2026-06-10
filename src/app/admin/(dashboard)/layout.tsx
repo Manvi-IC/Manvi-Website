@@ -10,8 +10,8 @@ export default function AdminLayout({
   return (
     <div className="min-h-screen bg-gray-100 flex">
       {/* Sidebar */}
-      <aside className="w-64 bg-slate-900 text-white flex flex-col hidden md:flex">
-        <div className="h-16 flex items-center px-6 bg-slate-950 font-bold text-xl tracking-wider">
+      <aside className="w-64 bg-[#0b1220] text-white flex flex-col hidden md:flex">
+        <div className="h-16 flex items-center px-6 bg-[#050914] font-bold text-xl tracking-wider">
           M5C ADMIN
         </div>
         <nav className="flex-1 px-4 py-6 space-y-2">
@@ -23,9 +23,13 @@ export default function AdminLayout({
             <Package size={20} />
             Upload Rates
           </Link>
+          <Link href="/admin/site-settings" className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-slate-800 text-slate-400 hover:text-slate-100 transition-colors">
+            <Settings size={20} />
+            Site Settings
+          </Link>
           <Link href="/admin/settings" className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-slate-800 text-slate-400 hover:text-slate-100 transition-colors">
             <Settings size={20} />
-            Settings
+            Profile Settings
           </Link>
         </nav>
         <div className="p-4 border-t border-slate-800">
