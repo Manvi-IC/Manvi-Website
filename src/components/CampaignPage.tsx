@@ -117,7 +117,7 @@ const FAQS = [
 
 // ─── OFFER END DATE (72 hours from a fixed anchor) ──────────────────────────
 // Set your real campaign deadline here (ISO string, local time)
-const OFFER_END = new Date("2026-06-20T23:59:59");
+const DEFAULT_OFFER_END = new Date("2026-06-20T23:59:59");
 
 function useCountdown(target: Date) {
   const calc = () => {
@@ -131,11 +131,15 @@ function useCountdown(target: Date) {
       s: s % 60,
     };
   };
+
   const [time, setTime] = useState(calc);
+
   useEffect(() => {
+    setTime(calc()); // immediately update if target changed
     const id = setInterval(() => setTime(calc()), 1000);
     return () => clearInterval(id);
-  }, []);
+  }, [target.getTime()]);
+
   return time;
 }
 
@@ -159,30 +163,30 @@ function Stars({ count = 5 }) {
 }
 
 // ─── COMPACT TIMER ────────────────────────────────────────────────────────────
-function CompactTimer() {
-  const { d, h, m, s } = useCountdown(OFFER_END);
+function CompactTimer({ endDate, title, subtitle }: { endDate: Date, title: string, subtitle: string }) {
+  const { d, h, m, s } = useCountdown(endDate);
   const pad = (n: number) => String(n).padStart(2, "0");
 
   return (
     <div
-      className="w-full flex items-center justify-between flex-wrap gap-4 px-6 py-4 rounded-xl"
-      style={{ background: "#fff7ed", border: "1px solid #f97316" }}
+      className="w-full flex items-center justify-center flex py-20 border-[1px] border-[#f97316] px-30"
+      style={{ background: "#fff7ed" }}
     >
       {/* Label */}
-      <div className="flex items-center gap-2">
-        <span className="text-[18px]">🔥</span>
+      <div className="flex w-1/3 items-center text-[#e77419] justify-center">
+        <span className="text-5xl ml-20">🔥</span>
         <div>
-          <p className="text-[13px] font-extrabold text-[#0a111e] leading-none">
-            Limited-Time Offer
+          <p className="text-4xl font-bold text-[#e77419] leading-none">
+            {title}
           </p>
-          <p className="text-[11px] text-[#777] mt-0.5">
-            ₹679/kg to USA — ends soon
+          <p className="text-lg text-[#0a111e] mt-0.5">
+            {subtitle}
           </p>
         </div>
       </div>
 
       {/* Clock blocks */}
-      <div className="flex items-center gap-2">
+      <div className="flex w-1/3 items-center justify-center gap-2">
         {[
           { val: pad(d), label: "Days" },
           { val: pad(h), label: "Hrs" },
@@ -190,14 +194,14 @@ function CompactTimer() {
           { val: pad(s), label: "Sec" },
         ].map((unit, i) => (
           <div key={unit.label} className="flex items-center gap-2">
-            <div className="flex flex-col items-center">
+            <div className="flex flex-col items-center bg-white/50 shadow-sm rounded-xl p-3">
               <span
-                className="text-[22px] font-extrabold leading-none tabular-nums"
+                className="text-5xl font-extrabold leading-none tabular-nums"
                 style={{ color: "#e77419" }}
               >
                 {unit.val}
               </span>
-              <span className="text-[9px] font-bold text-[#888] uppercase tracking-wider mt-0.5">
+              <span className="text-md font-light text-[#888] uppercase tracking-wider mt-0.5">
                 {unit.label}
               </span>
             </div>
@@ -211,15 +215,18 @@ function CompactTimer() {
       </div>
 
       {/* CTA */}
-      <a
-        href="https://wa.me/917070506070"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="flex items-center gap-1.5 text-[13px] font-bold px-4 py-2 rounded-full text-white no-underline transition-transform hover:scale-105 shrink-0"
-        style={{ background: "#e77419" }}
-      >
-        Claim Offer <ArrowUpRight className="w-3.5 h-3.5" strokeWidth={2.5} />
-      </a>
+      <div className="flex items-center justify-center w-1/3">
+        <a
+          href="https://wa.me/917070506070"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center gap-1.5 text-2xl font-medium px-8 py-4 rounded-2xl tracking-wide text-white no-underline transition-transform hover:scale-105 shrink-0"
+          style={{ background: "#e77419" }}
+        >
+          Claim Offer <ArrowUpRight className="w-3.5 h-3.5" strokeWidth={2.5} />
+        </a>
+      </div>
+
     </div>
   );
 }
@@ -227,6 +234,26 @@ function CompactTimer() {
 // ─── MAIN PAGE ────────────────────────────────────────────────────────────────
 export default function CampaignPage() {
   const [activeIndex, setActiveIndex] = useState<number>(0);
+  const [offerDetails, setOfferDetails] = useState({
+    title: "Limited-Time Offer",
+    subtitle: "₹679/kg to USA — ends soon",
+    endDate: DEFAULT_OFFER_END,
+  });
+
+  useEffect(() => {
+    fetch('/api/site-settings')
+      .then(res => res.json())
+      .then(data => {
+        if (data.success && data.data) {
+          setOfferDetails({
+            title: data.data.offerTitle || "Limited-Time Offer",
+            subtitle: data.data.offerSubtitle || "₹679/kg to USA — ends soon",
+            endDate: data.data.offerEndDate ? new Date(data.data.offerEndDate) : DEFAULT_OFFER_END,
+          });
+        }
+      })
+      .catch(err => console.error("Failed to fetch site settings", err));
+  }, []);
 
   return (
     <main className="w-full font-sans bg-white flex flex-col pb-16">
@@ -269,11 +296,11 @@ export default function CampaignPage() {
               </span>
               <h1
                 className="text-white font-extrabold leading-[1.15] tracking-tight"
-                style={{ fontSize: "clamp(34px, 4.5vw, 56px)" }}
+                style={{ fontSize: "clamp(34px, 2vw, 56px)" }}
               >
                 Your Parcel, Picked Up
                 <br />
-                In India, <span className="text-[#e77419]">Delivered To</span>
+                In India : <span className="text-[#e77419]">Delivered To</span>
                 <br />
                 <span className="text-[#e77419]">Your Door Worldwide.</span>
               </h1>
@@ -317,20 +344,20 @@ export default function CampaignPage() {
                   WhatsApp Us
                 </a>
               </div>
-              {/* Issue #10: phone format +91 7070 506070; Issue #11: "Trusted by" lowercase b */}
-              <div className="flex flex-col sm:flex-row sm:items-center gap-x-4 gap-y-2">
-                <div className="flex items-center gap-2">
-                  <Stars />
-                  <span className="text-[13px] text-white/80 font-medium">
-                    Trusted by 10,000+ Families Worldwide
-                  </span>
-                </div>
-                {/* <span className="text-[14px] font-bold text-[#e77419]">
-                  50,000+ Shipments Delivered
-                </span> */}
-              </div>
+
             </div>
           </div>
+        </div>
+        <div className="flex flex-col sm:flex-row sm:items-center gap-x-4 gap-y-2 mt-2">
+          <div className="flex items-center gap-2">
+            <Stars />
+            <span className="text-[13px] text-black/80 font-medium">
+              Trusted By 10,000+ Families Worldwide
+            </span>
+          </div>
+          <span className="text-[14px] font-bold text-[#e77419]">
+            50,000+ Shipments Delivered
+          </span>
         </div>
 
         {/* Action Tabs */}
@@ -600,14 +627,14 @@ export default function CampaignPage() {
 
       {/* ── 7. TIMER + FAQ ── */}
       {/* Issue #3+#4: Compact countdown timer above FAQs */}
-      <section className="w-full max-w-[1400px] mx-auto px-4 sm:px-6 py-10">
+      <section className="w-full flex flex-col justify-center items-center mx-auto  py-10">
         {/* Compact Timer */}
-        <div className="mb-6">
-          <CompactTimer />
+        <div className="mb-14 w-full">
+          <CompactTimer endDate={offerDetails.endDate} title={offerDetails.title} subtitle={offerDetails.subtitle} />
         </div>
 
         {/* Issue #2: Claude-style interactive accordion FAQ */}
-        <div className="bg-[#e5e6eb] rounded-xl p-8 sm:p-14">
+        <div className="bg-[#e5e6eb] rounded-xl p-8 sm:p-14 max-w-[1400px] px-4 sm:px-6">
           <div className="text-center mb-12">
             <span className="inline-block border border-[#e77419] text-[#e77419] px-4 py-1.5 rounded-full text-[12px] font-bold mb-4">
               FAQ
@@ -639,9 +666,8 @@ export default function CampaignPage() {
                     >
                       <span>{f.q}</span>
                       <ChevronDown
-                        className={`w-5 h-5 text-[#e77419] shrink-0 mt-0.5 transition-transform duration-300 ${
-                          isActive ? "rotate-180" : ""
-                        }`}
+                        className={`w-5 h-5 text-[#e77419] shrink-0 mt-0.5 transition-transform duration-300 ${isActive ? "rotate-180" : ""
+                          }`}
                       />
                     </h3>
                   </div>

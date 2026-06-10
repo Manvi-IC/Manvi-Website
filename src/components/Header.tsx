@@ -22,7 +22,19 @@ export default function Header() {
   const { language, setLanguage, t } = useLanguage();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isLangOpen, setIsLangOpen] = useState(false);
+  const [marqueeText, setMarqueeText] = useState("🎉 Send Shipment to USA @ ₹679 per KG  •  T&C Applied  •  🎊 Send Shipment to USA @ ₹679 per KG  •  T&C Applied  •  🎉 Send Shipment to USA @ ₹679 per KG  •  T&C Applied  •");
   const langRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    fetch('/api/site-settings')
+      .then(res => res.json())
+      .then(data => {
+        if (data.success && data.data && data.data.marqueeText) {
+          setMarqueeText(data.data.marqueeText);
+        }
+      })
+      .catch(err => console.error("Failed to fetch site settings", err));
+  }, []);
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -67,14 +79,10 @@ export default function Header() {
                   behavior="scroll"
                   direction="left"
                   scrollamount="3"
-                  className="text-[12px] font-extrabold tracking-wide"
+                  className="text-[12px] font-extrabold tracking-wide whitespace-pre"
                   style={{ color: "#f27a1a" }}
                 >
-                  🎉 Send Shipment to USA @ ₹679 per KG &nbsp;•&nbsp; T&amp;C
-                  Applied &nbsp;•&nbsp; 🎊 Send Shipment to USA @ ₹679 per KG
-                  &nbsp;•&nbsp; T&amp;C Applied &nbsp;•&nbsp; 🎉 Send Shipment
-                  to USA @ ₹679 per KG &nbsp;•&nbsp; T&amp;C Applied
-                  &nbsp;•&nbsp;
+                  {marqueeText}
                 </Marquee>
               ) as any;
             })()}
