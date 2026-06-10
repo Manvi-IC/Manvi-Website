@@ -11,11 +11,11 @@ export default function UploadRatesPage() {
       </div>
 
       <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 md:p-10">
-        <div className="border-2 border-dashed border-gray-300 rounded-lg px-6 py-12 flex flex-col items-center justify-center text-center hover:bg-gray-50 hover:border-blue-400 transition-colors cursor-pointer">
+        <div className="border-2 border-dashed border-gray-300 rounded-lg px-6 py-12 flex flex-col items-center justify-center text-center hover:bg-gray-50 hover:border-[#e77419] transition-colors cursor-pointer">
           <UploadCloud className="mx-auto h-12 w-12 text-gray-400" />
           <h3 className="mt-4 text-sm font-semibold text-gray-900">Click to upload or drag and drop</h3>
           <p className="mt-2 text-xs text-gray-500">CSV, XLS, or XLSX (max. 10MB)</p>
-          <button className="mt-6 bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-700 transition-colors">
+          <button className="mt-6 bg-[#e77419] text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-[#d06817] transition-colors">
             Select File
           </button>
         </div>
@@ -30,7 +30,7 @@ export default function UploadRatesPage() {
             ].map((file, idx) => (
               <li key={idx} className="flex items-center justify-between p-4 hover:bg-gray-50 transition-colors">
                 <div className="flex items-center gap-4">
-                  <div className={`p-2 rounded-lg ${file.status === 'Failed' ? 'bg-red-50 text-red-600' : 'bg-blue-50 text-blue-600'}`}>
+                  <div className={`p-2 rounded-lg ${file.status === 'Failed' ? 'bg-red-50 text-red-600' : 'bg-orange-50 text-[#e77419]'}`}>
                     {file.status === 'Failed' ? <AlertCircle size={20} /> : <File size={20} />}
                   </div>
                   <div>
