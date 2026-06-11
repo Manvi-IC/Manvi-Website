@@ -9,11 +9,13 @@ export async function loginAction(prevState: unknown, formData: FormData) {
 
   try {
     const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+    const dbName = process.env.NEXT_PUBLIC_X_DATABASE || 'm5clogs';
+    
     const response = await fetch(`${apiUrl}/admin/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'x-database': 'manvi'
+        'x-database': dbName
       },
       body: JSON.stringify({ username, password })
     });
