@@ -22,17 +22,19 @@ export async function loginAction(prevState: unknown, formData: FormData) {
 
     const data = await response.json();
 
-    if (data.success) {
-      const cookieStore = await cookies();
-      cookieStore.set('admin_auth', 'true', { path: '/' });
-      redirect('/admin');
-    } else {
+    if (!data.success) {
       return { error: data.message || 'Invalid username or password.' };
     }
+
+    const cookieStore = await cookies();
+    cookieStore.set('admin_auth', 'true', { path: '/' });
   } catch (error) {
     console.error('Login error:', error);
     return { error: 'An error occurred during login. Please try again.' };
   }
+
+  // redirect must be called OUTSIDE try/catch
+  redirect('/admin');
 }
 
 export async function logoutAction() {
