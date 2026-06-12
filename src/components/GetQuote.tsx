@@ -104,7 +104,7 @@ const localTranslations: Record<
       "We accept all major credit cards, debit cards, UPI, net banking, and digital wallets. For corporate clients, we also offer credit terms and invoice-based payments.",
     faq_4_q: "How Long Does International Shipping Take?",
     faq_4_a:
-      "Delivery timelines vary by destination and service type. Document Express typically takes 3–5 business days, Parcel Shipping 5–7 days, and Cargo Express 2–3 days to major destinations.",
+      "Delivery timelines vary by destination and service type. Document Express typically takes 3-5 business days, Parcel Shipping 5-7 days, and Cargo Express 2-3 days to major destinations.",
     faq_5_q: "Can I Track My Shipment In Real Time?",
     faq_5_a:
       "Yes. Once your shipment is booked, you'll receive a tracking number via SMS and email. You can track your package live on our website or directly through the carrier's portal.",
