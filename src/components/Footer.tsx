@@ -91,7 +91,7 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Column 2: Quick Links — Campaign added */}
+          {/* Column 2: Quick Links - Campaign added */}
           <div className="md:col-span-3 flex flex-col gap-5">
             <div className="flex flex-col gap-3">
               <h3 className="text-[18px] font-extrabold text-white">
