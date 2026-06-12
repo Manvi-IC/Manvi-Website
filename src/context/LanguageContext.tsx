@@ -194,7 +194,7 @@ const translations: Record<Language, Translations> = {
     bc_quote: "Get a Quote",
     bc_faq: "FAQ",
     bc_services: "Services",
-    hero_headline: "CONNECTING CONTINENTS, DELIVERING TRUST.",
+    hero_headline: "CONNECTING FAMILIES,\nBRIDGING DISTANCES.",
     hero_subtext:
       "Send documents, parcels, food items, gifts, or commercial shipments worldwide with confidence.",
     hero_pickup: "Pick Up Location",

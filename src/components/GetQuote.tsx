@@ -57,7 +57,7 @@ const localTranslations: Record<
     home: "Home",
     get_quote: "Get Quote",
     instant_estimate: "Instant Estimate",
-    headline: "CONNECTING CONTINENTS,\nDELIVERING TRUST.",
+    headline: "CONNECTING FAMILIES,\nBRIDGING DISTANCES.",
     subtext:
       "Send documents, parcels, food items, gifts, or commercial shipments worldwide with confidence.",
     pickup_placeholder: "Pick Up Location",
