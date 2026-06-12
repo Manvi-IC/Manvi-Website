@@ -79,7 +79,7 @@ export default function Home() {
 
       <Footer />
 
-      {/* Floating Chat Bot — renders above everything else */}
+      {/* Floating Chat Bot - renders above everything else */}
       <ManviChatBot />
       <ManviWhatsApp />
     </div>
