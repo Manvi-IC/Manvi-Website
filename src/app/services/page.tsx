@@ -80,13 +80,13 @@ const localTranslations: Record<
     services: "Services",
     sidebar_title: "Every Parcel. Every Country. Every Time.",
     sidebar_subtitle:
-      "From A Single Document To A Multi-Box Shipment, Manvi International Courier Gets It There — With The World's Best Carriers And Our Own Direct Delivery Network.",
+      "From A Single Document To A Multi-Box Shipment, Manvi International Courier Gets It There, With The World's Best Carriers And Our Own Direct Delivery Network.",
     cta_title: "Not Sure Which Service Is Right For You?",
     cta_subtitle:
-      "Tell Us Where You're Shipping, How Much It Weighs, And What's Inside — We'll Recommend The Fastest And Most Cost-Effective Option.",
+      "Tell Us Where You're Shipping, How Much It Weighs, And What's Inside, We'll Recommend The Fastest And Most Cost-Effective Option.",
     contact_btn: "Contact Us",
     quote_btn: "Get A Quote",
-    subtitle_dhl: "The World's #1 International Courier — Now At Your Doorstep",
+    subtitle_dhl: "The World's #1 International Courier, Now At Your Doorstep",
     desc_dhl:
       "Whether You're Sending A Passport-Sized Document Or A 30kg Carton, DHL's Express Network Covers Every Country On The Globe.",
     subtitle_ups: "Speed And Reliability Across Every Major Market",
@@ -122,7 +122,7 @@ const localTranslations: Record<
     lbl_uk_title: "UK",
     lbl_uk_sub: "Fast, Duty-Free Delivery Across the United Kingdom",
     lbl_uk_desc:
-      "Our premium UK route operates via London Heathrow (LHR) with DPD handling last-mile delivery — one of the UK's most trusted domestic networks.",
+      "Our premium UK route operates via London Heathrow (LHR) with DPD handling last-mile delivery, one of the UK's most trusted domestic networks.",
     lbl_uk_note:
       "Also available: USA service via LHR with FedEx IE, 16-24kg per box, DDP, 10-12 working days.",
     lbl_eu_title: "Europe",
@@ -130,7 +130,7 @@ const localTranslations: Record<
     lbl_eu_desc:
       "Ship to any European country on our direct DPD Europe route. No hidden duties, no surprise customs fees.",
     lbl_ca_title: "Canada",
-    lbl_ca_sub: "DDP Service — No Customs Surprises, Ever",
+    lbl_ca_sub: "DDP Service, No Customs Surprises, Ever",
     lbl_ca_desc:
       "Our Canada direct service is fully Delivered Duty Paid (DDP), meaning all import duties and taxes are settled before your shipment arrives. Available via two gateway hubs for maximum flexibility.",
     lbl_au_title: "Australia",
@@ -290,14 +290,14 @@ const localTranslations: Record<
     services: "Services",
     sidebar_title: "Chaque colis. Chaque pays. Chaque fois.",
     sidebar_subtitle:
-      "D'un simple document à un envoi multi-boîtes, Manvi International Courier l'achemine à destination — avec les meilleurs transporteurs mondiaux et notre propre réseau de livraison directe.",
+      "D'un simple document à un envoi multi-boîtes, Manvi International Courier l'achemine à destination, avec les meilleurs transporteurs mondiaux et notre propre réseau de livraison directe.",
     cta_title: "Vous ne savez pas quel service vous convient ?",
     cta_subtitle:
-      "Dites-nous où vous expédiez, combien cela pèse et ce qu'il y a à l'intérieur — nous vous recommanderons l'option la plus rapide et la plus rentable.",
+      "Dites-nous où vous expédiez, combien cela pèse et ce qu'il y a à l'intérieur, nous vous recommanderons l'option la plus rapide et la plus rentable.",
     contact_btn: "Nous contacter",
     quote_btn: "Obtenir un devis",
     subtitle_dhl:
-      "Le transporteur international n°1 mondial — maintenant à votre porte",
+      "Le transporteur international n°1 mondial, maintenant à votre porte",
     desc_dhl:
       "Que vous envoyiez un document de la taille d'un passeport ou un carton de 30 kg, le réseau express de DHL couvre tous les pays du monde.",
     subtitle_ups: "Rapidité et fiabilité sur tous les grands marchés",
@@ -343,7 +343,7 @@ const localTranslations: Record<
     lbl_eu_desc:
       "Expédiez vers n'importe quel pays européen sur notre route directe DPD Europe. Pas de taxes cachées.",
     lbl_ca_title: "Canada",
-    lbl_ca_sub: "Service DDP — Aucune surprise douanière, jamais",
+    lbl_ca_sub: "Service DDP, Aucune surprise douanière, jamais",
     lbl_ca_desc:
       "Notre service direct vers le Canada est entièrement Delivered Duty Paid (DDP), ce qui signifie que tous les droits et taxes d'importation sont réglés avant l'arrivée de votre envoi.",
     lbl_au_title: "Australie",
@@ -415,7 +415,7 @@ const localTranslations: Record<
     lbl_eu_desc:
       "Realice envíos a cualquier país europeo en nuestra ruta directa DPD Europa. Sin aranceles ocultos.",
     lbl_ca_title: "Canadá",
-    lbl_ca_sub: "Servicio DDP — Sin sorpresas aduaneras, nunca",
+    lbl_ca_sub: "Servicio DDP, Sin sorpresas aduaneras, nunca",
     lbl_ca_desc:
       "Nuestro servicio directo a Canadá es totalmente Delivered Duty Paid (DDP), lo que significa que todos los aranceles e impuestos de importación se liquidan antes de que llegue su envío.",
     lbl_au_title: "Australia",
@@ -886,7 +886,7 @@ export default function ServicesPage() {
                   <Globe className="w-6 h-6 text-[#f27a1a]" />
                 </div>
                 <h3 className="text-2xl font-extrabold text-[#1c1f2e]">
-                  FedEx — Medicine & Special Content
+                  FedEx - Medicine & Special Content
                 </h3>
               </div>
               <h4 className="font-bold text-[#1c1f2e] text-sm sm:text-base mb-2">
