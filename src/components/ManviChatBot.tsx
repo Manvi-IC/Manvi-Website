@@ -40,11 +40,11 @@ const chatbotTranslations: Record<Language, {
       "Serviceable Zip codes":
         "We currently service 15,000+ zip codes across the country. Enter your zip code to check availability.",
       "Refund Policies":
-        "Refunds are processed within 5–7 business days. Items must be returned in original condition. Need help with a specific order?",
+        "Refunds are processed within 5-7 business days. Items must be returned in original condition. Need help with a specific order?",
       "Contact Us":
-        "You can reach us at support@manvi.com or call +91 7070-506070 (Mon–Sat, 9am–6pm).",
+        "You can reach us at support@manvi.com or call +91 7070-506070 (Mon-Sat, 9am-6pm).",
       "Quick FAQ":
-        "Here are our top FAQs:\n• Delivery takes 3–7 days\n• Free shipping on orders ₹500+\n• Returns accepted within 30 days",
+        "Here are our top FAQs:\n• Delivery takes 3-7 days\n• Free shipping on orders ₹500+\n• Returns accepted within 30 days",
     },
     input_placeholder: "Type your query here...",
     default_response: "Let me connect you with a specialist for that!",
