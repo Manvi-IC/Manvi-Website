@@ -41,7 +41,7 @@ const localTranslations: Record<
     q1: "Where can I send my packages?",
     a1: "Almost anywhere! We have a strong presence in the USA, Canada, UK, Europe, and Australia. Whether it's a big city or a quiet suburb, we'll get it there.",
     q2: "How do I know I'm getting a fair price?",
-    a2: "We believe in value. Your quote is based on exactly what you need—considering weight, destination, and how fast you need it delivered. We promise no hidden surprises when it's time to pay.",
+    a2: "We believe in value. Your quote is based on exactly what you need, considering weight, destination, and how fast you need it delivered. We promise no hidden surprises when it's time to pay.",
     q3: "Can I see where my package is right now?",
     a3: "Yes! The moment you ship with us, you'll get a unique tracking number. You can watch your package's journey in real-time, giving you total confidence.",
     q4: "What happens if there is a delay or a problem?",
@@ -185,7 +185,13 @@ export default function FAQPage() {
                   return (
                     <button
                       key={faq.id}
-                      onClick={() => setActiveTab(faq.id)}
+                      onClick={() => {
+                        setActiveTab(faq.id);
+                        const element = document.getElementById(`faq-${faq.id}`);
+                        if (element) {
+                          element.scrollIntoView({ behavior: "smooth", block: "center" });
+                        }
+                      }}
                       className={`flex items-center gap-4 px-6 py-4 rounded-2xl border transition-all text-left w-full font-sans ${
                         isActive
                           ? "bg-white border-[#f27a1a] shadow-sm text-[#f27a1a]"
@@ -235,6 +241,7 @@ export default function FAQPage() {
               return (
                 <div
                   key={faq.id}
+                  id={`faq-${faq.id}`}
                   className={`bg-[#eef0f5] rounded-4xl p-8 lg:p-10 shadow-sm border border-gray-200/50 flex flex-col gap-4 transition-all duration-300 ${
                     isActive ? "ring-2 ring-[#f27a1a]/50" : ""
                   }`}
