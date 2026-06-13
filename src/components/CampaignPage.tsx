@@ -43,7 +43,7 @@ const PICKUP_CITIES = [
   "Mumbai",
 ];
 
-// Issue #7: Alphabetical order — Australia, Canada, UK, USA
+// Issue #7: Alphabetical order - Australia, Canada, UK, USA
 const DESTINATIONS = ["Australia", "Canada", "UK", "USA"];
 
 // Issue #6 + #8: Aramex (not ARAMEX); consistent order: DHL, FedEx, UPS, Aramex, DPD
@@ -236,7 +236,7 @@ export default function CampaignPage() {
   const [activeIndex, setActiveIndex] = useState<number>(0);
   const [offerDetails, setOfferDetails] = useState({
     title: "Limited-Time Offer",
-    subtitle: "₹679/kg to USA — ends soon",
+    subtitle: "₹679/kg to USA, ends soon",
     endDate: DEFAULT_OFFER_END,
   });
 
@@ -247,7 +247,7 @@ export default function CampaignPage() {
         if (data.success && data.data) {
           setOfferDetails({
             title: data.data.offerTitle || "Limited-Time Offer",
-            subtitle: data.data.offerSubtitle || "₹679/kg to USA — ends soon",
+            subtitle: data.data.offerSubtitle || "₹679/kg to USA, ends soon",
             endDate: data.data.offerEndDate ? new Date(data.data.offerEndDate) : DEFAULT_OFFER_END,
           });
         }
@@ -490,7 +490,7 @@ export default function CampaignPage() {
               </div>
             </div>
 
-            {/* Delivery Destinations — Issue #7: alphabetical */}
+            {/* Delivery Destinations - Issue #7: alphabetical */}
             <div className="bg-white rounded-3xl p-8 shadow-sm flex flex-col h-full justify-between">
               <div>
                 <p className="text-[16px] font-bold text-[#0a111e] mb-5">
@@ -748,7 +748,7 @@ export default function CampaignPage() {
               </svg>
               WhatsApp Us
             </a>
-            {/* Call — Issue #10: consistent phone format +91 7070 506070 */}
+            {/* Call - Issue #10: consistent phone format +91 7070 506070 */}
             <a
               href="tel:+917070506070"
               className="flex items-center gap-2 font-bold text-[15px] px-8 py-4 rounded-full no-underline transition-transform hover:scale-105"
