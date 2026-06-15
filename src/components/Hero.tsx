@@ -36,7 +36,7 @@ export default function Hero() {
         {/* Left: Orange Form Card */}
         <div className="bg-[#f27a1a] rounded-[28px] p-6 sm:p-8 lg:p-10 flex flex-col justify-between min-h-110 shadow-xl">
           <div className="flex flex-col gap-4">
-            <h1 className="text-[32px] sm:text-[36px] md:text-[42px] font-extrabold text-white leading-[1.1] tracking-tight uppercase">
+            <h1 className="text-[28px] sm:text-[36px] md:text-[42px] font-extrabold text-white leading-[1.1] tracking-tight uppercase">
               {t.hero_headline}
             </h1>
             <p className="text-white/80 text-[13px] leading-relaxed max-w-md">
@@ -164,7 +164,7 @@ export default function Hero() {
             <span className="text-[11px] font-bold tracking-wider bg-white/15 text-white/90 border border-white/20 w-fit px-3 py-1 rounded-full">
               {t.hero_legacy_badge}
             </span>
-            <h2 className="text-[30px] sm:text-[34px] md:text-[40px] font-extrabold text-white leading-[1.15] tracking-tight mt-2">
+            <h2 className="text-[26px] sm:text-[34px] md:text-[40px] font-extrabold text-white leading-[1.15] tracking-tight mt-2">
               {t.hero_legacy_heading}
               <br />
               <span className="text-[#f27a1a]">{t.hero_legacy_highlight}</span>
