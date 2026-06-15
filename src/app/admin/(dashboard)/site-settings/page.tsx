@@ -150,7 +150,7 @@ export default function SiteSettingsPage() {
                   value={formData.offerSubtitle}
                   onChange={handleChange}
                   className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-[#e77419] focus:border-[#e77419] sm:text-sm"
-                  placeholder="₹679/kg to USA — ends soon"
+                  placeholder="₹679/kg to USA; ends soon"
                 />
               </div>
               <div className="sm:col-span-2">

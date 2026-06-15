@@ -19,7 +19,7 @@ function AboutBanner({ title }: { title: string }) {
       />
       <div className="max-w-425 w-full mx-auto flex flex-col md:flex-row justify-between items-start md:items-center relative z-10 gap-4">
         <div>
-          <h1 className="text-[36px] md:text-[44px] font-extrabold text-white leading-tight tracking-tight">
+          <h1 className="text-[28px] md:text-[44px] font-extrabold text-white leading-tight tracking-tight">
             {title}
           </h1>
         </div>
@@ -507,7 +507,7 @@ export default function AboutUs() {
             {/* Who Are We card */}
             <div className="bg-[#eef0f5] border border-gray-200/50 rounded-4xl p-8 lg:p-10 shadow-sm flex flex-col gap-5">
               <div className="flex flex-col gap-3">
-                <h2 className="text-[28px] md:text-[34px] font-extrabold text-[#1c1f2e] leading-tight tracking-tight">
+                <h2 className="text-[24px] md:text-[34px] font-extrabold text-[#1c1f2e] leading-tight tracking-tight">
                   {t.who_we_are_title}
                 </h2>
                 <p className="text-[13px] text-gray-500 font-medium leading-relaxed">
@@ -530,7 +530,7 @@ export default function AboutUs() {
 
             {/* Ready to Ship card */}
             <div className="bg-[#eef0f5] border border-gray-200/50 rounded-4xl p-8 lg:p-10 shadow-sm flex flex-col items-start gap-5">
-              <h3 className="text-[28px] md:text-[34px] font-extrabold text-[#f27a1a] tracking-tight leading-tight">
+              <h3 className="text-[24px] md:text-[34px] font-extrabold text-[#f27a1a] tracking-tight leading-tight">
                 {t.ready_title}
               </h3>
               <p className="text-[13px] text-gray-500 font-semibold leading-relaxed">

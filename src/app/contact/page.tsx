@@ -68,7 +68,7 @@ const localTranslations: Record<
     office_desc:
       "Located In The Heart Of India's Logistics Hub, Our Delhi Office Handles All Global Routing And Documentation.",
     address_label: "Address:",
-    hours_mon_sat: "Monday – Saturday: 10:00 AM To 7:00 PM (IST)",
+    hours_mon_sat: "Monday - Saturday: 10:00 AM To 7:00 PM (IST)",
     hours_sun: "Sunday: Closed (Online Tracking Available 24/7)",
     global_reach_desc:
       "As We Partner With World-Class Carriers, You Can Also Track Your Shipments Directly On Their Portals Using The AWB (Air Waybill) Provided By Us:",
@@ -195,7 +195,7 @@ const localTranslations: Record<
     office_desc:
       "Situé au cœur du hub logistique de l'Inde, notre bureau de Delhi gère l'ensemble du routage et de la documentation mondiale.",
     address_label: "Adresse:",
-    hours_mon_sat: "Lundi – Samedi: 10h00 à 19h00 (IST)",
+    hours_mon_sat: "Lundi - Samedi: 10h00 à 19h00 (IST)",
     hours_sun: "Dimanche: Fermé (Suivi en ligne disponible 24/7)",
     global_reach_desc:
       "Puisque nous collaborons avec des transporteurs internationaux, vous pouvez également suivre vos envois directement sur leurs portails à l'aide de l'AWB que nous vous fournissons :",
@@ -237,7 +237,7 @@ const localTranslations: Record<
     office_desc:
       "Ubicada en el corazón del centro logístico de la India, nuestra oficina de Delhi maneja toda la documentación y rutas globales.",
     address_label: "Dirección:",
-    hours_mon_sat: "Lunes – Sábado: 10:00 AM a 7:00 PM (IST)",
+    hours_mon_sat: "Lunes - Sábado: 10:00 AM a 7:00 PM (IST)",
     hours_sun: "Domingo: Cerrado (Seguimiento en línea disponible 24/7)",
     global_reach_desc:
       "Dado que nos asociamos con transportistas de clase mundial, también puede rastrear sus envíos directamente en sus portales utilizando la AWB provista por nosotros:",
@@ -271,16 +271,55 @@ export default function ContactPage() {
   const [inquiryType, setInquiryType] = useState("");
   const [destination, setDestination] = useState("");
   const [queryText, setQueryText] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleInquirySubmit = (e: React.FormEvent) => {
+  const handleInquirySubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    alert(t.success_alert);
-    setName("");
-    setContact("");
-    setEmail("");
-    setInquiryType("");
-    setDestination("");
-    setQueryText("");
+    setIsSubmitting(true);
+
+    const params = new URLSearchParams();
+    params.append("xnQsjsdp", "f7ffb6c004b236239387ad91cb729a74c1e77cb13adfc0cbfe03c73418d28c0b");
+    params.append("zc_gad", "");
+    params.append("xmIwtLD", "f1bf89877bb4f869e7a83c4c2a590303921e0786b879cb5c209a4995d86f4181287878d06b7e5465b22c5ca523125edc");
+    params.append("actionType", "TGVhZHM=");
+    params.append("returnURL", "null");
+
+    // The new Zoho form uses "Last Name" for the entire Name field
+    params.append("Last Name", name || "Unknown");
+    params.append("Email", email);
+    params.append("Phone", contact);
+    // The new Zoho form maps "Enquiry Type" to "Annual Revenue"
+    params.append("Annual Revenue", inquiryType || "Other");
+    
+    // The new form doesn't have a Destination field, so we'll append it to the description
+    const fullDescription = destination 
+      ? `Destination: ${destination}\n\n${queryText}` 
+      : queryText;
+    params.append("Description", fullDescription);
+
+    try {
+      await fetch("https://crm.zoho.in/crm/WebToLeadForm", {
+        method: "POST",
+        mode: "no-cors",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: params.toString(),
+      });
+
+      alert(t.success_alert);
+      setName("");
+      setContact("");
+      setEmail("");
+      setInquiryType("");
+      setDestination("");
+      setQueryText("");
+    } catch (error) {
+      console.error("Form submission error", error);
+      alert("Something went wrong. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const scrollToForm = () => {
@@ -335,7 +374,13 @@ export default function ContactPage() {
                   return (
                     <button
                       key={tab.id}
-                      onClick={() => setActiveTab(tab.id)}
+                      onClick={() => {
+                        setActiveTab(tab.id);
+                        const element = document.getElementById(`contact-tab-${tab.id}`);
+                        if (element) {
+                          element.scrollIntoView({ behavior: "smooth", block: "center" });
+                        }
+                      }}
                       className={`flex items-center gap-4 px-6 py-4.5 rounded-2xl border transition-all text-left w-full font-sans ${
                         isActive
                           ? "bg-white border-[#f27a1a] shadow-sm text-[#f27a1a]"
@@ -381,6 +426,7 @@ export default function ContactPage() {
           <div className="lg:col-span-7 flex flex-col gap-6">
             {/* Card 1: Direct Communication Channels */}
             <div
+              id="contact-tab-01"
               className={`bg-[#eef0f5] rounded-4xl p-8 lg:p-10 shadow-sm border border-gray-200/50 flex flex-col gap-6 transition-all duration-300 ${
                 activeTab === "01" ? "ring-2 ring-[#f27a1a]/50" : ""
               }`}
@@ -439,6 +485,7 @@ export default function ContactPage() {
 
             {/* Card 2: Visit Our Head Office */}
             <div
+              id="contact-tab-02"
               className={`bg-[#eef0f5] rounded-4xl p-8 lg:p-10 shadow-sm border border-gray-200/50 flex flex-col gap-6 transition-all duration-300 ${
                 activeTab === "02" ? "ring-2 ring-[#f27a1a]/50" : ""
               }`}
@@ -468,6 +515,7 @@ export default function ContactPage() {
 
             {/* Card 3: Operating Hours */}
             <div
+              id="contact-tab-03"
               className={`bg-[#eef0f5] rounded-4xl p-8 lg:p-10 shadow-sm border border-gray-200/50 flex flex-col gap-6 transition-all duration-300 ${
                 activeTab === "03" ? "ring-2 ring-[#f27a1a]/50" : ""
               }`}
@@ -499,6 +547,7 @@ export default function ContactPage() {
 
             {/* Card 4: Global Reach Support */}
             <div
+              id="contact-tab-04"
               className={`bg-[#eef0f5] rounded-4xl p-8 lg:p-10 shadow-sm border border-gray-200/50 flex flex-col gap-6 transition-all duration-300 ${
                 activeTab === "04" ? "ring-2 ring-[#f27a1a]/50" : ""
               }`}
@@ -547,6 +596,14 @@ export default function ContactPage() {
                   className="text-[#f27a1a] font-bold text-[14px] flex items-center gap-1 hover:underline"
                 >
                   Aramex Tracking <ArrowUpRight className="w-3.5 h-3.5" />
+                </a>
+                <a
+                  href="https://www.dpd.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[#f27a1a] font-bold text-[14px] flex items-center gap-1 hover:underline"
+                >
+                  DPD Tracking <ArrowUpRight className="w-3.5 h-3.5" />
                 </a>
               </div>
             </div>
@@ -642,9 +699,10 @@ export default function ContactPage() {
             {/* Submit Button */}
             <button
               type="submit"
-              className="bg-[#f27a1a] hover:bg-orange-600 text-white font-bold text-[14px] px-8 py-4 rounded-xl transition-all active:scale-98 cursor-pointer w-fit"
+              disabled={isSubmitting}
+              className={`bg-[#f27a1a] hover:bg-orange-600 text-white font-bold text-[14px] px-8 py-4 rounded-xl transition-all active:scale-98 w-fit ${isSubmitting ? "opacity-70 cursor-not-allowed" : "cursor-pointer"}`}
             >
-              {t.submit_btn}
+              {isSubmitting ? "Submitting..." : t.submit_btn}
             </button>
           </form>
         </section>

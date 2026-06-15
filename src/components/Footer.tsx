@@ -91,7 +91,7 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Column 2: Quick Links — Campaign added */}
+          {/* Column 2: Quick Links - Campaign added */}
           <div className="md:col-span-3 flex flex-col gap-5">
             <div className="flex flex-col gap-3">
               <h3 className="text-[18px] font-extrabold text-white">
@@ -114,6 +114,9 @@ export default function Footer() {
               </Link>
               <Link href="/quote" className="hover:text-white transition-colors">
                 {t.nav_quote}
+              </Link>
+              <Link href="/contact" className="hover:text-white transition-colors">
+                {t.nav_contact}
               </Link>
               <Link href="/faq" className="hover:text-white transition-colors">
                 {t.bc_faq}

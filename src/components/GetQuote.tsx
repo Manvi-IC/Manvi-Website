@@ -104,7 +104,7 @@ const localTranslations: Record<
       "We accept all major credit cards, debit cards, UPI, net banking, and digital wallets. For corporate clients, we also offer credit terms and invoice-based payments.",
     faq_4_q: "How Long Does International Shipping Take?",
     faq_4_a:
-      "Delivery timelines vary by destination and service type. Document Express typically takes 3–5 business days, Parcel Shipping 5–7 days, and Cargo Express 2–3 days to major destinations.",
+      "Delivery timelines vary by destination and service type. Document Express typically takes 3-5 business days, Parcel Shipping 5-7 days, and Cargo Express 2-3 days to major destinations.",
     faq_5_q: "Can I Track My Shipment In Real Time?",
     faq_5_a:
       "Yes. Once your shipment is booked, you'll receive a tracking number via SMS and email. You can track your package live on our website or directly through the carrier's portal.",
@@ -420,7 +420,7 @@ export default function GetQuote() {
             <span className="text-white/30">/</span>
             <span className="text-white">{t.get_quote}</span>
           </div>
-          <h1 className="text-[36px] md:text-[44px] font-extrabold text-white leading-tight tracking-tight">
+          <h1 className="text-[28px] md:text-[44px] font-extrabold text-white leading-tight tracking-tight">
             {t.get_quote}
           </h1>
         </div>
@@ -436,7 +436,7 @@ export default function GetQuote() {
               <div className="border border-white/40 text-white rounded-full px-4 py-1 text-[11px] font-extrabold w-fit tracking-wide">
                 {t.instant_estimate}
               </div>
-              <h2 className="text-[28px] sm:text-[32px] font-extrabold text-white leading-[1.1] tracking-tight uppercase whitespace-pre-line">
+              <h2 className="text-[24px] sm:text-[32px] font-extrabold text-white leading-[1.1] tracking-tight uppercase whitespace-pre-line">
                 {t.headline}
               </h2>
               <p className="text-white/80 text-[13px] leading-relaxed">
@@ -656,7 +656,7 @@ export default function GetQuote() {
             <div className="border border-orange-300/80 text-[#f27a1a] bg-orange-50/50 rounded-full px-4 py-1 text-[11px] font-extrabold tracking-wide">
               {t.got_questions}
             </div>
-            <h2 className="text-[28px] sm:text-[36px] font-extrabold text-[#1c1f2e] leading-tight tracking-tight">
+            <h2 className="text-[24px] sm:text-[36px] font-extrabold text-[#1c1f2e] leading-tight tracking-tight">
               {t.faq_title}
             </h2>
           </div>

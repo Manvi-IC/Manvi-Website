@@ -43,7 +43,7 @@ const PICKUP_CITIES = [
   "Mumbai",
 ];
 
-// Issue #7: Alphabetical order — Australia, Canada, UK, USA
+// Issue #7: Alphabetical order - Australia, Canada, UK, USA
 const DESTINATIONS = ["Australia", "Canada", "UK", "USA"];
 
 // Issue #6 + #8: Aramex (not ARAMEX); consistent order: DHL, FedEx, UPS, Aramex, DPD
@@ -169,44 +169,44 @@ function CompactTimer({ endDate, title, subtitle }: { endDate: Date, title: stri
 
   return (
     <div
-      className="w-full flex items-center justify-center flex py-20 border-[1px] border-[#f97316] px-30"
+      className="w-full flex flex-col md:flex-row items-center justify-center gap-8 md:gap-0 py-10 md:py-16 border-[1px] border-[#f97316] px-4 md:px-10 rounded-2xl"
       style={{ background: "#fff7ed" }}
     >
       {/* Label */}
-      <div className="flex w-1/3 items-center text-[#e77419] justify-center">
-        <span className="text-5xl ml-20">🔥</span>
-        <div>
-          <p className="text-4xl font-bold text-[#e77419] leading-none">
+      <div className="flex w-full md:w-1/3 items-center justify-center md:justify-start gap-3 md:gap-0 text-[#e77419]">
+        <span className="text-4xl md:text-5xl md:ml-10 lg:ml-20">🔥</span>
+        <div className="text-center md:text-left">
+          <p className="text-2xl md:text-4xl font-bold text-[#e77419] leading-none">
             {title}
           </p>
-          <p className="text-lg text-[#0a111e] mt-0.5">
+          <p className="text-sm md:text-lg text-[#0a111e] mt-1 md:mt-0.5">
             {subtitle}
           </p>
         </div>
       </div>
 
       {/* Clock blocks */}
-      <div className="flex w-1/3 items-center justify-center gap-2">
+      <div className="flex w-full md:w-1/3 items-center justify-center gap-1 sm:gap-2">
         {[
           { val: pad(d), label: "Days" },
           { val: pad(h), label: "Hrs" },
           { val: pad(m), label: "Min" },
           { val: pad(s), label: "Sec" },
         ].map((unit, i) => (
-          <div key={unit.label} className="flex items-center gap-2">
-            <div className="flex flex-col items-center bg-white/50 shadow-sm rounded-xl p-3">
+          <div key={unit.label} className="flex items-center gap-1 sm:gap-2">
+            <div className="flex flex-col items-center bg-white/50 shadow-sm rounded-xl p-2 md:p-3">
               <span
-                className="text-5xl font-extrabold leading-none tabular-nums"
+                className="text-3xl sm:text-4xl md:text-5xl font-extrabold leading-none tabular-nums"
                 style={{ color: "#e77419" }}
               >
                 {unit.val}
               </span>
-              <span className="text-md font-light text-[#888] uppercase tracking-wider mt-0.5">
+              <span className="text-[10px] md:text-xs font-medium text-[#888] uppercase tracking-wider mt-0.5">
                 {unit.label}
               </span>
             </div>
             {i < 3 && (
-              <span className="text-[18px] font-extrabold text-[#e77419] -mt-2 select-none">
+              <span className="text-[14px] md:text-[18px] font-extrabold text-[#e77419] -mt-1 md:-mt-2 select-none">
                 :
               </span>
             )}
@@ -215,12 +215,12 @@ function CompactTimer({ endDate, title, subtitle }: { endDate: Date, title: stri
       </div>
 
       {/* CTA */}
-      <div className="flex items-center justify-center w-1/3">
+      <div className="flex items-center justify-center w-full md:w-1/3 mt-6 md:mt-0">
         <a
           href="https://wa.me/917070506070"
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center gap-1.5 text-2xl font-medium px-8 py-4 rounded-2xl tracking-wide text-white no-underline transition-transform hover:scale-105 shrink-0"
+          className="flex items-center gap-1.5 text-base md:text-2xl font-medium px-6 py-3 md:px-8 md:py-4 rounded-2xl tracking-wide text-white no-underline transition-transform hover:scale-105 shrink-0"
           style={{ background: "#e77419" }}
         >
           Claim Offer <ArrowUpRight className="w-3.5 h-3.5" strokeWidth={2.5} />
@@ -236,7 +236,7 @@ export default function CampaignPage() {
   const [activeIndex, setActiveIndex] = useState<number>(0);
   const [offerDetails, setOfferDetails] = useState({
     title: "Limited-Time Offer",
-    subtitle: "₹679/kg to USA — ends soon",
+    subtitle: "₹679/kg to USA, ends soon",
     endDate: DEFAULT_OFFER_END,
   });
 
@@ -247,7 +247,7 @@ export default function CampaignPage() {
         if (data.success && data.data) {
           setOfferDetails({
             title: data.data.offerTitle || "Limited-Time Offer",
-            subtitle: data.data.offerSubtitle || "₹679/kg to USA — ends soon",
+            subtitle: data.data.offerSubtitle || "₹679/kg to USA, ends soon",
             endDate: data.data.offerEndDate ? new Date(data.data.offerEndDate) : DEFAULT_OFFER_END,
           });
         }
@@ -261,7 +261,7 @@ export default function CampaignPage() {
       <section className="w-full max-w-[1400px] mx-auto px-4 sm:px-6 py-6">
         <div
           className="relative w-full overflow-hidden"
-          style={{ height: "485px", borderRadius: "20px" }}
+          style={{ minHeight: "485px", height: "auto", borderRadius: "20px" }}
         >
           <Image
             src="/hero-right.jpg"
@@ -294,10 +294,7 @@ export default function CampaignPage() {
                 <span className="text-[14px]">🌍</span> International Courier
                 Service
               </span>
-              <h1
-                className="text-white font-extrabold leading-[1.15] tracking-tight"
-                style={{ fontSize: "clamp(34px, 2vw, 56px)" }}
-              >
+              <h1 className="text-white font-extrabold leading-[1.15] tracking-tight text-[28px] sm:text-[36px] md:text-[44px] lg:text-[56px]">
                 Your Parcel, Picked Up
                 <br />
                 In India : <span className="text-[#e77419]">Delivered To</span>
@@ -310,11 +307,25 @@ export default function CampaignPage() {
                 handled. Real-time tracking.
               </p>
             </div>
+
+            <div className="flex flex-col sm:flex-row sm:items-center gap-x-4 gap-y-2 mt-2">
+              <div className="flex items-center gap-2">
+                <Stars />
+                <span className="text-[13px] text-white/80 font-medium">
+                  Trusted By 10,000+ Families Worldwide
+                </span>
+              </div>
+              <span className="text-[14px] font-bold text-[#e77419]">
+                50,000+ Shipments Delivered
+              </span>
+            </div>
+
+
             <div className="flex flex-col gap-4 mt-6">
               <div className="flex flex-wrap gap-4">
                 <Link
                   href="/quote"
-                  className="flex items-center gap-2 font-bold text-[15px] px-7 py-3.5 rounded-full text-white no-underline transition-transform hover:scale-105"
+                  className="flex items-center gap-2 font-bold text-[13px] md:text-[15px] px-5 py-2.5 md:px-7 md:py-3.5 rounded-full text-white no-underline transition-transform hover:scale-105"
                   style={{
                     background: "#e77419",
                     border: "1px solid rgba(255,255,255,0.2)",
@@ -327,7 +338,7 @@ export default function CampaignPage() {
                   href="https://wa.me/917070506070"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-2 font-bold text-[15px] px-7 py-3.5 rounded-full no-underline transition-transform hover:scale-105"
+                  className="flex items-center gap-2 font-bold text-[13px] md:text-[15px] px-5 py-2.5 md:px-7 md:py-3.5 rounded-full no-underline transition-transform hover:scale-105"
                   style={{
                     background: "#23c961",
                     color: "#0a111e",
@@ -345,20 +356,12 @@ export default function CampaignPage() {
                 </a>
               </div>
 
+
+
             </div>
           </div>
         </div>
-        <div className="flex flex-col sm:flex-row sm:items-center gap-x-4 gap-y-2 mt-2">
-          <div className="flex items-center gap-2">
-            <Stars />
-            <span className="text-[13px] text-black/80 font-medium">
-              Trusted By 10,000+ Families Worldwide
-            </span>
-          </div>
-          <span className="text-[14px] font-bold text-[#e77419]">
-            50,000+ Shipments Delivered
-          </span>
-        </div>
+
 
         {/* Action Tabs */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-5 mt-5">
@@ -372,8 +375,8 @@ export default function CampaignPage() {
               <Link
                 key={tab.href}
                 href={tab.href}
-                className="flex items-center justify-center gap-2.5 rounded-[14px] text-[15px] font-semibold text-white py-4.5 px-4 transition-transform hover:scale-[1.02] no-underline shadow-sm"
-                style={{ background: "#e77419", minHeight: "64px" }}
+                className="flex items-center justify-center gap-2 md:gap-2.5 rounded-[14px] text-[13px] md:text-[15px] font-semibold text-white py-3 md:py-4 px-3 md:px-4 transition-transform hover:scale-[1.02] no-underline shadow-sm min-h-[48px] md:min-h-[64px]"
+                style={{ background: "#e77419" }}
               >
                 {idx === 1 ? (
                   <Receipt className="w-5 h-5 shrink-0" strokeWidth={2.5} />
@@ -389,18 +392,18 @@ export default function CampaignPage() {
 
       {/* ── 2. TRUSTED DELIVERY PARTNERS (FULL WIDTH GRAY BAR) ── */}
       {/* Issue #8: consistent order DHL, FedEx, UPS, Aramex, DPD */}
-      <section className="w-full bg-[#e5e6eb] py-6 mt-4">
-        <div className="w-full mx-auto px-4 sm:px-6 flex justify-around items-center gap-50">
-          <div className="flex">
-            <span className="text-2xl font-extrabold text-[#e77419] leading-snug block">
+      <section className="w-full bg-[#e5e6eb] py-8 mt-4">
+        <div className="w-full max-w-[1400px] mx-auto px-4 sm:px-6 flex flex-col md:flex-row justify-center md:justify-around items-center gap-6 md:gap-12">
+          <div className="flex text-center md:text-left">
+            <span className="text-xl sm:text-2xl font-extrabold text-[#e77419] leading-snug block">
               Trusted Delivery
               <br className="hidden md:block" />
               Partners ✈️
             </span>
           </div>
-          <div className="flex items-center gap-30">
+          <div className="flex flex-wrap justify-center items-center gap-6 md:gap-12">
             {PARTNERS.map((p) => (
-              <span key={p} className="text-2xl font-extrabold text-[#0a111e]">
+              <span key={p} className="text-xl sm:text-2xl font-extrabold text-[#0a111e]">
                 {p}
               </span>
             ))}
@@ -415,7 +418,7 @@ export default function CampaignPage() {
             <span className="inline-block border border-[#e77419] text-[#e77419] px-5 py-1.5 bg-[#FF7F001F] rounded-full text-[12px] font-semibold tracking-wide mb-5">
               How It Works
             </span>
-            <h2 className="text-[34px] font-extrabold text-[#0a111e] leading-tight">
+            <h2 className="text-[28px] md:text-[34px] font-extrabold text-[#0a111e] leading-tight">
               Ship in Four Simple Steps
             </h2>
             {/* Issue #9: removed em-dash, use semicolon */}
@@ -455,7 +458,7 @@ export default function CampaignPage() {
             <span className="inline-block border bg-[#FF7F001F] border-[#e77419] text-[#e77419] px-5 py-1.5 rounded-full text-[12px] font-semibold tracking-wide mb-5">
               Where We Pick Up and Deliver
             </span>
-            <h2 className="text-[34px] font-extrabold text-[#0a111e] leading-tight">
+            <h2 className="text-[28px] md:text-[34px] font-extrabold text-[#0a111e] leading-tight">
               Where We Pick Up and Deliver
             </h2>
           </div>
@@ -490,7 +493,7 @@ export default function CampaignPage() {
               </div>
             </div>
 
-            {/* Delivery Destinations — Issue #7: alphabetical */}
+            {/* Delivery Destinations - Issue #7: alphabetical */}
             <div className="bg-white rounded-3xl p-8 shadow-sm flex flex-col h-full justify-between">
               <div>
                 <p className="text-[16px] font-bold text-[#0a111e] mb-5">
@@ -548,31 +551,31 @@ export default function CampaignPage() {
 
       {/* ── 5. STATS ── */}
       <section className="w-full max-w-[1400px] mx-auto px-4 sm:px-6 py-10">
-        <div className="rounded-xl p-12" style={{ background: "#FF7F0052" }}>
-          <p className="text-center text-[#0a111e] text-[20px] font-extrabold mb-10">
+        <div className="rounded-xl p-6 sm:p-12" style={{ background: "#FF7F0052" }}>
+          <p className="text-center text-[#0a111e] text-[18px] md:text-[20px] font-extrabold mb-6 md:mb-10">
             Numbers That Speak for Themselves
           </p>
-          <div className="grid grid-cols-2 lg:grid-cols-4">
+          <div className="grid grid-cols-2 md:grid-cols-4">
             {STATS.map((s, idx) => {
               let borderClass = "";
               if (idx === 0) {
                 borderClass =
-                  "border-r border-b lg:border-b-0 border-[#e77419]/30";
+                  "border-r border-b md:border-b-0 border-[#e77419]/30";
               } else if (idx === 1) {
                 borderClass =
-                  "border-b lg:border-r lg:border-b-0 border-[#e77419]/30";
+                  "border-b md:border-r md:border-b-0 border-[#e77419]/30";
               } else if (idx === 2) {
                 borderClass = "border-r border-[#e77419]/30";
               }
               return (
                 <div
                   key={s.label}
-                  className={`flex flex-col items-center gap-4 text-center py-6 px-4 ${borderClass}`}
+                  className={`flex flex-col items-center gap-2 md:gap-4 text-center py-4 md:py-6 px-2 md:px-4 ${borderClass}`}
                 >
-                  <span className="text-[56px] font-bold leading-none text-[#e77419]">
+                  <span className="text-[32px] md:text-[56px] font-bold leading-none text-[#e77419]">
                     {s.value}
                   </span>
-                  <span className="text-[13px] font-bold text-[#555] uppercase tracking-wide">
+                  <span className="text-[11px] md:text-[13px] font-bold text-[#555] uppercase tracking-wide">
                     {s.label}
                   </span>
                 </div>
@@ -589,7 +592,7 @@ export default function CampaignPage() {
             <span className="inline-block border border-[#e77419] text-[#e77419] px-4 py-1.5 rounded-full text-[12px] font-bold mb-4">
               From Our Customers
             </span>
-            <h2 className="text-[32px] font-extrabold text-[#0a111e]">
+            <h2 className="text-[26px] md:text-[32px] font-extrabold text-[#0a111e]">
               Trusted by Families Worldwide
             </h2>
           </div>
@@ -599,7 +602,7 @@ export default function CampaignPage() {
                 key={i}
                 className="flex flex-col gap-4 p-8 rounded-2xl bg-white shadow-sm"
               >
-                <span className="text-[40px] text-[#e77419] font-serif leading-none select-none">
+                <span className="text-[32px] md:text-[40px] text-[#e77419] font-serif leading-none select-none">
                   &#x201C;&#x201C;
                 </span>
                 <p className="text-[15px] text-[#666] leading-relaxed italic mb-4">
@@ -639,7 +642,7 @@ export default function CampaignPage() {
             <span className="inline-block border border-[#e77419] text-[#e77419] px-4 py-1.5 rounded-full text-[12px] font-bold mb-4">
               FAQ
             </span>
-            <h2 className="text-[32px] font-extrabold text-[#0a111e]">
+            <h2 className="text-[26px] md:text-[32px] font-extrabold text-[#0a111e]">
               Questions? Glad You Asked
             </h2>
           </div>
@@ -706,10 +709,10 @@ export default function CampaignPage() {
       {/* ── 8. BOTTOM CTA ── */}
       <section className="w-full max-w-[1400px] mx-auto px-4 sm:px-6 py-4 mb-8">
         <div
-          className="rounded-xl p-16 text-center"
+          className="rounded-xl p-8 md:p-16 text-center"
           style={{ background: "#FF7F0052" }}
         >
-          <h2 className="text-[36px] font-bold text-[#0a111e] leading-tight">
+          <h2 className="text-[28px] md:text-[36px] font-bold text-[#0a111e] leading-tight">
             Send Your Parcel from India Today.
           </h2>
           {/* Issue #9: removed em-dash in CTA */}
@@ -721,7 +724,7 @@ export default function CampaignPage() {
             {/* Get Quote */}
             <Link
               href="/quote"
-              className="flex items-center gap-2 font-bold text-[15px] px-8 py-4 rounded-full text-white no-underline transition-transform hover:scale-105"
+              className="flex items-center gap-2 font-bold text-[13px] md:text-[15px] px-6 py-3 md:px-8 md:py-4 rounded-full text-white no-underline transition-transform hover:scale-105"
               style={{
                 background: "#e77419",
               }}
@@ -733,7 +736,7 @@ export default function CampaignPage() {
               href="https://wa.me/917070506070"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 font-bold text-[15px] px-8 py-4 rounded-full text-[#0a111e] no-underline transition-transform hover:scale-105"
+              className="flex items-center gap-2 font-bold text-[13px] md:text-[15px] px-6 py-3 md:px-8 md:py-4 rounded-full text-[#0a111e] no-underline transition-transform hover:scale-105"
               style={{
                 background: "#23c961",
               }}
@@ -748,10 +751,10 @@ export default function CampaignPage() {
               </svg>
               WhatsApp Us
             </a>
-            {/* Call — Issue #10: consistent phone format +91 7070 506070 */}
+            {/* Call - Issue #10: consistent phone format +91 7070 506070 */}
             <a
               href="tel:+917070506070"
-              className="flex items-center gap-2 font-bold text-[15px] px-8 py-4 rounded-full no-underline transition-transform hover:scale-105"
+              className="flex items-center gap-2 font-bold text-[13px] md:text-[15px] px-6 py-3 md:px-8 md:py-4 rounded-full no-underline transition-transform hover:scale-105"
               style={{
                 background: "transparent",
                 color: "#e77419",
