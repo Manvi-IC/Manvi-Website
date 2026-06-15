@@ -278,23 +278,24 @@ export default function ContactPage() {
     setIsSubmitting(true);
 
     const params = new URLSearchParams();
-    params.append("xnQsjsdp", "06fb0cb20accb346cc4c7842f7fc964b6cea60895b75a18a56da9fc6825974df");
+    params.append("xnQsjsdp", "f7ffb6c004b236239387ad91cb729a74c1e77cb13adfc0cbfe03c73418d28c0b");
     params.append("zc_gad", "");
-    params.append("xmIwtLD", "8fda25587ac720fd27940c1510a10f8de302788377810fd4322ce9dfa2dbfc2f240352fc2ced0b7b45cb7ee61ac6f185");
+    params.append("xmIwtLD", "f1bf89877bb4f869e7a83c4c2a590303921e0786b879cb5c209a4995d86f4181287878d06b7e5465b22c5ca523125edc");
     params.append("actionType", "TGVhZHM=");
     params.append("returnURL", "null");
 
-    const nameParts = name.trim().split(" ");
-    const firstName = nameParts[0] || "Unknown";
-    const lastName = nameParts.slice(1).join(" ") || ".";
-
-    params.append("First Name", firstName);
-    params.append("Last Name", lastName);
+    // The new Zoho form uses "Last Name" for the entire Name field
+    params.append("Last Name", name || "Unknown");
     params.append("Email", email);
     params.append("Phone", contact);
-    params.append("Website", inquiryType || "Other");
-    params.append("Designation", destination || "Unknown");
-    params.append("Description", queryText);
+    // The new Zoho form maps "Enquiry Type" to "Annual Revenue"
+    params.append("Annual Revenue", inquiryType || "Other");
+    
+    // The new form doesn't have a Destination field, so we'll append it to the description
+    const fullDescription = destination 
+      ? `Destination: ${destination}\n\n${queryText}` 
+      : queryText;
+    params.append("Description", fullDescription);
 
     try {
       await fetch("https://crm.zoho.in/crm/WebToLeadForm", {
