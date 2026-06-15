@@ -5,10 +5,15 @@ import {
   Receipt,
   Phone,
   ChevronDown,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 // ─── DATA ────────────────────────────────────────────────────────────────────
 const STEPS = [
@@ -234,6 +239,33 @@ function CompactTimer({ endDate, title, subtitle }: { endDate: Date, title: stri
 // ─── MAIN PAGE ────────────────────────────────────────────────────────────────
 export default function CampaignPage() {
   const [activeIndex, setActiveIndex] = useState<number>(0);
+
+  const sliderSettings = {
+    infinite: true,
+    speed: 500,
+    slidesToShow: 3,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 3000,
+    arrows: false,
+    centerMode: true,
+    centerPadding: "20px",
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: { slidesToShow: 2, centerPadding: "10px" },
+      },
+      {
+        breakpoint: 768,
+        settings: { slidesToShow: 1, centerPadding: "30px" },
+      },
+      {
+        breakpoint: 480,
+        settings: { slidesToShow: 1, centerPadding: "10px" },
+      },
+    ],
+  };
+
   const [offerDetails, setOfferDetails] = useState({
     title: "Limited-Time Offer",
     subtitle: "₹679/kg to USA, ends soon",
@@ -315,10 +347,12 @@ export default function CampaignPage() {
                   Trusted By 10,000+ Families Worldwide
                 </span>
               </div>
-              <span className="text-[14px] font-bold text-[#e77419]">
-                50,000+ Shipments Delivered
-              </span>
+              <br />
+
             </div>
+            <span className="text-[14px] font-bold text-[#e77419]">
+              50,000+ Shipments Delivered
+            </span>
 
 
             <div className="flex flex-col gap-4 mt-6">
@@ -586,9 +620,9 @@ export default function CampaignPage() {
       </section>
 
       {/* ── 6. TESTIMONIALS ── */}
-      <section className="w-full max-w-[1400px] mx-auto px-4 sm:px-6 py-4">
-        <div className="bg-[#e5e6eb] rounded-xl p-8 sm:p-14">
-          <div className="mb-10 text-center sm:text-left">
+      <section className="w-full max-w-[1400px] mx-auto px-4">
+        <div className="bg-[#e5e6eb] rounded-xl p-8 sm:p-10">
+          <div className="mb-10 text-center">
             <span className="inline-block border border-[#e77419] text-[#e77419] px-4 py-1.5 rounded-full text-[12px] font-bold mb-4">
               From Our Customers
             </span>
@@ -596,35 +630,101 @@ export default function CampaignPage() {
               Trusted by Families Worldwide
             </h2>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            {TESTIMONIALS.map((t, i) => (
-              <div
-                key={i}
-                className="flex flex-col gap-4 p-8 rounded-2xl bg-white shadow-sm"
-              >
-                <span className="text-[32px] md:text-[40px] text-[#e77419] font-serif leading-none select-none">
-                  &#x201C;&#x201C;
-                </span>
-                <p className="text-[15px] text-[#666] leading-relaxed italic mb-4">
-                  {t.text}
-                </p>
-                <div className="flex items-center gap-4 mt-auto">
-                  <div
-                    className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-[14px] shrink-0"
-                    style={{ background: "#e77419" }}
-                  >
-                    {t.name[0]}
-                  </div>
-                  <div className="flex flex-col">
-                    <p className="text-[14px] font-bold text-[#0a111e]">
-                      {t.name}
+
+          <div className="testimonial-carousel-container testimonial-carousel-light w-full">
+            <Slider {...sliderSettings}>
+              {[...TESTIMONIALS, ...TESTIMONIALS].map((t, i) => (
+                <div key={i} className="px-2 md:px-3">
+                  <div className="testimonial-slide flex flex-col gap-0 px-8 py-8 rounded-2xl bg-white shadow-sm border border-black/5 mx-auto min-h-[250px] sm:min-h-[200px]">
+                    <span className="text-[32px] md:text-[40px] text-[#e77419] font-serif leading-none select-none">
+                      &#x201C;&#x201C;
+                    </span>
+                    <p className="text-[14px] sm:text-[15px] text-[#666] leading-relaxed italic mb-4">
+                      {t.text}
                     </p>
-                    <p className="text-[12px] text-[#666]">{t.location}</p>
+                    <div className="flex items-center gap-4 mt-auto">
+                      <div
+                        className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-[14px] shrink-0"
+                        style={{ background: "#e77419" }}
+                      >
+                        {t.name[0]}
+                      </div>
+                      <div className="flex flex-col">
+                        <p className="text-[14px] font-bold text-[#0a111e]">
+                          {t.name}
+                        </p>
+                        <p className="text-[12px] text-[#666]">{t.location}</p>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </Slider>
           </div>
+
+          <style jsx global>{`
+            .testimonial-carousel-container {
+              position: relative;
+              overflow: hidden;
+            }
+            .testimonial-carousel-container::before,
+            .testimonial-carousel-container::after {
+              content: "";
+              position: absolute;
+              top: 0;
+              width: 15%;
+              height: 100%;
+              z-index: 2;
+              pointer-events: none;
+            }
+            .testimonial-carousel-light::before {
+              left: 0;
+              background: linear-gradient(to right, #e5e6eb, rgba(229,230,235,0.9), rgba(229,230,235,0));
+            }
+            .testimonial-carousel-light::after {
+              right: 0;
+              background: linear-gradient(to left, #e5e6eb, rgba(229,230,235,0.9), rgba(229,230,235,0));
+            }
+            .testimonial-slide {
+              transition: all 0.5s ease;
+              opacity: 0.4;
+              transform: scale(0.85);
+            }
+            .slick-center .testimonial-slide {
+              opacity: 1;
+              transform: scale(1.05);
+            }
+            .slick-track {
+              display: flex !important;
+              align-items: center;
+            }
+            .slick-list {
+              padding-top: 2rem !important;
+              padding-bottom: 2rem !important;
+            }
+            .slick-slide {
+              height: auto;
+            }
+            
+            /* Mobile Adjustments */
+            @media (max-width: 768px) {
+              .testimonial-carousel-container::before,
+              .testimonial-carousel-container::after {
+                width: 5%; /* Less obscuring gradient on mobile */
+              }
+              .slick-center .testimonial-slide {
+                transform: scale(1); /* Prevent scale cutoff on small screens */
+              }
+              .testimonial-slide {
+                transform: scale(0.9);
+                opacity: 0.5;
+              }
+              .slick-list {
+                padding-top: 1rem !important;
+                padding-bottom: 1rem !important;
+              }
+            }
+          `}</style>
         </div>
       </section>
 
