@@ -13,7 +13,7 @@ export default function NoCosts() {
           <div className="border border-orange-300/80 text-[#ff8a00] rounded-full px-4 py-1 text-[12px] font-extrabold w-fit tracking-wide bg-transparent">
             {t.nocost_badge}
           </div>
-          <h2 className="text-[36px] md:text-[44px] font-extrabold text-[#1c1f2e] leading-[1.1] tracking-tight whitespace-pre-line">
+          <h2 className="text-[28px] md:text-[44px] font-extrabold text-[#1c1f2e] leading-[1.1] tracking-tight whitespace-pre-line">
             {t.nocost_title}
           </h2>
         </div>
