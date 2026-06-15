@@ -42,7 +42,7 @@ export default function FAQ() {
           <div className="border border-orange-300 text-[#ff8a00] bg-transparent rounded-full px-5 py-1.5 text-[11px] font-bold tracking-wide w-fit">
             {t.faq_badge}
           </div>
-          <h2 className="text-[32px] md:text-[40px] font-extrabold text-[#1c1f2e] tracking-tight mt-1">
+          <h2 className="text-[26px] md:text-[40px] font-extrabold text-[#1c1f2e] tracking-tight mt-1">
             {t.faq_title}
           </h2>
         </div>
