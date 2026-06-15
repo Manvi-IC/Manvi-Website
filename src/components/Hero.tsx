@@ -176,7 +176,7 @@ export default function Hero() {
             {/* Cutout corner circle */}
             <div className="absolute -bottom-4 -left-4 w-34 h-34 sm:w-36 sm:h-36 bg-[#f8f9fa] rounded-full  flex items-center justify-center pointer-events-none z-20">
               {/* Green spinning WhatsApp circle */}
-              <div className="w-20 h-20 sm:w-28 sm:h-28 bg-[#25D366] rounded-full relative flex items-center justify-center shadow-lg pointer-events-auto cursor-pointer hover:scale-105 transition-transform duration-300 z-50">
+              <a href="https://wa.me/917070506070" target="_blank" rel="noopener noreferrer" className="w-20 h-20 sm:w-28 sm:h-28 bg-[#25D366] rounded-full relative flex items-center justify-center shadow-lg pointer-events-auto cursor-pointer hover:scale-105 transition-transform duration-300 z-50">
                 {/* WhatsApp icon */}
                 <svg
                   className="w-7 h-7 sm:w-8 sm:h-8 text-white z-10 relative"
@@ -214,7 +214,7 @@ export default function Hero() {
                     </textPath>
                   </text>
                 </svg>
-              </div>
+              </a>
             </div>
 
             {/* Spacer matching circle width so dots/button stay right-aligned */}
