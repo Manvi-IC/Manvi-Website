@@ -4,6 +4,7 @@ import { useState } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Link from "next/link";
+import Script from "next/script";
 import { Phone, Mail, MapPin, Clock, Globe, ArrowUpRight } from "lucide-react";
 import { useLanguage, Language } from "@/context/LanguageContext";
 
@@ -706,6 +707,13 @@ export default function ContactPage() {
             </button>
           </form>
         </section>
+
+        {/* Zoho WebForm Analytics Tracking */}
+        <Script 
+          id="wf_anal" 
+          src="https://crm.zohopublic.in/crm/WebFormAnalyticsServeServlet?rid=4f24d483208c6ff1e29418fdf679a98a9a8ba77e88a80be0f92231cf1bb7501536f9dc7e540c496a488af0820c16bb81gid2b74b1891513d3811013f00d50485f47feb420207d64d35ae1ecf3873ce2ef7bgidb930670def52b5e56d1d6e0e23e8e6a8bab66f5acb6b8699647a831b4dbef47bgidde0954cbe0f55f2140416d115537da6fb496f32fb2b4f50de012d84d96e9e6c1&tw=6f8adc5afefd809076b8846796a67adc323fdbd8951651cf19624cc395b13b84" 
+          strategy="lazyOnload" 
+        />
       </main>
 
       <Footer />
