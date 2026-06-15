@@ -182,7 +182,6 @@ const translations: Record<Language, Translations> = {
     nav_services: "Services",
     nav_track: "Track now",
     nav_quote: "Get quote",
-    hours_mon_sat: "Monday - Saturday: 10:00 AM - 7:00 PM (IST)",
     nav_contact: "Contact us",
     nav_home: "Home",
     nav_zipcode: "Serviceable zipcode",
