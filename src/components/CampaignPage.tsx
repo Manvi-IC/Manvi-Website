@@ -418,7 +418,7 @@ export default function CampaignPage() {
             <span className="inline-block border border-[#e77419] text-[#e77419] px-5 py-1.5 bg-[#FF7F001F] rounded-full text-[12px] font-semibold tracking-wide mb-5">
               How It Works
             </span>
-            <h2 className="text-[34px] font-extrabold text-[#0a111e] leading-tight">
+            <h2 className="text-[28px] md:text-[34px] font-extrabold text-[#0a111e] leading-tight">
               Ship in Four Simple Steps
             </h2>
             {/* Issue #9: removed em-dash, use semicolon */}
@@ -458,7 +458,7 @@ export default function CampaignPage() {
             <span className="inline-block border bg-[#FF7F001F] border-[#e77419] text-[#e77419] px-5 py-1.5 rounded-full text-[12px] font-semibold tracking-wide mb-5">
               Where We Pick Up and Deliver
             </span>
-            <h2 className="text-[34px] font-extrabold text-[#0a111e] leading-tight">
+            <h2 className="text-[28px] md:text-[34px] font-extrabold text-[#0a111e] leading-tight">
               Where We Pick Up and Deliver
             </h2>
           </div>
@@ -592,7 +592,7 @@ export default function CampaignPage() {
             <span className="inline-block border border-[#e77419] text-[#e77419] px-4 py-1.5 rounded-full text-[12px] font-bold mb-4">
               From Our Customers
             </span>
-            <h2 className="text-[32px] font-extrabold text-[#0a111e]">
+            <h2 className="text-[26px] md:text-[32px] font-extrabold text-[#0a111e]">
               Trusted by Families Worldwide
             </h2>
           </div>
@@ -602,7 +602,7 @@ export default function CampaignPage() {
                 key={i}
                 className="flex flex-col gap-4 p-8 rounded-2xl bg-white shadow-sm"
               >
-                <span className="text-[40px] text-[#e77419] font-serif leading-none select-none">
+                <span className="text-[32px] md:text-[40px] text-[#e77419] font-serif leading-none select-none">
                   &#x201C;&#x201C;
                 </span>
                 <p className="text-[15px] text-[#666] leading-relaxed italic mb-4">
@@ -642,7 +642,7 @@ export default function CampaignPage() {
             <span className="inline-block border border-[#e77419] text-[#e77419] px-4 py-1.5 rounded-full text-[12px] font-bold mb-4">
               FAQ
             </span>
-            <h2 className="text-[32px] font-extrabold text-[#0a111e]">
+            <h2 className="text-[26px] md:text-[32px] font-extrabold text-[#0a111e]">
               Questions? Glad You Asked
             </h2>
           </div>
@@ -709,10 +709,10 @@ export default function CampaignPage() {
       {/* ── 8. BOTTOM CTA ── */}
       <section className="w-full max-w-[1400px] mx-auto px-4 sm:px-6 py-4 mb-8">
         <div
-          className="rounded-xl p-16 text-center"
+          className="rounded-xl p-8 md:p-16 text-center"
           style={{ background: "#FF7F0052" }}
         >
-          <h2 className="text-[36px] font-bold text-[#0a111e] leading-tight">
+          <h2 className="text-[28px] md:text-[36px] font-bold text-[#0a111e] leading-tight">
             Send Your Parcel from India Today.
           </h2>
           {/* Issue #9: removed em-dash in CTA */}
