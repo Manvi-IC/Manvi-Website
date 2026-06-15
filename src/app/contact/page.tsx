@@ -292,6 +292,9 @@ export default function ContactPage() {
     // The new Zoho form maps "Enquiry Type" to "Annual Revenue"
     params.append("Annual Revenue", inquiryType || "Other");
     
+    // Always tag these leads as coming from the Website
+    params.append("Lead Source", "Website");
+    
     // The new form doesn't have a Destination field, so we'll append it to the description
     const fullDescription = destination 
       ? `Destination: ${destination}\n\n${queryText}` 
