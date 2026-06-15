@@ -267,6 +267,7 @@ export default function ContactPage() {
 
   const [activeTab, setActiveTab] = useState("01");
   const [name, setName] = useState("");
+  const [companyName, setCompanyName] = useState("");
   const [contact, setContact] = useState("");
   const [email, setEmail] = useState("");
   const [inquiryType, setInquiryType] = useState("");
@@ -292,8 +293,9 @@ export default function ContactPage() {
     // The new Zoho form maps "Enquiry Type" to "Annual Revenue"
     params.append("Annual Revenue", inquiryType || "Other");
     
-    // Always tag these leads as coming from the Website
-    params.append("Lead Source", "Website");
+    // Always tag these leads as coming from Web Research
+    params.append("Lead Source", "Web Research");
+    params.append("Company", companyName || "Unknown");
     
     // The new form doesn't have a Destination field, so we'll append it to the description
     const fullDescription = destination 
@@ -313,6 +315,7 @@ export default function ContactPage() {
 
       alert(t.success_alert);
       setName("");
+      setCompanyName("");
       setContact("");
       setEmail("");
       setInquiryType("");
@@ -630,7 +633,7 @@ export default function ContactPage() {
 
           <form onSubmit={handleInquirySubmit} className="flex flex-col gap-6">
             {/* Input Row 1 */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               <input
                 type="text"
                 placeholder={t.name_placeholder}
@@ -639,6 +642,17 @@ export default function ContactPage() {
                 onChange={(e) => setName(e.target.value)}
                 className="bg-white text-[#333] text-[14px] font-medium rounded-xl px-5 py-4 focus:outline-none placeholder:text-gray-400 border border-gray-150 shadow-sm"
               />
+              <input
+                type="text"
+                placeholder="Company Name"
+                value={companyName}
+                onChange={(e) => setCompanyName(e.target.value)}
+                className="bg-white text-[#333] text-[14px] font-medium rounded-xl px-5 py-4 focus:outline-none placeholder:text-gray-400 border border-gray-150 shadow-sm"
+              />
+            </div>
+
+            {/* Input Row 2 */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               <input
                 type="text"
                 placeholder={t.contact_placeholder}
@@ -657,7 +671,7 @@ export default function ContactPage() {
               />
             </div>
 
-            {/* Input Row 2 */}
+            {/* Input Row 3 */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               <div className="relative">
                 <select
