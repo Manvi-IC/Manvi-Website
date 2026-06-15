@@ -17,7 +17,7 @@ export default function Prohibited() {
     <div className="px-10 lg:px-14 pb-10 lg:pb-14 pt-4 font-sans border-t border-gray-200/50">
       <div className="flex flex-col items-center">
         <div className="flex flex-col items-center text-center gap-1.5">
-          <h2 className="text-[26px] md:text-[30px] font-extrabold text-[#1c1f2e] tracking-tight">
+          <h2 className="text-[24px] md:text-[30px] font-extrabold text-[#1c1f2e] tracking-tight">
             {t.prohibited_title}
           </h2>
           <p className="text-[13px] text-gray-500 font-medium tracking-wide">
