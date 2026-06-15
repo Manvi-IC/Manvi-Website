@@ -173,13 +173,13 @@ function CompactTimer({ endDate, title, subtitle }: { endDate: Date, title: stri
       style={{ background: "#fff7ed" }}
     >
       {/* Label */}
-      <div className="flex w-full md:w-1/3 items-center justify-center md:justify-start gap-4 md:gap-0 text-[#e77419]">
-        <span className="text-5xl md:ml-10 lg:ml-20">🔥</span>
+      <div className="flex w-full md:w-1/3 items-center justify-center md:justify-start gap-3 md:gap-0 text-[#e77419]">
+        <span className="text-4xl md:text-5xl md:ml-10 lg:ml-20">🔥</span>
         <div className="text-center md:text-left">
-          <p className="text-4xl font-bold text-[#e77419] leading-none">
+          <p className="text-2xl md:text-4xl font-bold text-[#e77419] leading-none">
             {title}
           </p>
-          <p className="text-lg text-[#0a111e] mt-0.5">
+          <p className="text-sm md:text-lg text-[#0a111e] mt-1 md:mt-0.5">
             {subtitle}
           </p>
         </div>
@@ -193,20 +193,20 @@ function CompactTimer({ endDate, title, subtitle }: { endDate: Date, title: stri
           { val: pad(m), label: "Min" },
           { val: pad(s), label: "Sec" },
         ].map((unit, i) => (
-          <div key={unit.label} className="flex items-center gap-2">
-            <div className="flex flex-col items-center bg-white/50 shadow-sm rounded-xl p-3">
+          <div key={unit.label} className="flex items-center gap-1 sm:gap-2">
+            <div className="flex flex-col items-center bg-white/50 shadow-sm rounded-xl p-2 md:p-3">
               <span
-                className="text-5xl font-extrabold leading-none tabular-nums"
+                className="text-3xl sm:text-4xl md:text-5xl font-extrabold leading-none tabular-nums"
                 style={{ color: "#e77419" }}
               >
                 {unit.val}
               </span>
-              <span className="text-md font-light text-[#888] uppercase tracking-wider mt-0.5">
+              <span className="text-[10px] md:text-xs font-medium text-[#888] uppercase tracking-wider mt-0.5">
                 {unit.label}
               </span>
             </div>
             {i < 3 && (
-              <span className="text-[18px] font-extrabold text-[#e77419] -mt-2 select-none">
+              <span className="text-[14px] md:text-[18px] font-extrabold text-[#e77419] -mt-1 md:-mt-2 select-none">
                 :
               </span>
             )}
@@ -220,7 +220,7 @@ function CompactTimer({ endDate, title, subtitle }: { endDate: Date, title: stri
           href="https://wa.me/917070506070"
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center gap-1.5 text-2xl font-medium px-8 py-4 rounded-2xl tracking-wide text-white no-underline transition-transform hover:scale-105 shrink-0"
+          className="flex items-center gap-1.5 text-base md:text-2xl font-medium px-6 py-3 md:px-8 md:py-4 rounded-2xl tracking-wide text-white no-underline transition-transform hover:scale-105 shrink-0"
           style={{ background: "#e77419" }}
         >
           Claim Offer <ArrowUpRight className="w-3.5 h-3.5" strokeWidth={2.5} />
@@ -294,10 +294,7 @@ export default function CampaignPage() {
                 <span className="text-[14px]">🌍</span> International Courier
                 Service
               </span>
-              <h1
-                className="text-white font-extrabold leading-[1.15] tracking-tight"
-                style={{ fontSize: "clamp(34px, 2vw, 56px)" }}
-              >
+              <h1 className="text-white font-extrabold leading-[1.15] tracking-tight text-[28px] sm:text-[36px] md:text-[44px] lg:text-[56px]">
                 Your Parcel, Picked Up
                 <br />
                 In India : <span className="text-[#e77419]">Delivered To</span>
@@ -328,7 +325,7 @@ export default function CampaignPage() {
               <div className="flex flex-wrap gap-4">
                 <Link
                   href="/quote"
-                  className="flex items-center gap-2 font-bold text-[15px] px-7 py-3.5 rounded-full text-white no-underline transition-transform hover:scale-105"
+                  className="flex items-center gap-2 font-bold text-[13px] md:text-[15px] px-5 py-2.5 md:px-7 md:py-3.5 rounded-full text-white no-underline transition-transform hover:scale-105"
                   style={{
                     background: "#e77419",
                     border: "1px solid rgba(255,255,255,0.2)",
@@ -341,7 +338,7 @@ export default function CampaignPage() {
                   href="https://wa.me/917070506070"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-2 font-bold text-[15px] px-7 py-3.5 rounded-full no-underline transition-transform hover:scale-105"
+                  className="flex items-center gap-2 font-bold text-[13px] md:text-[15px] px-5 py-2.5 md:px-7 md:py-3.5 rounded-full no-underline transition-transform hover:scale-105"
                   style={{
                     background: "#23c961",
                     color: "#0a111e",
@@ -378,8 +375,8 @@ export default function CampaignPage() {
               <Link
                 key={tab.href}
                 href={tab.href}
-                className="flex items-center justify-center gap-2.5 rounded-[14px] text-[15px] font-semibold text-white py-4.5 px-4 transition-transform hover:scale-[1.02] no-underline shadow-sm"
-                style={{ background: "#e77419", minHeight: "64px" }}
+                className="flex items-center justify-center gap-2 md:gap-2.5 rounded-[14px] text-[13px] md:text-[15px] font-semibold text-white py-3 md:py-4 px-3 md:px-4 transition-transform hover:scale-[1.02] no-underline shadow-sm min-h-[48px] md:min-h-[64px]"
+                style={{ background: "#e77419" }}
               >
                 {idx === 1 ? (
                   <Receipt className="w-5 h-5 shrink-0" strokeWidth={2.5} />
@@ -554,31 +551,31 @@ export default function CampaignPage() {
 
       {/* ── 5. STATS ── */}
       <section className="w-full max-w-[1400px] mx-auto px-4 sm:px-6 py-10">
-        <div className="rounded-xl p-12" style={{ background: "#FF7F0052" }}>
-          <p className="text-center text-[#0a111e] text-[20px] font-extrabold mb-10">
+        <div className="rounded-xl p-6 sm:p-12" style={{ background: "#FF7F0052" }}>
+          <p className="text-center text-[#0a111e] text-[18px] md:text-[20px] font-extrabold mb-6 md:mb-10">
             Numbers That Speak for Themselves
           </p>
-          <div className="grid grid-cols-2 lg:grid-cols-4">
+          <div className="grid grid-cols-2 md:grid-cols-4">
             {STATS.map((s, idx) => {
               let borderClass = "";
               if (idx === 0) {
                 borderClass =
-                  "border-r border-b lg:border-b-0 border-[#e77419]/30";
+                  "border-r border-b md:border-b-0 border-[#e77419]/30";
               } else if (idx === 1) {
                 borderClass =
-                  "border-b lg:border-r lg:border-b-0 border-[#e77419]/30";
+                  "border-b md:border-r md:border-b-0 border-[#e77419]/30";
               } else if (idx === 2) {
                 borderClass = "border-r border-[#e77419]/30";
               }
               return (
                 <div
                   key={s.label}
-                  className={`flex flex-col items-center gap-4 text-center py-6 px-4 ${borderClass}`}
+                  className={`flex flex-col items-center gap-2 md:gap-4 text-center py-4 md:py-6 px-2 md:px-4 ${borderClass}`}
                 >
-                  <span className="text-[56px] font-bold leading-none text-[#e77419]">
+                  <span className="text-[32px] md:text-[56px] font-bold leading-none text-[#e77419]">
                     {s.value}
                   </span>
-                  <span className="text-[13px] font-bold text-[#555] uppercase tracking-wide">
+                  <span className="text-[11px] md:text-[13px] font-bold text-[#555] uppercase tracking-wide">
                     {s.label}
                   </span>
                 </div>
@@ -727,7 +724,7 @@ export default function CampaignPage() {
             {/* Get Quote */}
             <Link
               href="/quote"
-              className="flex items-center gap-2 font-bold text-[15px] px-8 py-4 rounded-full text-white no-underline transition-transform hover:scale-105"
+              className="flex items-center gap-2 font-bold text-[13px] md:text-[15px] px-6 py-3 md:px-8 md:py-4 rounded-full text-white no-underline transition-transform hover:scale-105"
               style={{
                 background: "#e77419",
               }}
@@ -739,7 +736,7 @@ export default function CampaignPage() {
               href="https://wa.me/917070506070"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 font-bold text-[15px] px-8 py-4 rounded-full text-[#0a111e] no-underline transition-transform hover:scale-105"
+              className="flex items-center gap-2 font-bold text-[13px] md:text-[15px] px-6 py-3 md:px-8 md:py-4 rounded-full text-[#0a111e] no-underline transition-transform hover:scale-105"
               style={{
                 background: "#23c961",
               }}
@@ -757,7 +754,7 @@ export default function CampaignPage() {
             {/* Call - Issue #10: consistent phone format +91 7070 506070 */}
             <a
               href="tel:+917070506070"
-              className="flex items-center gap-2 font-bold text-[15px] px-8 py-4 rounded-full no-underline transition-transform hover:scale-105"
+              className="flex items-center gap-2 font-bold text-[13px] md:text-[15px] px-6 py-3 md:px-8 md:py-4 rounded-full no-underline transition-transform hover:scale-105"
               style={{
                 background: "transparent",
                 color: "#e77419",
