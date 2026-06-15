@@ -115,6 +115,9 @@ export default function Footer() {
               <Link href="/quote" className="hover:text-white transition-colors">
                 {t.nav_quote}
               </Link>
+              <Link href="/contact" className="hover:text-white transition-colors">
+                {t.nav_contact}
+              </Link>
               <Link href="/faq" className="hover:text-white transition-colors">
                 {t.bc_faq}
               </Link>
