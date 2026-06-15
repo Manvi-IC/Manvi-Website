@@ -292,14 +292,14 @@ export default function ContactPage() {
     params.append("Phone", contact);
     // The new Zoho form maps "Enquiry Type" to "Annual Revenue"
     params.append("Annual Revenue", inquiryType || "Other");
-    
+
     // Always tag these leads as coming from Web Research
     params.append("Lead Source", "Web Research");
-    params.append("Company", companyName || "Unknown");
-    
+    params.append("Company", companyName || "Website Visitor");
+
     // The new form doesn't have a Destination field, so we'll append it to the description
-    const fullDescription = destination 
-      ? `Destination: ${destination}\n\n${queryText}` 
+    const fullDescription = destination
+      ? `Destination: ${destination}\n\n${queryText}`
       : queryText;
     params.append("Description", fullDescription);
 
@@ -388,18 +388,16 @@ export default function ContactPage() {
                           element.scrollIntoView({ behavior: "smooth", block: "center" });
                         }
                       }}
-                      className={`flex items-center gap-4 px-6 py-4.5 rounded-2xl border transition-all text-left w-full font-sans ${
-                        isActive
-                          ? "bg-white border-[#f27a1a] shadow-sm text-[#f27a1a]"
-                          : "bg-white border-transparent hover:border-gray-200 text-gray-700"
-                      }`}
+                      className={`flex items-center gap-4 px-6 py-4.5 rounded-2xl border transition-all text-left w-full font-sans ${isActive
+                        ? "bg-white border-[#f27a1a] shadow-sm text-[#f27a1a]"
+                        : "bg-white border-transparent hover:border-gray-200 text-gray-700"
+                        }`}
                     >
                       <span
-                        className={`text-[12px] font-extrabold px-2.5 py-1 rounded-full shrink-0 ${
-                          isActive
-                            ? "bg-orange-100 text-[#f27a1a]"
-                            : "bg-gray-100 text-gray-400"
-                        }`}
+                        className={`text-[12px] font-extrabold px-2.5 py-1 rounded-full shrink-0 ${isActive
+                          ? "bg-orange-100 text-[#f27a1a]"
+                          : "bg-gray-100 text-gray-400"
+                          }`}
                       >
                         {tab.id}
                       </span>
@@ -434,9 +432,8 @@ export default function ContactPage() {
             {/* Card 1: Direct Communication Channels */}
             <div
               id="contact-tab-01"
-              className={`bg-[#eef0f5] rounded-4xl p-8 lg:p-10 shadow-sm border border-gray-200/50 flex flex-col gap-6 transition-all duration-300 ${
-                activeTab === "01" ? "ring-2 ring-[#f27a1a]/50" : ""
-              }`}
+              className={`bg-[#eef0f5] rounded-4xl p-8 lg:p-10 shadow-sm border border-gray-200/50 flex flex-col gap-6 transition-all duration-300 ${activeTab === "01" ? "ring-2 ring-[#f27a1a]/50" : ""
+                }`}
             >
               <div className="flex items-center gap-4">
                 <span className="text-[12px] font-extrabold bg-orange-100 text-[#f27a1a] px-3 py-1.5 rounded-full shrink-0">
@@ -493,9 +490,8 @@ export default function ContactPage() {
             {/* Card 2: Visit Our Head Office */}
             <div
               id="contact-tab-02"
-              className={`bg-[#eef0f5] rounded-4xl p-8 lg:p-10 shadow-sm border border-gray-200/50 flex flex-col gap-6 transition-all duration-300 ${
-                activeTab === "02" ? "ring-2 ring-[#f27a1a]/50" : ""
-              }`}
+              className={`bg-[#eef0f5] rounded-4xl p-8 lg:p-10 shadow-sm border border-gray-200/50 flex flex-col gap-6 transition-all duration-300 ${activeTab === "02" ? "ring-2 ring-[#f27a1a]/50" : ""
+                }`}
             >
               <div className="flex items-center gap-4">
                 <span className="text-[12px] font-extrabold bg-orange-100 text-[#f27a1a] px-3 py-1.5 rounded-full shrink-0">
@@ -523,9 +519,8 @@ export default function ContactPage() {
             {/* Card 3: Operating Hours */}
             <div
               id="contact-tab-03"
-              className={`bg-[#eef0f5] rounded-4xl p-8 lg:p-10 shadow-sm border border-gray-200/50 flex flex-col gap-6 transition-all duration-300 ${
-                activeTab === "03" ? "ring-2 ring-[#f27a1a]/50" : ""
-              }`}
+              className={`bg-[#eef0f5] rounded-4xl p-8 lg:p-10 shadow-sm border border-gray-200/50 flex flex-col gap-6 transition-all duration-300 ${activeTab === "03" ? "ring-2 ring-[#f27a1a]/50" : ""
+                }`}
             >
               <div className="flex items-center gap-4">
                 <span className="text-[12px] font-extrabold bg-orange-100 text-[#f27a1a] px-3 py-1.5 rounded-full shrink-0">
@@ -555,9 +550,8 @@ export default function ContactPage() {
             {/* Card 4: Global Reach Support */}
             <div
               id="contact-tab-04"
-              className={`bg-[#eef0f5] rounded-4xl p-8 lg:p-10 shadow-sm border border-gray-200/50 flex flex-col gap-6 transition-all duration-300 ${
-                activeTab === "04" ? "ring-2 ring-[#f27a1a]/50" : ""
-              }`}
+              className={`bg-[#eef0f5] rounded-4xl p-8 lg:p-10 shadow-sm border border-gray-200/50 flex flex-col gap-6 transition-all duration-300 ${activeTab === "04" ? "ring-2 ring-[#f27a1a]/50" : ""
+                }`}
             >
               <div className="flex items-center gap-4">
                 <span className="text-[12px] font-extrabold bg-orange-100 text-[#f27a1a] px-3 py-1.5 rounded-full shrink-0">
@@ -633,7 +627,7 @@ export default function ContactPage() {
 
           <form onSubmit={handleInquirySubmit} className="flex flex-col gap-6">
             {/* Input Row 1 */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
               <input
                 type="text"
                 placeholder={t.name_placeholder}
@@ -642,17 +636,14 @@ export default function ContactPage() {
                 onChange={(e) => setName(e.target.value)}
                 className="bg-white text-[#333] text-[14px] font-medium rounded-xl px-5 py-4 focus:outline-none placeholder:text-gray-400 border border-gray-150 shadow-sm"
               />
-              <input
+              {/* <input
                 type="text"
                 placeholder="Company Name"
                 value={companyName}
                 onChange={(e) => setCompanyName(e.target.value)}
                 className="bg-white text-[#333] text-[14px] font-medium rounded-xl px-5 py-4 focus:outline-none placeholder:text-gray-400 border border-gray-150 shadow-sm"
-              />
-            </div>
+              /> */}
 
-            {/* Input Row 2 */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               <input
                 type="text"
                 placeholder={t.contact_placeholder}
@@ -726,10 +717,10 @@ export default function ContactPage() {
         </section>
 
         {/* Zoho WebForm Analytics Tracking */}
-        <Script 
-          id="wf_anal" 
-          src="https://crm.zohopublic.in/crm/WebFormAnalyticsServeServlet?rid=4f24d483208c6ff1e29418fdf679a98a9a8ba77e88a80be0f92231cf1bb7501536f9dc7e540c496a488af0820c16bb81gid2b74b1891513d3811013f00d50485f47feb420207d64d35ae1ecf3873ce2ef7bgidb930670def52b5e56d1d6e0e23e8e6a8bab66f5acb6b8699647a831b4dbef47bgidde0954cbe0f55f2140416d115537da6fb496f32fb2b4f50de012d84d96e9e6c1&tw=6f8adc5afefd809076b8846796a67adc323fdbd8951651cf19624cc395b13b84" 
-          strategy="lazyOnload" 
+        <Script
+          id="wf_anal"
+          src="https://crm.zohopublic.in/crm/WebFormAnalyticsServeServlet?rid=4f24d483208c6ff1e29418fdf679a98a9a8ba77e88a80be0f92231cf1bb7501536f9dc7e540c496a488af0820c16bb81gid2b74b1891513d3811013f00d50485f47feb420207d64d35ae1ecf3873ce2ef7bgidb930670def52b5e56d1d6e0e23e8e6a8bab66f5acb6b8699647a831b4dbef47bgidde0954cbe0f55f2140416d115537da6fb496f32fb2b4f50de012d84d96e9e6c1&tw=6f8adc5afefd809076b8846796a67adc323fdbd8951651cf19624cc395b13b84"
+          strategy="lazyOnload"
         />
       </main>
 
