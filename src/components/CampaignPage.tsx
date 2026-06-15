@@ -169,13 +169,13 @@ function CompactTimer({ endDate, title, subtitle }: { endDate: Date, title: stri
 
   return (
     <div
-      className="w-full flex items-center justify-center flex py-20 border-[1px] border-[#f97316] px-30"
+      className="w-full flex flex-col md:flex-row items-center justify-center gap-8 md:gap-0 py-10 md:py-16 border-[1px] border-[#f97316] px-4 md:px-10 rounded-2xl"
       style={{ background: "#fff7ed" }}
     >
       {/* Label */}
-      <div className="flex w-1/3 items-center text-[#e77419] justify-center">
-        <span className="text-5xl ml-20">🔥</span>
-        <div>
+      <div className="flex w-full md:w-1/3 items-center justify-center md:justify-start gap-4 md:gap-0 text-[#e77419]">
+        <span className="text-5xl md:ml-10 lg:ml-20">🔥</span>
+        <div className="text-center md:text-left">
           <p className="text-4xl font-bold text-[#e77419] leading-none">
             {title}
           </p>
@@ -186,7 +186,7 @@ function CompactTimer({ endDate, title, subtitle }: { endDate: Date, title: stri
       </div>
 
       {/* Clock blocks */}
-      <div className="flex w-1/3 items-center justify-center gap-2">
+      <div className="flex w-full md:w-1/3 items-center justify-center gap-1 sm:gap-2">
         {[
           { val: pad(d), label: "Days" },
           { val: pad(h), label: "Hrs" },
@@ -215,7 +215,7 @@ function CompactTimer({ endDate, title, subtitle }: { endDate: Date, title: stri
       </div>
 
       {/* CTA */}
-      <div className="flex items-center justify-center w-1/3">
+      <div className="flex items-center justify-center w-full md:w-1/3 mt-6 md:mt-0">
         <a
           href="https://wa.me/917070506070"
           target="_blank"
@@ -261,7 +261,7 @@ export default function CampaignPage() {
       <section className="w-full max-w-[1400px] mx-auto px-4 sm:px-6 py-6">
         <div
           className="relative w-full overflow-hidden"
-          style={{ height: "485px", borderRadius: "20px" }}
+          style={{ minHeight: "485px", height: "auto", borderRadius: "20px" }}
         >
           <Image
             src="/hero-right.jpg"
@@ -310,6 +310,20 @@ export default function CampaignPage() {
                 handled. Real-time tracking.
               </p>
             </div>
+
+            <div className="flex flex-col sm:flex-row sm:items-center gap-x-4 gap-y-2 mt-2">
+              <div className="flex items-center gap-2">
+                <Stars />
+                <span className="text-[13px] text-white/80 font-medium">
+                  Trusted By 10,000+ Families Worldwide
+                </span>
+              </div>
+              <span className="text-[14px] font-bold text-[#e77419]">
+                50,000+ Shipments Delivered
+              </span>
+            </div>
+
+
             <div className="flex flex-col gap-4 mt-6">
               <div className="flex flex-wrap gap-4">
                 <Link
@@ -345,20 +359,12 @@ export default function CampaignPage() {
                 </a>
               </div>
 
+
+
             </div>
           </div>
         </div>
-        <div className="flex flex-col sm:flex-row sm:items-center gap-x-4 gap-y-2 mt-2">
-          <div className="flex items-center gap-2">
-            <Stars />
-            <span className="text-[13px] text-black/80 font-medium">
-              Trusted By 10,000+ Families Worldwide
-            </span>
-          </div>
-          <span className="text-[14px] font-bold text-[#e77419]">
-            50,000+ Shipments Delivered
-          </span>
-        </div>
+
 
         {/* Action Tabs */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-5 mt-5">
@@ -389,18 +395,18 @@ export default function CampaignPage() {
 
       {/* ── 2. TRUSTED DELIVERY PARTNERS (FULL WIDTH GRAY BAR) ── */}
       {/* Issue #8: consistent order DHL, FedEx, UPS, Aramex, DPD */}
-      <section className="w-full bg-[#e5e6eb] py-6 mt-4">
-        <div className="w-full mx-auto px-4 sm:px-6 flex justify-around items-center gap-50">
-          <div className="flex">
-            <span className="text-2xl font-extrabold text-[#e77419] leading-snug block">
+      <section className="w-full bg-[#e5e6eb] py-8 mt-4">
+        <div className="w-full max-w-[1400px] mx-auto px-4 sm:px-6 flex flex-col md:flex-row justify-center md:justify-around items-center gap-6 md:gap-12">
+          <div className="flex text-center md:text-left">
+            <span className="text-xl sm:text-2xl font-extrabold text-[#e77419] leading-snug block">
               Trusted Delivery
               <br className="hidden md:block" />
               Partners ✈️
             </span>
           </div>
-          <div className="flex items-center gap-30">
+          <div className="flex flex-wrap justify-center items-center gap-6 md:gap-12">
             {PARTNERS.map((p) => (
-              <span key={p} className="text-2xl font-extrabold text-[#0a111e]">
+              <span key={p} className="text-xl sm:text-2xl font-extrabold text-[#0a111e]">
                 {p}
               </span>
             ))}
