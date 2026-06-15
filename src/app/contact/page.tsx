@@ -271,16 +271,54 @@ export default function ContactPage() {
   const [inquiryType, setInquiryType] = useState("");
   const [destination, setDestination] = useState("");
   const [queryText, setQueryText] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleInquirySubmit = (e: React.FormEvent) => {
+  const handleInquirySubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    alert(t.success_alert);
-    setName("");
-    setContact("");
-    setEmail("");
-    setInquiryType("");
-    setDestination("");
-    setQueryText("");
+    setIsSubmitting(true);
+
+    const params = new URLSearchParams();
+    params.append("xnQsjsdp", "06fb0cb20accb346cc4c7842f7fc964b6cea60895b75a18a56da9fc6825974df");
+    params.append("zc_gad", "");
+    params.append("xmIwtLD", "8fda25587ac720fd27940c1510a10f8de302788377810fd4322ce9dfa2dbfc2f240352fc2ced0b7b45cb7ee61ac6f185");
+    params.append("actionType", "TGVhZHM=");
+    params.append("returnURL", "null");
+
+    const nameParts = name.trim().split(" ");
+    const firstName = nameParts[0] || "Unknown";
+    const lastName = nameParts.slice(1).join(" ") || ".";
+
+    params.append("First Name", firstName);
+    params.append("Last Name", lastName);
+    params.append("Email", email);
+    params.append("Phone", contact);
+    params.append("Website", inquiryType || "Other");
+    params.append("Designation", destination || "Unknown");
+    params.append("Description", queryText);
+
+    try {
+      await fetch("https://crm.zoho.in/crm/WebToLeadForm", {
+        method: "POST",
+        mode: "no-cors",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: params.toString(),
+      });
+
+      alert(t.success_alert);
+      setName("");
+      setContact("");
+      setEmail("");
+      setInquiryType("");
+      setDestination("");
+      setQueryText("");
+    } catch (error) {
+      console.error("Form submission error", error);
+      alert("Something went wrong. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const scrollToForm = () => {
@@ -660,9 +698,10 @@ export default function ContactPage() {
             {/* Submit Button */}
             <button
               type="submit"
-              className="bg-[#f27a1a] hover:bg-orange-600 text-white font-bold text-[14px] px-8 py-4 rounded-xl transition-all active:scale-98 cursor-pointer w-fit"
+              disabled={isSubmitting}
+              className={`bg-[#f27a1a] hover:bg-orange-600 text-white font-bold text-[14px] px-8 py-4 rounded-xl transition-all active:scale-98 w-fit ${isSubmitting ? "opacity-70 cursor-not-allowed" : "cursor-pointer"}`}
             >
-              {t.submit_btn}
+              {isSubmitting ? "Submitting..." : t.submit_btn}
             </button>
           </form>
         </section>
