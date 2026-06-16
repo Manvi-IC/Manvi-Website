@@ -30,8 +30,8 @@ export default function WhyWeLead() {
                 {t.wwl_card1_label}
               </span>
             </div>
-            <div className="flex flex-col items-end text-right mt-auto pt-6">
-              <span className="text-[36px] sm:text-[42px] font-extrabold text-[#ff8a00] leading-none tracking-tight">
+            <div className="flex items-center gap-6">
+              <span className="text-[32px] sm:text-[42px] font-extrabold text-[#ff8a00] leading-none tracking-tight">
                 98%
               </span>
               <div className="w-full h-[1.5px] bg-[#ff8a00]/30 my-4 transition-colors duration-300 group-hover:bg-[#ff8a00]/50" />
@@ -63,7 +63,7 @@ export default function WhyWeLead() {
               </span>
             </div>
             <div className="flex flex-col items-end text-right mt-auto pt-8">
-              <h3 className="text-[28px] sm:text-[32px] lg:text-[38px] font-extrabold text-[#ff8a00] leading-[1.1] tracking-tight whitespace-pre-line">
+              <h3 className="text-[24px] sm:text-[32px] lg:text-[38px] font-extrabold text-[#ff8a00] leading-[1.1] tracking-tight whitespace-pre-line">
                 {t.wwl_card2_stat}
               </h3>
               <div className="w-full h-[1.5px] bg-[#ff8a00]/30 my-4 transition-colors duration-300 group-hover:bg-[#ff8a00]/50" />
@@ -115,7 +115,7 @@ export default function WhyWeLead() {
               </span>
             </div>
             <div className="flex flex-col items-end text-right mt-auto pt-8">
-              <h3 className="text-[28px] sm:text-[32px] lg:text-[38px] font-extrabold text-[#ff8a00] leading-[1.1] tracking-tight whitespace-pre-line">
+              <h3 className="text-[24px] sm:text-[32px] lg:text-[38px] font-extrabold text-[#ff8a00] leading-[1.1] tracking-tight whitespace-pre-line">
                 {t.wwl_card4_stat}
               </h3>
               <div className="w-full h-[1.5px] bg-[#ff8a00]/30 my-4 transition-colors duration-300 group-hover:bg-[#ff8a00]/50" />

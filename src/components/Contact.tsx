@@ -18,7 +18,7 @@ export default function Contact() {
             <div className="border border-orange-300 text-[#ff8a00] bg-transparent rounded-full px-4 py-1 text-[12px] font-bold tracking-wide w-fit">
               {t.contact_badge}
             </div>
-            <h2 className="text-[32px] md:text-[38px] font-extrabold text-[#1c1f2e] tracking-tight leading-tight">
+            <h2 className="text-[26px] md:text-[38px] font-extrabold text-[#1c1f2e] tracking-tight leading-tight">
               {t.contact_title}
             </h2>
             <p className="text-[13px] text-gray-400 font-medium leading-relaxed max-w-[95%]">

@@ -182,7 +182,6 @@ const translations: Record<Language, Translations> = {
     nav_services: "Services",
     nav_track: "Track now",
     nav_quote: "Get quote",
-    hours_mon_sat: "Monday - Saturday: 10:00 AM - 7:00 PM (IST)",
     nav_contact: "Contact us",
     nav_home: "Home",
     nav_zipcode: "Serviceable zipcode",
@@ -267,8 +266,6 @@ const translations: Record<Language, Translations> = {
     claim_title: "Our refund and loss claim policy",
     claim_intro:
       "Manvi International is committed to providing reliable international logistics services. However, in the event of transit irregularities, the following policy outlines the formal procedures, timelines, and conditions for the resolution of claims.",
-    inquiry_form_subtitle:
-      "Please fill out the form below, and a member of our team will get back to you within 24 business hours.",
     claim_tab1_title: "General claim provisions",
     claim_tab1_subtext:
       "All claims for refunds or losses must undergo a formal investigation process.",
