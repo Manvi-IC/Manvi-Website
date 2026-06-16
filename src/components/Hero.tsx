@@ -377,11 +377,11 @@ export default function Hero() {
         <div className="relative rounded-[16px] min-h-[485px] lg:h-auto flex flex-col justify-between">
           {/* ── Results panel (shown after quote) ── */}
           {showResults && quotes.length > 0 ? (
-            <div className="bg-[#0b1220] rounded-[16px] h-full flex flex-col p-5 gap-3">
+            <div className="bg-[#0b1220] rounded-[16px] h-full flex flex-col p-5 gap-3 min-h-[485px]">
               {/* Header */}
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-white font-bold text-sm">
+              <div className="flex items-start justify-between gap-2">
+                <div className="flex-1 min-w-0">
+                  <p className="text-white font-bold text-sm truncate">
                     {destObj?.label}
                     {zoningCountry && ` — ${zoningCountry}`}
                   </p>
@@ -398,79 +398,82 @@ export default function Hero() {
                     setShowResults(false);
                     setQuotes([]);
                   }}
-                  className="text-zinc-500 hover:text-white transition-colors p-1"
+                  className="text-zinc-500 hover:text-white transition-colors p-1 shrink-0 mt-1"
                 >
                   <X size={16} />
                 </button>
               </div>
 
-              {/* Scrollable service list */}
-              <div className="flex flex-col gap-2 overflow-y-auto max-h-[380px] pr-1 scrollbar-thin scrollbar-thumb-zinc-700 scrollbar-track-transparent">
-                {quotes.map((q) => {
-                  const key = `${q.service}__${q.rateType}`;
-                  const isSelected = selectedService === key;
-                  const networkColor =
-                    NETWORK_COLORS[q.network] ?? "bg-gray-100 text-gray-700";
-                  const networkLabel = NETWORK_LABELS[q.network] ?? q.network;
+              {/* Scrollable service list - FIXED HEIGHT */}
+              <div className="flex-1 min-h-0">
+                <div className="flex flex-col gap-2 h-full overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-zinc-700 scrollbar-track-transparent">
+                  {quotes.map((q) => {
+                    const key = `${q.service}__${q.rateType}`;
+                    const isSelected = selectedService === key;
+                    const networkColor =
+                      NETWORK_COLORS[q.network] ?? "bg-gray-100 text-gray-700";
+                    const networkLabel = NETWORK_LABELS[q.network] ?? q.network;
 
-                  return (
-                    <div
-                      key={key}
-                      onClick={() => setSelectedService(key)}
-                      className={`relative rounded-xl border-2 p-4 cursor-pointer transition-all ${
-                        isSelected
-                          ? "border-[#e77419] bg-[#e77419]/10"
-                          : "border-zinc-700 bg-zinc-800/60 hover:border-zinc-500"
-                      }`}
-                    >
-                      {isSelected && (
-                        <div className="absolute -top-2 left-3 bg-[#e77419] text-white text-[9px] font-bold px-2 py-0.5 rounded-full">
-                          SELECTED
-                        </div>
-                      )}
-
-                      <div className="flex items-start justify-between gap-3">
-                        {/* Left */}
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center gap-1.5 flex-wrap">
-                            <span
-                              className={`text-[9px] font-bold px-1.5 py-0.5 rounded-full ${networkColor}`}
-                            >
-                              {networkLabel}
-                            </span>
-                            {q.zone && (
-                              <span className="text-[9px] bg-white/10 text-zinc-300 px-1.5 py-0.5 rounded-full font-mono">
-                                Zone {q.zone}
-                              </span>
-                            )}
-                            <span className="text-[9px] bg-white/10 text-zinc-300 px-1.5 py-0.5 rounded-full">
-                              {q.rateType === "S" ? "Slab" : "Per kg"}
-                            </span>
+                    return (
+                      <div
+                        key={key}
+                        onClick={() => setSelectedService(key)}
+                        className={`relative rounded-xl border-2 p-4 cursor-pointer transition-all mt-2 ${
+                          isSelected
+                            ? "border-[#e77419] bg-[#e77419]/10"
+                            : "border-zinc-700 bg-zinc-800/60 hover:border-zinc-500"
+                        }`}
+                      >
+                        {isSelected && (
+                          <div className="absolute -top-2 left-3 bg-[#e77419] text-white text-[9px] font-bold px-2 py-0.5 rounded-full">
+                            SELECTED
                           </div>
-                          <p className="mt-1.5 text-[12px] font-bold text-white leading-tight">
-                            {q.service}
-                          </p>
-                          <p className="text-[10px] text-zinc-400 mt-0.5">
-                            {q.tat}
-                          </p>
-                        </div>
+                        )}
 
-                        {/* Right */}
-                        <div className="text-right shrink-0">
-                          <p className="text-[18px] font-extrabold text-[#e77419] leading-none">
-                            ₹{Math.round(q.totalPrice).toLocaleString("en-IN")}
-                          </p>
-                          <p className="text-[9px] text-zinc-500 mt-0.5">
-                            GST inclusive
-                          </p>
+                        <div className="flex items-start justify-between gap-3">
+                          {/* Left */}
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center gap-1.5 flex-wrap">
+                              <span
+                                className={`text-[9px] font-bold px-1.5 py-0.5 rounded-full ${networkColor}`}
+                              >
+                                {networkLabel}
+                              </span>
+                              {q.zone && (
+                                <span className="text-[9px] bg-white/10 text-zinc-300 px-1.5 py-0.5 rounded-full font-mono">
+                                  Zone {q.zone}
+                                </span>
+                              )}
+                              <span className="text-[9px] bg-white/10 text-zinc-300 px-1.5 py-0.5 rounded-full">
+                                {q.rateType === "S" ? "Slab" : "Per kg"}
+                              </span>
+                            </div>
+                            <p className="mt-1.5 text-[12px] font-bold text-white leading-tight">
+                              {q.service}
+                            </p>
+                            <p className="text-[10px] text-zinc-400 mt-0.5">
+                              {q.tat}
+                            </p>
+                          </div>
+
+                          {/* Right */}
+                          <div className="text-right shrink-0">
+                            <p className="text-[18px] font-extrabold text-[#e77419] leading-none">
+                              ₹
+                              {Math.round(q.totalPrice).toLocaleString("en-IN")}
+                            </p>
+                            <p className="text-[9px] text-zinc-500 mt-0.5">
+                              GST inclusive
+                            </p>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  );
-                })}
+                    );
+                  })}
+                </div>
               </div>
 
-              <p className="text-[10px] text-zinc-500 text-center pt-1">
+              <p className="text-[10px] text-zinc-500 text-center pt-1 border-t border-zinc-800/50 mt-1">
                 Final rates may vary · Call{" "}
                 <strong className="text-zinc-400">+91 7070-506070</strong> to
                 confirm

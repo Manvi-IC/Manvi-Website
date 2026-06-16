@@ -207,12 +207,12 @@ function ServiceCard({
       onClick={() => onSelect(labelKey)}
       className={`relative rounded-xl border-2 p-5 cursor-pointer transition-all ${
         selected
-          ? "border-[#e77419] bg-orange-50 shadow-md"
+          ? "border-[#f27a1a] bg-orange-50 shadow-md"
           : "border-gray-200 bg-white hover:border-orange-300 hover:shadow-sm"
       }`}
     >
       {selected && (
-        <div className="absolute -top-2.5 left-4 bg-[#e77419] text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
+        <div className="absolute -top-2.5 left-4 bg-[#f27a1a] text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
           SELECTED
         </div>
       )}
@@ -254,7 +254,7 @@ function ServiceCard({
         </div>
 
         <div className="text-right shrink-0">
-          <p className="text-2xl font-extrabold text-[#e77419]">
+          <p className="text-2xl font-extrabold text-[#f27a1a]">
             ₹{fmtPrice(quote.totalPrice)}
           </p>
           <p className="text-[10px] text-gray-400 mt-0.5">GST inclusive</p>
@@ -346,14 +346,14 @@ export default function GetQuote() {
   };
 
   return (
-    <div className="flex flex-col flex-grow">
-      {/* Banner */}
+    <div className="min-h-screen bg-[#f8f9fa] text-[#0f172a] font-sans flex flex-col antialiased">
+      {/* Banner Section - Same as Track Shipment */}
       <section className="relative bg-[#0b1220] overflow-hidden min-h-55 flex items-center py-12 px-6">
         <div
           className="absolute inset-0 z-0 opacity-20 bg-cover bg-center"
           style={{ backgroundImage: `url('/banner.jpg')` }}
         />
-        <div className="max-w-5xl w-full mx-auto flex flex-col relative z-10 gap-3">
+        <div className="max-w-425 w-full mx-auto flex flex-col relative z-10 gap-3">
           <div className="flex items-center gap-2 text-[12px] font-semibold text-white/50">
             <a href="/" className="hover:text-white transition-colors">
               Home
@@ -370,26 +370,29 @@ export default function GetQuote() {
         </div>
       </section>
 
-      <main className="flex-grow max-w-5xl w-full mx-auto px-4 sm:px-6 py-12 flex flex-col gap-12">
-        <div className="grid grid-cols-1 lg:grid-cols-[420px_1fr] gap-8 items-start">
-          {/* LEFT: Quote form */}
-          <div className="bg-[#f27a1a] rounded-[28px] p-6 sm:p-8 flex flex-col gap-6">
-            <div>
-              <div className="border border-white/40 text-white rounded-full px-4 py-1 text-[11px] font-extrabold w-fit tracking-wide mb-3">
+      <main className="flex-grow max-w-425 w-full mx-auto px-6 py-12">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          {/* LEFT: Quote form - Same styling as Track Shipment form */}
+          <div className="lg:col-span-5 bg-[#eef0f5] rounded-4xl p-8 lg:p-10 shadow-sm border border-gray-200/50 flex flex-col">
+            <div className="flex flex-col gap-5">
+              <div className="border border-orange-300/80 text-[#f27a1a] bg-orange-50/50 rounded-full px-4 py-1 text-[11px] font-extrabold w-fit tracking-wide">
                 INSTANT ESTIMATE
               </div>
-              <h2 className="text-[26px] font-extrabold text-white leading-tight">
+              <h2 className="text-[28px] md:text-[34px] font-extrabold text-[#1c1f2e] leading-tight tracking-tight">
                 CONNECTING FAMILIES,
                 <br />
                 BRIDGING DISTANCES.
               </h2>
-              <p className="text-white/80 text-xs mt-2">
+              <p className="text-[13px] text-gray-500 font-medium leading-relaxed">
                 Send documents, parcels, gifts, or commercial shipments
                 worldwide.
               </p>
             </div>
 
-            <form onSubmit={handleGetQuote} className="flex flex-col gap-3">
+            <form
+              onSubmit={handleGetQuote}
+              className="flex flex-col gap-4 mt-6"
+            >
               {/* Destination */}
               <div className="relative">
                 <select
@@ -401,7 +404,7 @@ export default function GetQuote() {
                     setResult(null);
                     setError("");
                   }}
-                  className="w-full bg-white text-[#333] text-[13px] font-medium rounded-xl px-4 py-3 focus:outline-none appearance-none"
+                  className="w-full bg-white text-[#333] text-[14px] font-medium rounded-xl px-5 py-4 focus:outline-none appearance-none border border-gray-200 shadow-sm"
                 >
                   <option value="">Select Destination</option>
                   {DESTINATIONS.map((d) => (
@@ -411,8 +414,8 @@ export default function GetQuote() {
                   ))}
                 </select>
                 <ChevronDown
-                  size={14}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
+                  size={16}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
                 />
               </div>
 
@@ -426,7 +429,7 @@ export default function GetQuote() {
                       setResult(null);
                       setError("");
                     }}
-                    className="w-full bg-white text-[#333] text-[13px] font-medium rounded-xl px-4 py-3 focus:outline-none appearance-none"
+                    className="w-full bg-white text-[#333] text-[14px] font-medium rounded-xl px-5 py-4 focus:outline-none appearance-none border border-gray-200 shadow-sm"
                   >
                     <option value="">
                       {destination === "EUROPE"
@@ -440,8 +443,8 @@ export default function GetQuote() {
                     ))}
                   </select>
                   <ChevronDown
-                    size={14}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
+                    size={16}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
                   />
                 </div>
               )}
@@ -453,7 +456,7 @@ export default function GetQuote() {
                   placeholder={`Zipcode / Postcode (required for ${destObj?.label})`}
                   value={zipcode}
                   onChange={(e) => setZipcode(e.target.value.toUpperCase())}
-                  className="w-full bg-white text-[#333] text-[13px] font-medium rounded-xl px-4 py-3 focus:outline-none placeholder:text-gray-400"
+                  className="w-full bg-white text-[#333] text-[14px] font-medium rounded-xl px-5 py-4 focus:outline-none placeholder:text-gray-400 border border-gray-200 shadow-sm"
                 />
               )}
 
@@ -465,15 +468,15 @@ export default function GetQuote() {
                 onChange={(e) => setActualWt(e.target.value)}
                 min="0.001"
                 step="0.001"
-                className="w-full bg-white text-[#333] text-[13px] font-medium rounded-xl px-4 py-3 focus:outline-none placeholder:text-gray-400"
+                className="w-full bg-white text-[#333] text-[14px] font-medium rounded-xl px-5 py-4 focus:outline-none placeholder:text-gray-400 border border-gray-200 shadow-sm"
               />
 
               {/* Dimensions */}
-              <div className="flex flex-col gap-1">
-                <span className="text-white/80 text-[11px] font-semibold tracking-wide uppercase pl-1">
+              <div className="flex flex-col gap-2">
+                <span className="text-[11px] text-gray-500 font-semibold tracking-wide uppercase">
                   Volume Weight Dimensions (cm) — optional
                 </span>
-                <div className="grid grid-cols-3 gap-2">
+                <div className="grid grid-cols-3 gap-3">
                   {(
                     [
                       { val: length, setter: setLength, label: "Length" },
@@ -488,7 +491,7 @@ export default function GetQuote() {
                       value={val}
                       onChange={(e) => setter(e.target.value)}
                       min="0"
-                      className="bg-white text-[#333] text-[13px] font-medium rounded-xl px-3 py-3 focus:outline-none placeholder:text-gray-400"
+                      className="bg-white text-[#333] text-[14px] font-medium rounded-xl px-4 py-4 focus:outline-none placeholder:text-gray-400 border border-gray-200 shadow-sm"
                     />
                   ))}
                 </div>
@@ -496,41 +499,41 @@ export default function GetQuote() {
 
               {/* Live weight preview */}
               {(actualWt || volWt) && (
-                <div className="bg-white/20 rounded-xl px-4 py-3 flex justify-between text-white text-xs font-semibold">
+                <div className="bg-orange-50 rounded-xl px-4 py-3 flex justify-between text-gray-700 text-xs font-semibold border border-orange-200/50">
                   {volWt && <span>Vol wt: {volWt} kg</span>}
                   <span>Chargeable: {chargeableWt} kg</span>
                 </div>
               )}
 
               {error && (
-                <div className="bg-red-100 border border-red-300 text-red-700 rounded-xl px-4 py-3 text-xs font-medium">
-                  {error}
+                <div className="bg-red-50 border border-red-200 text-red-600 rounded-xl px-4 py-3 text-xs font-semibold flex items-center gap-2">
+                  <span>⚠️</span> {error}
                 </div>
               )}
 
               <button
                 type="submit"
                 disabled={loading}
-                className="bg-[#0b1220] hover:bg-slate-800 disabled:opacity-60 text-white font-bold text-[13px] py-3.5 px-6 rounded-xl transition-all active:scale-95 flex items-center justify-center gap-2"
+                className="bg-[#f27a1a] hover:bg-orange-600 disabled:opacity-60 text-white font-bold text-[14px] py-4 px-6 rounded-xl transition-all active:scale-98 flex items-center justify-center gap-2 mt-2"
               >
                 {loading ? (
                   <>
-                    <Loader2 size={16} className="animate-spin" /> Calculating…
+                    <Loader2 size={18} className="animate-spin" /> Calculating…
                   </>
                 ) : (
                   <>
-                    Get Quote <ArrowUpRight size={16} strokeWidth={2.5} />
+                    Get Quote <ArrowUpRight size={18} strokeWidth={2.5} />
                   </>
                 )}
               </button>
             </form>
           </div>
 
-          {/* RIGHT: Results */}
-          <div className="flex flex-col gap-4">
+          {/* RIGHT: Results - Updated styling */}
+          <div className="lg:col-span-7 flex flex-col gap-6">
             {!result && !loading && (
-              <div className="bg-[#eef0f5] rounded-[28px] p-8 flex flex-col items-center justify-center text-center gap-4 min-h-64">
-                <PackageCheck size={48} className="text-gray-300" />
+              <div className="bg-[#eef0f5] rounded-4xl p-8 lg:p-14 flex flex-col items-center justify-center text-center gap-4 min-h-80 shadow-sm border border-gray-200/50">
+                <PackageCheck size={56} className="text-gray-300" />
                 <div>
                   <p className="text-[#1c1f2e] font-bold text-lg">
                     Your quotes will appear here
@@ -543,8 +546,8 @@ export default function GetQuote() {
             )}
 
             {loading && (
-              <div className="bg-[#eef0f5] rounded-[28px] p-8 flex flex-col items-center justify-center gap-4 min-h-64">
-                <Loader2 size={40} className="text-[#e77419] animate-spin" />
+              <div className="bg-[#eef0f5] rounded-4xl p-8 lg:p-14 flex flex-col items-center justify-center gap-4 min-h-80 shadow-sm border border-gray-200/50">
+                <Loader2 size={44} className="text-[#f27a1a] animate-spin" />
                 <p className="text-gray-600 text-sm font-medium">
                   Fetching rates from all carriers…
                 </p>
@@ -553,9 +556,10 @@ export default function GetQuote() {
 
             {result && (
               <>
-                <div className="bg-[#0b1220] rounded-2xl px-5 py-4 flex flex-wrap gap-4 text-white">
+                {/* Summary Card - Same style as Track Shipment */}
+                <div className="bg-[#0b1220] rounded-2xl px-6 py-5 flex flex-wrap gap-4 text-white shadow-sm">
                   <div className="flex-1 min-w-[120px]">
-                    <p className="text-[10px] text-gray-400 uppercase tracking-wider">
+                    <p className="text-[10px] text-gray-400 uppercase tracking-wider font-bold">
                       Destination
                     </p>
                     <p className="font-bold text-sm">
@@ -564,35 +568,36 @@ export default function GetQuote() {
                     </p>
                   </div>
                   <div className="flex-1 min-w-[100px]">
-                    <p className="text-[10px] text-gray-400 uppercase tracking-wider">
+                    <p className="text-[10px] text-gray-400 uppercase tracking-wider font-bold">
                       Actual Wt
                     </p>
                     <p className="font-bold text-sm">{result.actualWt} kg</p>
                   </div>
                   {result.volWt > 0 && (
                     <div className="flex-1 min-w-[100px]">
-                      <p className="text-[10px] text-gray-400 uppercase tracking-wider">
+                      <p className="text-[10px] text-gray-400 uppercase tracking-wider font-bold">
                         Vol Wt
                       </p>
                       <p className="font-bold text-sm">{result.volWt} kg</p>
                     </div>
                   )}
                   <div className="flex-1 min-w-[120px]">
-                    <p className="text-[10px] text-gray-400 uppercase tracking-wider">
+                    <p className="text-[10px] text-gray-400 uppercase tracking-wider font-bold">
                       Chargeable Wt
                     </p>
-                    <p className="font-bold text-sm text-[#e77419]">
+                    <p className="font-bold text-sm text-[#f27a1a]">
                       {result.chargeableWt} kg
                     </p>
                   </div>
                   <div className="flex-1 min-w-[100px]">
-                    <p className="text-[10px] text-gray-400 uppercase tracking-wider">
+                    <p className="text-[10px] text-gray-400 uppercase tracking-wider font-bold">
                       Services Found
                     </p>
                     <p className="font-bold text-sm">{result.quotes.length}</p>
                   </div>
                 </div>
 
+                {/* Service Cards */}
                 <div className="flex flex-col gap-3">
                   {result.quotes.map((quote) => {
                     const key = `${quote.service}__${quote.rateType}`;
@@ -610,55 +615,58 @@ export default function GetQuote() {
                 <p className="text-xs text-gray-400 text-center px-4">
                   * All rates are GST-inclusive. Final amounts may vary based on
                   fuel surcharge, customs, and destination surcharges. Call{" "}
-                  <strong>+91 7070-506070</strong> to confirm.
+                  <strong className="text-gray-600">+91 7070-506070</strong> to
+                  confirm.
                 </p>
               </>
             )}
           </div>
         </div>
 
-        {/* HOW CALCULATED */}
-        <div className="bg-[#eef0f5] rounded-[28px] p-8 lg:p-12 grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="md:col-span-3 mb-2">
-            <h2 className="text-[24px] font-extrabold text-[#1c1f2e]">
-              How Is Your Quote Calculated?
-            </h2>
-          </div>
-          {[
-            {
-              n: "1",
-              title: "Chargeable Weight",
-              desc: "We use the higher of actual weight vs volumetric weight (L × B × H ÷ 5000), rounded up to the nearest kg.",
-            },
-            {
-              n: "2",
-              title: "Service & Zone",
-              desc: "For Australia/Canada your postcode determines the delivery zone. Europe and International destinations use country-based zone mapping.",
-            },
-            {
-              n: "3",
-              title: "Rate Application",
-              desc: "Slab rates (S) are flat amounts per weight bracket. Per-kg rates (B) are multiplied by your chargeable weight. All rates are GST-inclusive.",
-            },
-          ].map(({ n, title, desc }) => (
-            <div key={n} className="flex items-start gap-3">
-              <span className="inline-flex items-center justify-center w-7 h-7 rounded-full bg-[#f27a1a] text-white text-xs font-bold shrink-0 mt-0.5">
-                {n}
-              </span>
-              <div>
-                <span className="font-bold text-[#1c1f2e] block mb-0.5 text-sm">
-                  {title}
-                </span>
-                <span className="text-xs text-[#727C88] leading-relaxed">
-                  {desc}
-                </span>
-              </div>
+        {/* HOW CALCULATED - Updated styling */}
+        <div className="bg-[#eef0f5] rounded-4xl p-8 lg:p-12 shadow-sm border border-gray-200/50 mt-12">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="md:col-span-3 mb-2">
+              <h2 className="text-[28px] md:text-[34px] font-extrabold text-[#1c1f2e] leading-tight tracking-tight">
+                How Is Your Quote Calculated?
+              </h2>
             </div>
-          ))}
+            {[
+              {
+                n: "1",
+                title: "Chargeable Weight",
+                desc: "We use the higher of actual weight vs volumetric weight (L × B × H ÷ 5000), rounded up to the nearest kg.",
+              },
+              {
+                n: "2",
+                title: "Service & Zone",
+                desc: "For Australia/Canada your postcode determines the delivery zone. Europe and International destinations use country-based zone mapping.",
+              },
+              {
+                n: "3",
+                title: "Rate Application",
+                desc: "Slab rates (S) are flat amounts per weight bracket. Per-kg rates (B) are multiplied by your chargeable weight. All rates are GST-inclusive.",
+              },
+            ].map(({ n, title, desc }) => (
+              <div key={n} className="flex items-start gap-4">
+                <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-[#f27a1a] text-white text-xs font-bold shrink-0 mt-0.5">
+                  {n}
+                </span>
+                <div>
+                  <span className="font-bold text-[#1c1f2e] block mb-1 text-sm">
+                    {title}
+                  </span>
+                  <span className="text-xs text-gray-500 leading-relaxed">
+                    {desc}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
 
-        {/* FAQ */}
-        <div className="bg-[#eef0f5] rounded-[28px] p-8 sm:p-10 lg:p-14 flex flex-col items-center gap-8">
+        {/* FAQ - Updated styling to match Track Shipment */}
+        <div className="bg-[#eef0f5] rounded-4xl p-8 sm:p-10 lg:p-14 shadow-sm border border-gray-200/50 flex flex-col items-center gap-8 mt-12">
           <div className="flex flex-col items-center gap-3 text-center">
             <div className="border border-orange-300/80 text-[#f27a1a] bg-orange-50/50 rounded-full px-4 py-1 text-[11px] font-extrabold tracking-wide">
               Got Questions?
@@ -687,7 +695,7 @@ export default function GetQuote() {
                       {faq.q}
                     </span>
                     {openFaq === faq.id && (
-                      <p className="text-[13px] text-[#727C88] font-medium leading-relaxed pr-4">
+                      <p className="text-[13px] text-gray-500 font-medium leading-relaxed pr-4">
                         {faq.a}
                       </p>
                     )}
