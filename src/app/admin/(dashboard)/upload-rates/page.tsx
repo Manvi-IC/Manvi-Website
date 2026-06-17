@@ -3,7 +3,7 @@ import { useState, useRef, useCallback, useEffect, DragEvent, ChangeEvent } from
 import { UploadCloud, File as FileIcon, AlertCircle, CheckCircle2, Clock, Trash2, RefreshCw } from 'lucide-react';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
-const DB_NAME = process.env.NEXT_PUBLIC_X_DATABASE || 'm5clogs';
+const DB_NAME = process.env.NEXT_PUBLIC_RATES_DATABASE || 'manvi';
 
 const headers = {
   'x-database': DB_NAME,

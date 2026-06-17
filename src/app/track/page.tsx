@@ -202,7 +202,6 @@ export default function TrackPage() {
   const t = localTranslations[lang] || localTranslations.en;
 
   const [trackingNumber, setTrackingNumber] = useState("");
-  const [contactNumber, setContactNumber] = useState("");
   const [hasSearched, setHasSearched] = useState(false);
   const [error, setError] = useState("");
 
@@ -218,7 +217,6 @@ export default function TrackPage() {
 
   const handleReset = () => {
     setTrackingNumber("");
-    setContactNumber("");
     setHasSearched(false);
   };
 
@@ -267,13 +265,6 @@ export default function TrackPage() {
                     placeholder={t.tracking_placeholder}
                     value={trackingNumber}
                     onChange={(e) => setTrackingNumber(e.target.value)}
-                    className="bg-white text-[#333] text-[14px] font-medium rounded-xl px-5 py-4 focus:outline-none placeholder:text-gray-400 border border-gray-200 shadow-sm"
-                  />
-                  <input
-                    type="text"
-                    placeholder={t.contact_placeholder}
-                    value={contactNumber}
-                    onChange={(e) => setContactNumber(e.target.value)}
                     className="bg-white text-[#333] text-[14px] font-medium rounded-xl px-5 py-4 focus:outline-none placeholder:text-gray-400 border border-gray-200 shadow-sm"
                   />
                 </div>
