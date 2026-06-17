@@ -90,3 +90,16 @@ body {
 .animate-marquee {
   animation: marquee 18s linear infinite;
 }
+
+/* Custom Cursors */
+* {
+  cursor: default;
+}
+
+a, a *, button, button *, [role="button"], [role="button"] *, summary, summary *, label, label *, select, select *, input[type="submit"], input[type="button"], input[type="checkbox"], input[type="radio"] {
+  cursor: pointer;
+}
+
+input:not([type="submit"]):not([type="button"]):not([type="checkbox"]):not([type="radio"]), textarea {
+  cursor: text;
+}

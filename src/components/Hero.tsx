@@ -623,9 +623,9 @@ export default function Hero() {
                   <div className="w-2 h-2 rounded-full bg-white/40" />
                   <div className="w-2 h-2 rounded-full bg-white/40" />
                 </div>
-                <button className="border border-white/50 text-white text-[12px] font-semibold px-5 py-2 rounded-lg hover:bg-white/10 transition-colors">
+                <Link href="/services" className="border border-white/50 text-white text-[12px] font-semibold px-5 py-2 rounded-lg hover:bg-white/10 transition-colors">
                   {t.hero_read_more}
-                </button>
+                </Link>
               </div>
             </div>
           </div>

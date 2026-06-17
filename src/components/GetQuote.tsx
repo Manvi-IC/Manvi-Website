@@ -184,11 +184,10 @@ function ServiceCard({
   return (
     <div
       onClick={() => onSelect(labelKey)}
-      className={`relative rounded-xl border-2 p-5 cursor-pointer transition-all ${
-        selected
+      className={`relative rounded-xl border-2 p-5 cursor-pointer transition-all ${selected
           ? "border-[#f27a1a] bg-orange-50 shadow-md"
           : "border-gray-200 bg-white hover:border-orange-300 hover:shadow-sm"
-      }`}
+        }`}
     >
       {selected && (
         <div className="absolute -top-2.5 left-4 bg-[#f27a1a] text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
@@ -278,9 +277,9 @@ export default function GetQuote() {
   const volWt =
     parseFloat(length) && parseFloat(breadth) && parseFloat(height)
       ? (
-          (parseFloat(length) * parseFloat(breadth) * parseFloat(height)) /
-          5000
-        ).toFixed(2)
+        (parseFloat(length) * parseFloat(breadth) * parseFloat(height)) /
+        5000
+      ).toFixed(2)
       : null;
 
   const chargeableWt = volWt
