@@ -31,7 +31,8 @@ const localTranslations: Record<
     banner_title: string;
     card_title: string;
     card_subtitle: string;
-    input_placeholder: string;
+    country_placeholder: string;
+    zipcode_placeholder: string;
     btn_check: string;
     success_msg: string;
     fail_msg: string;
@@ -46,8 +47,9 @@ const localTranslations: Record<
     banner_title: "Serviceable Zipcode",
     card_title: "Check Delivery\nAvailability In Your Area",
     card_subtitle:
-      "Enter Your International ZIP Code Or Indian PIN Code Below To Instantly Check If We Deliver To Your Location.",
-    input_placeholder: "Enter ZIP Code (Intl) / PIN Code (India)",
+      "Select/Enter Your Destination Country And Zip/PIN Code Below To Instantly Check Delivery Feasibility.",
+    country_placeholder: "Enter Country (e.g. USA, Canada, UK, India)",
+    zipcode_placeholder: "Enter ZIP / PIN Code (Optional)",
     btn_check: "Check Availability",
     success_msg: "Great News! We Serve Your Area",
     fail_msg: "We're Not There Yet",
@@ -62,8 +64,9 @@ const localTranslations: Record<
     banner_title: "सेवा योग्य पिनकोड",
     card_title: "अपने क्षेत्र में डिलीवरी\nउपलब्धता की जांच करें",
     card_subtitle:
-      "यह जांचने के लिए कि क्या हम आपकी जगह पर डिलीवरी करते हैं, अपना शहर या पिनकोड दर्ज करें।",
-    input_placeholder: "शहर या पिनकोड दर्ज करें",
+      "डिलीवरी की व्यवहार्यता की तुरंत जांच करने के लिए नीचे अपने गंतव्य देश और ज़िप/पिन कोड का चयन/दर्ज करें।",
+    country_placeholder: "देश का नाम दर्ज करें (जैसे: भारत, अमेरिका, कनाडा)",
+    zipcode_placeholder: "पिनकोड / ज़िप कोड दर्ज करें (वैकल्पिक)",
     btn_check: "उपलब्धता जांचें",
     success_msg: "खुशखबरी! हम आपके क्षेत्र में सेवा प्रदान करते हैं",
     fail_msg: "हम अभी वहाँ नहीं हैं",
@@ -78,8 +81,9 @@ const localTranslations: Record<
     banner_title: "ਸੇਵਾ ਯੋਗ ਪਿੰਨ ਕੋਡ",
     card_title: "ਆਪਣੇ ਖੇਤਰ ਵਿੱਚ ਡਿਲਿਵਰੀ\nਉਪਲਬਧਤਾ ਦੀ ਜਾਂਚ ਕਰੋ",
     card_subtitle:
-      "ਇਹ ਦੇਖਣ ਲਈ ਕਿ ਕੀ ਅਸੀਂ ਤੁਹਾਡੇ ਸਥਾਨ 'ਤੇ ਡਿਲਿਵਰੀ ਕਰਦੇ ਹਾਂ, ਆਪਣਾ ਸ਼ਹਿਰ ਜਾਂ ਪਿੰਨ ਕੋਡ ਦਰਜ ਕਰੋ।",
-    input_placeholder: "ਸ਼ਹਿਰ ਜਾਂ ਪਿੰਨ ਕੋਡ ਦਰਜ ਕਰੋ",
+      "ਡਿਲਿਵਰੀ ਦੀ ਸੰਭਾਵਨਾ ਦੀ ਤੁਰੰਤ ਜਾਂਚ ਕਰਨ ਲਈ ਹੇਠਾਂ ਆਪਣੇ ਦੇਸ਼ ਅਤੇ ਜ਼ਿਪ/ਪਿਨ ਕੋਡ ਦੇਸ਼ ਦਰਜ ਕਰੋ।",
+    country_placeholder: "ਦੇਸ਼ ਦਾ ਨਾਮ ਦਰਜ ਕਰੋ (ਜਿਵੇਂ: ਭਾਰਤ, ਅਮਰੀਕਾ, ਕੈਨੇਡਾ)",
+    zipcode_placeholder: "ਪਿੰਨ ਕੋਡ / ਜ਼ਿਪ ਕੋਡ ਦਰਜ ਕਰੋ (ਵੈਕਲਪਿਕ)",
     btn_check: "ਉਪਲਬਧਤਾ ਦੀ ਜਾਂਚ ਕਰੋ",
     success_msg: "ਖੁਸ਼ਖਬਰੀ! ਅਸੀਂ ਤੁਹਾਡੇ ਖੇਤਰ ਵਿੱਚ ਸੇਵਾ ਕਰਦੇ ਹਾਂ",
     fail_msg: "ਅਸੀਂ ਅਜੇ ਉੱਥੇ ਨਹੀਂ ਪਹੁੰਚੇ",
@@ -94,8 +98,9 @@ const localTranslations: Record<
     banner_title: "Code postal desservi",
     card_title: "Vérifier la disponibilité\nde la livraison",
     card_subtitle:
-      "Entrez votre ville ou code postal ci-dessous pour vérifier si nous livrons chez vous.",
-    input_placeholder: "Entrez la ville ou le code postal",
+      "Sélectionnez/entrez votre pays de destination et code postal ci-dessous pour vérifier la faisabilité de la livraison.",
+    country_placeholder: "Entrez le nom du pays (ex. France, Canada, USA)",
+    zipcode_placeholder: "Entrez le code postal (optionnel)",
     btn_check: "Vérifier la disponibilité",
     success_msg: "Bonne nouvelle ! Nous desservons votre zone",
     fail_msg: "Nous n'y sommes pas encore",
@@ -110,8 +115,9 @@ const localTranslations: Record<
     banner_title: "Códigos postales disponibles",
     card_title: "Verificar disponibilidad de\nentrega en su área",
     card_subtitle:
-      "Ingrese su ciudad o código postal a continuación para verificar si realizamos entregas en su ubicación.",
-    input_placeholder: "Ingrese ciudad o código postal",
+      "Seleccione/ingrese su país de destino y código postal a continuación para verificar la factibilidad de la entrega.",
+    country_placeholder: "Ingrese el nombre del país (ej. España, EE. UU.)",
+    zipcode_placeholder: "Ingrese el código postal (opcional)",
     btn_check: "Verificar disponibilidad",
     success_msg: "¡Buenas noticias! Servimos su área",
     fail_msg: "Aún no estamos allí",
@@ -150,13 +156,16 @@ export default function ZipcodePage() {
     },
   ];
 
-  const [query, setQuery] = useState("");
+  const [country, setCountry] = useState("");
+  const [zipcode, setZipcode] = useState("");
   const [status, setStatus] = useState<"idle" | "success" | "fail">("idle");
   const [cities, setCities] = useState<CityGroup[]>(initialCities);
 
   // Detailed success state variables
   const [matchedCountry, setMatchedCountry] = useState("");
   const [matchedPostcode, setMatchedPostcode] = useState("");
+  const [matchedCity, setMatchedCity] = useState("");
+  const [matchedState, setMatchedState] = useState("");
   const [matchedDeliveryTime, setMatchedDeliveryTime] = useState("");
   const [matchedIsRemote, setMatchedIsRemote] = useState(false);
   const [matchedDetails, setMatchedDetails] = useState("");
@@ -164,30 +173,35 @@ export default function ZipcodePage() {
 
   const handleCheck = async (e: React.FormEvent) => {
     e.preventDefault();
-    const cleanQuery = query.trim();
+    const cleanCountry = country.trim();
+    const cleanZipcode = zipcode.trim();
 
-    if (!cleanQuery) {
+    if (!cleanCountry) {
       setStatus("idle");
       setCities(initialCities);
       return;
     }
 
     try {
-      const result = await checkZipcodeAction(cleanQuery);
+      const result = await checkZipcodeAction(cleanCountry, cleanZipcode);
 
       if (result.status === "success") {
         setStatus("success");
-        setMatchedCountry(result.country || "");
-        setMatchedPostcode(result.postcode || cleanQuery.toUpperCase());
+        setMatchedCountry(result.country || cleanCountry.toUpperCase());
+        setMatchedPostcode(result.postcode || (cleanZipcode ? cleanZipcode.toUpperCase() : "All Regions"));
+        setMatchedCity(result.city || "");
+        setMatchedState(result.state || "");
         setMatchedDeliveryTime(result.deliveryTime || "Serviceable");
         setMatchedIsRemote(!!result.isRemote);
         setMatchedDetails(result.details || "");
         setMatchedNotes(result.notes || "");
 
+        const searchLabel = cleanZipcode ? `${cleanCountry} - ${cleanZipcode}` : cleanCountry;
+
         if (result.matches && result.matches.length > 0) {
           setCities([
             {
-              city: `Matches for "${cleanQuery}"`,
+              city: `Matches for "${searchLabel}"`,
               items: result.matches.map((m) => ({
                 zip: m.zip,
                 days: m.days,
@@ -201,7 +215,7 @@ export default function ZipcodePage() {
               city: result.country || "Search Match",
               items: [
                 {
-                  zip: result.postcode || cleanQuery.toUpperCase(),
+                  zip: result.postcode || (cleanZipcode ? cleanZipcode.toUpperCase() : "All Regions"),
                   days: result.deliveryTime || "Serviceable",
                   highlighted: true,
                 },
@@ -215,7 +229,7 @@ export default function ZipcodePage() {
         setCities(initialCities);
       }
     } catch (err) {
-      console.error("Error validating zipcode:", err);
+      console.warn("Error validating zipcode:", err);
       setStatus("fail");
       setCities(initialCities);
     }
@@ -254,16 +268,36 @@ export default function ZipcodePage() {
               </div>
 
               <form onSubmit={handleCheck} className="flex flex-col gap-4">
-                <input
-                  type="text"
-                  placeholder={t.input_placeholder}
-                  value={query}
-                  onChange={(e) => setQuery(e.target.value)}
-                  className="bg-white text-[#333] text-[14px] font-medium rounded-xl px-5 py-4 focus:outline-none placeholder:text-gray-400 border border-gray-200 shadow-sm w-full"
-                />
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-[12px] font-extrabold text-[#1c1f2e] uppercase tracking-wider pl-0.5">
+                    Country <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    placeholder={t.country_placeholder}
+                    value={country}
+                    onChange={(e) => setCountry(e.target.value)}
+                    className="bg-white text-[#333] text-[14px] font-medium rounded-xl px-5 py-4 focus:outline-none placeholder:text-gray-400 border border-gray-200 shadow-sm w-full"
+                  />
+                </div>
+                
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-[12px] font-extrabold text-[#1c1f2e] uppercase tracking-wider pl-0.5">
+                    Zipcode / Pincode
+                  </label>
+                  <input
+                    type="text"
+                    placeholder={t.zipcode_placeholder}
+                    value={zipcode}
+                    onChange={(e) => setZipcode(e.target.value)}
+                    className="bg-white text-[#333] text-[14px] font-medium rounded-xl px-5 py-4 focus:outline-none placeholder:text-gray-400 border border-gray-200 shadow-sm w-full"
+                  />
+                </div>
+
                 <button
                   type="submit"
-                  className="bg-[#f27a1a] hover:bg-orange-600 text-white font-bold text-[14px] py-4 rounded-xl transition-all active:scale-98 cursor-pointer flex items-center justify-center gap-2"
+                  className="bg-[#f27a1a] hover:bg-orange-600 text-white font-bold text-[14px] py-4 rounded-xl transition-all active:scale-98 cursor-pointer flex items-center justify-center gap-2 mt-2"
                 >
                   {t.btn_check}
                 </button>
@@ -286,6 +320,18 @@ export default function ZipcodePage() {
                       <div>
                         <span className="text-gray-400">Postcode/Area:</span>{" "}
                         {matchedPostcode}
+                      </div>
+                    )}
+                    {matchedCity && (
+                      <div>
+                        <span className="text-gray-400">City:</span>{" "}
+                        {matchedCity}
+                      </div>
+                    )}
+                    {matchedState && (
+                      <div>
+                        <span className="text-gray-400">State/Province:</span>{" "}
+                        {matchedState}
                       </div>
                     )}
                     {matchedDeliveryTime && (
