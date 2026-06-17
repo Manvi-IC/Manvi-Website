@@ -35,7 +35,7 @@ export default function BlogPage() {
       cat: "customs",
       ico: "📋",
       tag: "Customs & Compliance",
-      title: "A Simple Guide To International Customs Clearance.",
+      title: "A simple guide to international customs clearance.",
       desc: "What paperwork actually matters, who handles it, and how to avoid your shipment getting stuck at the border.",
       time: "6 min",
       thumbClass: "c3"
@@ -44,7 +44,7 @@ export default function BlogPage() {
       cat: "guides",
       ico: "📦",
       tag: "Shipping Guides",
-      title: "Document, Parcel Or Cargo: Which Service Do You Need?",
+      title: "Document, parcel or cargo: which service do you need?",
       desc: "The three ways to ship with us explained in plain terms — so you pick the right one and pay only for what you need.",
       time: "5 min",
       thumbClass: ""
@@ -53,7 +53,7 @@ export default function BlogPage() {
       cat: "logistics",
       ico: "🏬",
       tag: "International Logistics",
-      title: "Bulk Sourcing From India For Your Overseas Store.",
+      title: "Bulk sourcing from India for your overseas store.",
       desc: "How Indian restaurants, grocers and boutiques abroad restock from India — pickup, freight and recurring shipments made simple.",
       time: "7 min",
       thumbClass: "c4"
@@ -62,7 +62,7 @@ export default function BlogPage() {
       cat: "customs",
       ico: "⚠️",
       tag: "Customs & Compliance",
-      title: "What You Can't Ship: A Guide To Prohibited Goods.",
+      title: "What you can't ship: a guide to prohibited goods.",
       desc: "From hazardous chemicals to precious stones — the items we can't move, and how to check before you book.",
       time: "4 min",
       thumbClass: "c5"
@@ -71,7 +71,7 @@ export default function BlogPage() {
       cat: "guides",
       ico: "📍",
       tag: "Shipping Guides",
-      title: "Real-Time Tracking, Explained.",
+      title: "Real-time tracking, explained.",
       desc: "Your tracking number, what each status means, and how to follow your parcel's journey from pickup to doorstep.",
       time: "4 min",
       thumbClass: ""
@@ -80,7 +80,7 @@ export default function BlogPage() {
       cat: "gifting",
       ico: "🍬",
       tag: "Festive & Gifting",
-      title: "Sending Sweets & Food Items Overseas: What To Know.",
+      title: "Sending sweets & food items overseas: what to know.",
       desc: "Packing, shelf-life and customs tips for getting mithai and homemade favourites to loved ones abroad, fresh.",
       time: "5 min",
       thumbClass: "c2"

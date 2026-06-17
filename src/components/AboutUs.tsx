@@ -160,10 +160,10 @@ const localTranslations: Record<
     banner_title: "About Us",
     who_we_are_title: "Who Are We?",
     who_we_are_desc:
-      "Manvi International Courier Is A Trusted Logistics And Courier Service Provider Committed To Delivering Parcels, Documents, And Commercial Shipments Safely, Swiftly, And Cost-Effectively. With A Strong Operational Network And Experienced Professionals, We Specialise In International Courier Solutions.",
+      "Manvi International Courier is a trusted logistics and courier service provider committed to delivering parcels, documents, and commercial shipments safely, swiftly, and cost-effectively. With a strong operational network and experienced professionals, we specialise in international courier solutions.",
     ready_title: "Ready To Ship?",
     ready_desc:
-      "Experience The Difference Of A Courier Service That Cares. Join The Manvi International Family Today.",
+      "Experience the difference of a courier service that cares. Join the Manvi International family today.",
     btn_contact: "Contact Us ↗",
     nav_vision: "Our Vision",
     nav_mission: "Our Mission",
@@ -172,51 +172,51 @@ const localTranslations: Record<
     nav_performance: "Our Performance",
     nav_claim: "Refund & Loss Claim Policy",
     vision_desc:
-      "At Manvi International, We Believe That Distance Should Never Be A Barrier To Emotions. Based In The Heart Of Delhi, We Specialise In Seamless International Courier Services That Bridge The Gap Between India And The Rest Of The World. Whether It's A Festive Gift Or Critical Business Documents, We Deliver More Than Just Packages; We Deliver Peace Of Mind.",
+      "At Manvi International, we believe that distance should never be a barrier to emotions. Based in the heart of Delhi, we specialise in seamless international courier services that bridge the gap between India and the rest of the world. Whether it's a festive gift or critical business documents, we deliver more than just packages; we deliver peace of mind.",
     mission_1:
-      "To Eliminate Shipment Delays Or Losses From Our Customers Minds",
-    mission_2: "To Provide Transparent Pricing And Real-Time Tracking",
-    mission_3: "To Build Life-Long Relationships With Our Customers",
+      "To eliminate shipment delays or losses from our customers minds",
+    mission_2: "To provide transparent pricing and real-time tracking",
+    mission_3: "To build life-long relationships with our customers",
     edge_desc:
-      "We Don't Just Ship, We Strategise. By Integrating World-Class Technology With A Deep Understanding Of Global Logistics, We Ensure Your Shipment Is Handled With The Highest Standards Of Safety And Speed.",
-    edge_t1: "Global Reach, Local Roots:",
+      "We don't just ship, we strategise. By integrating world-class technology with a deep understanding of global logistics, we ensure your shipment is handled with the highest standards of safety and speed.",
+    edge_t1: "Global reach, local roots:",
     edge_b1:
-      "From Our Delhi Headquarters, We Reach Over 195 Countries, Including The USA, UK, Canada, And Australia.",
+      "From our Delhi headquarters, we reach over 195 countries, including the USA, UK, Canada, and Australia.",
     edge_t2: "Tier-1 Partnerships:",
     edge_b2:
-      "We Leverage The Global Infrastructure Of Industry Leaders Like DHL, FedEx, And UPS To Offer You Premium Service At Competitive Rates.",
+      "We leverage the global infrastructure of industry leaders like DHL, FedEx, and UPS to offer you premium service at competitive rates.",
     edge_t3: "Real-Time Transparency:",
     edge_b3:
-      "Our Advanced Tracking Systems Ensure You Know Exactly Where Your Shipment Is, From Our Doorstep To Their Destination.",
+      "Our advanced tracking systems ensure you know exactly where your shipment is, from our doorstep to their destination.",
     edge_t4: "Customer-Centric Ethics:",
     edge_b4:
-      "Our Operations Are Guided By A Rigorous Refund And Loss Claim Policy, Ensuring That Your Investment Is Always Protected.",
+      "Our operations are guided by a rigorous refund and loss claim policy, ensuring that your investment is always protected.",
     edge_t5: "Reliability:",
     edge_b5:
-      "We Do What We Say, Every Timeline We Provide Is Backed By Data And Commitment.",
+      "We do what we say, every timeline we provide is backed by data and commitment.",
     edge_t6: "Integrity:",
     edge_b6:
-      "Transparent Pricing With No Hidden Costs. What You See Is What You Pay.",
+      "Transparent pricing with no hidden costs. What you see is what you pay.",
     edge_t7: "Speed:",
     edge_b7:
-      "In A Fast-Moving World, We Prioritise Express Routes To Ensure Your Packages Arrive Ahead Of The Deadline.",
+      "In a fast-moving world, we prioritise express routes to ensure your packages arrive ahead of the deadline.",
     edge_footer:
-      "What Started As A Vision To Simplify International Shipping For The Indian Diaspora Has Grown Into A Full-Scale Logistics Powerhouse. Today, Manvi International Is The Preferred Partner For Thousands Of Families And Businesses Who Value Security As Much As Speed.",
+      "What started as a vision to simplify international shipping for the indian diaspora has grown into a full-scale logistics powerhouse. Today, Manvi International is the preferred partner for thousands of families and businesses who value security as much as speed.",
     feature_1: "Customs Documentation Support",
-    feature_2: "International Tracking At Every Stage",
+    feature_2: "International tracking at every stage",
     feature_3: "Competitive International Rates",
     perf_1: "98% Successful Delivery Rate",
-    perf_2: "Thousands Of Shipments Completed Successfully",
-    perf_3: "Multiple International Destinations Served",
-    perf_4: "Strong Repeat Customer Base",
+    perf_2: "Thousands of shipments completed successfully",
+    perf_3: "Multiple international destinations served",
+    perf_4: "Strong repeat customer base",
     perf_footer:
-      "Our Performance Is Driven By Disciplined Operations, Trained Staff, And Reliable Logistics Partners.",
+      "Our performance is driven by disciplined operations, trained staff, and reliable logistics partners.",
     claim_desc:
-      "At Manvi International, Your Investment Is Always Protected. Our rigorous claim policy ensures that any damage or loss is handled swiftly and fairly.",
-    claim_1: "Claims Must Be Raised Within 7 Days Of Delivery",
-    claim_2: "Full Documentation Required For Processing",
-    claim_3: "Refunds Processed In A Minimum Of 25 Business Days",
-    claim_4: "Dedicated Support Team For Every Claim",
+      "At Manvi International, your investment is always protected. Our rigorous claim policy ensures that any damage or loss is handled swiftly and fairly.",
+    claim_1: "Claims must be raised within 7 days of delivery",
+    claim_2: "Full documentation required for processing",
+    claim_3: "Refunds processed in a minimum of 25 business days",
+    claim_4: "Dedicated support team for every claim",
   },
   hi: {
     banner_title: "हमारे बारे में",
@@ -431,7 +431,7 @@ const localTranslations: Record<
       "No solo enviamos, creamos estrategias. Al integrar tecnología de primer nivel con un profundo conocimiento de la logística global, garantizamos que su envío se gestione con los más altos estándares de seguridad y rapidez.",
     edge_t1: "Alcance global, raíces locales:",
     edge_b1:
-      "Desde nuestra sede en Delhi, llegamos a más de 195 países, incluidos EE. UU., Reino Unido, Canadá y Australia.",
+      "Desde nuestra sede en Delhi, llegamos a más de 195 países, incluidos ee. Uu., reino unido, canadá y Australia.",
     edge_t2: "Asociaciones de nivel 1:",
     edge_b2:
       "Aprovechamos la infraestructura global de líderes de la industria como DHL, FedEx y UPS para ofrecerle un servicio premium a tarifas competitivas.",

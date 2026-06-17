@@ -87,12 +87,12 @@ const TESTIMONIALS = [
 const FAQS = [
   {
     num: "01",
-    q: "Where Can I Send My Packages?",
+    q: "Where can i send my packages?",
     a: "Almost anywhere! We have a strong presence in the USA, Canada, UK, Europe, and Australia. Whether it's a big city or a quiet suburb, we'll get it there.",
   },
   {
     num: "02",
-    q: "How Much Does It Cost?",
+    q: "How much does it cost?",
     a: "Pricing depends on destination, weight, and service type. Parcel shipping to the USA starts from ₹679/kg.",
     link: { text: "Get a quick quote", href: "/quote" },
     afterLink:
@@ -100,12 +100,12 @@ const FAQS = [
   },
   {
     num: "03",
-    q: "How Long Does Delivery Take?",
+    q: "How long does delivery take?",
     a: "Most shipments arrive within a few days to two weeks depending on destination and service level. We guarantee on-time delivery when you order within our confirmed service windows.",
   },
   {
     num: "04",
-    q: "Can I Track My Shipment?",
+    q: "Can i track my shipment?",
     a: "Yes. You'll receive a tracking number the moment your parcel is collected. Track live at manvicourier.com/track. We also send WhatsApp updates at every stage.",
   },
   {
@@ -115,7 +115,7 @@ const FAQS = [
   },
   {
     num: "06",
-    q: "How Do I Pay?",
+    q: "How do i pay?",
     a: "Payment options are shared once your quote is confirmed on WhatsApp. You only pay when you're happy with the details. Secure payment links provided.",
   },
 ];

@@ -46,14 +46,14 @@ const localTranslations: Record<
 > = {
   en: {
     banner_title: "Serviceable Zipcode",
-    card_title: "Check Delivery\nAvailability In Your Area",
+    card_title: "Check delivery\navailability in your area",
     card_subtitle:
       "Select Your Destination Country And Enter Zip/PIN Code Below To Instantly Check Delivery Feasibility.",
     country_placeholder: "Select Country...",
     zipcode_placeholder: "Enter ZIP / PIN Code (Optional)",
     service_placeholder: "Select Service",
     btn_check: "Check Availability",
-    success_msg: "Great News! We Serve Your Area",
+    success_msg: "Great news! We serve your area",
     fail_msg: "We're Not There Yet",
     fail_submsg: "But Don't Worry... We're Expanding Soon!",
     need_assistance: "Need Assistance With\nYour ZIP Code?",
