@@ -48,13 +48,13 @@ const localTranslations: Record<
     banner_title: "Track Shipment",
     form_headline: "Track Your Shipment\nIn Real Time",
     form_subtitle:
-      "Stay Updated On Your Delivery Status From Pickup To Doorstep. Enter Your Tracking Number And Contact Details Below To Get The Latest Shipment Updates Instantly.",
+      "Stay updated on your delivery status from pickup to doorstep. Enter your tracking number and contact details below to get the latest shipment updates instantly.",
     tracking_placeholder: "Tracking Number",
     contact_placeholder: "Contact Number",
     btn_track: "Track Shipment",
     need_help: "Need Help?",
     help_desc:
-      "If You're Experiencing Delays Or Cannot Locate Your Tracking Details, Our Customer Support Team Is Available Monday To Saturday To Assist You.",
+      "If you're experiencing delays or cannot locate your tracking details, our customer support team is available monday to saturday to assist you.",
     contact_support_btn: "Contact Support",
     err_empty: "Please enter a tracking number.",
     back_btn: "Search Another Shipment",

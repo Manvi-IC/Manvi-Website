@@ -590,7 +590,7 @@ const translations: Record<Language, Translations> = {
     claim_tab2_d3_title: "Condition",
     claim_tab2_d3_desc:
       "The shipment must be intact and meet the criteria for a return-based refund as per the initial service agreement.",
-    claim_tab3_title: "Claims For Lost, Damaged, Or Destroyed Shipments",
+    claim_tab3_title: "Claims for lost, damaged, or destroyed shipments",
     claim_tab3_subtext:
       "Guidelines for handling lost, damaged, destroyed, or carrier-delayed shipments.",
     claim_tab3_panelTitle:
@@ -609,7 +609,7 @@ const translations: Record<Language, Translations> = {
       'No claim for loss or destruction will be approved until the respective carrier (DHL, FedEx, or UPS) officially declares the shipment as "Lost" or "Damaged" in their global tracking system.',
     nocost_badge: "Pricing & Transparency",
     nocost_title:
-      "No Hidden Costs. No Surprises.\nJust Straightforward Logistics.",
+      "No hidden costs. No surprises.\njust straightforward logistics.",
     nocost_desc:
       "We believe in value-based pricing. Our rates are carefully calculated based on destination, shipment weight, and delivery urgency, so you only pay for what truly matters. No hidden fees, no surprise surcharges, and no unnecessary overheads. Just transparent pricing built around performance, reliability, and efficiency.",
     nocost_btn: "Request Rates",
@@ -623,8 +623,8 @@ const translations: Record<Language, Translations> = {
     prohibited_item5: "Illegal or Restricted Contraband",
     prohibited_btn: "Detailed List",
     faq_badge: "FAQ",
-    faq_title: "Questions? Glad You Asked",
-    faq_q1: "Where Can I Send My Packages?",
+    faq_title: "Questions? Glad you asked",
+    faq_q1: "Where can i send my packages?",
     faq_a1:
       "Almost anywhere! We have a strong presence in the USA, Canada, UK, Europe, and Australia. Whether it's a big city or a quiet suburb, we'll get it there.",
     faq_q2: "How Much Does It Cost?",
@@ -649,7 +649,7 @@ const translations: Record<Language, Translations> = {
     contact_call: "Call Us",
     contact_whatsapp: "Whatsapp Us",
     contact_info: "Contact Info",
-    footer_tagline: "Connecting Families, Bridging Distances",
+    footer_tagline: "Connecting families, bridging distances",
     footer_desc:
       "Trusted by 10,000+ happy customers and with over 50,000 successful international shipments, we deliver fast, secure, and seamless courier and freight solutions you can rely on.",
     footer_social: "Social Network",
@@ -690,7 +690,7 @@ const translations: Record<Language, Translations> = {
     quote_empty_sub:
       'Fill in the form and click "Get Quote" to compare services',
     quote_loading_msg: "Fetching rates from all carriers…",
-    quote_how_calc_title: "How Is Your Quote Calculated?",
+    quote_how_calc_title: "How is your quote calculated?",
     quote_how_calc_1_title: "Chargeable Weight",
     quote_how_calc_1_desc:
       "We use the higher of actual weight vs volumetric weight (L × B × H ÷ 5000), rounded up to the nearest kg.",

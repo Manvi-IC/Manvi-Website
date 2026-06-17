@@ -65,20 +65,20 @@ export default function Header() {
     <>
       {/* Top utility bar */}
       <div className="bg-[#0b1220] text-zinc-300 text-[12px] font-semibold py-3.5 px-4 sm:px-6 border-b border-white/5">
-        <div className="max-w-425 mx-auto flex justify-between items-center">
-          <div className="flex items-center gap-4">
-            <div className="flex items-center gap-2">
-              <Phone className="h-3.5 w-3.5 text-white" />
-              <span className="text-white/90">+91 7070-506070</span>
+        <div className="max-w-425 mx-auto flex flex-col md:flex-row justify-between items-center gap-2.5 md:gap-0">
+          <div className="flex items-center justify-between sm:justify-start gap-4 w-full md:w-auto">
+            <div className="flex items-center gap-1.5 sm:gap-2">
+              <Phone className="h-3.5 w-3.5 text-white shrink-0" />
+              <span className="text-white/90 truncate">+91 7070-506070</span>
             </div>
-            <div className="flex items-center gap-2">
-              <Mail className="h-3.5 w-3.5 text-white" />
-              <span className="text-white/90">Info@manvicourier.com</span>
+            <div className="flex items-center gap-1.5 sm:gap-2">
+              <Mail className="h-3.5 w-3.5 text-white shrink-0" />
+              <span className="text-white/90 truncate">Info@manvicourier.com</span>
             </div>
           </div>
 
           {/* Marquee offer strip */}
-          <div className="hidden md:flex flex-1 mx-6 overflow-hidden relative">
+          <div className="flex flex-1 w-full mx-0 md:mx-6 overflow-hidden relative pt-1 md:pt-0">
             {(() => {
               const Marquee = "marquee" as any;
               return (
@@ -86,7 +86,7 @@ export default function Header() {
                   behavior="scroll"
                   direction="left"
                   scrollamount="3"
-                  className="text-[14.5px] font-extrabold tracking-wide whitespace-pre"
+                  className="text-[12.5px] md:text-[14.5px] font-medium md:font-extrabold tracking-wide whitespace-pre"
                   style={{ color: "#f27a1a" }}
                 >
                   {marqueeText}
