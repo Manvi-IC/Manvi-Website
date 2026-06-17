@@ -51,14 +51,14 @@ const PICKUP_CITIES = [
 // Issue #7: Alphabetical order - Australia, Canada, UK, USA
 const DESTINATIONS = ["Australia", "Canada", "UK", "USA"];
 
-// Issue #6 + #8: Aramex (not ARAMEX); consistent order: DHL, FedEx, UPS, Aramex, DPD
-const PARTNERS = ["DHL", "FedEx", "UPS", "Aramex", "DPD"];
+// Issue #6 + #8: Aramex (not ARAMEX); consistent order: Aramex, Courier Please, DHL, DPD, FedEx, UPS
+const PARTNERS = ["Aramex", "Courier Please", "DHL", "DPD", "FedEx", "UPS"];
 
 const STATS = [
-  { value: "98%", label: "Delivery Success Rate" },
-  { value: "50K+", label: "Shipments Delivered" },
-  { value: "10K+", label: "Happy Customers" },
-  { value: "1,000+", label: "Customs Cases Handled" },
+  { value: "99.97%", label: "Delivery Success Rate" },
+  { value: "1M+", label: "Shipments Delivered" },
+  { value: "100K+", label: "Happy Customers" },
+  { value: "300+", label: "Employees" },
 ];
 
 const TESTIMONIALS = [
@@ -560,8 +560,8 @@ export default function CampaignPage() {
               </div>
               {/* Issue #8+#9: consistent carrier order, comma instead of dash */}
               <p className="text-[13px] text-[#666] leading-relaxed mt-6">
-                Delivered via our trusted global carrier network: DHL, FedEx,
-                UPS, Aramex, DPD.
+                Delivered via our trusted global carrier network: Aramex, Courier Please, DHL,
+                DPD, FedEx, UPS.
               </p>
             </div>
           </div>
