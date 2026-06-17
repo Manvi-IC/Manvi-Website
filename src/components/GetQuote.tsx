@@ -7,6 +7,8 @@ import {
   Loader2,
   PackageCheck,
   ChevronDown,
+  CheckCircle2,
+  AlertCircle,
 } from "lucide-react";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
@@ -201,6 +203,7 @@ function ServiceCard({
     NETWORK_COLORS[quote.network] ?? "bg-gray-100 text-gray-700";
   const networkLabel = NETWORK_LABELS[quote.network] ?? quote.network;
   const labelKey = `${quote.service}__${quote.rateType}`;
+  const dutyPaid = quote.network === "SELF";
 
   return (
     <div
@@ -233,6 +236,17 @@ function ServiceCard({
             <span className="text-[10px] bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full">
               {quote.rateType === "S" ? "Slab rate" : "Per kg"}
             </span>
+            {dutyPaid ? (
+              <span className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-green-100 text-green-700">
+                <CheckCircle2 size={9} strokeWidth={2.5} />
+                DUTY PAID
+              </span>
+            ) : (
+              <span className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-red-100 text-red-700">
+                <AlertCircle size={9} strokeWidth={2.5} />
+                DUTY UNPAID
+              </span>
+            )}
           </div>
 
           <p className="mt-2 text-sm font-bold text-gray-800 leading-tight">
