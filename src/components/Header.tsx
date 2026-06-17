@@ -398,6 +398,7 @@ export default function Header() {
               {pathname === "/quote" && t.bc_quote}
               {pathname === "/faq" && t.bc_faq}
               {pathname === "/services" && t.bc_services}
+              {pathname === "/business-campaign" && t.bc_business_campaign}
             </span>
           </div>
         </div>
