@@ -128,6 +128,12 @@ export default function Footer() {
               >
                 🎯 Campaign
               </Link>
+              <Link
+                href="/business-campaign"
+                className="hover:text-white transition-colors font-bold flex items-center gap-1.5 mt-1"
+              >
+                🏢 Business Campaign
+              </Link>
             </div>
           </div>
 

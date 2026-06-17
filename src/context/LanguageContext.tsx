@@ -23,6 +23,7 @@ export interface Translations {
   bc_quote: string;
   bc_faq: string;
   bc_services: string;
+  bc_business_campaign: string;
 
   // Hero
   hero_headline: string;
@@ -194,6 +195,7 @@ const translations: Record<Language, Translations> = {
     bc_quote: "Get a quote",
     bc_faq: "FAQ",
     bc_services: "Services",
+    bc_business_campaign: "Business Campaign",
     hero_headline: "Connecting families,\nbridging distances.",
     hero_subtext:
       "Send documents, parcels, food items, gifts, or commercial shipments worldwide with confidence.",
@@ -382,6 +384,7 @@ const translations: Record<Language, Translations> = {
     bc_quote: "कोटेशन लें",
     bc_faq: "सामान्य प्रश्न",
     bc_services: "सेवाएं",
+    bc_business_campaign: "बिजनेस सोर्सिंग",
     hero_headline: "महाद्वीपों को जोड़ना, विश्वास पहुंचाना।",
     hero_subtext:
       "दुनिया भर में दस्तावेज़, पार्सल, खाद्य सामग्री, उपहार या वाणिज्यिक शिपमेंट आत्मविश्वास के साथ भेजें।",
@@ -566,6 +569,7 @@ const translations: Record<Language, Translations> = {
     bc_quote: "ਕੋਟੇਸ਼ਨ ਲਓ",
     bc_faq: "ਅਕਸਰ ਪੁੱਛੇ ਜਾਂਦੇ ਸਵਾਲ",
     bc_services: "ਸੇਵਾਵਾਂ",
+    bc_business_campaign: "ਬਿਜ਼ਨਸ ਮੁਹਿੰਮ",
     hero_headline: "ਮਹਾਂਦੀਪਾਂ ਨੂੰ ਜੋੜਨਾ, ਭਰੋਸਾ ਪਹੁੰਚਾਉਣਾ।",
     hero_subtext:
       "ਦਸਤਾਵੇਜ਼, ਪਾਰਸਲ, ਖਾਣ-ਪੀਣ ਦਾ ਸਾਮਾਨ, ਤੋਹਫ਼ੇ ਜਾਂ ਵਪਾਰਕ ਸ਼ਿਪਮੈਂਟ ਵਿਸ਼ਵਾਸ ਨਾਲ ਭੇਜੋ।",
@@ -750,6 +754,7 @@ const translations: Record<Language, Translations> = {
     bc_quote: "Obtenir un devis",
     bc_faq: "FAQ",
     bc_services: "Services",
+    bc_business_campaign: "Campagne d'affaires",
     hero_headline: "CONNECTER LES CONTINENTS, LIVRER LA CONFIANCE.",
     hero_subtext:
       "Envoyez des documents, colis, denrées, cadeaux ou expéditions commerciales dans le monde entier en toute confiance.",
@@ -939,6 +944,7 @@ const translations: Record<Language, Translations> = {
     bc_quote: "Obtener cotización",
     bc_faq: "Preguntas frecuentes",
     bc_services: "Servicios",
+    bc_business_campaign: "Campaña de negocios",
     hero_headline: "CONECTANDO CONTINENTES, ENTREGANDO CONFIANZA.",
     hero_subtext:
       "Envía documentos, paquetes, alimentos, regalos o envíos comerciales en todo el mundo con confianza.",
