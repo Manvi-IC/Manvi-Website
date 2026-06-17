@@ -1,3 +1,4 @@
+// components/Footer.tsx
 "use client";
 import { Phone, Mail, MapPin } from "lucide-react";
 import Link from "next/link";
@@ -62,26 +63,49 @@ export default function Footer() {
                 {/* Facebook */}
                 <a
                   href="https://www.facebook.com/p/Manvi-International-Courier-61575480958807/"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="text-white hover:text-white/70 transition-colors"
                 >
-                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                  <svg
+                    className="w-4 h-4"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                  >
                     <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z" />
                   </svg>
                 </a>
                 {/* Instagram */}
                 <a
                   href="https://www.instagram.com/manviinternational/"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="text-white hover:text-white/70 transition-colors"
                 >
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    viewBox="0 0 24 24"
+                  >
                     <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
                     <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z" />
                     <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
                   </svg>
                 </a>
                 {/* Globe */}
-                <a href="#" className="text-white hover:text-white/70 transition-colors">
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                <a
+                  href="#"
+                  className="text-white hover:text-white/70 transition-colors"
+                >
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    viewBox="0 0 24 24"
+                  >
                     <circle cx="12" cy="12" r="10" />
                     <line x1="2" y1="12" x2="22" y2="12" />
                     <path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z" />
@@ -91,7 +115,7 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Column 2: Quick Links - Campaign added */}
+          {/* Column 2: Quick Links */}
           <div className="md:col-span-3 flex flex-col gap-5">
             <div className="flex flex-col gap-3">
               <h3 className="text-[18px] font-extrabold text-white">
@@ -105,59 +129,75 @@ export default function Footer() {
                 <Link href="/" className="hover:text-white transition-colors">
                   {t.nav_home}
                 </Link>
-                <Link href="/about" className="hover:text-white transition-colors">
+                <Link
+                  href="/about"
+                  className="hover:text-white transition-colors"
+                >
                   {t.nav_about}
                 </Link>
-                <Link href="/services" className="hover:text-white transition-colors">
+                <Link
+                  href="/services"
+                  className="hover:text-white transition-colors"
+                >
                   {t.nav_services}
                 </Link>
-                <Link href="/track" className="hover:text-white transition-colors">
+                <Link
+                  href="/track"
+                  className="hover:text-white transition-colors"
+                >
                   {t.nav_track_shipment}
                 </Link>
-                <Link href="/quote" className="hover:text-white transition-colors">
+                <Link
+                  href="/quote"
+                  className="hover:text-white transition-colors"
+                >
                   {t.nav_quote}
                 </Link>
-                <Link href="/contact" className="hover:text-white transition-colors">
+                <Link
+                  href="/contact"
+                  className="hover:text-white transition-colors"
+                >
                   {t.nav_contact}
                 </Link>
-                <Link href="/faq" className="hover:text-white transition-colors">
+                <Link
+                  href="/faq"
+                  className="hover:text-white transition-colors"
+                >
                   {t.bc_faq}
                 </Link>
               </div>
 
               {/* Right Column */}
               <div className="flex flex-col gap-3">
-                {/* ── NEW: Pickup Availability link ── */}
                 <Link
                   href="/pickup-availability"
                   className="hover:text-white transition-colors"
                 >
-                  Pickup Availability
+                  {t.footer_pickup_availability}
                 </Link>
-                {/* ── NEW: Campaign link ── */}
                 <Link
                   href="/campaign"
                   className="hover:text-white transition-colors font-bold"
                 >
-                  Campaign
+                  {t.footer_campaign}
                 </Link>
                 <Link
                   href="/business-campaign"
                   className="hover:text-white transition-colors font-bold"
                 >
-                  Business Campaign
+                  {t.footer_business_campaign}
                 </Link>
                 <Link
                   href="/blog"
                   className="hover:text-white transition-colors"
                 >
-                  Blog
+                  {t.footer_blog}
                 </Link>
                 <Link
                   href="/career"
                   className="hover:text-white transition-colors"
                 >
-                  Career
+                  {t.footer_career}
                 </Link>
               </div>
             </div>
