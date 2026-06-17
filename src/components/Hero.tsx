@@ -8,6 +8,8 @@ import {
   MapPin,
   ChevronDown,
   X,
+  CheckCircle2,
+  AlertCircle,
 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
@@ -147,6 +149,148 @@ interface Quote {
   tat: string;
 }
 
+/* ── Quotes Modal ─────────────────────────────────────────── */
+function QuotesModal({
+  quotes,
+  destLabel,
+  zoningCountry,
+  selectedService,
+  onSelect,
+  onClose,
+}: {
+  quotes: Quote[];
+  destLabel: string;
+  zoningCountry: string;
+  selectedService: string | null;
+  onSelect: (key: string) => void;
+  onClose: () => void;
+}) {
+  return (
+    /* Backdrop */
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-4"
+      style={{ background: "rgba(0,0,0,0.65)" }}
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
+    >
+      {/* Panel */}
+      <div className="bg-[#0b1220] rounded-2xl w-full max-w-lg max-h-[90vh] flex flex-col shadow-2xl border border-white/10">
+        {/* Header */}
+        <div className="flex items-start justify-between gap-3 p-5 border-b border-white/10">
+          <div>
+            <p className="text-white font-bold text-base">
+              {destLabel}
+              {zoningCountry && ` — ${zoningCountry}`}
+            </p>
+            <p className="text-zinc-400 text-[12px] mt-0.5">
+              {quotes.length} service{quotes.length !== 1 ? "s" : ""} found ·
+              Chargeable:{" "}
+              <span className="text-[#e77419] font-semibold">
+                {quotes[0]?.chargeableWt} kg
+              </span>
+            </p>
+          </div>
+          <button
+            onClick={onClose}
+            className="text-zinc-500 hover:text-white transition-colors p-1 mt-0.5 shrink-0"
+          >
+            <X size={18} />
+          </button>
+        </div>
+
+        {/* Scrollable list */}
+        <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-3">
+          {quotes.map((q) => {
+            const key = `${q.service}__${q.rateType}`;
+            const isSelected = selectedService === key;
+            const networkColor =
+              NETWORK_COLORS[q.network] ?? "bg-gray-100 text-gray-700";
+            const networkLabel = NETWORK_LABELS[q.network] ?? q.network;
+            const dutyPaid = q.network === "SELF";
+
+            return (
+              <div
+                key={key}
+                onClick={() => onSelect(key)}
+                className={`relative rounded-xl border-2 p-4 cursor-pointer transition-all ${
+                  isSelected
+                    ? "border-[#e77419] bg-[#e77419]/10"
+                    : "border-zinc-700 bg-zinc-800/60 hover:border-zinc-500"
+                }`}
+              >
+                {isSelected && (
+                  <div className="absolute -top-2.5 left-3 bg-[#e77419] text-white text-[9px] font-bold px-2 py-0.5 rounded-full">
+                    SELECTED
+                  </div>
+                )}
+
+                <div className="flex items-start justify-between gap-3">
+                  {/* Left */}
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-1.5 flex-wrap">
+                      <span
+                        className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${networkColor}`}
+                      >
+                        {networkLabel}
+                      </span>
+                      {q.zone && (
+                        <span className="text-[10px] bg-white/10 text-zinc-300 px-2 py-0.5 rounded-full font-mono">
+                          Zone {q.zone}
+                        </span>
+                      )}
+                      <span className="text-[10px] bg-white/10 text-zinc-300 px-2 py-0.5 rounded-full">
+                        {q.rateType === "S" ? "Slab" : "Per kg"}
+                      </span>
+                      {/* Duty badge */}
+                      {dutyPaid ? (
+                        <span className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-green-500/20 text-green-400">
+                          <CheckCircle2 size={9} strokeWidth={2.5} />
+                          DUTY PAID
+                        </span>
+                      ) : (
+                        <span className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-red-500/20 text-red-400">
+                          <AlertCircle size={9} strokeWidth={2.5} />
+                          DUTY UNPAID
+                        </span>
+                      )}
+                    </div>
+
+                    <p className="mt-2 text-[13px] font-bold text-white leading-tight">
+                      {q.service}
+                    </p>
+                    <p className="text-[11px] text-zinc-400 mt-0.5">{q.tat}</p>
+                  </div>
+
+                  {/* Right */}
+                  <div className="text-right shrink-0">
+                    <p className="text-[20px] font-extrabold text-[#e77419] leading-none">
+                      ₹{Math.round(q.totalPrice).toLocaleString("en-IN")}
+                    </p>
+                    <p className="text-[10px] text-zinc-500 mt-0.5">
+                      GST inclusive
+                    </p>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Footer */}
+        <div className="px-5 py-3 border-t border-white/10 text-center">
+          <p className="text-[11px] text-zinc-500">
+            Final rates may vary · Call{" "}
+            <strong className="text-zinc-400">+91 7070-506070</strong> to
+            confirm
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ── Hero ─────────────────────────────────────────────────── */
 export default function Hero() {
   const { t } = useLanguage();
   const [destination, setDestination] = useState("");
@@ -159,7 +303,7 @@ export default function Hero() {
   const [quotes, setQuotes] = useState<Quote[]>([]);
   const [selectedService, setSelectedService] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  const [showResults, setShowResults] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   const destObj = DESTINATIONS.find((d) => d.value === destination);
   const requiresZip = destObj?.requiresZip ?? false;
@@ -197,7 +341,6 @@ export default function Hero() {
     setLoading(true);
     setQuotes([]);
     setSelectedService(null);
-    setShowResults(false);
 
     try {
       const API_URL =
@@ -221,7 +364,7 @@ export default function Hero() {
         setSelectedService(
           `${data.quotes[0].service}__${data.quotes[0].rateType}`,
         );
-        setShowResults(true);
+        setShowModal(true);
       } else {
         alert(
           data.message ||
@@ -236,66 +379,49 @@ export default function Hero() {
   };
 
   return (
-    <section className="max-w-425 w-full mx-auto px-4 sm:px-6 py-6 font-sans">
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
-        {/* Left: Orange Form Card */}
-        <div className="bg-[#f27a1a] rounded-[28px] p-6 sm:p-8 lg:p-10 flex flex-col justify-between min-h-110 shadow-xl">
-          <div className="flex flex-col gap-4">
-            <h1 className="text-[28px] sm:text-[36px] md:text-[42px] font-extrabold text-white leading-[1.1] tracking-tight uppercase">
-              {t.hero_headline}
-            </h1>
-            <p className="text-white/80 text-[13px] leading-relaxed max-w-md">
-              {t.hero_subtext}
-            </p>
-          </div>
+    <>
+      {/* ── Modal ── */}
+      {showModal && quotes.length > 0 && (
+        <QuotesModal
+          quotes={quotes}
+          destLabel={destObj?.label ?? destination}
+          zoningCountry={zoningCountry}
+          selectedService={selectedService}
+          onSelect={setSelectedService}
+          onClose={() => setShowModal(false)}
+        />
+      )}
 
-          <form onSubmit={handleSubmit} className="flex flex-col gap-3 mt-6">
-            {/* Destination */}
-            <div className="relative">
-              <select
-                value={destination}
-                onChange={(e) => {
-                  setDestination(e.target.value);
-                  setZipcode("");
-                  setZoningCountry("");
-                  setQuotes([]);
-                  setShowResults(false);
-                }}
-                className="w-full bg-white text-[#333] text-[13px] font-medium rounded-xl px-4 py-3 focus:outline-none appearance-none"
-              >
-                <option value="">Select Destination Country</option>
-                {DESTINATIONS.map((d) => (
-                  <option key={d.value} value={d.value}>
-                    {d.flag} {d.label}
-                  </option>
-                ))}
-              </select>
-              <ChevronDown
-                size={14}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
-              />
+      <section className="max-w-425 w-full mx-auto px-4 sm:px-6 py-6 font-sans">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+          {/* ── LEFT: Orange Form Card ── */}
+          <div className="bg-[#f27a1a] rounded-[28px] p-6 sm:p-8 lg:p-10 flex flex-col gap-6 shadow-xl">
+            <div className="flex flex-col gap-4">
+              <h1 className="text-[28px] sm:text-[36px] md:text-[42px] font-extrabold text-white leading-[1.1] tracking-tight uppercase">
+                {t.hero_headline}
+              </h1>
+              <p className="text-white/80 text-[13px] leading-relaxed max-w-md">
+                {t.hero_subtext}
+              </p>
             </div>
 
-            {/* Sub-country (EUROPE / INTERNATIONAL) */}
-            {requiresSubCountry && (
+            <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+              {/* Destination */}
               <div className="relative">
                 <select
-                  value={zoningCountry}
+                  value={destination}
                   onChange={(e) => {
-                    setZoningCountry(e.target.value);
+                    setDestination(e.target.value);
+                    setZipcode("");
+                    setZoningCountry("");
                     setQuotes([]);
-                    setShowResults(false);
                   }}
                   className="w-full bg-white text-[#333] text-[13px] font-medium rounded-xl px-4 py-3 focus:outline-none appearance-none"
                 >
-                  <option value="">
-                    {destination === "EUROPE"
-                      ? "Select European Country"
-                      : "Select Country"}
-                  </option>
-                  {subCountryOptions.map((c) => (
-                    <option key={c} value={c}>
-                      {c}
+                  <option value="">Select Destination Country</option>
+                  {DESTINATIONS.map((d) => (
+                    <option key={d.value} value={d.value}>
+                      {d.flag} {d.label}
                     </option>
                   ))}
                 </select>
@@ -304,216 +430,137 @@ export default function Hero() {
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
                 />
               </div>
-            )}
 
-            {/* Zipcode (AUS / CAN only) */}
-            {requiresZip && (
+              {/* Sub-country (EUROPE / INTERNATIONAL) */}
+              {requiresSubCountry && (
+                <div className="relative">
+                  <select
+                    value={zoningCountry}
+                    onChange={(e) => {
+                      setZoningCountry(e.target.value);
+                      setQuotes([]);
+                    }}
+                    className="w-full bg-white text-[#333] text-[13px] font-medium rounded-xl px-4 py-3 focus:outline-none appearance-none"
+                  >
+                    <option value="">
+                      {destination === "EUROPE"
+                        ? "Select European Country"
+                        : "Select Country"}
+                    </option>
+                    {subCountryOptions.map((c) => (
+                      <option key={c} value={c}>
+                        {c}
+                      </option>
+                    ))}
+                  </select>
+                  <ChevronDown
+                    size={14}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
+                  />
+                </div>
+              )}
+
+              {/* Zipcode (AUS / CAN only) */}
+              {requiresZip && (
+                <input
+                  type="text"
+                  placeholder={`Zipcode / Postcode (required for ${destObj?.label})`}
+                  value={zipcode}
+                  onChange={(e) => setZipcode(e.target.value.toUpperCase())}
+                  className="w-full bg-white text-[#333] text-[13px] font-medium rounded-xl px-4 py-3 focus:outline-none placeholder:text-gray-400"
+                />
+              )}
+
+              {/* Actual weight */}
               <input
-                type="text"
-                placeholder={`Zipcode / Postcode (required for ${destObj?.label})`}
-                value={zipcode}
-                onChange={(e) => setZipcode(e.target.value.toUpperCase())}
+                type="number"
+                placeholder="Actual Weight (kg)"
+                value={actualWt}
+                onChange={(e) => setActualWt(e.target.value)}
+                min="0.001"
+                step="0.001"
                 className="w-full bg-white text-[#333] text-[13px] font-medium rounded-xl px-4 py-3 focus:outline-none placeholder:text-gray-400"
               />
-            )}
 
-            {/* Actual weight */}
-            <input
-              type="number"
-              placeholder="Actual Weight (kg)"
-              value={actualWt}
-              onChange={(e) => setActualWt(e.target.value)}
-              min="0.001"
-              step="0.001"
-              className="w-full bg-white text-[#333] text-[13px] font-medium rounded-xl px-4 py-3 focus:outline-none placeholder:text-gray-400"
-            />
-
-            {/* Dimensions */}
-            <div className="flex flex-col gap-1">
-              <span className="text-white/80 text-[11px] font-semibold tracking-wide uppercase pl-1">
-                Volume Weight Dimensions (cm) — optional
-              </span>
-              <div className="grid grid-cols-3 gap-2">
-                {[
-                  { val: length, setter: setLength, label: "Length" },
-                  { val: breadth, setter: setBreadth, label: "Breadth" },
-                  { val: height, setter: setHeight, label: "Height" },
-                ].map(({ val, setter, label }) => (
-                  <input
-                    key={label}
-                    type="number"
-                    placeholder={label}
-                    value={val}
-                    onChange={(e) => setter(e.target.value)}
-                    min="0"
-                    className="bg-white text-[#333] text-[13px] font-medium rounded-xl px-3 py-3 focus:outline-none placeholder:text-gray-400"
-                  />
-                ))}
-              </div>
-            </div>
-
-            {/* Live weight preview */}
-            {(actualWt || volWt) && (
-              <div className="bg-white/20 rounded-xl px-4 py-3 flex justify-between text-white text-xs font-semibold">
-                {volWt && <span>Vol wt: {volWt} kg</span>}
-                <span>Chargeable: {chargeableWt} kg</span>
-              </div>
-            )}
-
-            <button
-              type="submit"
-              disabled={loading}
-              className="mt-2 bg-[#0b1220] hover:bg-slate-800 text-white font-bold text-[13px] py-3 px-6 rounded-xl transition-all active:scale-95 cursor-pointer flex items-center justify-center gap-1.5 disabled:opacity-70"
-            >
-              {loading ? "Calculating..." : t.hero_get_quote}{" "}
-              {!loading && (
-                <ArrowUpRight className="h-4 w-4" strokeWidth={2.5} />
-              )}
-            </button>
-          </form>
-        </div>
-
-        {/* Right: Dark Image Card (always visible) or results overlay */}
-        <div className="relative rounded-[16px] min-h-[485px] lg:h-auto flex flex-col justify-between">
-          {/* ── Results panel (shown after quote) ── */}
-          {showResults && quotes.length > 0 ? (
-            <div className="bg-[#0b1220] rounded-[16px] h-full flex flex-col p-5 gap-3 min-h-[485px]">
-              {/* Header */}
-              <div className="flex items-start justify-between gap-2">
-                <div className="flex-1 min-w-0">
-                  <p className="text-white font-bold text-sm truncate">
-                    {destObj?.label}
-                    {zoningCountry && ` — ${zoningCountry}`}
-                  </p>
-                  <p className="text-zinc-400 text-[11px] mt-0.5">
-                    {quotes.length} service{quotes.length !== 1 ? "s" : ""}{" "}
-                    found · Chargeable:{" "}
-                    <span className="text-[#e77419] font-semibold">
-                      {quotes[0].chargeableWt} kg
-                    </span>
-                  </p>
-                </div>
-                <button
-                  onClick={() => {
-                    setShowResults(false);
-                    setQuotes([]);
-                  }}
-                  className="text-zinc-500 hover:text-white transition-colors p-1 shrink-0 mt-1"
-                >
-                  <X size={16} />
-                </button>
-              </div>
-
-              {/* Scrollable service list - FIXED HEIGHT */}
-              <div className="flex-1 min-h-0">
-                <div className="flex flex-col gap-2 h-full overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-zinc-700 scrollbar-track-transparent">
-                  {quotes.map((q) => {
-                    const key = `${q.service}__${q.rateType}`;
-                    const isSelected = selectedService === key;
-                    const networkColor =
-                      NETWORK_COLORS[q.network] ?? "bg-gray-100 text-gray-700";
-                    const networkLabel = NETWORK_LABELS[q.network] ?? q.network;
-
-                    return (
-                      <div
-                        key={key}
-                        onClick={() => setSelectedService(key)}
-                        className={`relative rounded-xl border-2 p-4 cursor-pointer transition-all mt-2 ${
-                          isSelected
-                            ? "border-[#e77419] bg-[#e77419]/10"
-                            : "border-zinc-700 bg-zinc-800/60 hover:border-zinc-500"
-                        }`}
-                      >
-                        {isSelected && (
-                          <div className="absolute -top-2 left-3 bg-[#e77419] text-white text-[9px] font-bold px-2 py-0.5 rounded-full">
-                            SELECTED
-                          </div>
-                        )}
-
-                        <div className="flex items-start justify-between gap-3">
-                          {/* Left */}
-                          <div className="flex-1 min-w-0">
-                            <div className="flex items-center gap-1.5 flex-wrap">
-                              <span
-                                className={`text-[9px] font-bold px-1.5 py-0.5 rounded-full ${networkColor}`}
-                              >
-                                {networkLabel}
-                              </span>
-                              {q.zone && (
-                                <span className="text-[9px] bg-white/10 text-zinc-300 px-1.5 py-0.5 rounded-full font-mono">
-                                  Zone {q.zone}
-                                </span>
-                              )}
-                              <span className="text-[9px] bg-white/10 text-zinc-300 px-1.5 py-0.5 rounded-full">
-                                {q.rateType === "S" ? "Slab" : "Per kg"}
-                              </span>
-                            </div>
-                            <p className="mt-1.5 text-[12px] font-bold text-white leading-tight">
-                              {q.service}
-                            </p>
-                            <p className="text-[10px] text-zinc-400 mt-0.5">
-                              {q.tat}
-                            </p>
-                          </div>
-
-                          {/* Right */}
-                          <div className="text-right shrink-0">
-                            <p className="text-[18px] font-extrabold text-[#e77419] leading-none">
-                              ₹
-                              {Math.round(q.totalPrice).toLocaleString("en-IN")}
-                            </p>
-                            <p className="text-[9px] text-zinc-500 mt-0.5">
-                              GST inclusive
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-
-              <p className="text-[10px] text-zinc-500 text-center pt-1 border-t border-zinc-800/50 mt-1">
-                Final rates may vary · Call{" "}
-                <strong className="text-zinc-400">+91 7070-506070</strong> to
-                confirm
-              </p>
-            </div>
-          ) : (
-            /* ── Original dark image card ── */
-            <>
-              <div className="absolute inset-0 rounded-[16px] rounded-bl-[18px] overflow-hidden">
-                <Image
-                  src="/hero-right.jpg"
-                  alt="Manvi Legacy"
-                  fill
-                  sizes="(max-width: 1024px) 100vw, 50vw"
-                  className="object-cover object-center"
-                  priority
-                />
-                <div className="absolute inset-0 bg-black/50" />
-                <div
-                  className="absolute inset-0"
-                  style={{
-                    background:
-                      "linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.72) 54.84%)",
-                  }}
-                />
-              </div>
-
-              {/* Top content */}
-              <div className="relative z-10 p-6 sm:p-8 lg:p-10 flex flex-col gap-3">
-                <span className="text-[11px] font-bold tracking-wider bg-white/15 text-white/90 border border-white/20 w-fit px-3 py-1 rounded-full">
-                  {t.hero_legacy_badge}
+              {/* Dimensions */}
+              <div className="flex flex-col gap-1">
+                <span className="text-white/80 text-[11px] font-semibold tracking-wide uppercase pl-1">
+                  Volume Weight Dimensions (cm) — optional
                 </span>
-                <h2 className="text-[30px] sm:text-[34px] md:text-[40px] font-extrabold text-white leading-[1.15] tracking-tight mt-2">
-                  {t.hero_legacy_heading}
-                  <br />
-                  <span className="text-[#f27a1a]">
-                    {t.hero_legacy_highlight}
-                  </span>
-                </h2>
+                <div className="grid grid-cols-3 gap-2">
+                  {[
+                    { val: length, setter: setLength, label: "Length" },
+                    { val: breadth, setter: setBreadth, label: "Breadth" },
+                    { val: height, setter: setHeight, label: "Height" },
+                  ].map(({ val, setter, label }) => (
+                    <input
+                      key={label}
+                      type="number"
+                      placeholder={label}
+                      value={val}
+                      onChange={(e) => setter(e.target.value)}
+                      min="0"
+                      className="bg-white text-[#333] text-[13px] font-medium rounded-xl px-3 py-3 focus:outline-none placeholder:text-gray-400"
+                    />
+                  ))}
+                </div>
               </div>
+
+              {/* Live weight preview */}
+              {(actualWt || volWt) && (
+                <div className="bg-white/20 rounded-xl px-4 py-3 flex justify-between text-white text-xs font-semibold">
+                  {volWt && <span>Vol wt: {volWt} kg</span>}
+                  <span>Chargeable: {chargeableWt} kg</span>
+                </div>
+              )}
+
+              <button
+                type="submit"
+                disabled={loading}
+                className="mt-2 bg-[#0b1220] hover:bg-slate-800 text-white font-bold text-[13px] py-3 px-6 rounded-xl transition-all active:scale-95 cursor-pointer flex items-center justify-center gap-1.5 disabled:opacity-70"
+              >
+                {loading ? "Calculating..." : t.hero_get_quote}{" "}
+                {!loading && (
+                  <ArrowUpRight className="h-4 w-4" strokeWidth={2.5} />
+                )}
+              </button>
+            </form>
+          </div>
+
+          {/* ── RIGHT: Dark Image Card — always unchanged ── */}
+          <div className="relative rounded-[16px] min-h-[485px] lg:h-auto flex flex-col justify-between">
+            <div className="absolute inset-0 rounded-[16px] rounded-bl-[18px] overflow-hidden">
+              <Image
+                src="/hero-right.jpg"
+                alt="Manvi Legacy"
+                fill
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="object-cover object-center"
+                priority
+              />
+              <div className="absolute inset-0 bg-black/50" />
+              <div
+                className="absolute inset-0"
+                style={{
+                  background:
+                    "linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.72) 54.84%)",
+                }}
+              />
+            </div>
+
+            {/* Top content */}
+            <div className="relative z-10 p-6 sm:p-8 lg:p-10 flex flex-col gap-3">
+              <span className="text-[11px] font-bold tracking-wider bg-white/15 text-white/90 border border-white/20 w-fit px-3 py-1 rounded-full">
+                {t.hero_legacy_badge}
+              </span>
+              <h2 className="text-[30px] sm:text-[34px] md:text-[40px] font-extrabold text-white leading-[1.15] tracking-tight mt-2">
+                {t.hero_legacy_heading}
+                <br />
+                <span className="text-[#f27a1a]">
+                  {t.hero_legacy_highlight}
+                </span>
+              </h2>
+            </div>
 
               {/* Bottom row */}
               <div className="relative z-10 p-6 sm:p-8 lg:p-10 flex flex-col sm:flex-row items-end justify-between gap-6 sm:gap-0">
@@ -561,59 +608,59 @@ export default function Hero() {
                     </svg>
                   </a>
                 </div>
-
-                <div className="w-24 sm:w-32 flex-shrink-0" />
-
-                <div className="flex items-center gap-6 w-full sm:w-auto justify-between sm:justify-end">
-                  <div className="flex gap-1.5">
-                    <div className="w-2 h-2 rounded-full bg-[#f27a1a]" />
-                    <div className="w-2 h-2 rounded-full bg-[#f27a1a]" />
-                    <div className="w-2 h-2 rounded-full bg-white/40" />
-                    <div className="w-2 h-2 rounded-full bg-white/40" />
-                  </div>
-                  <button className="border border-white/50 text-white text-[12px] font-semibold px-5 py-2 rounded-lg hover:bg-white/10 transition-colors">
-                    {t.hero_read_more}
-                  </button>
-                </div>
               </div>
-            </>
-          )}
-        </div>
-      </div>
 
-      {/* Action Tabs */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mt-5">
-        {[
-          {
-            icon: <MapPin className="w-4 h-4" />,
-            label: t.hero_serviceable_zipcodes,
-            href: "/zipcode",
-          },
-          {
-            icon: <Package className="w-4 h-4" />,
-            label: t.nav_track_shipment,
-            href: "/track",
-          },
-          {
-            icon: <Users className="w-4 h-4" />,
-            label: t.hero_our_services,
-            href: "/services",
-          },
-          {
-            icon: <Headphones className="w-4 h-4" />,
-            label: t.hero_contact_us,
-            href: "/contact",
-          },
-        ].map((tab) => (
-          <Link
-            key={tab.href}
-            href={tab.href}
-            className="flex items-center justify-center gap-2 sm:gap-3 bg-[#0b1220] hover:bg-[#f27a1a] rounded-[14px] sm:rounded-2xl text-[12px] sm:text-[14px] font-semibold text-white py-3 sm:py-4 transition-all text-center px-2"
-          >
-            {tab.icon} <span className="truncate">{tab.label}</span>
-          </Link>
-        ))}
-      </div>
-    </section>
+              <div className="w-24 sm:w-32 flex-shrink-0" />
+
+              <div className="flex items-center gap-6 w-full sm:w-auto justify-between sm:justify-end">
+                <div className="flex gap-1.5">
+                  <div className="w-2 h-2 rounded-full bg-[#f27a1a]" />
+                  <div className="w-2 h-2 rounded-full bg-[#f27a1a]" />
+                  <div className="w-2 h-2 rounded-full bg-white/40" />
+                  <div className="w-2 h-2 rounded-full bg-white/40" />
+                </div>
+                <button className="border border-white/50 text-white text-[12px] font-semibold px-5 py-2 rounded-lg hover:bg-white/10 transition-colors">
+                  {t.hero_read_more}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Action Tabs */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mt-5">
+          {[
+            {
+              icon: <MapPin className="w-4 h-4" />,
+              label: t.hero_serviceable_zipcodes,
+              href: "/zipcode",
+            },
+            {
+              icon: <Package className="w-4 h-4" />,
+              label: t.nav_track_shipment,
+              href: "/track",
+            },
+            {
+              icon: <Users className="w-4 h-4" />,
+              label: t.hero_our_services,
+              href: "/services",
+            },
+            {
+              icon: <Headphones className="w-4 h-4" />,
+              label: t.hero_contact_us,
+              href: "/contact",
+            },
+          ].map((tab) => (
+            <Link
+              key={tab.href}
+              href={tab.href}
+              className="flex items-center justify-center gap-2 sm:gap-3 bg-[#0b1220] hover:bg-[#f27a1a] rounded-[14px] sm:rounded-2xl text-[12px] sm:text-[14px] font-semibold text-white py-3 sm:py-4 transition-all text-center px-2"
+            >
+              {tab.icon} <span className="truncate">{tab.label}</span>
+            </Link>
+          ))}
+        </div>
+      </section>
+    </>
   );
 }

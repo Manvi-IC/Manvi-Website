@@ -218,7 +218,7 @@ export default function BusinessCampaignPage() {
 
               {/* Heading */}
               <h1 className="text-white font-extrabold leading-[1.15] tracking-tight text-[28px] sm:text-[36px] md:text-[44px] lg:text-[54px]">
-                Source From India.<br className="hidden sm:inline" /> Delivered To Your Business<br className="hidden sm:inline" /> In Your Country.
+              Source From India.<br className="hidden sm:inline" /> Delivered To Your Business<br className="hidden sm:inline" /> In Your Country.
               </h1>
 
               {/* Description */}
