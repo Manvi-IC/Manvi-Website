@@ -13,13 +13,14 @@ export default function SiteSettingsPage() {
     offerTitle: "",
     offerSubtitle: "",
     offerEndDate: "",
+    countryServiceMapping: [] as { country: string, services: string[] }[],
   });
 
   useEffect(() => {
     fetchSettings();
   }, []);
 
-  const fetchSettings = async () => {
+  async function fetchSettings() {
     try {
       const res = await fetch("/api/site-settings");
       if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
@@ -36,6 +37,7 @@ export default function SiteSettingsPage() {
           offerEndDate: data.data.offerEndDate 
             ? new Date(data.data.offerEndDate).toISOString().slice(0, 16) 
             : "",
+          countryServiceMapping: data.data.countryServiceMapping || [],
         });
       }
     } catch (err) {
@@ -178,6 +180,7 @@ export default function SiteSettingsPage() {
               </div>
             </div>
           </div>
+
         </div>
 
         <div className="px-6 py-4 bg-gray-50 border-t border-gray-100 flex justify-end">
