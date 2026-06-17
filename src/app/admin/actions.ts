@@ -9,7 +9,7 @@ export async function loginAction(prevState: unknown, formData: FormData) {
 
   try {
     const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
-    const dbName = process.env.NEXT_PUBLIC_X_DATABASE || 'm5clogs';
+    const dbName = process.env.NEXT_PUBLIC_X_DATABASE || 'manvi';
     
     const response = await fetch(`${apiUrl}/admin/login`, {
       method: 'POST',
