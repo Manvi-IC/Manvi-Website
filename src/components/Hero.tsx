@@ -625,7 +625,6 @@ export default function Hero() {
               </div>
             </div>
           </div>
-        </div>
 
         {/* Action Tabs */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mt-5">
