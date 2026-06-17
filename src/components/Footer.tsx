@@ -121,6 +121,13 @@ export default function Footer() {
               <Link href="/faq" className="hover:text-white transition-colors">
                 {t.bc_faq}
               </Link>
+              {/* ── NEW: Pickup Availability link ── */}
+              <Link
+                href="/pickup-availability"
+                className="hover:text-white transition-colors flex items-center gap-1.5"
+              >
+                📦 Pickup Availability
+              </Link>
               {/* ── NEW: Campaign link ── */}
               <Link
                 href="/campaign"
