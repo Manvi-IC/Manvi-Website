@@ -519,7 +519,12 @@ export default function Hero() {
               <div className="relative z-10 p-6 sm:p-8 lg:p-10 flex flex-col sm:flex-row items-end justify-between gap-6 sm:gap-0">
                 {/* Cutout corner circle */}
                 <div className="absolute -bottom-4 -left-4 w-34 h-34 sm:w-36 sm:h-36 bg-[#f8f9fa] rounded-full flex items-center justify-center pointer-events-none z-20">
-                  <div className="w-20 h-20 sm:w-28 sm:h-28 bg-[#f27a1a] rounded-full relative flex items-center justify-center shadow-lg pointer-events-auto cursor-pointer hover:scale-105 transition-transform duration-300 z-50">
+                  <a
+                    href="https://wa.me/917070506070"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-20 h-20 sm:w-28 sm:h-28 bg-[#23c961] rounded-full relative flex items-center justify-center shadow-lg pointer-events-auto cursor-pointer hover:scale-105 transition-transform duration-300 z-50"
+                  >
                     <svg
                       className="w-7 h-7 sm:w-8 sm:h-8 text-white z-10 relative"
                       viewBox="0 0 24 24"
@@ -554,7 +559,7 @@ export default function Hero() {
                         </textPath>
                       </text>
                     </svg>
-                  </div>
+                  </a>
                 </div>
 
                 <div className="w-24 sm:w-32 flex-shrink-0" />
