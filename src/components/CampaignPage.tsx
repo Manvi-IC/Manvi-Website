@@ -291,7 +291,7 @@ export default function CampaignPage() {
           });
         }
       })
-      .catch(err => console.error("Failed to fetch site settings:", err.message));
+      .catch(err => console.warn("Failed to fetch site settings:", err.message));
   }, []);
 
   return (
