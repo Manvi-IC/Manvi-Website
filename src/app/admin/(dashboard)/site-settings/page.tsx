@@ -39,7 +39,7 @@ export default function SiteSettingsPage() {
         });
       }
     } catch (err) {
-      console.error("Failed to fetch site settings", err);
+      console.warn("Failed to fetch site settings", err);
     } finally {
       setLoading(false);
     }
