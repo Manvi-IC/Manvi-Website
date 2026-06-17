@@ -22,6 +22,11 @@ export default function SiteSettingsPage() {
   const fetchSettings = async () => {
     try {
       const res = await fetch("/api/site-settings");
+      if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+      const contentType = res.headers.get("content-type");
+      if (!contentType || !contentType.includes("application/json")) {
+        throw new TypeError("Response is not JSON");
+      }
       const data = await res.json();
       if (data.success && data.data) {
         setFormData({
@@ -66,6 +71,11 @@ export default function SiteSettingsPage() {
         body: JSON.stringify(payload),
       });
 
+      if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+      const contentType = res.headers.get("content-type");
+      if (!contentType || !contentType.includes("application/json")) {
+        throw new TypeError("Response is not JSON");
+      }
       const data = await res.json();
       if (data.success) {
         setMessage({ type: "success", text: "Site settings updated successfully!" });
