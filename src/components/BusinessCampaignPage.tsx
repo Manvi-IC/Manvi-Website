@@ -95,7 +95,7 @@ const LOGISTICS_REASONS = [
 
 const PICKUP_CITIES = ["Punjab", "Delhi NCR", "Haryana", "Rajasthan", "Gujarat", "Mumbai"];
 const DESTINATIONS = ["USA", "UK", "Canada", "Australia"];
-const PARTNERS = ["Fedex", "DPD", "UPS", "DHL", "ARAMEX"];
+const PARTNERS = ["Aramex", "Courier Please", "DHL", "DPD", "FedEx", "UPS"];
 
 const TESTIMONIALS = [
   {
@@ -466,7 +466,7 @@ export default function BusinessCampaignPage() {
                   Worldwide freight through our trusted shipping partners:
                 </p>
                 <div className="flex flex-wrap gap-2.5">
-                  {["DHL", "FedEx", "UPS", "Aramex", "DPD"].map((partner) => (
+                  {["Aramex", "Courier Please", "DHL", "DPD", "FedEx", "UPS"].map((partner) => (
                     <span
                       key={partner}
                       className="text-[13px] sm:text-[15px] font-semibold px-4 py-1.5 rounded-full border border-[#FF7F00] text-[#0f172a] bg-[#FF7F001F]"
