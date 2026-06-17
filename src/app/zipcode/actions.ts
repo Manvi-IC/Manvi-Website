@@ -113,10 +113,132 @@ async function resolveCityState(canonCountry: string, cleanZip: string): Promise
   return { city, state };
 }
 
+async function resolveEuropeCountry(cleanZip: string): Promise<{ canonCountry: string; city: string; state: string } | null> {
+  const euroIsos = ["de", "fr", "es", "it", "nl", "be", "ch", "at", "se", "no", "dk", "ie", "pt"];
+  const isoToName: Record<string, string> = {
+    "de": "Germany",
+    "fr": "France",
+    "es": "Spain",
+    "it": "Italy",
+    "nl": "Netherlands",
+    "be": "Belgium",
+    "ch": "Switzerland",
+    "at": "Austria",
+    "se": "Sweden",
+    "no": "Norway",
+    "dk": "Denmark",
+    "ie": "Ireland",
+    "pt": "Portugal"
+  };
+
+  let targetIsos = euroIsos;
+  if (/^\d{5}$/.test(cleanZip)) {
+    targetIsos = ["de", "fr", "es", "it"];
+  } else if (/^\d{4}$/.test(cleanZip)) {
+    targetIsos = ["be", "ch", "at", "dk", "no"];
+  } else if (/^\d{4}\s?[A-Z]{2}$/i.test(cleanZip)) {
+    targetIsos = ["nl"];
+  } else if (/^\d{3}\s?\d{2}$/.test(cleanZip)) {
+    targetIsos = ["se"];
+  } else if (/^\d{4}-\d{3}$/.test(cleanZip) || /^\d{7}$/.test(cleanZip)) {
+    targetIsos = ["pt"];
+  } else if (/^[A-Z\d]{3}\s?[A-Z\d]{4}$/i.test(cleanZip)) {
+    targetIsos = ["ie"];
+  }
+
+  const fetches = targetIsos.map(async (iso) => {
+    try {
+      const res = await fetch(`https://api.zippopotam.us/${iso}/${cleanZip}`, { signal: AbortSignal.timeout(2000) });
+      if (res.ok) {
+        const data = await res.json();
+        if (data && data.places?.[0]) {
+          return {
+            canonCountry: isoToName[iso],
+            city: data.places[0]["place name"] || "",
+            state: data.places[0]["state"] || data.places[0]["state abbreviation"] || ""
+          };
+        }
+      }
+    } catch (e) {
+      // ignore
+    }
+    return null;
+  });
+
+  const results = await Promise.all(fetches);
+  const validResult = results.find(r => r !== null);
+  return validResult || null;
+}
+
 export async function checkZipcodeAction(countryInput: string, zipInput: string = ""): Promise<ZipcodeResult> {
+  const cleanCountry = countryInput.trim().toUpperCase();
+  const cleanZip = zipInput.trim().toUpperCase().replace(/\s+/g, "");
+
+  if (cleanCountry === "EUROPE") {
+    if (!cleanZip) {
+      return {
+        status: "success",
+        country: "Europe",
+        postcode: "All Regions",
+        deliveryTime: "12-15 Business Days",
+        isRemote: false,
+        details: "Serviceable destination: Europe.",
+        notes: "Enter a specific European Postcode in the Zipcode field to check remote area status."
+      };
+    }
+
+    const euroGeo = await resolveEuropeCountry(cleanZip);
+    if (euroGeo) {
+      const euroCountryName = euroGeo.canonCountry;
+      const euroRemoteList = (europeRemote as any)[euroCountryName.toUpperCase()];
+      const isRemote = euroRemoteList ? euroRemoteList.includes(cleanZip) : false;
+
+      return {
+        status: "success",
+        country: euroCountryName,
+        postcode: zipInput.trim(),
+        city: euroGeo.city,
+        state: euroGeo.state,
+        deliveryTime: "12-15 Business Days",
+        isRemote: isRemote,
+        details: `Serviceable Postcode in ${euroCountryName}`,
+        notes: isRemote
+          ? `Designated as a ${euroCountryName} Remote Area. Surcharges apply.`
+          : "Standard delivery area.",
+      };
+    }
+
+    for (const [countryName, zipList] of Object.entries(europeRemote)) {
+      if ((zipList as string[]).includes(cleanZip)) {
+        return {
+          status: "success",
+          country: countryName,
+          postcode: zipInput.trim(),
+          deliveryTime: "12-15 Business Days",
+          isRemote: true,
+          details: `Serviceable Postcode in ${countryName}`,
+          notes: "Designated as a Europe Remote Area. Surcharges apply."
+        };
+      }
+    }
+
+    if (cleanZip.length >= 3 && cleanZip.length <= 10) {
+      return {
+        status: "success",
+        country: "Europe",
+        postcode: zipInput.trim(),
+        deliveryTime: "12-15 Business Days",
+        isRemote: false,
+        details: "Serviceable European Postcode",
+        notes: "Standard delivery coverage applies."
+      };
+    }
+
+    return { status: "fail" };
+  }
+
   const res = await checkZipcodeActionRaw(countryInput, zipInput);
   if (res.status === "success" && zipInput.trim()) {
-    const cleanZip = zipInput.trim().toUpperCase().replace(/\s+/g, "");
     const geo = await resolveCityState(res.country || countryInput, cleanZip);
     res.city = geo.city;
     res.state = geo.state;
