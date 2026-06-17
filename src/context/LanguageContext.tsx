@@ -1,3 +1,4 @@
+// context/LanguageContext.tsx
 "use client";
 import { createContext, useContext, useState, ReactNode } from "react";
 
@@ -175,6 +176,50 @@ export interface Translations {
   footer_quick_links: string;
   footer_office_info: string;
   footer_rights: string;
+
+  // Forms & Quotes
+  form_select_dest: string;
+  form_select_euro: string;
+  form_select_country: string;
+  form_zipcode: string;
+  form_actual_wt: string;
+  form_vol_wt_dim: string;
+  form_length: string;
+  form_breadth: string;
+  form_height: string;
+  form_vol_wt: string;
+  form_chargeable: string;
+  form_calculating: string;
+  form_selected: string;
+  form_zone: string;
+  form_slab: string;
+  form_per_kg: string;
+  form_duty_paid: string;
+  form_duty_unpaid: string;
+  form_gst_inc: string;
+  form_final_rates_msg: string;
+  form_services_found: string;
+  form_services_found_text: string;
+
+  quote_banner_title: string;
+  quote_banner_sub: string;
+  quote_instant_est: string;
+  quote_heading: string;
+  quote_subheading: string;
+  quote_empty_title: string;
+  quote_empty_sub: string;
+  quote_loading_msg: string;
+  quote_how_calc_title: string;
+  quote_how_calc_1_title: string;
+  quote_how_calc_1_desc: string;
+  quote_how_calc_2_title: string;
+  quote_how_calc_2_desc: string;
+  quote_how_calc_3_title: string;
+  quote_how_calc_3_desc: string;
+  quote_faq_badge: string;
+  quote_faq_title: string;
+
+  bespoke_read_more: string;
 }
 
 const translations: Record<Language, Translations> = {
@@ -302,7 +347,7 @@ const translations: Record<Language, Translations> = {
     claim_tab2_d3_title: "Condition",
     claim_tab2_d3_desc:
       "The shipment must be intact and meet the criteria for a return-based refund as per the initial service agreement.",
-    claim_tab3_title: "Claims For Lost, Damaged, Or Destroyed Shipments",
+    claim_tab3_title: "Claims for lost, damaged, or destroyed shipments",
     claim_tab3_subtext:
       "Guidelines for handling lost, damaged, destroyed, or carrier-delayed shipments.",
     claim_tab3_panelTitle:
@@ -321,7 +366,7 @@ const translations: Record<Language, Translations> = {
       'No claim for loss or destruction will be approved until the respective carrier (DHL, FedEx, or UPS) officially declares the shipment as "Lost" or "Damaged" in their global tracking system.',
     nocost_badge: "Pricing & Transparency",
     nocost_title:
-      "No Hidden Costs. No Surprises.\nJust Straightforward Logistics.",
+      "No hidden costs. No surprises.\njust straightforward logistics.",
     nocost_desc:
       "We believe in value-based pricing. Our rates are carefully calculated based on destination, shipment weight, and delivery urgency, so you only pay for what truly matters. No hidden fees, no surprise surcharges, and no unnecessary overheads. Just transparent pricing built around performance, reliability, and efficiency.",
     nocost_btn: "Request Rates",
@@ -335,20 +380,20 @@ const translations: Record<Language, Translations> = {
     prohibited_item5: "Illegal or Restricted Contraband",
     prohibited_btn: "Detailed List",
     faq_badge: "FAQ",
-    faq_title: "Questions? Glad You Asked",
-    faq_q1: "Where Can I Send My Packages?",
+    faq_title: "Questions? Glad you asked",
+    faq_q1: "Where can i send my packages?",
     faq_a1:
       "Almost anywhere! We have a strong presence in the USA, Canada, UK, Europe, and Australia. Whether it's a big city or a quiet suburb, we'll get it there.",
-    faq_q2: "How Do I Know I'm Getting A Fair Price?",
+    faq_q2: "How do i know i'm getting a fair price?",
     faq_a2:
       "We believe in value. Your quote is based on exactly what you need; considering weight, destination, and how fast you need it delivered. We promise no hidden surprises when it's time to pay.",
-    faq_q3: "Can I See Where My Package Is Right Now?",
+    faq_q3: "Can i see where my package is right now?",
     faq_a3:
       "Yes! The moment you ship with us, you'll get a unique tracking number. You can watch your package's journey in real-time, giving you total confidence.",
-    faq_q4: "What Happens If There Is A Delay Or A Problem?",
+    faq_q4: "What happens if there is a delay or a problem?",
     faq_a4:
       "We know your shipments are important. If something goes wrong, we are here to help. To ensure a fair and thorough resolution, our team and our global partners (like DHL, FedEx, and UPS) conduct a detailed investigation.",
-    faq_q5: "Is There Anything I Cannot Ship?",
+    faq_q5: "Is there anything i cannot ship?",
     faq_a5:
       "To keep everyone safe and follow international laws, we cannot ship hazardous chemicals, currency, precious stones, or illegal items. If you aren't sure about an item, just give us a call! We're happy to check for you before you book.",
     contact_badge: "Get In Touch",
@@ -358,13 +403,60 @@ const translations: Record<Language, Translations> = {
     contact_call: "Call Us",
     contact_whatsapp: "Whatsapp Us",
     contact_info: "Contact Info",
-    footer_tagline: "Connecting Families, Bridging Distances",
+    footer_tagline: "Connecting families, bridging distances",
     footer_desc:
       "Trusted by 10,000+ happy customers and with over 50,000 successful international shipments, we deliver fast, secure, and seamless courier and freight solutions you can rely on.",
     footer_social: "Social Network",
     footer_quick_links: "Quick Links",
     footer_office_info: "Office Info",
     footer_rights: "All rights reserved.",
+    form_select_dest: "Select Destination Country",
+    form_select_euro: "Select European Country",
+    form_select_country: "Select Country",
+    form_zipcode: "Zipcode / Postcode",
+    form_actual_wt: "Actual Weight (kg)",
+    form_vol_wt_dim: "Volume Weight Dimensions (cm) — optional",
+    form_length: "Length",
+    form_breadth: "Breadth",
+    form_height: "Height",
+    form_vol_wt: "Vol wt:",
+    form_chargeable: "Chargeable:",
+    form_calculating: "Calculating...",
+    form_selected: "SELECTED",
+    form_zone: "Zone",
+    form_slab: "Slab rate",
+    form_per_kg: "Per kg",
+    form_duty_paid: "DUTY PAID",
+    form_duty_unpaid: "DUTY UNPAID",
+    form_gst_inc: "GST inclusive",
+    form_final_rates_msg:
+      "Final rates may vary · Call +91 7070-506070 to confirm",
+    form_services_found: "Services Found",
+    form_services_found_text: "service(s) found",
+    quote_banner_title: "Get a Quote",
+    quote_banner_sub:
+      "Enter your shipment details to instantly compare services and rates.",
+    quote_instant_est: "INSTANT ESTIMATE",
+    quote_heading: "CONNECTING FAMILIES,\nBRIDGING DISTANCES.",
+    quote_subheading:
+      "Send documents, parcels, gifts, or commercial shipments worldwide.",
+    quote_empty_title: "Your quotes will appear here",
+    quote_empty_sub:
+      'Fill in the form and click "Get Quote" to compare services',
+    quote_loading_msg: "Fetching rates from all carriers…",
+    quote_how_calc_title: "How is your quote calculated?",
+    quote_how_calc_1_title: "Chargeable Weight",
+    quote_how_calc_1_desc:
+      "We use the higher of actual weight vs volumetric weight (L × B × H ÷ 5000), rounded up to the nearest kg.",
+    quote_how_calc_2_title: "Service & Zone",
+    quote_how_calc_2_desc:
+      "For Australia/Canada your postcode determines the delivery zone. Europe and International destinations use country-based zone mapping.",
+    quote_how_calc_3_title: "Rate Application",
+    quote_how_calc_3_desc:
+      "Slab rates (S) are flat amounts per weight bracket. Per-kg rates (B) are multiplied by your chargeable weight. All rates are GST-inclusive.",
+    quote_faq_badge: "Got Questions?",
+    quote_faq_title: "Frequently Asked Questions",
+    bespoke_read_more: "Read More • Read More •",
   },
 
   hi: {
@@ -442,7 +534,8 @@ const translations: Record<Language, Translations> = {
     wwl_card1_desc: "सटीकता और देखभाल के साथ सफल अंतर्राष्ट्रीय डिलीवरी।",
     wwl_card2_label: "श्रेष्ठ साझेदारी",
     wwl_card2_stat: "कई\nदेश",
-    wwl_card2_desc: "DHL, FedEx, UPS और Aramex सहित विश्व स्तरीय वाहकों के साथ सहयोग।",
+    wwl_card2_desc:
+      "DHL, FedEx, UPS और Aramex सहित विश्व स्तरीय वाहकों के साथ सहयोग।",
     wwl_card3_label: "कस्टम महारत",
     wwl_card3_stat: "1000+",
     wwl_card3_desc:
@@ -453,16 +546,16 @@ const translations: Record<Language, Translations> = {
     claim_badge: "व्यापक नीतियां",
     claim_title: "हमारी धनवापसी और हानि दावा नीति",
     claim_intro:
-      "मानवी इंटरनेशनल विश्वसनीय अंतर्राष्ट्रीय लॉजिस्टिक्स सेवाएं प्रदान करने के लिए प्रतिबद्ध है। हालांकि, पारगमन अनियमितताओं की स्थिति में, निम्नलिखित नीति दावों के समाधान के लिए औपचारिक प्रक्रियाओं, समयसीमाओं और शर्तों को रेखांकित करती है",
+      "मानवी इंटरनेशनल विश्वसनीय अंतर्राष्ट्रीय लॉजिस्टिक्स सेवाएं प्रदान करने के लिए प्रतिबद्ध है। हालांकि, पारगमन अनियमितताओं की स्थिति में, निम्नलिखित नीति दावों के समाधान के लिए औपचारिक प्रक्रियाओं, समयसीमाओं और शर्तों को रेखांकित करती है।",
     claim_tab1_title: "सामान्य दावा प्रावधान",
     claim_tab1_subtext:
-      "धनवापसी या हानि के सभी दावों को औपचारिक जांच प्रक्रिया से गुजरना होगा",
+      "धनवापसी या हानि के सभी दावों को औपचारिक जांच प्रक्रिया से गुजरना होगा।",
     claim_tab1_panelTitle:
-      "धनवापसी या हानि के सभी दावों को औपचारिक जांच प्रक्रिया से गुजरना होगा",
+      "धनवापसी या हानि के सभी दावों को औपचारिक जांच प्रक्रिया से गुजरना होगा।",
     claim_tab1_d1_num: "01",
     claim_tab1_d1_title: "अनिवार्य जांच विंडो",
     claim_tab1_d1_desc:
-      "किसी भी दावे को प्रोसेस करने के लिए न्यूनतम 25 कार्यदिवस आवश्यक हैं",
+      "किसी भी दावे को प्रोसेस करने के लिए न्यूनतम 25 कार्यदिवस आवश्यक हैं।",
     claim_tab1_d2_num: "02",
     claim_tab1_d2_title: "निपटान प्रोटोकॉल",
     claim_tab1_d2_desc:
@@ -550,6 +643,53 @@ const translations: Record<Language, Translations> = {
     footer_quick_links: "त्वरित लिंक",
     footer_office_info: "कार्यालय जानकारी",
     footer_rights: "सर्वाधिकार सुरक्षित।",
+    form_select_dest: "गंतव्य देश चुनें",
+    form_select_euro: "यूरोपीय देश चुनें",
+    form_select_country: "देश चुनें",
+    form_zipcode: "पिनकोड / पोस्टकोड",
+    form_actual_wt: "वास्तविक वजन (किग्रा)",
+    form_vol_wt_dim: "वॉल्यूम वजन आयाम (सेमी) — वैकल्पिक",
+    form_length: "लंबाई",
+    form_breadth: "चौड़ाई",
+    form_height: "ऊंचाई",
+    form_vol_wt: "वॉल्यूम वजन:",
+    form_chargeable: "प्रभार्य:",
+    form_calculating: "गणना कर रहा है...",
+    form_selected: "चयनित",
+    form_zone: "ज़ोन",
+    form_slab: "स्लैब दर",
+    form_per_kg: "प्रति किग्रा",
+    form_duty_paid: "शुल्क का भुगतान किया गया",
+    form_duty_unpaid: "शुल्क का भुगतान नहीं किया गया",
+    form_gst_inc: "जीएसटी सहित",
+    form_final_rates_msg:
+      "अंतिम दरें भिन्न हो सकती हैं · पुष्टि के लिए +91 7070-506070 पर कॉल करें",
+    form_services_found: "सेवाएं मिलीं",
+    form_services_found_text: "सेवा(एं) मिली(ं)",
+    quote_banner_title: "कोटेशन लें",
+    quote_banner_sub:
+      "सेवाओं और दरों की तुरंत तुलना करने के लिए अपने शिपमेंट विवरण दर्ज करें।",
+    quote_instant_est: "त्वरित अनुमान",
+    quote_heading: "परिवारों को जोड़ना,\nदूरियां मिटाना।",
+    quote_subheading:
+      "दुनिया भर में दस्तावेज़, पार्सल, उपहार या वाणिज्यिक शिपमेंट भेजें।",
+    quote_empty_title: "आपके कोटेशन यहां दिखाई देंगे",
+    quote_empty_sub:
+      'सेवाओं की तुलना करने के लिए फॉर्म भरें और "कोटेशन लें" पर क्लिक करें',
+    quote_loading_msg: "सभी कैरियर्स से दरें प्राप्त की जा रही हैं…",
+    quote_how_calc_title: "आपके कोटेशन की गणना कैसे की जाती है?",
+    quote_how_calc_1_title: "प्रभार्य वजन",
+    quote_how_calc_1_desc:
+      "हम वास्तविक वजन बनाम वॉल्यूमेट्रिक वजन (L × B × H ÷ 5000) में से जो भी अधिक हो, उसका उपयोग करते हैं, जिसे निकटतम किग्रा तक पूर्णांकित किया जाता है।",
+    quote_how_calc_2_title: "सेवा और ज़ोन",
+    quote_how_calc_2_desc:
+      "ऑस्ट्रेलिया/कनाडा के लिए आपका पिनकोड डिलीवरी ज़ोन निर्धारित करता है। यूरोप और अंतर्राष्ट्रीय गंतव्य देश-आधारित ज़ोन मैपिंग का उपयोग करते हैं।",
+    quote_how_calc_3_title: "दर आवेदन",
+    quote_how_calc_3_desc:
+      "स्लैब दरें (S) प्रति वजन ब्रैकेट एक निश्चित राशि हैं। प्रति-किग्रा दरें (B) आपके प्रभार्य वजन से गुणा की जाती हैं। सभी दरें जीएसटी-सहित हैं।",
+    quote_faq_badge: "क्या कोई प्रश्न हैं?",
+    quote_faq_title: "अक्सर पूछे जाने वाले प्रश्न",
+    bespoke_read_more: "और पढ़ें • और पढ़ें •",
   },
 
   pa: {
@@ -626,7 +766,8 @@ const translations: Record<Language, Translations> = {
     wwl_card1_desc: "ਸ਼ੁੱਧਤਾ ਅਤੇ ਦੇਖਭਾਲ ਨਾਲ ਸਫਲ ਅੰਤਰਰਾਸ਼ਟਰੀ ਡਿਲੀਵਰੀ।",
     wwl_card2_label: "ਉੱਤਮ ਸਾਂਝੇਦਾਰੀ",
     wwl_card2_stat: "ਕਈ\nਦੇਸ਼",
-    wwl_card2_desc: "DHL, FedEx, UPS ਅਤੇ Aramex ਸਮੇਤ ਵਿਸ਼ਵ ਪੱਧਰੀ ਕੈਰੀਅਰਾਂ ਨਾਲ ਸਹਿਯੋਗ।",
+    wwl_card2_desc:
+      "DHL, FedEx, UPS ਅਤੇ Aramex ਸਮੇਤ ਵਿਸ਼ਵ ਪੱਧਰੀ ਕੈਰੀਅਰਾਂ ਨਾਲ ਸਹਿਯੋਗ।",
     wwl_card3_label: "ਕਸਟਮ ਮੁਹਾਰਤ",
     wwl_card3_stat: "1000+",
     wwl_card3_desc:
@@ -708,19 +849,19 @@ const translations: Record<Language, Translations> = {
     faq_title: "ਸਵਾਲ? ਚੰਗਾ ਲੱਗਾ ਕਿ ਤੁਸੀਂ ਪੁੱਛਿਆ",
     faq_q1: "ਮੈਂ ਆਪਣੇ ਪੈਕੇਜ ਕਿੱਥੇ ਭੇਜ ਸਕਦਾ ਹਾਂ?",
     faq_a1:
-      "ਲਗਭਗ ਕਿਤੇ ਵੀ! USA, ਕੈਨੇਡਾ, UK, ਯੂਰਪ ਅਤੇ ਆਸਟ੍ਰੇਲੀਆ ਵਿੱਚ ਸਾਡੀ ਮਜ਼ਬੂਤ ਮੌਜੂਦਗੀ ਹੈ।",
+      "ਲਗਭਗ ਕਿਤੇ ਵੀ! USA, ਕੈਨੇਡਾ, UK, ਯੂਰਪ ਅਤੇ ਆਸਟ੍ਰੇਲੀਆ ਵਿੱਚ ਸਾਡੀ ਮਜ਼ਬੂਤ ਮੌਜੂਦਗੀ ਹੈ। ਭਾਵੇਂ ਵੱਡਾ ਸ਼ਹਿਰ ਹੋਵੇ ਜਾਂ ਸ਼ਾਂਤ ਉਪਨਗਰ, ਅਸੀਂ ਇਸਨੂੰ ਉੱਥੇ ਪਹੁੰਚਾਵਾਂਗੇ।",
     faq_q2: "ਮੈਨੂੰ ਕਿਵੇਂ ਪਤਾ ਚੱਲੇਗਾ ਕਿ ਮੈਨੂੰ ਉਚਿਤ ਕੀਮਤ ਮਿਲ ਰਹੀ ਹੈ?",
     faq_a2:
-      "ਅਸੀਂ ਮੁੱਲ ਵਿੱਚ ਵਿਸ਼ਵਾਸ ਕਰਦੇ ਹਾਂ। ਤੁਹਾਡਾ ਕੋਟੇਸ਼ਨ ਭਾਰ, ਮੰਜ਼ਿਲ ਅਤੇ ਡਿਲੀਵਰੀ ਦੀ ਗਤੀ ਦੇ ਆਧਾਰ 'ਤੇ ਹੈ। ਕੋਈ ਲੁਕਿਆ ਖਰਚਾ ਨਹੀਂ।",
+      "ਅਸੀਂ ਮੁੱਲ ਵਿੱਚ ਵਿਸ਼ਵਾਸ ਕਰਦੇ ਹਾਂ। ਤੁਹਾਡਾ ਕੋਟੇਸ਼ਨ ਭਾਰ, ਮੰਜ਼ਿਲ ਅਤੇ ਡਿਲੀਵਰੀ ਦੀ ਗਤੀ ਦੇ ਆਧਾਰ 'ਤੇ ਹੈ। ਅਸੀਂ ਭੁਗਤਾਨ ਦੇ ਸਮੇਂ ਕੋਈ ਲੁਕਿਆ ਆਸ਼ਚਰਜ ਨਾ ਹੋਣ ਦਾ ਵਾਅਦਾ ਕਰਦੇ ਹਾਂ।",
     faq_q3: "ਕੀ ਮੈਂ ਹੁਣੇ ਦੇਖ ਸਕਦਾ ਹਾਂ ਕਿ ਮੇਰਾ ਪੈਕੇਜ ਕਿੱਥੇ ਹੈ?",
     faq_a3:
-      "ਹਾਂ! ਜਿਵੇਂ ਹੀ ਤੁਸੀਂ ਸਾਡੇ ਨਾਲ ਸ਼ਿਪ ਕਰਦੇ ਹੋ, ਤੁਹਾਨੂੰ ਇੱਕ ਵਿਲੱਖਣ ਟਰੈਕਿੰਗ ਨੰਬਰ ਮਿਲੇਗਾ।",
+      "ਹਾਂ! ਜਿਵੇਂ ਹੀ ਤੁਸੀਂ ਸਾਡੇ ਨਾਲ ਸ਼ਿਪ ਕਰਦੇ ਹੋ, ਤੁਹਾਨੂੰ ਇੱਕ ਵਿਲੱਖਣ ਟਰੈਕਿੰਗ ਨੰਬਰ ਮਿਲੇਗਾ। ਤੁਸੀਂ ਰੀਅਲ-ਟਾਈਮ ਵਿੱਚ ਆਪਣੇ ਪੈਕੇਜ ਦੀ ਯਾਤਰਾ ਦੇਖ ਸਕਦੇ ਹੋ, ਜੋ ਤੁਹਾਨੂੰ ਪੂਰਾ ਭਰੋਸਾ ਦਿੰਦਾ ਹੈ।",
     faq_q4: "ਜੇ ਕੋਈ ਦੇਰੀ ਜਾਂ ਸਮੱਸਿਆ ਹੋਵੇ ਤਾਂ ਕੀ ਹੋਵੇਗਾ?",
     faq_a4:
-      "ਅਸੀਂ ਜਾਣਦੇ ਹਾਂ ਕਿ ਤੁਹਾਡੇ ਸ਼ਿਪਮੈਂਟ ਮਹੱਤਵਪੂਰਨ ਹਨ। ਜੇ ਕੁਝ ਗਲਤ ਹੁੰਦਾ ਹੈ, ਅਸੀਂ ਮਦਦ ਲਈ ਇੱਥੇ ਹਾਂ।",
+      "ਅਸੀਂ ਜਾਣਦੇ ਹਾਂ ਕਿ ਤੁਹਾਡੇ ਸ਼ਿਪਮੈਂਟ ਮਹੱਤਵਪੂਰਨ ਹਨ। ਜੇ ਕੁਝ ਗਲਤ ਹੁੰਦਾ ਹੈ, ਅਸੀਂ ਮਦਦ ਲਈ ਇੱਥੇ ਹਾਂ। ਉਚਿਤ ਅਤੇ ਸੰਪੂਰਨ ਹੱਲ ਯਕੀਨੀ ਬਣਾਉਣ ਲਈ, ਸਾਡੀ ਟੀਮ ਅਤੇ ਸਾਡੇ ਵਿਸ਼ਵ ਸਾਂਝੇਦਾਰ (ਜਿਵੇਂ DHL, FedEx ਅਤੇ UPS) ਇੱਕ ਵਿਸਤ੍ਰਿਤ ਜਾਂਚ ਕਰਦੇ ਹਨ।",
     faq_q5: "ਕੀ ਕੁਝ ਅਜਿਹਾ ਹੈ ਜੋ ਮੈਂ ਭੇਜ ਨਹੀਂ ਸਕਦਾ?",
     faq_a5:
-      "ਸਾਰਿਆਂ ਨੂੰ ਸੁਰੱਖਿਅਤ ਰੱਖਣ ਅਤੇ ਅੰਤਰਰਾਸ਼ਟਰੀ ਕਾਨੂੰਨਾਂ ਦੀ ਪਾਲਣਾ ਕਰਨ ਲਈ, ਅਸੀਂ ਖਤਰਨਾਕ ਰਸਾਇਣ, ਮੁਦਰਾ, ਕੀਮਤੀ ਪੱਥਰ ਜਾਂ ਗੈਰਕਾਨੂੰਨੀ ਵਸਤੂਆਂ ਨਹੀਂ ਭੇਜ ਸਕਦੇ।",
+      "ਸਾਰਿਆਂ ਨੂੰ ਸੁਰੱਖਿਅਤ ਰੱਖਣ ਅਤੇ ਅੰਤਰਰਾਸ਼ਟਰੀ ਕਾਨੂੰਨਾਂ ਦੀ ਪਾਲਣਾ ਕਰਨ ਲਈ, ਅਸੀਂ ਖਤਰਨਾਕ ਰਸਾਇਣ, ਮੁਦਰਾ, ਕੀਮਤੀ ਪੱਥਰ ਜਾਂ ਗੈਰਕਾਨੂੰਨੀ ਵਸਤੂਆਂ ਨਹੀਂ ਭੇਜ ਸਕਦੇ। ਜੇ ਤੁਸੀਂ ਕਿਸੇ ਚੀਜ਼ ਬਾਰੇ ਯਕੀਨੀ ਨਹੀਂ ਹੋ, ਤਾਂ ਬੱਸ ਸਾਨੂੰ ਕਾਲ ਕਰੋ! ਅਸੀਂ ਬੁਕਿੰਗ ਤੋਂ ਪਹਿਲਾਂ ਤੁਹਾਡੇ ਲਈ ਜਾਂਚ ਕਰਨ ਵਿੱਚ ਖੁਸ਼ ਹਾਂ।",
     contact_badge: "ਸੰਪਰਕ ਕਰੋ",
     contact_title: "ਅਸੀਂ ਤੁਹਾਡੇ ਲਈ ਇੱਥੇ ਹਾਂ",
     contact_desc:
@@ -735,6 +876,53 @@ const translations: Record<Language, Translations> = {
     footer_quick_links: "ਤੇਜ਼ ਲਿੰਕ",
     footer_office_info: "ਦਫ਼ਤਰ ਜਾਣਕਾਰੀ",
     footer_rights: "ਸਾਰੇ ਅਧਿਕਾਰ ਸੁਰੱਖਿਅਤ।",
+    form_select_dest: "ਮੰਜ਼ਿਲ ਦੇਸ਼ ਚੁਣੋ",
+    form_select_euro: "ਯੂਰਪੀ ਦੇਸ਼ ਚੁਣੋ",
+    form_select_country: "ਦੇਸ਼ ਚੁਣੋ",
+    form_zipcode: "ਪਿੰਨਕੋਡ / ਪੋਸਟਕੋਡ",
+    form_actual_wt: "ਅਸਲ ਭਾਰ (ਕਿਲੋ)",
+    form_vol_wt_dim: "ਵਾਲੀਅਮ ਭਾਰ ਦੇ ਮਾਪ (ਸੈ.ਮੀ.) — ਵਿਕਲਪਿਕ",
+    form_length: "ਲੰਬਾਈ",
+    form_breadth: "ਚੌੜਾਈ",
+    form_height: "ਉਚਾਈ",
+    form_vol_wt: "ਵਾਲੀਅਮ ਭਾਰ:",
+    form_chargeable: "ਚਾਰਜਯੋਗ:",
+    form_calculating: "ਗਣਨਾ ਕਰ ਰਿਹਾ ਹੈ...",
+    form_selected: "ਚੁਣਿਆ ਗਿਆ",
+    form_zone: "ਜ਼ੋਨ",
+    form_slab: "ਸਲੈਬ ਦਰ",
+    form_per_kg: "ਪ੍ਰਤੀ ਕਿਲੋ",
+    form_duty_paid: "ਡਿਊਟੀ ਅਦਾ ਕੀਤੀ",
+    form_duty_unpaid: "ਡਿਊਟੀ ਅਦਾ ਨਹੀਂ ਕੀਤੀ",
+    form_gst_inc: "ਜੀ.ਐਸ.ਟੀ. ਸਮੇਤ",
+    form_final_rates_msg:
+      "ਅੰਤਿਮ ਦਰਾਂ ਵੱਖਰੀਆਂ ਹੋ ਸਕਦੀਆਂ ਹਨ · ਪੁਸ਼ਟੀ ਲਈ +91 7070-506070 'ਤੇ ਕਾਲ ਕਰੋ",
+    form_services_found: "ਸੇਵਾਵਾਂ ਮਿਲੀਆਂ",
+    form_services_found_text: "ਸੇਵਾ(ਵਾਂ) ਮਿਲੀ(ਆਂ)",
+    quote_banner_title: "ਕੋਟੇਸ਼ਨ ਲਓ",
+    quote_banner_sub:
+      "ਸੇਵਾਵਾਂ ਅਤੇ ਦਰਾਂ ਦੀ ਤੁਰੰਤ ਤੁਲਨਾ ਕਰਨ ਲਈ ਆਪਣੇ ਸ਼ਿਪਮੈਂਟ ਵੇਰਵੇ ਦਰਜ ਕਰੋ।",
+    quote_instant_est: "ਤੁਰੰਤ ਅਨੁਮਾਨ",
+    quote_heading: "ਪਰਿਵਾਰਾਂ ਨੂੰ ਜੋੜਨਾ,\nਦੂਰੀਆਂ ਮਿਟਾਉਣਾ।",
+    quote_subheading:
+      "ਦੁਨੀਆ ਭਰ ਵਿੱਚ ਦਸਤਾਵੇਜ਼, ਪਾਰਸਲ, ਤੋਹਫ਼ੇ ਜਾਂ ਵਪਾਰਕ ਸ਼ਿਪਮੈਂਟ ਭੇਜੋ।",
+    quote_empty_title: "ਤੁਹਾਡੇ ਕੋਟੇਸ਼ਨ ਇੱਥੇ ਦਿਖਾਈ ਦੇਣਗੇ",
+    quote_empty_sub:
+      'ਸੇਵਾਵਾਂ ਦੀ ਤੁਲਨਾ ਕਰਨ ਲਈ ਫਾਰਮ ਭਰੋ ਅਤੇ "ਕੋਟੇਸ਼ਨ ਲਓ" \'ਤੇ ਕਲਿੱਕ ਕਰੋ',
+    quote_loading_msg: "ਸਾਰੇ ਕੈਰੀਅਰਾਂ ਤੋਂ ਦਰਾਂ ਪ੍ਰਾਪਤ ਕੀਤੀਆਂ ਜਾ ਰਹੀਆਂ ਹਨ…",
+    quote_how_calc_title: "ਤੁਹਾਡੇ ਕੋਟੇਸ਼ਨ ਦੀ ਗਣਨਾ ਕਿਵੇਂ ਕੀਤੀ ਜਾਂਦੀ ਹੈ?",
+    quote_how_calc_1_title: "ਚਾਰਜਯੋਗ ਭਾਰ",
+    quote_how_calc_1_desc:
+      "ਅਸੀਂ ਅਸਲ ਭਾਰ ਬਨਾਮ ਵਾਲੀਅਮੈਟ੍ਰਿਕ ਭਾਰ (L × B × H ÷ 5000) ਵਿੱਚੋਂ ਜੋ ਵੀ ਵੱਧ ਹੋਵੇ, ਉਸਦੀ ਵਰਤੋਂ ਕਰਦੇ ਹਾਂ, ਜਿਸਨੂੰ ਨੇੜਲੇ ਕਿਲੋ ਤੱਕ ਪੂਰਾ ਕੀਤਾ ਜਾਂਦਾ ਹੈ।",
+    quote_how_calc_2_title: "ਸੇਵਾ ਅਤੇ ਜ਼ੋਨ",
+    quote_how_calc_2_desc:
+      "ਆਸਟ੍ਰੇਲੀਆ/ਕੈਨੇਡਾ ਲਈ ਤੁਹਾਡਾ ਪਿੰਨਕੋਡ ਡਿਲੀਵਰੀ ਜ਼ੋਨ ਨਿਰਧਾਰਤ ਕਰਦਾ ਹੈ। ਯੂਰਪ ਅਤੇ ਅੰਤਰਰਾਸ਼ਟਰੀ ਮੰਜ਼ਿਲਾਂ ਦੇਸ਼-ਅਧਾਰਤ ਜ਼ੋਨ ਮੈਪਿੰਗ ਦੀ ਵਰਤੋਂ ਕਰਦੀਆਂ ਹਨ।",
+    quote_how_calc_3_title: "ਦਰ ਐਪਲੀਕੇਸ਼ਨ",
+    quote_how_calc_3_desc:
+      "ਸਲੈਬ ਦਰਾਂ (S) ਪ੍ਰਤੀ ਭਾਰ ਬ੍ਰੈਕੇਟ ਇੱਕ ਨਿਸ਼ਚਤ ਰਕਮ ਹਨ। ਪ੍ਰਤੀ-ਕਿਲੋ ਦਰਾਂ (B) ਨੂੰ ਤੁਹਾਡੇ ਚਾਰਜਯੋਗ ਭਾਰ ਨਾਲ ਗੁਣਾ ਕੀਤਾ ਜਾਂਦਾ ਹੈ। ਸਾਰੀਆਂ ਦਰਾਂ ਜੀ.ਐਸ.ਟੀ.-ਸਮੇਤ ਹਨ।",
+    quote_faq_badge: "ਕੀ ਕੋਈ ਸਵਾਲ ਹਨ?",
+    quote_faq_title: "ਅਕਸਰ ਪੁੱਛੇ ਜਾਂਦੇ ਸਵਾਲ",
+    bespoke_read_more: "ਹੋਰ ਪੜ੍ਹੋ • ਹੋਰ ਪੜ੍ਹੋ •",
   },
 
   fr: {
@@ -755,7 +943,7 @@ const translations: Record<Language, Translations> = {
     bc_faq: "FAQ",
     bc_services: "Services",
     bc_business_campaign: "Campagne d'affaires",
-    hero_headline: "CONNECTER LES CONTINENTS, LIVRER LA CONFIANCE.",
+    hero_headline: "Connecter les continents, livrer la confiance.",
     hero_subtext:
       "Envoyez des documents, colis, denrées, cadeaux ou expéditions commerciales dans le monde entier en toute confiance.",
     hero_pickup: "Lieu de collecte",
@@ -815,7 +1003,7 @@ const translations: Record<Language, Translations> = {
     wwl_card2_label: "Partenariats d'élite",
     wwl_card2_stat: "Plusieurs\npays",
     wwl_card2_desc:
-      "Collaboration avec des transporteurs de classe mondiale : DHL, FedEx et UPS.",
+      "Collaboration avec des transporteurs de classe mondiale : DHL, FedEx, UPS, Aramex et DPD.",
     wwl_card3_label: "Maîtrise douanière",
     wwl_card3_stat: "1000+",
     wwl_card3_desc:
@@ -898,19 +1086,19 @@ const translations: Record<Language, Translations> = {
     faq_title: "Des questions ? Nous sommes ravis que vous demandiez",
     faq_q1: "Où puis-je envoyer mes colis ?",
     faq_a1:
-      "Presque n'importe où ! Nous avons une forte présence aux États-Unis, au Canada, au Royaume-Uni, en Europe et en Australie.",
+      "Presque n'importe où ! Nous avons une forte présence aux États-Unis, au Canada, au Royaume-Uni, en Europe et en Australie. Que ce soit une grande ville ou une banlieue tranquille, nous l'y ferons parvenir.",
     faq_q2: "Comment savoir si j'obtiens un prix équitable ?",
     faq_a2:
-      "Nous croyons en la valeur. Votre devis est basé exactement sur vos besoins — poids, destination et délai de livraison. Aucune surprise cachée.",
+      "Nous croyons en la valeur. Votre devis est basé exactement sur vos besoins — poids, destination et délai de livraison. Nous promettons aucune surprise cachée au moment de payer.",
     faq_q3: "Puis-je voir où se trouve mon colis maintenant ?",
     faq_a3:
-      "Oui ! Dès que vous expédiez avec nous, vous recevrez un numéro de suivi unique. Suivez votre colis en temps réel.",
+      "Oui ! Dès que vous expédiez avec nous, vous recevrez un numéro de suivi unique. Vous pouvez suivre le trajet de votre colis en temps réel, ce qui vous donne une confiance totale.",
     faq_q4: "Que se passe-t-il en cas de retard ou de problème ?",
     faq_a4:
-      "Nous savons que vos envois sont importants. En cas de problème, nous sommes là pour vous aider. Notre équipe et nos partenaires (DHL, FedEx, UPS) mènent une enquête détaillée.",
+      "Nous savons que vos envois sont importants. En cas de problème, nous sommes là pour vous aider. Pour garantir une résolution juste et approfondie, notre équipe et nos partenaires mondiaux (comme DHL, FedEx et UPS) mènent une enquête détaillée.",
     faq_q5: "Y a-t-il des articles que je ne peux pas expédier ?",
     faq_a5:
-      "Pour la sécurité de tous et le respect des lois internationales, nous ne pouvons pas expédier de produits chimiques dangereux, de devises, de pierres précieuses ou d'articles illégaux. Appelez-nous en cas de doute !",
+      "Pour la sécurité de tous et le respect des lois internationales, nous ne pouvons pas expédier de produits chimiques dangereux, de devises, de pierres précieuses ou d'articles illégaux. Si vous n'êtes pas sûr d'un article, appelez-nous simplement ! Nous sommes heureux de vérifier pour vous avant la réservation.",
     contact_badge: "Nous contacter",
     contact_title: "Nous sommes là pour vous",
     contact_desc:
@@ -920,11 +1108,58 @@ const translations: Record<Language, Translations> = {
     contact_info: "Coordonnées",
     footer_tagline: "Connecter les familles, rapprocher les distances",
     footer_desc:
-      "Approuvé par plus de 10 000 clients satisfaits et avec plus de 50 000 expéditions internationales réussies, nous livrons des solutions rapides, sécurisées et transparentes.",
+      "Approuvé par plus de 10 000 clients satisfaits et avec plus de 50 000 expéditions internationales réussies, nous livrons des solutions de messagerie et de fret rapides, sécurisées et transparentes sur lesquelles vous pouvez compter.",
     footer_social: "Réseau social",
     footer_quick_links: "Liens rapides",
     footer_office_info: "Infos bureau",
     footer_rights: "Tous droits réservés.",
+    form_select_dest: "Sélectionnez le pays de destination",
+    form_select_euro: "Sélectionnez le pays européen",
+    form_select_country: "Sélectionnez le pays",
+    form_zipcode: "Code postal",
+    form_actual_wt: "Poids réel (kg)",
+    form_vol_wt_dim: "Dimensions du poids volumétrique (cm) — facultatif",
+    form_length: "Longueur",
+    form_breadth: "Largeur",
+    form_height: "Hauteur",
+    form_vol_wt: "Poids vol:",
+    form_chargeable: "Facturable:",
+    form_calculating: "Calcul en cours...",
+    form_selected: "SÉLECTIONNÉ",
+    form_zone: "Zone",
+    form_slab: "Tarif forfaitaire",
+    form_per_kg: "Par kg",
+    form_duty_paid: "TAXES PAYÉES",
+    form_duty_unpaid: "TAXES NON PAYÉES",
+    form_gst_inc: "TTC",
+    form_final_rates_msg:
+      "Les tarifs finaux peuvent varier · Appelez le +91 7070-506070 pour confirmer",
+    form_services_found: "Services trouvés",
+    form_services_found_text: "service(s) trouvé(s)",
+    quote_banner_title: "Obtenir un devis",
+    quote_banner_sub:
+      "Entrez les détails de votre envoi pour comparer instantanément les services et les tarifs.",
+    quote_instant_est: "ESTIMATION INSTANTANÉE",
+    quote_heading: "Connecter les familles,\nréduire les distances.",
+    quote_subheading:
+      "Envoyez des documents, des colis, des cadeaux ou des expéditions commerciales dans le monde entier.",
+    quote_empty_title: "Vos devis apparaîtront ici",
+    quote_empty_sub:
+      'Remplissez le formulaire et cliquez sur "Obtenir un devis" pour comparer les services',
+    quote_loading_msg: "Récupération des tarifs de tous les transporteurs…",
+    quote_how_calc_title: "Comment votre devis est-il calculé ?",
+    quote_how_calc_1_title: "Poids facturable",
+    quote_how_calc_1_desc:
+      "Nous utilisons le poids réel ou volumétrique (L × l × H ÷ 5000), le plus élevé étant retenu et arrondi au kg supérieur.",
+    quote_how_calc_2_title: "Service et zone",
+    quote_how_calc_2_desc:
+      "Pour l'Australie/le Canada, votre code postal détermine la zone de livraison. L'Europe et l'international utilisent un système de zones par pays.",
+    quote_how_calc_3_title: "Application des tarifs",
+    quote_how_calc_3_desc:
+      "Les tarifs forfaitaires (S) sont des montants fixes par tranche de poids. Les tarifs au kg (B) sont multipliés par votre poids facturable. Tous les tarifs incluent les taxes.",
+    quote_faq_badge: "Des questions ?",
+    quote_faq_title: "Foire Aux Questions",
+    bespoke_read_more: "Lire la suite • Lire la suite •",
   },
 
   es: {
@@ -945,7 +1180,7 @@ const translations: Record<Language, Translations> = {
     bc_faq: "Preguntas frecuentes",
     bc_services: "Servicios",
     bc_business_campaign: "Campaña de negocios",
-    hero_headline: "CONECTANDO CONTINENTES, ENTREGANDO CONFIANZA.",
+    hero_headline: "Conectando continentes, entregando confianza.",
     hero_subtext:
       "Envía documentos, paquetes, alimentos, regalos o envíos comerciales en todo el mundo con confianza.",
     hero_pickup: "Lugar de recogida",
@@ -1005,7 +1240,7 @@ const translations: Record<Language, Translations> = {
     wwl_card2_label: "Asociaciones de élite",
     wwl_card2_stat: "Múltiples\npaíses",
     wwl_card2_desc:
-      "Colaboración con transportistas de clase mundial: DHL, FedEx y UPS.",
+      "Colaboración con transportistas de clase mundial: DHL, FedEx, UPS, Aramex y DPD.",
     wwl_card3_label: "Dominio aduanero",
     wwl_card3_stat: "1000+",
     wwl_card3_desc:
@@ -1087,19 +1322,19 @@ const translations: Record<Language, Translations> = {
     faq_title: "¿Preguntas? Nos alegra que preguntes",
     faq_q1: "¿Dónde puedo enviar mis paquetes?",
     faq_a1:
-      "¡Casi a cualquier lugar! Tenemos una fuerte presencia en EE.UU., Canadá, Reino Unido, Europa y Australia.",
+      "¡Casi a cualquier lugar! Tenemos una fuerte presencia en EE.UU., Canadá, Reino Unido, Europa y Australia. Ya sea una gran ciudad o un tranquilo suburbio, lo llevaremos hasta allí.",
     faq_q2: "¿Cómo sé que estoy obteniendo un precio justo?",
     faq_a2:
-      "Creemos en el valor. Tu cotización se basa exactamente en lo que necesitas: peso, destino y velocidad de entrega. Sin sorpresas ocultas.",
+      "Creemos en el valor. Tu cotización se basa exactamente en lo que necesitas: peso, destino y velocidad de entrega. Prometemos que no habrá sorpresas ocultas a la hora de pagar.",
     faq_q3: "¿Puedo ver dónde está mi paquete ahora mismo?",
     faq_a3:
-      "¡Sí! En el momento en que envíes con nosotros, recibirás un número de seguimiento único. Sigue tu paquete en tiempo real.",
+      "¡Sí! En el momento en que envíes con nosotros, recibirás un número de seguimiento único. Puedes ver el recorrido de tu paquete en tiempo real, lo que te brinda total confianza.",
     faq_q4: "¿Qué pasa si hay un retraso o un problema?",
     faq_a4:
-      "Sabemos que tus envíos son importantes. Si algo sale mal, estamos aquí para ayudar. Nuestro equipo y socios globales (DHL, FedEx, UPS) realizan una investigación detallada.",
+      "Sabemos que tus envíos son importantes. Si algo sale mal, estamos aquí para ayudar. Para garantizar una resolución justa y exhaustiva, nuestro equipo y nuestros socios globales (DHL, FedEx, UPS) realizan una investigación detallada.",
     faq_q5: "¿Hay algo que no pueda enviar?",
     faq_a5:
-      "Para mantener a todos seguros y cumplir con las leyes internacionales, no podemos enviar productos químicos peligrosos, moneda, piedras preciosas o artículos ilegales. ¡Llámanos si tienes dudas!",
+      "Para mantener a todos seguros y cumplir con las leyes internacionales, no podemos enviar productos químicos peligrosos, moneda, piedras preciosas o artículos ilegales. ¡Llámanos si tienes dudas sobre algún artículo! Con gusto lo verificamos antes de que reserves.",
     contact_badge: "Contáctanos",
     contact_title: "Estamos aquí para ti",
     contact_desc:
@@ -1109,11 +1344,58 @@ const translations: Record<Language, Translations> = {
     contact_info: "Información de contacto",
     footer_tagline: "Conectando familias, acortando distancias",
     footer_desc:
-      "De confianza para más de 10,000 clientes satisfechos y con más de 50,000 envíos internacionales exitosos, entregamos soluciones de mensajería rápidas, seguras y fluidas.",
+      "De confianza para más de 10,000 clientes satisfechos y con más de 50,000 envíos internacionales exitosos, entregamos soluciones de mensajería y carga rápidas, seguras y fluidas en las que puedes confiar.",
     footer_social: "Red social",
     footer_quick_links: "Enlaces rápidos",
     footer_office_info: "Información de oficina",
     footer_rights: "Todos los derechos reservados.",
+    form_select_dest: "Seleccionar país de destino",
+    form_select_euro: "Seleccionar país europeo",
+    form_select_country: "Seleccionar país",
+    form_zipcode: "Código postal",
+    form_actual_wt: "Peso real (kg)",
+    form_vol_wt_dim: "Dimensiones de peso volumétrico (cm) — opcional",
+    form_length: "Longitud",
+    form_breadth: "Anchura",
+    form_height: "Altura",
+    form_vol_wt: "Peso vol:",
+    form_chargeable: "Facturable:",
+    form_calculating: "Calculando...",
+    form_selected: "SELECCIONADO",
+    form_zone: "Zona",
+    form_slab: "Tarifa plana",
+    form_per_kg: "Por kg",
+    form_duty_paid: "IMPUESTOS PAGADOS",
+    form_duty_unpaid: "IMPUESTOS NO PAGADOS",
+    form_gst_inc: "IVA incluido",
+    form_final_rates_msg:
+      "Las tarifas finales pueden variar · Llame al +91 7070-506070 para confirmar",
+    form_services_found: "Servicios encontrados",
+    form_services_found_text: "servicio(s) encontrado(s)",
+    quote_banner_title: "Obtener presupuesto",
+    quote_banner_sub:
+      "Introduzca los detalles de su envío para comparar servicios y tarifas al instante.",
+    quote_instant_est: "ESTIMACIÓN INSTANTÁNEA",
+    quote_heading: "Conectando familias,\nreduciendo distancias.",
+    quote_subheading:
+      "Envíe documentos, paquetes, regalos o envíos comerciales a todo el mundo.",
+    quote_empty_title: "Sus presupuestos aparecerán aquí",
+    quote_empty_sub:
+      'Rellene el formulario y haga clic en "Obtener presupuesto" para comparar servicios',
+    quote_loading_msg: "Obteniendo tarifas de todos los transportistas…",
+    quote_how_calc_title: "¿Cómo se calcula su presupuesto?",
+    quote_how_calc_1_title: "Peso facturable",
+    quote_how_calc_1_desc:
+      "Utilizamos el peso real frente al peso volumétrico (L × A × A ÷ 5000), el que sea mayor, redondeado al kg superior.",
+    quote_how_calc_2_title: "Servicio y zona",
+    quote_how_calc_2_desc:
+      "Para Australia/Canadá, su código postal determina la zona de entrega. Europa y destinos internacionales utilizan asignación de zonas por país.",
+    quote_how_calc_3_title: "Aplicación de tarifas",
+    quote_how_calc_3_desc:
+      "Las tarifas planas (S) son cantidades fijas por tramo de peso. Las tarifas por kg (B) se multiplican por su peso facturable. Todas las tarifas incluyen impuestos.",
+    quote_faq_badge: "¿Tiene preguntas?",
+    quote_faq_title: "Preguntas frecuentes",
+    bespoke_read_more: "Leer más • Leer más •",
   },
 };
 

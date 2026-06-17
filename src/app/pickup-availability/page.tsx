@@ -44,12 +44,12 @@ const localTranslations: Record<
 > = {
   en: {
     banner_title: "Pickup Availability",
-    card_title: "Check Pickup\nAvailability In Your Destination",
+    card_title: "Check pickup\navailability in your destination",
     card_subtitle:
-      "Enter Your International ZIP Code Or Indian PIN Code Below To Instantly Check If We Pickup From Your Location.",
+      "Enter your international zip code or indian pin code below to instantly check if we pickup from your location.",
     input_placeholder: "Enter ZIP Code (Intl) / PIN Code (India)",
     btn_check: "Check Availability",
-    success_msg: "Great News! We Pickup From Your Area",
+    success_msg: "Great news! We pickup from your area",
     fail_msg: "We're Not There Yet",
     fail_submsg: "But Don't Worry... We're Expanding Soon!",
     need_assistance: "Need Assistance With\nYour ZIP Code?",

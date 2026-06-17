@@ -78,49 +78,49 @@ const localTranslations: Record<
     banner_title: "Services",
     home: "Home",
     services: "Services",
-    sidebar_title: "Every Parcel. Every Country. Every Time.",
+    sidebar_title: "Every parcel. Every country. Every time.",
     sidebar_subtitle:
-      "From A Single Document To A Multi-Box Shipment, Manvi International Courier Gets It There, With The World's Best Carriers And Our Own Direct Delivery Network.",
-    cta_title: "Not Sure Which Service Is Right For You?",
+      "From a single document to a multi-box shipment, Manvi International Courier gets it there, with the world's best carriers and our own direct delivery network.",
+    cta_title: "Not sure which service is right for you?",
     cta_subtitle:
-      "Tell Us Where You're Shipping, How Much It Weighs, And What's Inside, We'll Recommend The Fastest And Most Cost-Effective Option.",
+      "Tell us where you're shipping, how much it weighs, and what's inside, we'll recommend the fastest and most cost-effective option.",
     contact_btn: "Contact Us",
     quote_btn: "Get A Quote",
-    subtitle_dhl: "The World's #1 International Courier, Now At Your Doorstep",
+    subtitle_dhl: "The world's #1 international courier, now at your doorstep",
     desc_dhl:
-      "Whether You're Sending A Passport-Sized Document Or A 30kg Carton, DHL's Express Network Covers Every Country On The Globe.",
-    subtitle_ups: "Speed And Reliability Across Every Major Market",
+      "Whether you're sending a passport-sized document or a 30kg carton, DHL's express network covers every country on the globe.",
+    subtitle_ups: "Speed and reliability across every major market",
     desc_ups:
-      "UPS Combines Global Reach With Robust Tracking, Making It The Smart Choice For Businesses And Individuals Shipping To North America, Australia, And Beyond.",
-    subtitle_fedex: "Precision Delivery To The World's Biggest Destinations",
+      "UPS combines global reach with robust tracking, making it the smart choice for businesses and individuals shipping to north america, Australia, and beyond.",
+    subtitle_fedex: "Precision delivery to the world's biggest destinations",
     desc_fedex:
-      "FedEx's Express Network Ensures Your Shipment Moves Fast, With Full Visibility From Pickup To Delivery.",
-    subtitle_aramex: "Cost-Effective Delivery To Australia And Beyond",
+      "FedEx's express network ensures your shipment moves fast, with full visibility from pickup to delivery.",
+    subtitle_aramex: "Cost-effective delivery to Australia and beyond",
     desc_aramex:
-      "Aramex Offers Flexible Express And Economy Options, Making It An Excellent Choice For Regular Australia-Bound Shipments And Select Worldwide Destinations.",
-    subtitle_special: "Specialist Shipping For Medicines And Sensitive Items",
+      "Aramex offers flexible express and economy options, making it an excellent choice for regular Australia-bound shipments and select worldwide destinations.",
+    subtitle_special: "Specialist shipping for medicines and sensitive items",
     desc_special:
-      "Sending Medicines, Health Supplements, Or Other Regulated Goods Abroad? Our FedEx Medicine Route Is Handled By Authorised Channels With Full Compliance, Giving You Peace Of Mind At Every Step.",
+      "Sending medicines, health supplements, or other regulated goods abroad? Our FedEx medicine route is handled by authorised channels with full compliance, giving you peace of mind at every step.",
     label_dox: "Document Shipping (DOX)",
     label_nondox: "Parcel Shipping (Non-DOX)",
-    label_nondox_hub: "Parcel Shipping (Non-DOX) Via Authorised Hub",
+    label_nondox_hub: "Parcel shipping (non-dox) via authorised hub",
     th_destination: "Destination",
     th_max_weight: "Max Weight",
     th_limit: "Duty-Free Limit",
     th_delivery: "Delivery",
     th_service: "Service",
     lbl_max_size:
-      "Max Box Size: 100×80×80 Cm | Single Or Multiple Pieces Accepted.",
+      "Max box size: 100×80×80 cm | single or multiple pieces accepted.",
     lbl_available_co:
       "Also Available: Co-Loaders / 3, DHL For Documents And Parcels To All Countries",
     lbl_fedex_pre:
-      "Please Contact Us Before Booking To Confirm Your Item Is Eligible For This Service.",
+      "Please contact us before booking to confirm your item is eligible for this service.",
     lbl_direct_badge: "DIRECT (SELF-NETWORK) SERVICES",
-    lbl_direct_title: "Our Own Consolidation Routes",
+    lbl_direct_title: "Our own consolidation routes",
     lbl_direct_sub:
-      "Better Rates, DDP Options, And No Cap On Total Shipment Weight.",
+      "Better rates, ddp options, and no cap on total shipment weight.",
     lbl_uk_title: "UK",
-    lbl_uk_sub: "Fast, Duty-Free Delivery Across the United Kingdom",
+    lbl_uk_sub: "Fast, duty-free delivery across the united kingdom",
     lbl_uk_desc:
       "Our premium UK route operates via London Heathrow (LHR) with DPD handling last-mile delivery, one of the UK's most trusted domestic networks.",
     lbl_uk_note:
@@ -130,11 +130,11 @@ const localTranslations: Record<
     lbl_eu_desc:
       "Ship to any European country on our direct DPD Europe route. No hidden duties, no surprise customs fees.",
     lbl_ca_title: "Canada",
-    lbl_ca_sub: "DDP Service, No Customs Surprises, Ever",
+    lbl_ca_sub: "Ddp service, no customs surprises, ever",
     lbl_ca_desc:
       "Our Canada direct service is fully Delivered Duty Paid (DDP), meaning all import duties and taxes are settled before your shipment arrives. Available via two gateway hubs for maximum flexibility.",
     lbl_au_title: "Australia",
-    lbl_au_sub: "Direct Australia Delivery Across All Zones",
+    lbl_au_sub: "Direct Australia delivery across all zones",
     lbl_au_desc:
       "Our Australia direct service ships to every corner of the country, with no cap on total shipment weight. Delivery time is based on the destination zone within Australia.",
     lbl_au_note:

@@ -88,7 +88,7 @@ export default function Bespoke() {
                       className="text-[12px] fill-white font-bold tracking-[0.15em] uppercase"
                       textLength="220"
                     >
-                      Read More • Read More •
+                      {t.bespoke_read_more}
                     </textPath>
                   </text>
                 </svg>

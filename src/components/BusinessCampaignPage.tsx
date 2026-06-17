@@ -26,22 +26,22 @@ const B2B_STEPS = [
   {
     num: "1",
     title: "Tell us what you need",
-    desc: "Share your order and where it's sourced in India — your supplier, the local market, or a manufacturer.",
+    desc: "Share your order and where it's sourced in India, your supplier, the local market, or a manufacturer.",
   },
   {
     num: "2",
     title: "We pick it up in bulk",
-    desc: "Our team collects your goods anywhere in India — spices, groceries, fabrics, ready stock, you name it.",
+    desc: "Our team collects your goods anywhere in India, spices, groceries, fabrics, ready stock, you name it.",
   },
   {
     num: "3",
     title: "We pack, ship & clear customs",
-    desc: "Bulk-freight packing plus all the import paperwork and customs handled for you — no headaches.",
+    desc: "Bulk-freight packing plus all the import paperwork and customs handled for you, no headaches.",
   },
   {
     num: "4",
     title: "Delivered to your premises",
-    desc: "It arrives at your restaurant, store or boutique — fully tracked. We can also set up regular repeat pickups.",
+    desc: "It arrives at your restaurant, store or boutique, fully tracked. We can also set up regular repeat pickups.",
   },
 ];
 
@@ -52,18 +52,18 @@ const SOURCE_ITEMS = [
   },
   {
     title: "Fabric & Fashion",
-    desc: "Fabrics & textiles, sarees, lehengas, suits, ethnic & festive wear, and accessories — in retail quantities or bulk."
+    desc: "Fabrics & textiles, sarees, lehengas, suits, ethnic & festive wear, and accessories, in retail quantities or bulk."
   },
   {
     title: "Bulk, Mixed Or Recurring Orders",
-    desc: "Whether It's A One-Off Bulk Consignment Or A Regular Monthly Restock Tailored To Your Business Rhythm, We Handle It. Not Sure If We Can Source Or Ship An Item? Just Ask Us On WhatsApp — We'll Confirm Before You Commit."
+    desc: "Whether it's a one-off bulk consignment or a regular monthly restock tailored to your business rhythm, we handle it. Not sure if we can source or ship an item? Just ask us on WhatsApp, we'll confirm before you commit."
   }
 ];
 
 const LOGISTICS_REASONS = [
   {
     title: "Bulk & Cargo Expertise",
-    desc: "From a single carton to full bulk consignments — packed and shipped to handle volume.",
+    desc: "From a single carton to full bulk consignments, packed and shipped to handle volume.",
     image: "/3d-boxes.png"
   },
   {
@@ -73,12 +73,12 @@ const LOGISTICS_REASONS = [
   },
   {
     title: "Regular, Repeatable Pickups",
-    desc: "Set up recurring restocks tailored to your business rhythm — weekly, monthly, seasonal.",
+    desc: "Set up recurring restocks tailored to your business rhythm, weekly, monthly, seasonal.",
     image: "/3d-map.png"
   },
   {
     title: "A Dedicated Point Of Contact",
-    desc: "Talk to a real person on WhatsApp who knows your account — not a ticket queue.",
+    desc: "Talk to a real person on WhatsApp who knows your account, not a ticket queue.",
     image: "/3d-contact.png"
   },
   {
@@ -116,7 +116,7 @@ const TESTIMONIALS = [
   {
     name: "Hardeep S.",
     location: "Sydney, Australia",
-    text: "Sent a parcel of clothes and dry fruits to my mother in Sydney. Arrived before the festival. Excellent service — highly recommend.",
+    text: "Sent a parcel of clothes and dry fruits to my mother in Sydney. Arrived before the festival. Excellent service, highly recommend.",
   },
 ];
 
@@ -129,22 +129,22 @@ const FAQS = [
   {
     num: "02",
     q: "How Is The Price Worked Out?",
-    a: "Rates are based on weight, destination country and how fast you need it — with no hidden fees. Send us your list and we'll give you a clear quote.",
+    a: "Rates are based on weight, destination country and how fast you need it, with no hidden fees. Send us your list and we'll give you a clear quote.",
   },
   {
     num: "03",
     q: "Do You Handle Customs And Import Paperwork?",
-    a: "Yes. We manage documentation and clearance with our global carrier partners, so your stock moves smoothly across the border. (Any destination-country import duties are separate and depend on your local rules — we'll guide you.)",
+    a: "Yes. We manage documentation and clearance with our global carrier partners, so your stock moves smoothly across the border. (Any destination-country import duties are separate and depend on your local rules, we'll guide you.)",
   },
   {
     num: "04",
     q: "Can You Set Up Regular, Recurring Shipments?",
-    a: "Absolutely. Many of our business clients run scheduled restocks — weekly, monthly or seasonal — tailored to their business rhythm.",
+    a: "Absolutely. Many of our business clients run scheduled restocks, weekly, monthly or seasonal, tailored to their business rhythm.",
   },
   {
     num: "05",
     q: "How Long Does Bulk Delivery Take?",
-    a: "It depends on the volume, route and customs, typically a few days to a couple of weeks. Order ahead of festive peaks to be safe — we'll confirm timelines on your quote.",
+    a: "It depends on the volume, route and customs, typically a few days to a couple of weeks. Order ahead of festive peaks to be safe, we'll confirm timelines on your quote.",
   },
   {
     num: "06",
@@ -223,7 +223,7 @@ export default function BusinessCampaignPage() {
 
               {/* Description */}
               <p className="text-[15px] md:text-[16px] text-white/90 max-w-2xl leading-relaxed font-medium">
-                Run An Indian Restaurant, Grocery, Boutique Or Garment Store Abroad? Tell Us <strong>What You Need And Where It Is In India —</strong> Spices, Groceries, Fabrics, Ethnic Wear — And We'll Pick It Up In Bulk And Deliver It To Your Door. <strong>Customs Handled.</strong>
+                Run an Indian restaurant, grocery, boutique or garment store abroad? Tell us <strong>what you need and where it is in India,</strong> spices, groceries, fabrics, ethnic wear, and we'll pick it up in bulk and deliver it to your door. <strong>Customs handled.</strong>
               </p>
             </div>
 
@@ -336,7 +336,7 @@ export default function BusinessCampaignPage() {
               From India To Your Business In Four Steps
             </h2>
             <p className="text-[15px] sm:text-[16px] text-[#555] mt-4 max-w-2xl mx-auto leading-relaxed">
-              No complicated process. Send us your list on WhatsApp and we handle the rest — start to finish.
+              No complicated process. Send us your list on WhatsApp and we handle the rest, start to finish.
             </p>
           </div>
           <div className="flex flex-col gap-4 max-w-5xl mx-auto">
@@ -419,7 +419,7 @@ export default function BusinessCampaignPage() {
                 <span>📍</span> Pickup Across India
               </h3>
               <p className="text-[14px] sm:text-[16px] text-[#555] leading-relaxed mb-6">
-                We specialise in North India — with pan-India pickup available on request.
+                We specialise in North India, with pan-India pickup available on request.
               </p>
 
               <div className="flex flex-col gap-3">
@@ -485,7 +485,7 @@ export default function BusinessCampaignPage() {
               <span>🎁</span> What You Can Ship
             </h3>
             <p className="text-[14px] sm:text-[15px] text-[#555] leading-relaxed">
-              Rakhis And Festival Gifts · Sweets & Dry Fruits · Gift Hampers · Clothing & Ethnic Wear · Business Documents · Commercial Samples · Personal Parcels. Not Sure About An Item? <strong className="text-[#ff7a00] font-extrabold">Ask Us On WhatsApp</strong> — We'll Confirm Before You Book.
+              Rakhis and festival gifts · Sweets & dry fruits · Gift hampers · Clothing & ethnic wear · Business documents · Commercial samples · Personal parcels. Not sure about an item? <strong className="text-[#ff7a00] font-extrabold">Ask us on WhatsApp,</strong> we'll confirm before you book.
             </p>
           </div>
         </div>
@@ -709,7 +709,7 @@ export default function BusinessCampaignPage() {
             Ready To Stock Up From India?
           </h2>
           <p className="text-[15px] md:text-[18px] text-[#444] leading-relaxed max-w-2xl mx-auto mt-4 mb-8 font-medium">
-            Send Us Your List And Pickup Location. We'll Handle Pickup, Shipping And Customs.
+            Send us your list and pickup location. We'll handle pickup, shipping and customs.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-stretch sm:items-center">
             <a

@@ -11,11 +11,11 @@ const LANGUAGES: {
   native: string;
   flag: string;
 }[] = [
-  { code: "hi", label: "Hindi", native: "हिंदी", flag: "🇮🇳" },
-  { code: "pa", label: "Punjabi", native: "ਪੰਜਾਬੀ", flag: "🇮🇳" },
-  { code: "fr", label: "French", native: "Français", flag: "🇫🇷" },
-  { code: "es", label: "Spanish", native: "Español", flag: "🇪🇸" },
-];
+    { code: "hi", label: "Hindi", native: "हिंदी", flag: "🇮🇳" },
+    { code: "pa", label: "Punjabi", native: "ਪੰਜਾਬੀ", flag: "🇮🇳" },
+    { code: "fr", label: "French", native: "Français", flag: "🇫🇷" },
+    { code: "es", label: "Spanish", native: "Español", flag: "🇪🇸" },
+  ];
 
 export default function Header() {
   const pathname = usePathname();
@@ -65,20 +65,20 @@ export default function Header() {
     <>
       {/* Top utility bar */}
       <div className="bg-[#0b1220] text-zinc-300 text-[12px] font-semibold py-3.5 px-4 sm:px-6 border-b border-white/5">
-        <div className="max-w-425 mx-auto flex justify-between items-center">
-          <div className="flex items-center gap-4">
-            <div className="flex items-center gap-2">
-              <Phone className="h-3.5 w-3.5 text-white" />
-              <span className="text-white/90">+91 7070-506070</span>
+        <div className="max-w-425 mx-auto flex flex-col md:flex-row justify-between items-center gap-2.5 md:gap-0">
+          <div className="flex items-center justify-between sm:justify-start gap-4 w-full md:w-auto">
+            <div className="flex items-center gap-1.5 sm:gap-2">
+              <Phone className="h-3.5 w-3.5 text-white shrink-0" />
+              <span className="text-white/90 truncate">+91 7070-506070</span>
             </div>
-            <div className="flex items-center gap-2">
-              <Mail className="h-3.5 w-3.5 text-white" />
-              <span className="text-white/90">Info@manvicourier.com</span>
+            <div className="flex items-center gap-1.5 sm:gap-2">
+              <Mail className="h-3.5 w-3.5 text-white shrink-0" />
+              <span className="text-white/90 truncate">Info@manvicourier.com</span>
             </div>
           </div>
 
           {/* Marquee offer strip */}
-          <div className="hidden md:flex flex-1 mx-6 overflow-hidden relative">
+          <div className="flex flex-1 w-full mx-0 md:mx-6 overflow-hidden relative pt-1 md:pt-0">
             {(() => {
               const Marquee = "marquee" as any;
               return (
@@ -86,7 +86,7 @@ export default function Header() {
                   behavior="scroll"
                   direction="left"
                   scrollamount="3"
-                  className="text-[13.5px] font-extrabold tracking-wide whitespace-pre"
+                  className="text-[12.5px] md:text-[14.5px] font-medium md:font-extrabold tracking-wide whitespace-pre"
                   style={{ color: "#f27a1a" }}
                 >
                   {marqueeText}
@@ -134,11 +134,10 @@ export default function Header() {
                     role="option"
                     aria-selected={language === "en"}
                     onClick={() => handleSelectLang("en")}
-                    className={`w-full flex items-center gap-3 px-4 py-2.5 text-[12px] font-semibold transition-colors ${
-                      language === "en"
-                        ? "bg-[#f27a1a] text-white"
-                        : "text-zinc-300 hover:bg-white/5 hover:text-white"
-                    }`}
+                    className={`w-full flex items-center gap-3 px-4 py-2.5 text-[12px] font-semibold transition-colors ${language === "en"
+                      ? "bg-[#f27a1a] text-white"
+                      : "text-zinc-300 hover:bg-white/5 hover:text-white"
+                      }`}
                   >
                     <span className="text-base">🌐</span>
                     <span className="flex flex-col items-start leading-none gap-0.5">
@@ -152,11 +151,10 @@ export default function Header() {
                       role="option"
                       aria-selected={language === lang.code}
                       onClick={() => handleSelectLang(lang.code)}
-                      className={`w-full flex items-center gap-3 px-4 py-2.5 text-[12px] font-semibold transition-colors ${
-                        language === lang.code
-                          ? "bg-[#f27a1a] text-white"
-                          : "text-zinc-300 hover:bg-white/5 hover:text-white"
-                      }`}
+                      className={`w-full flex items-center gap-3 px-4 py-2.5 text-[12px] font-semibold transition-colors ${language === lang.code
+                        ? "bg-[#f27a1a] text-white"
+                        : "text-zinc-300 hover:bg-white/5 hover:text-white"
+                        }`}
                     >
                       <span className="text-base">{lang.flag}</span>
                       <span className="flex flex-col items-start leading-none gap-0.5">
@@ -222,55 +220,50 @@ export default function Header() {
             <nav className="flex items-center gap-8 text-[13px] font-semibold text-white">
               <Link
                 href="/about"
-                className={`transition-colors ${
-                  pathname?.startsWith("/about")
-                    ? "text-[#f27a1a]"
-                    : "hover:text-[#f27a1a]"
-                }`}
+                className={`transition-colors ${pathname?.startsWith("/about")
+                  ? "text-[#f27a1a]"
+                  : "hover:text-[#f27a1a]"
+                  }`}
               >
                 {t.nav_about}
               </Link>
 
               <Link
                 href="/services"
-                className={`flex items-center gap-1 transition-colors ${
-                  pathname?.startsWith("/services")
-                    ? "text-[#f27a1a]"
-                    : "hover:text-[#f27a1a]"
-                }`}
+                className={`flex items-center gap-1 transition-colors ${pathname?.startsWith("/services")
+                  ? "text-[#f27a1a]"
+                  : "hover:text-[#f27a1a]"
+                  }`}
               >
                 {t.nav_services}
               </Link>
 
               <Link
                 href="/track"
-                className={`transition-colors ${
-                  pathname?.startsWith("/track")
-                    ? "text-[#f27a1a]"
-                    : "hover:text-[#f27a1a]"
-                }`}
+                className={`transition-colors ${pathname?.startsWith("/track")
+                  ? "text-[#f27a1a]"
+                  : "hover:text-[#f27a1a]"
+                  }`}
               >
                 {t.nav_track}
               </Link>
 
               <Link
                 href="/quote"
-                className={`transition-colors ${
-                  pathname?.startsWith("/quote")
-                    ? "text-[#f27a1a]"
-                    : "hover:text-[#f27a1a]"
-                }`}
+                className={`transition-colors ${pathname?.startsWith("/quote")
+                  ? "text-[#f27a1a]"
+                  : "hover:text-[#f27a1a]"
+                  }`}
               >
                 {t.nav_quote}
               </Link>
 
               <Link
                 href="/contact"
-                className={`transition-colors ${
-                  pathname?.startsWith("/contact")
-                    ? "text-[#f27a1a]"
-                    : "hover:text-[#f27a1a]"
-                }`}
+                className={`transition-colors ${pathname?.startsWith("/contact")
+                  ? "text-[#f27a1a]"
+                  : "hover:text-[#f27a1a]"
+                  }`}
               >
                 {t.nav_contact}
               </Link>
@@ -361,11 +354,10 @@ export default function Header() {
                   handleSelectLang("en");
                   setIsMobileMenuOpen(false);
                 }}
-                className={`flex items-center gap-2 px-3 py-2 rounded-xl text-[13px] font-semibold border transition-colors ${
-                  language === "en"
-                    ? "bg-[#f27a1a] text-white border-[#f27a1a]"
-                    : "border-gray-200 text-gray-700 hover:border-[#f27a1a] hover:text-[#f27a1a]"
-                }`}
+                className={`flex items-center gap-2 px-3 py-2 rounded-xl text-[13px] font-semibold border transition-colors ${language === "en"
+                  ? "bg-[#f27a1a] text-white border-[#f27a1a]"
+                  : "border-gray-200 text-gray-700 hover:border-[#f27a1a] hover:text-[#f27a1a]"
+                  }`}
               >
                 <span>🌐</span> English
               </button>
@@ -376,11 +368,10 @@ export default function Header() {
                     handleSelectLang(lang.code);
                     setIsMobileMenuOpen(false);
                   }}
-                  className={`flex items-center gap-2 px-3 py-2 rounded-xl text-[13px] font-semibold border transition-colors ${
-                    language === lang.code
-                      ? "bg-[#f27a1a] text-white border-[#f27a1a]"
-                      : "border-gray-200 text-gray-700 hover:border-[#f27a1a] hover:text-[#f27a1a]"
-                  }`}
+                  className={`flex items-center gap-2 px-3 py-2 rounded-xl text-[13px] font-semibold border transition-colors ${language === lang.code
+                    ? "bg-[#f27a1a] text-white border-[#f27a1a]"
+                    : "border-gray-200 text-gray-700 hover:border-[#f27a1a] hover:text-[#f27a1a]"
+                    }`}
                 >
                   <span>{lang.flag}</span> {lang.label}
                 </button>
@@ -391,13 +382,13 @@ export default function Header() {
       )}
 
       {pathname && pathname !== "/" && pathname !== "/campaign" && (
-        <div className="bg-white border-b border-gray-200/80 py-3.5 px-4 sm:px-6 shadow-sm relative z-30">
-          <div className="max-w-425 w-full mx-auto flex items-center gap-2 text-xs font-bold text-gray-500">
+        <div className="py-3.5 px-4 sm:px-6 relative z-30">
+          <div className="max-w-425 w-full mx-auto flex items-center gap-2 text-sm font-light text-gray-800">
             <Link href="/" className="hover:text-[#f27a1a] transition-colors">
               {t.nav_home}
             </Link>
-            <ChevronRight className="w-3.5 h-3.5 text-gray-400 shrink-0" />
-            <span className="text-[#f27a1a] font-extrabold uppercase tracking-wide">
+            <ChevronRight className="w-4 h-4 text-gray-600 shrink-0" />
+            <span className="text-gray-900 font-medium uppercase tracking-wide">
               {pathname === "/about" && t.bc_about}
               {pathname === "/track" && t.bc_track}
               {pathname === "/zipcode" && t.bc_zipcode}
@@ -406,6 +397,8 @@ export default function Header() {
               {pathname === "/faq" && t.bc_faq}
               {pathname === "/services" && t.bc_services}
               {pathname === "/business-campaign" && t.bc_business_campaign}
+              {pathname === "/blog" && "Blog"}
+              {pathname === "/career" && "Careers"}
             </span>
           </div>
         </div>
