@@ -1,5 +1,7 @@
+// app/get-quote/page.tsx
 "use client";
 import { useState, FormEvent } from "react";
+import { useLanguage } from "@/context/LanguageContext";
 import {
   ArrowUpRight,
   Plus,
@@ -137,34 +139,6 @@ const NETWORK_COLORS: Record<string, string> = {
   FED: "bg-blue-100 text-blue-700",
 };
 
-const FAQS = [
-  {
-    id: "01",
-    q: "How is the shipping cost calculated?",
-    a: "We compare actual weight vs volumetric weight (L × B × H ÷ 5000) and charge the higher one. The rate is applied per kg or as a slab depending on the service.",
-  },
-  {
-    id: "02",
-    q: "Why do Australia and Canada need a zipcode?",
-    a: "These countries have zone-based pricing that depends on the exact delivery area. Your zipcode/postcode determines which zone applies and hence the rate.",
-  },
-  {
-    id: "03",
-    q: "What is the difference between Slab and Per-kg rates?",
-    a: "Slab rate (S) is a flat fixed amount for the entire weight bracket — you pay that amount regardless of exact weight. Per-kg rate (B) is multiplied by your chargeable weight.",
-  },
-  {
-    id: "04",
-    q: "Are the prices shown inclusive of GST?",
-    a: "Yes. All rates shown are GST-inclusive. Final invoiced amount may vary based on fuel surcharge, destination surcharge, or customs duties.",
-  },
-  {
-    id: "05",
-    q: "Can I track my shipment after booking?",
-    a: "Yes. Once booked via the portal, you'll receive an AWB number and can track in real-time through our tracking page.",
-  },
-];
-
 interface Quote {
   service: string;
   network: string;
@@ -194,10 +168,12 @@ function ServiceCard({
   quote,
   selected,
   onSelect,
+  t,
 }: {
   quote: Quote;
   selected: boolean;
   onSelect: (val: string) => void;
+  t: any;
 }) {
   const networkColor =
     NETWORK_COLORS[quote.network] ?? "bg-gray-100 text-gray-700";
@@ -215,7 +191,7 @@ function ServiceCard({
     >
       {selected && (
         <div className="absolute -top-2.5 left-4 bg-[#f27a1a] text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
-          SELECTED
+          {t.form_selected}
         </div>
       )}
 
@@ -229,21 +205,21 @@ function ServiceCard({
             </span>
             {quote.zone && (
               <span className="text-[10px] bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full font-mono">
-                Zone {quote.zone}
+                {t.form_zone} {quote.zone}
               </span>
             )}
             <span className="text-[10px] bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full">
-              {quote.rateType === "S" ? "Slab rate" : "Per kg"}
+              {quote.rateType === "S" ? t.form_slab : t.form_per_kg}
             </span>
             {dutyPaid ? (
               <span className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-green-100 text-green-700">
                 <CheckCircle2 size={9} strokeWidth={2.5} />
-                DUTY PAID
+                {t.form_duty_paid}
               </span>
             ) : (
               <span className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-red-100 text-red-700">
                 <AlertCircle size={9} strokeWidth={2.5} />
-                DUTY UNPAID
+                {t.form_duty_unpaid}
               </span>
             )}
           </div>
@@ -255,12 +231,12 @@ function ServiceCard({
 
           <div className="mt-2 flex items-center gap-4 text-xs text-gray-500">
             <span>
-              Chargeable:{" "}
+              {t.form_chargeable}{" "}
               <strong className="text-gray-700">{quote.chargeableWt} kg</strong>
             </span>
             {quote.volWt > 0 && (
               <span>
-                Vol wt: <strong>{quote.volWt} kg</strong>
+                {t.form_vol_wt} <strong>{quote.volWt} kg</strong>
               </span>
             )}
           </div>
@@ -270,7 +246,7 @@ function ServiceCard({
           <p className="text-2xl font-extrabold text-[#f27a1a]">
             ₹{fmtPrice(quote.totalPrice)}
           </p>
-          <p className="text-[10px] text-gray-400 mt-0.5">GST inclusive</p>
+          <p className="text-[10px] text-gray-400 mt-0.5">{t.form_gst_inc}</p>
         </div>
       </div>
     </div>
@@ -278,6 +254,7 @@ function ServiceCard({
 }
 
 export default function GetQuote() {
+  const { t } = useLanguage();
   const [actualWt, setActualWt] = useState("");
   const [length, setLength] = useState("");
   const [breadth, setBreadth] = useState("");
@@ -360,7 +337,7 @@ export default function GetQuote() {
 
   return (
     <div className="min-h-screen bg-[#f8f9fa] text-[#0f172a] font-sans flex flex-col antialiased">
-      {/* Banner Section - Same as Track Shipment */}
+      {/* Banner Section */}
       <section className="relative bg-[#0b1220] overflow-hidden min-h-55 flex items-center py-12 px-6">
         <div
           className="absolute inset-0 z-0 opacity-20 bg-cover bg-center"
@@ -372,33 +349,28 @@ export default function GetQuote() {
               Home
             </a>
             <span className="text-white/30">/</span>
-            <span className="text-white">Get Quote</span>
+            <span className="text-white">{t.quote_banner_title}</span>
           </div>
           <h1 className="text-[36px] md:text-[44px] font-extrabold text-white leading-tight tracking-tight">
-            Get a Quote
+            {t.quote_banner_title}
           </h1>
-          <p className="text-white/70 text-sm max-w-md">
-            Enter your shipment details to instantly compare services and rates.
-          </p>
+          <p className="text-white/70 text-sm max-w-md">{t.quote_banner_sub}</p>
         </div>
       </section>
 
       <main className="flex-grow max-w-425 w-full mx-auto px-6 py-12">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          {/* LEFT: Quote form - Same styling as Track Shipment form */}
+          {/* LEFT: Quote form */}
           <div className="lg:col-span-5 bg-[#eef0f5] rounded-4xl p-8 lg:p-10 shadow-sm border border-gray-200/50 flex flex-col">
             <div className="flex flex-col gap-5">
               <div className="border border-orange-300/80 text-[#f27a1a] bg-orange-50/50 rounded-full px-4 py-1 text-[11px] font-extrabold w-fit tracking-wide">
-                INSTANT ESTIMATE
+                {t.quote_instant_est}
               </div>
               <h2 className="text-[28px] md:text-[34px] font-extrabold text-[#1c1f2e] leading-tight tracking-tight">
-                CONNECTING FAMILIES,
-                <br />
-                BRIDGING DISTANCES.
+                {t.quote_heading}
               </h2>
               <p className="text-[13px] text-gray-500 font-medium leading-relaxed">
-                Send documents, parcels, gifts, or commercial shipments
-                worldwide.
+                {t.quote_subheading}
               </p>
             </div>
 
@@ -419,7 +391,7 @@ export default function GetQuote() {
                   }}
                   className="w-full bg-white text-[#333] text-[14px] font-medium rounded-xl px-5 py-4 focus:outline-none appearance-none border border-gray-200 shadow-sm"
                 >
-                  <option value="">Select Destination</option>
+                  <option value="">{t.form_select_dest}</option>
                   {DESTINATIONS.map((d) => (
                     <option key={d.value} value={d.value}>
                       {d.flag} {d.label}
@@ -432,7 +404,7 @@ export default function GetQuote() {
                 />
               </div>
 
-              {/* Sub-country (EUROPE / INTERNATIONAL) */}
+              {/* Sub-country */}
               {requiresSubCountry && (
                 <div className="relative">
                   <select
@@ -446,8 +418,8 @@ export default function GetQuote() {
                   >
                     <option value="">
                       {destination === "EUROPE"
-                        ? "Select European Country"
-                        : "Select Country"}
+                        ? t.form_select_euro
+                        : t.form_select_country}
                     </option>
                     {subCountryOptions.map((c) => (
                       <option key={c} value={c}>
@@ -462,11 +434,11 @@ export default function GetQuote() {
                 </div>
               )}
 
-              {/* Zipcode (AUS / CAN only) */}
+              {/* Zipcode */}
               {requiresZip && (
                 <input
                   type="text"
-                  placeholder={`Zipcode / Postcode (required for ${destObj?.label})`}
+                  placeholder={`${t.form_zipcode} (required for ${destObj?.label})`}
                   value={zipcode}
                   onChange={(e) => setZipcode(e.target.value.toUpperCase())}
                   className="w-full bg-white text-[#333] text-[14px] font-medium rounded-xl px-5 py-4 focus:outline-none placeholder:text-gray-400 border border-gray-200 shadow-sm"
@@ -476,7 +448,7 @@ export default function GetQuote() {
               {/* Actual weight */}
               <input
                 type="number"
-                placeholder="Actual Weight (kg)"
+                placeholder={t.form_actual_wt}
                 value={actualWt}
                 onChange={(e) => setActualWt(e.target.value)}
                 min="0.001"
@@ -487,14 +459,18 @@ export default function GetQuote() {
               {/* Dimensions */}
               <div className="flex flex-col gap-2">
                 <span className="text-[11px] text-gray-500 font-semibold tracking-wide uppercase">
-                  Volume Weight Dimensions (cm) — optional
+                  {t.form_vol_wt_dim}
                 </span>
                 <div className="grid grid-cols-3 gap-3">
                   {(
                     [
-                      { val: length, setter: setLength, label: "Length" },
-                      { val: breadth, setter: setBreadth, label: "Breadth" },
-                      { val: height, setter: setHeight, label: "Height" },
+                      { val: length, setter: setLength, label: t.form_length },
+                      {
+                        val: breadth,
+                        setter: setBreadth,
+                        label: t.form_breadth,
+                      },
+                      { val: height, setter: setHeight, label: t.form_height },
                     ] as const
                   ).map(({ val, setter, label }) => (
                     <input
@@ -513,8 +489,14 @@ export default function GetQuote() {
               {/* Live weight preview */}
               {(actualWt || volWt) && (
                 <div className="bg-orange-50 rounded-xl px-4 py-3 flex justify-between text-gray-700 text-xs font-semibold border border-orange-200/50">
-                  {volWt && <span>Vol wt: {volWt} kg</span>}
-                  <span>Chargeable: {chargeableWt} kg</span>
+                  {volWt && (
+                    <span>
+                      {t.form_vol_wt} {volWt} kg
+                    </span>
+                  )}
+                  <span>
+                    {t.form_chargeable} {chargeableWt} kg
+                  </span>
                 </div>
               )}
 
@@ -531,28 +513,30 @@ export default function GetQuote() {
               >
                 {loading ? (
                   <>
-                    <Loader2 size={18} className="animate-spin" /> Calculating…
+                    <Loader2 size={18} className="animate-spin" />{" "}
+                    {t.form_calculating}
                   </>
                 ) : (
                   <>
-                    Get Quote <ArrowUpRight size={18} strokeWidth={2.5} />
+                    {t.hero_get_quote}{" "}
+                    <ArrowUpRight size={18} strokeWidth={2.5} />
                   </>
                 )}
               </button>
             </form>
           </div>
 
-          {/* RIGHT: Results - Updated styling */}
+          {/* RIGHT: Results */}
           <div className="lg:col-span-7 flex flex-col gap-6">
             {!result && !loading && (
               <div className="bg-[#eef0f5] rounded-4xl p-8 lg:p-14 flex flex-col items-center justify-center text-center gap-4 min-h-80 shadow-sm border border-gray-200/50">
                 <PackageCheck size={56} className="text-gray-300" />
                 <div>
                   <p className="text-[#1c1f2e] font-bold text-lg">
-                    Your quotes will appear here
+                    {t.quote_empty_title}
                   </p>
                   <p className="text-gray-400 text-sm mt-1">
-                    Fill in the form and click "Get Quote" to compare services
+                    {t.quote_empty_sub}
                   </p>
                 </div>
               </div>
@@ -562,14 +546,14 @@ export default function GetQuote() {
               <div className="bg-[#eef0f5] rounded-4xl p-8 lg:p-14 flex flex-col items-center justify-center gap-4 min-h-80 shadow-sm border border-gray-200/50">
                 <Loader2 size={44} className="text-[#f27a1a] animate-spin" />
                 <p className="text-gray-600 text-sm font-medium">
-                  Fetching rates from all carriers…
+                  {t.quote_loading_msg}
                 </p>
               </div>
             )}
 
             {result && (
               <>
-                {/* Summary Card - Same style as Track Shipment */}
+                {/* Summary Card */}
                 <div className="bg-[#0b1220] rounded-2xl px-6 py-5 flex flex-wrap gap-4 text-white shadow-sm">
                   <div className="flex-1 min-w-[120px]">
                     <p className="text-[10px] text-gray-400 uppercase tracking-wider font-bold">
@@ -604,7 +588,7 @@ export default function GetQuote() {
                   </div>
                   <div className="flex-1 min-w-[100px]">
                     <p className="text-[10px] text-gray-400 uppercase tracking-wider font-bold">
-                      Services Found
+                      {t.form_services_found}
                     </p>
                     <p className="font-bold text-sm">{result.quotes.length}</p>
                   </div>
@@ -620,45 +604,43 @@ export default function GetQuote() {
                         quote={quote}
                         selected={selectedService === key}
                         onSelect={setSelectedService}
+                        t={t}
                       />
                     );
                   })}
                 </div>
 
                 <p className="text-xs text-gray-400 text-center px-4">
-                  * All rates are GST-inclusive. Final amounts may vary based on
-                  fuel surcharge, customs, and destination surcharges. Call{" "}
-                  <strong className="text-gray-600">+91 7070-506070</strong> to
-                  confirm.
+                  {t.form_final_rates_msg}
                 </p>
               </>
             )}
           </div>
         </div>
 
-        {/* HOW CALCULATED - Updated styling */}
+        {/* HOW CALCULATED */}
         <div className="bg-[#eef0f5] rounded-4xl p-8 lg:p-12 shadow-sm border border-gray-200/50 mt-12">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="md:col-span-3 mb-2">
               <h2 className="text-[28px] md:text-[34px] font-extrabold text-[#1c1f2e] leading-tight tracking-tight">
-                How Is Your Quote Calculated?
+                {t.quote_how_calc_title}
               </h2>
             </div>
             {[
               {
                 n: "1",
-                title: "Chargeable Weight",
-                desc: "We use the higher of actual weight vs volumetric weight (L × B × H ÷ 5000), rounded up to the nearest kg.",
+                title: t.quote_how_calc_1_title,
+                desc: t.quote_how_calc_1_desc,
               },
               {
                 n: "2",
-                title: "Service & Zone",
-                desc: "For Australia/Canada your postcode determines the delivery zone. Europe and International destinations use country-based zone mapping.",
+                title: t.quote_how_calc_2_title,
+                desc: t.quote_how_calc_2_desc,
               },
               {
                 n: "3",
-                title: "Rate Application",
-                desc: "Slab rates (S) are flat amounts per weight bracket. Per-kg rates (B) are multiplied by your chargeable weight. All rates are GST-inclusive.",
+                title: t.quote_how_calc_3_title,
+                desc: t.quote_how_calc_3_desc,
               },
             ].map(({ n, title, desc }) => (
               <div key={n} className="flex items-start gap-4">
@@ -678,18 +660,24 @@ export default function GetQuote() {
           </div>
         </div>
 
-        {/* FAQ - Updated styling to match Track Shipment */}
+        {/* FAQ */}
         <div className="bg-[#eef0f5] rounded-4xl p-8 sm:p-10 lg:p-14 shadow-sm border border-gray-200/50 flex flex-col items-center gap-8 mt-12">
           <div className="flex flex-col items-center gap-3 text-center">
             <div className="border border-orange-300/80 text-[#f27a1a] bg-orange-50/50 rounded-full px-4 py-1 text-[11px] font-extrabold tracking-wide">
-              Got Questions?
+              {t.quote_faq_badge}
             </div>
             <h2 className="text-[28px] sm:text-[36px] font-extrabold text-[#1c1f2e] leading-tight tracking-tight">
-              Frequently Asked Questions
+              {t.quote_faq_title}
             </h2>
           </div>
           <div className="w-full flex flex-col">
-            {FAQS.map((faq, idx) => (
+            {[
+              { id: "01", q: t.faq_q1, a: t.faq_a1 },
+              { id: "02", q: t.faq_q2, a: t.faq_a2 },
+              { id: "03", q: t.faq_q3, a: t.faq_a3 },
+              { id: "04", q: t.faq_q4, a: t.faq_a4 },
+              { id: "05", q: t.faq_q5, a: t.faq_a5 },
+            ].map((faq, idx) => (
               <div
                 key={faq.id}
                 className={`border-b border-gray-200/80 ${idx === 0 ? "border-t" : ""}`}
