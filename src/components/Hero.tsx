@@ -344,7 +344,7 @@ export default function Hero() {
     try {
       const API_URL =
         process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
-      const DB_NAME = process.env.NEXT_PUBLIC_X_DATABASE || "manvi";
+      const DB_NAME = "manvi";
 
       const params = new URLSearchParams({ actualWt, country: destination });
       if (length) params.append("length", length);
