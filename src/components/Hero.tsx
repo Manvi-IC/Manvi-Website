@@ -213,11 +213,10 @@ function QuotesModal({
               <div
                 key={key}
                 onClick={() => onSelect(key)}
-                className={`relative rounded-xl border-2 p-4 cursor-pointer transition-all ${
-                  isSelected
-                    ? "border-[#e77419] bg-[#e77419]/10"
-                    : "border-zinc-700 bg-zinc-800/60 hover:border-zinc-500"
-                }`}
+                className={`relative rounded-xl border-2 p-4 cursor-pointer transition-all ${isSelected
+                  ? "border-[#e77419] bg-[#e77419]/10"
+                  : "border-zinc-700 bg-zinc-800/60 hover:border-zinc-500"
+                  }`}
               >
                 {isSelected && (
                   <div className="absolute -top-2.5 left-3 bg-[#e77419] text-white text-[9px] font-bold px-2 py-0.5 rounded-full">
@@ -314,9 +313,9 @@ export default function Hero() {
   const volWt =
     parseFloat(length) && parseFloat(breadth) && parseFloat(height)
       ? (
-          (parseFloat(length) * parseFloat(breadth) * parseFloat(height)) /
-          5000
-        ).toFixed(2)
+        (parseFloat(length) * parseFloat(breadth) * parseFloat(height)) /
+        5000
+      ).toFixed(2)
       : null;
 
   const chargeableWt = volWt
@@ -368,7 +367,7 @@ export default function Hero() {
       } else {
         alert(
           data.message ||
-            "No services available for this destination/weight combination.",
+          "No services available for this destination/weight combination.",
         );
       }
     } catch (err: any) {
@@ -566,7 +565,12 @@ export default function Hero() {
             <div className="relative z-10 p-6 sm:p-8 lg:p-10 flex flex-col sm:flex-row items-end justify-between gap-6 sm:gap-0">
               {/* Cutout corner circle */}
               <div className="absolute -bottom-4 -left-4 w-34 h-34 sm:w-36 sm:h-36 bg-[#f8f9fa] rounded-full flex items-center justify-center pointer-events-none z-20">
-                <div className="w-20 h-20 sm:w-28 sm:h-28 bg-[#f27a1a] rounded-full relative flex items-center justify-center shadow-lg pointer-events-auto cursor-pointer hover:scale-105 transition-transform duration-300 z-50">
+                <a
+                  href="https://wa.me/917070506070"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-20 h-20 sm:w-28 sm:h-28 bg-[#23c961] rounded-full relative flex items-center justify-center shadow-lg pointer-events-auto cursor-pointer hover:scale-105 transition-transform duration-300 z-50"
+                >
                   <svg
                     className="w-7 h-7 sm:w-8 sm:h-8 text-white z-10 relative"
                     viewBox="0 0 24 24"
@@ -601,25 +605,25 @@ export default function Hero() {
                       </textPath>
                     </text>
                   </svg>
+                  </a>
                 </div>
-              </div>
 
-              <div className="w-24 sm:w-32 flex-shrink-0" />
+                <div className="w-24 sm:w-32 flex-shrink-0" />
 
-              <div className="flex items-center gap-6 w-full sm:w-auto justify-between sm:justify-end">
-                <div className="flex gap-1.5">
-                  <div className="w-2 h-2 rounded-full bg-[#f27a1a]" />
-                  <div className="w-2 h-2 rounded-full bg-[#f27a1a]" />
-                  <div className="w-2 h-2 rounded-full bg-white/40" />
-                  <div className="w-2 h-2 rounded-full bg-white/40" />
+                <div className="flex items-center gap-6 w-full sm:w-auto justify-between sm:justify-end">
+                  <div className="flex gap-1.5">
+                    <div className="w-2 h-2 rounded-full bg-[#f27a1a]" />
+                    <div className="w-2 h-2 rounded-full bg-[#f27a1a]" />
+                    <div className="w-2 h-2 rounded-full bg-white/40" />
+                    <div className="w-2 h-2 rounded-full bg-white/40" />
+                  </div>
+                  <button className="border border-white/50 text-white text-[12px] font-semibold px-5 py-2 rounded-lg hover:bg-white/10 transition-colors">
+                    {t.hero_read_more}
+                  </button>
                 </div>
-                <button className="border border-white/50 text-white text-[12px] font-semibold px-5 py-2 rounded-lg hover:bg-white/10 transition-colors">
-                  {t.hero_read_more}
-                </button>
               </div>
             </div>
           </div>
-        </div>
 
         {/* Action Tabs */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mt-5">

@@ -23,6 +23,10 @@ export default function AdminLayout({
             <Package size={20} />
             Upload Rates
           </Link>
+          <Link href="/admin/service-mapping" className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-slate-800 text-slate-400 hover:text-slate-100 transition-colors">
+            <Settings size={20} />
+            Serviceable Zipcode Mapping
+          </Link>
           <Link href="/admin/site-settings" className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-slate-800 text-slate-400 hover:text-slate-100 transition-colors">
             <Settings size={20} />
             Site Settings

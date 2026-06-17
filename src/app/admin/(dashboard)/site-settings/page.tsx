@@ -13,15 +13,21 @@ export default function SiteSettingsPage() {
     offerTitle: "",
     offerSubtitle: "",
     offerEndDate: "",
+    countryServiceMapping: [] as { country: string, services: string[] }[],
   });
 
   useEffect(() => {
     fetchSettings();
   }, []);
 
-  const fetchSettings = async () => {
+  async function fetchSettings() {
     try {
       const res = await fetch("/api/site-settings");
+      if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+      const contentType = res.headers.get("content-type");
+      if (!contentType || !contentType.includes("application/json")) {
+        throw new TypeError("Response is not JSON");
+      }
       const data = await res.json();
       if (data.success && data.data) {
         setFormData({
@@ -31,10 +37,11 @@ export default function SiteSettingsPage() {
           offerEndDate: data.data.offerEndDate 
             ? new Date(data.data.offerEndDate).toISOString().slice(0, 16) 
             : "",
+          countryServiceMapping: data.data.countryServiceMapping || [],
         });
       }
     } catch (err) {
-      console.error("Failed to fetch site settings", err);
+      console.warn("Failed to fetch site settings", err);
     } finally {
       setLoading(false);
     }
@@ -66,6 +73,11 @@ export default function SiteSettingsPage() {
         body: JSON.stringify(payload),
       });
 
+      if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+      const contentType = res.headers.get("content-type");
+      if (!contentType || !contentType.includes("application/json")) {
+        throw new TypeError("Response is not JSON");
+      }
       const data = await res.json();
       if (data.success) {
         setMessage({ type: "success", text: "Site settings updated successfully!" });
@@ -168,6 +180,7 @@ export default function SiteSettingsPage() {
               </div>
             </div>
           </div>
+
         </div>
 
         <div className="px-6 py-4 bg-gray-50 border-t border-gray-100 flex justify-end">

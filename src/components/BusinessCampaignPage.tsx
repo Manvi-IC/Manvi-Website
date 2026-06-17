@@ -95,7 +95,7 @@ const LOGISTICS_REASONS = [
 
 const PICKUP_CITIES = ["Punjab", "Delhi NCR", "Haryana", "Rajasthan", "Gujarat", "Mumbai"];
 const DESTINATIONS = ["USA", "UK", "Canada", "Australia"];
-const PARTNERS = ["Fedex", "DPD", "UPS", "DHL", "ARAMEX"];
+const PARTNERS = ["Aramex", "Courier Please", "DHL", "DPD", "FedEx", "UPS"];
 
 const TESTIMONIALS = [
   {
@@ -195,7 +195,7 @@ export default function BusinessCampaignPage() {
       {/* ── 1. HERO ── */}
       <section className="w-full max-w-[1400px] mx-auto px-4 sm:px-6 py-6">
         <div
-          className="relative w-full overflow-hidden rounded-[32px] shadow-lg"
+          className="relative w-full overflow-hidden rounded-[24px] sm:rounded-[32px] shadow-lg"
           style={{ minHeight: "480px", height: "auto" }}
         >
           <Image
@@ -206,10 +206,10 @@ export default function BusinessCampaignPage() {
             className="object-cover object-center"
             priority
           />
-          {/* Horizontal dark gradient overlay to make text highly readable on the left and transparent on the right */}
-          <div className="absolute inset-0 bg-gradient-to-r from-black via-black/80 to-transparent" />
+          {/* Dark overlay for mobile readability, transitioning to horizontal gradient on desktop */}
+          <div className="absolute inset-0 bg-black/60 md:bg-gradient-to-r md:from-black md:via-black/80 md:to-transparent" />
 
-          <div className="relative z-10 h-full flex flex-col justify-end p-8 sm:p-12 lg:p-16">
+          <div className="relative z-10 min-h-[480px] flex flex-col justify-end p-6 sm:p-12 lg:p-16">
             <div className="flex flex-col gap-5 max-w-3xl">
               {/* Badge */}
               <div className="bg-black/40 border border-white/10 backdrop-blur-sm px-4 py-2 rounded-full text-white text-[12px] md:text-[13px] font-semibold tracking-wide flex items-center gap-2 w-fit">
@@ -218,9 +218,7 @@ export default function BusinessCampaignPage() {
 
               {/* Heading */}
               <h1 className="text-white font-extrabold leading-[1.15] tracking-tight text-[28px] sm:text-[36px] md:text-[44px] lg:text-[54px]">
-                Source From India.<br />
-                Delivered To Your Business<br />
-                In Your Country.
+              Source From India.<br className="hidden sm:inline" /> Delivered To Your Business<br className="hidden sm:inline" /> In Your Country.
               </h1>
 
               {/* Description */}
@@ -231,11 +229,11 @@ export default function BusinessCampaignPage() {
 
             {/* CTAs and trust indicators */}
             <div className="flex flex-col gap-5 mt-8">
-              <div className="flex flex-wrap gap-4 items-center">
+              <div className="flex flex-col sm:flex-row gap-4 items-stretch sm:items-center">
                 {/* Call Now Button */}
                 <a
                   href="tel:+917070506070"
-                  className="flex items-center gap-2 font-bold text-[14px] md:text-[16px] px-6 py-3.5 sm:px-8 sm:py-4 rounded-full text-white no-underline transition-transform hover:scale-105 shadow-md bg-[#ff7a00]"
+                  className="flex items-center justify-center gap-2 font-bold text-[14px] md:text-[16px] px-6 py-3.5 sm:px-8 sm:py-4 rounded-full text-white no-underline transition-transform hover:scale-105 shadow-md bg-[#ff7a00] w-full sm:w-auto"
                 >
                   <svg className="w-5 h-5 fill-white" viewBox="0 0 24 24">
                     <path d="M20 15.5c-1.2 0-2.4-.2-3.6-.6-.3-.1-.7 0-1 .2l-2.2 2.2c-2.8-1.4-5.1-3.8-6.5-6.6l2.2-2.2c.3-.3.4-.7.2-1-.3-1.1-.5-2.3-.5-3.5 0-.6-.4-1-1-1H4c-.6 0-1 .4-1 1 0 9.4 7.6 17 17 17 .6 0 1-.4 1-1v-3.5c0-.6-.4-1-1-1z" />
@@ -248,7 +246,7 @@ export default function BusinessCampaignPage() {
                   href="https://wa.me/917070506070"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-2 font-bold text-[14px] md:text-[16px] px-6 py-3.5 sm:px-8 sm:py-4 rounded-full text-[#0a111e] no-underline transition-transform hover:scale-105 shadow-md bg-[#23c961]"
+                  className="flex items-center justify-center gap-2 font-bold text-[14px] md:text-[16px] px-6 py-3.5 sm:px-8 sm:py-4 rounded-full text-[#0a111e] no-underline transition-transform hover:scale-105 shadow-md bg-[#23c961] w-full sm:w-auto"
                 >
                   <svg className="w-5 h-5 fill-[#0a111e]" viewBox="0 0 24 24">
                     <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.335-1.662c1.746.953 3.71 1.458 5.704 1.459h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
@@ -280,7 +278,7 @@ export default function BusinessCampaignPage() {
         </div>
 
         {/* Action Tabs */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 mt-5">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5 mt-5">
           {[
             { label: "Serviceable Zipcodes", href: "/zipcode" },
             { label: "Track Shipment", href: "/track" },
@@ -290,7 +288,7 @@ export default function BusinessCampaignPage() {
             <Link
               key={tab.href}
               href={tab.href}
-              className="flex items-center justify-center gap-2 rounded-[14px] text-[14px] sm:text-[16px] font-bold text-white py-4 px-4 transition-transform hover:scale-[1.02] shadow-sm min-h-[56px] md:min-h-[64px] bg-[#ff7a00] no-underline"
+              className="flex items-center justify-center gap-1.5 sm:gap-2 rounded-[14px] text-[13px] sm:text-[15px] md:text-[16px] font-bold text-white py-3 px-2 sm:py-4 sm:px-4 transition-transform hover:scale-[1.02] shadow-sm min-h-[48px] md:min-h-[64px] bg-[#ff7a00] no-underline text-center"
             >
               {idx === 1 ? (
                 <svg className="w-5 h-5 text-white shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -314,8 +312,7 @@ export default function BusinessCampaignPage() {
           <div className="flex items-center text-center md:text-left">
             <span className="text-xl sm:text-2xl font-extrabold text-[#ff7a00] leading-tight flex items-center gap-2">
               <span>
-                Trusted Delivery<br />
-                Partners
+                Trusted Delivery <br className="hidden md:block" />Partners
               </span>
               <Plane className="w-6 h-6 text-[#ff7a00] shrink-0" fill="#ff7a00" />
             </span>
@@ -329,16 +326,16 @@ export default function BusinessCampaignPage() {
       </section>
 
       {/* ── 3. HOW IT WORKS ── */}
-      <section className="w-full max-w-[1400px] mx-auto px-4 sm:px-6 py-12">
-        <div className="bg-[#f4f5f8] rounded-[32px] p-8 sm:p-14 border border-gray-100">
+      <section className="w-full max-w-[1400px] mx-auto px-4 sm:px-6 py-10">
+        <div className="bg-[#f4f5f8] rounded-[24px] sm:rounded-[32px] p-5 sm:p-10 lg:p-14 border border-gray-100">
           <div className="text-center mb-8">
             <span className="inline-block border border-[#ff7a00] bg-[#fff5ed] text-[#ff7a00] px-4 py-1 rounded-full text-[12px] font-semibold tracking-wide uppercase mb-4">
               How It Works
             </span>
-            <h2 className="text-[32px] md:text-[42px] font-extrabold text-[#0f172a] leading-tight">
+            <h2 className="text-[24px] sm:text-[32px] md:text-[42px] font-extrabold text-[#0f172a] leading-tight">
               From India To Your Business In Four Steps
             </h2>
-            <p className="text-[16px] text-[#555] mt-4 max-w-2xl mx-auto leading-relaxed">
+            <p className="text-[15px] sm:text-[16px] text-[#555] mt-4 max-w-2xl mx-auto leading-relaxed">
               No complicated process. Send us your list on WhatsApp and we handle the rest — start to finish.
             </p>
           </div>
@@ -346,7 +343,7 @@ export default function BusinessCampaignPage() {
             {B2B_STEPS.map((step, i) => (
               <div
                 key={i}
-                className="flex flex-col items-start p-6 sm:p-8 rounded-[20px] bg-white shadow-sm border border-gray-100/50"
+                className="flex flex-col items-start p-5 sm:p-8 rounded-[16px] sm:rounded-[20px] bg-white shadow-sm border border-gray-100/50"
               >
                 <div className="w-8 h-8 rounded-full flex items-center justify-center text-white font-bold text-[14px] shrink-0 mb-4 bg-[#ff7a00]">
                   {step.num}
@@ -365,34 +362,34 @@ export default function BusinessCampaignPage() {
 
       {/* ── 4. WHAT YOU CAN SOURCE ── */}
       <section className="w-full max-w-[1400px] mx-auto px-4 sm:px-6 py-8">
-        <div className="bg-[#f4f5f8] rounded-[32px] p-8 sm:p-14 border border-gray-100">
+        <div className="bg-[#f4f5f8] rounded-[24px] sm:rounded-[32px] p-5 sm:p-10 lg:p-14 border border-gray-100">
           <div className="mb-10 text-center">
             <span className="inline-block border border-[#ff7a00] bg-[#fff5ed] text-[#ff7a00] px-4 py-1.5 rounded-full text-[12px] font-semibold tracking-wide uppercase mb-4">
               What You Can Source
             </span>
-            <h2 className="text-[32px] md:text-[40px] font-extrabold text-[#0f172a] leading-tight">
+            <h2 className="text-[24px] sm:text-[32px] md:text-[40px] font-extrabold text-[#0f172a] leading-tight">
               Stock Your Shelves, Straight From The Source
             </h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="bg-white p-8 rounded-[20px] border border-gray-100 shadow-sm flex flex-col">
-              <h3 className="text-[20px] sm:text-[22px] font-extrabold text-[#0f172a] mb-3 flex items-center gap-2">
+            <div className="bg-white p-5 sm:p-8 rounded-[16px] sm:rounded-[20px] border border-gray-100 shadow-sm flex flex-col">
+              <h3 className="text-[19px] sm:text-[22px] font-extrabold text-[#0f172a] mb-3 flex items-center gap-2">
                 <span>🍲</span> Food & Grocery
               </h3>
-              <p className="text-[15px] sm:text-[16px] text-[#555] leading-relaxed">
+              <p className="text-[14px] sm:text-[16px] text-[#555] leading-relaxed">
                 {SOURCE_ITEMS[0].desc}
               </p>
             </div>
-            <div className="bg-white p-8 rounded-[20px] border border-gray-100 shadow-sm flex flex-col">
-              <h3 className="text-[20px] sm:text-[22px] font-extrabold text-[#0f172a] mb-3 flex items-center gap-2">
+            <div className="bg-white p-5 sm:p-8 rounded-[16px] sm:rounded-[20px] border border-gray-100 shadow-sm flex flex-col">
+              <h3 className="text-[19px] sm:text-[22px] font-extrabold text-[#0f172a] mb-3 flex items-center gap-2">
                 <span>👗</span> Fabric & Fashion
               </h3>
-              <p className="text-[15px] sm:text-[16px] text-[#555] leading-relaxed">
+              <p className="text-[14px] sm:text-[16px] text-[#555] leading-relaxed">
                 {SOURCE_ITEMS[1].desc}
               </p>
             </div>
-            <div className="bg-white p-8 rounded-[20px] border border-gray-100 shadow-sm md:col-span-2 flex flex-col">
-              <h3 className="text-[20px] sm:text-[22px] font-extrabold text-[#0f172a] mb-3 flex items-center gap-2">
+            <div className="bg-white p-5 sm:p-8 rounded-[16px] sm:rounded-[20px] border border-gray-100 shadow-sm md:col-span-2 flex flex-col">
+              <h3 className="text-[19px] sm:text-[22px] font-extrabold text-[#0f172a] mb-3 flex items-center gap-2">
                 <span>📦</span> Bulk, Mixed Or Recurring Orders
               </h3>
               <p className="text-[15px] sm:text-[16px] text-[#555] leading-relaxed">
@@ -405,47 +402,37 @@ export default function BusinessCampaignPage() {
 
       {/* ── 5. WHERE WE PICK UP AND DELIVER ── */}
       <section className="w-full max-w-[1400px] mx-auto px-4 sm:px-6 py-8">
-        <div className="bg-[#f4f5f8] rounded-[32px] p-8 sm:p-14 border border-gray-100">
+        <div className="bg-[#f4f5f8] rounded-[24px] sm:rounded-[32px] p-5 sm:p-10 lg:p-14 border border-gray-100">
           <div className="text-center mb-10">
             <span className="inline-block border border-[#ff7a00] bg-[#FF7F001F] text-[#ff7a00] px-4 py-1.5 rounded-full text-[12px] font-semibold tracking-wide uppercase mb-4">
               Where We Pick Up And Deliver
             </span>
-            <h2 className="text-[32px] md:text-[40px] font-extrabold text-[#0f172a] leading-tight">
+            <h2 className="text-[24px] sm:text-[32px] md:text-[40px] font-extrabold text-[#0f172a] leading-tight">
               Where We Pick Up And Deliver
             </h2>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Pickup Across India */}
-            <div className="bg-white rounded-[24px] p-8 shadow-sm flex flex-col h-full border border-gray-100/50">
-              <h3 className="text-[20px] sm:text-[22px] font-extrabold text-[#0f172a] mb-3 flex items-center gap-2">
+            <div className="bg-white rounded-[16px] sm:rounded-[24px] p-5 sm:p-8 shadow-sm flex flex-col h-full border border-gray-100/50">
+              <h3 className="text-[19px] sm:text-[22px] font-extrabold text-[#0f172a] mb-3 flex items-center gap-2">
                 <span>📍</span> Pickup Across India
               </h3>
-              <p className="text-[15px] sm:text-[16px] text-[#555] leading-relaxed mb-6">
+              <p className="text-[14px] sm:text-[16px] text-[#555] leading-relaxed mb-6">
                 We specialise in North India — with pan-India pickup available on request.
               </p>
 
               <div className="flex flex-col gap-3">
                 <div className="flex flex-wrap gap-2.5">
-                  {["Punjab", "Delhi NCR", "Haryana", "Rajasthan"].map((c) => (
+                  {["Punjab", "Delhi NCR", "Haryana", "Rajasthan", "Gujarat", "Mumbai"].map((c) => (
                     <span
                       key={c}
-                      className="text-[14px] sm:text-[15px] font-semibold px-5 py-2 rounded-full border border-[#FF7F00] text-[#0f172a] bg-[#FF7F001F]"
+                      className="text-[13px] sm:text-[15px] font-semibold px-4 py-1.5 rounded-full border border-[#FF7F00] text-[#0f172a] bg-[#FF7F001F]"
                     >
                       {c}
                     </span>
                   ))}
-                </div>
-                <div className="flex flex-wrap gap-2.5 items-center">
-                  {["Gujarat", "Mumbai"].map((c) => (
-                    <span
-                      key={c}
-                      className="text-[14px] sm:text-[15px] font-semibold px-5 py-2 rounded-full border border-[#FF7F00] text-[#0f172a] bg-[#FF7F001F]"
-                    >
-                      {c}
-                    </span>
-                  ))}
-                  <span className="text-[14px] sm:text-[15px] font-bold px-5 py-2 rounded-full text-white bg-[#ff7a00]">
+                  <span className="text-[13px] sm:text-[15px] font-bold px-4 py-1.5 rounded-full text-white bg-[#ff7a00]">
                     + Pan-India
                   </span>
                 </div>
@@ -453,40 +440,36 @@ export default function BusinessCampaignPage() {
             </div>
 
             {/* Delivery Destinations */}
-            <div className="bg-white rounded-[24px] p-8 shadow-sm flex flex-col h-full border border-gray-100/50 justify-between">
+            <div className="bg-white rounded-[16px] sm:rounded-[24px] p-5 sm:p-8 shadow-sm flex flex-col h-full border border-gray-100/50 justify-between">
               <div>
-                <h3 className="text-[20px] sm:text-[22px] font-extrabold text-[#0f172a] mb-5 flex items-center gap-2">
+                <h3 className="text-[19px] sm:text-[22px] font-extrabold text-[#0f172a] mb-5 flex items-center gap-2">
                   <span>🛫</span> Delivery Destinations
                 </h3>
 
-                <div className="flex flex-col gap-3">
-                  <div className="flex flex-wrap gap-2.5">
-                    {["USA", "UK", "Canada", "Australia"].map((d) => (
-                      <span
-                        key={d}
-                        className="text-[14px] sm:text-[15px] font-semibold px-5 py-2 rounded-full border border-[#FF7F00] text-[#0f172a] bg-[#FF7F001F]"
-                      >
-                        {d}
-                      </span>
-                    ))}
-                  </div>
-                  <div className="flex flex-wrap gap-2.5">
-                    <span className="text-[14px] sm:text-[15px] font-bold px-5 py-2 rounded-full text-white bg-[#ff7a00]">
-                      + Worldwide
+                <div className="flex flex-wrap gap-2.5">
+                  {["USA", "UK", "Canada", "Australia"].map((d) => (
+                    <span
+                      key={d}
+                      className="text-[13px] sm:text-[15px] font-semibold px-4 py-1.5 rounded-full border border-[#FF7F00] text-[#0f172a] bg-[#FF7F001F]"
+                    >
+                      {d}
                     </span>
-                  </div>
+                  ))}
+                  <span className="text-[13px] sm:text-[15px] font-bold px-4 py-1.5 rounded-full text-white bg-[#ff7a00]">
+                    + Worldwide
+                  </span>
                 </div>
               </div>
 
               <div className="mt-8">
-                <p className="text-[15px] sm:text-[16px] text-[#555] font-semibold leading-relaxed mb-3">
+                <p className="text-[14px] sm:text-[16px] text-[#555] font-semibold leading-relaxed mb-3">
                   Worldwide freight through our trusted shipping partners:
                 </p>
                 <div className="flex flex-wrap gap-2.5">
-                  {["DHI", "FedEx", "ARAMEX`", "UPs"].map((partner) => (
+                  {["Aramex", "Courier Please", "DHL", "DPD", "FedEx", "UPS"].map((partner) => (
                     <span
                       key={partner}
-                      className="text-[14px] sm:text-[15px] font-semibold px-5 py-2 rounded-full border border-[#FF7F00] text-[#0f172a] bg-[#FF7F001F]"
+                      className="text-[13px] sm:text-[15px] font-semibold px-4 py-1.5 rounded-full border border-[#FF7F00] text-[#0f172a] bg-[#FF7F001F]"
                     >
                       {partner}
                     </span>
@@ -497,7 +480,7 @@ export default function BusinessCampaignPage() {
           </div>
 
           {/* What You Can Ship */}
-          <div className="mt-6 bg-white rounded-[20px] p-6 sm:p-8 shadow-sm border border-gray-100/50">
+          <div className="mt-6 bg-white rounded-[16px] sm:rounded-[20px] p-5 sm:p-8 shadow-sm border border-gray-100/50">
             <h3 className="text-[18px] sm:text-[20px] font-extrabold text-[#0f172a] mb-2 flex items-center gap-2">
               <span>🎁</span> What You Can Ship
             </h3>
@@ -510,15 +493,15 @@ export default function BusinessCampaignPage() {
 
       {/* ── 6. LOGISTICS PARTNER YOU CAN BUILD ON ── */}
       <section className="w-full max-w-[1400px] mx-auto px-4 sm:px-6 py-8">
-        <div className="bg-[#f4f5f8] rounded-[32px] p-8 sm:p-14 border border-gray-100">
+        <div className="bg-[#f4f5f8] rounded-[24px] sm:rounded-[32px] p-5 sm:p-10 lg:p-14 border border-gray-100">
           <div className="mb-10 text-center">
             <span className="inline-block border border-[#ff7a00] bg-[#fff5ed] text-[#ff7a00] px-4 py-1.5 rounded-full text-[12px] font-semibold tracking-wide uppercase mb-4">
               Why Manvi International
             </span>
-            <h2 className="text-[32px] md:text-[40px] font-extrabold text-[#0f172a] leading-tight">
+            <h2 className="text-[24px] sm:text-[32px] md:text-[40px] font-extrabold text-[#0f172a] leading-tight">
               A Logistics Partner You Can Build On
             </h2>
-            <p className="text-[16px] text-[#666] mt-4 max-w-3xl mx-auto">
+            <p className="text-[15px] sm:text-[16px] text-[#666] mt-4 max-w-3xl mx-auto">
               Sourcing for a business is about reliability and margins, not one-off luck. Here's why store owners trust us.
             </p>
           </div>
@@ -526,7 +509,7 @@ export default function BusinessCampaignPage() {
             {LOGISTICS_REASONS.map((reason, i) => (
               <div
                 key={i}
-                className="flex flex-col sm:flex-row items-center gap-6 bg-white p-6 sm:p-8 rounded-[24px] border border-gray-100 shadow-sm"
+                className="flex flex-col sm:flex-row items-center text-center sm:text-left gap-6 bg-white p-5 sm:p-8 rounded-[20px] sm:rounded-[24px] border border-gray-100 shadow-sm"
               >
                 <div className="relative w-[130px] h-[100px] shrink-0">
                   <Image
@@ -538,10 +521,10 @@ export default function BusinessCampaignPage() {
                   />
                 </div>
                 <div>
-                  <h3 className="text-[20px] font-extrabold text-[#0f172a] mb-2">
+                  <h3 className="text-[19px] sm:text-[20px] font-extrabold text-[#0f172a] mb-2">
                     {reason.title}
                   </h3>
-                  <p className="text-[15px] text-[#555] leading-relaxed">
+                  <p className="text-[14px] sm:text-[15px] text-[#555] leading-relaxed">
                     {reason.desc}
                   </p>
                 </div>
@@ -553,12 +536,12 @@ export default function BusinessCampaignPage() {
 
       {/* ── 7. TESTIMONIALS ── */}
       <section className="w-full max-w-[1400px] mx-auto px-4 py-8">
-        <div className="bg-[#e5e6eb] rounded-xl p-8 sm:p-10">
+        <div className="bg-[#e5e6eb] rounded-[24px] p-5 sm:p-8 md:p-10">
           <div className="mb-10 text-center">
             <span className="inline-block border border-[#ff7a00] bg-[#fff5ed] text-[#ff7a00] px-4 py-1.5 rounded-full text-[12px] font-bold mb-4 uppercase tracking-wide">
               From Our Customers
             </span>
-            <h2 className="text-[32px] md:text-[40px] font-extrabold text-[#0f172a] leading-tight">
+            <h2 className="text-[24px] sm:text-[32px] md:text-[40px] font-extrabold text-[#0f172a] leading-tight">
               Trusted By Families Worldwide
             </h2>
           </div>
@@ -566,8 +549,8 @@ export default function BusinessCampaignPage() {
           <div className="testimonial-carousel-container testimonial-carousel-light w-full">
             <Slider {...sliderSettings}>
               {[...TESTIMONIALS, ...TESTIMONIALS].map((t, i) => (
-                <div key={i} className="px-2 md:px-3">
-                  <div className="testimonial-slide flex flex-col gap-0 px-8 py-8 rounded-2xl bg-white shadow-sm border border-black/5 mx-auto min-h-[250px] sm:min-h-[200px]">
+                <div key={i} className="px-1 sm:px-2 md:px-3">
+                  <div className="testimonial-slide flex flex-col gap-0 px-5 py-5 sm:px-8 sm:py-8 rounded-2xl bg-white shadow-sm border border-black/5 mx-auto min-h-[250px] sm:min-h-[200px]">
                     <span className="text-[32px] md:text-[40px] text-[#ff7a00] font-serif leading-none select-none font-bold">
                       &#x201C;&#x201C;
                     </span>
@@ -662,12 +645,12 @@ export default function BusinessCampaignPage() {
 
       {/* ── 8. FAQ ── */}
       <section className="w-full max-w-[1400px] mx-auto px-4 sm:px-6 py-8">
-        <div className="bg-[#f4f5f8] rounded-[32px] p-8 sm:p-14 border border-gray-100">
+        <div className="bg-[#f4f5f8] rounded-[24px] sm:rounded-[32px] p-5 sm:p-10 lg:p-14 border border-gray-100">
           <div className="text-center mb-10">
             <span className="inline-block border border-[#ff7a00] bg-[#fff5ed] text-[#ff7a00] px-4 py-1.5 rounded-full text-[12px] font-semibold tracking-wide uppercase mb-4">
               FAQ
             </span>
-            <h2 className="text-[32px] md:text-[40px] font-extrabold text-[#0f172a] leading-tight">
+            <h2 className="text-[24px] sm:text-[32px] md:text-[40px] font-extrabold text-[#0f172a] leading-tight">
               Questions? Glad You Asked
             </h2>
           </div>
@@ -721,19 +704,19 @@ export default function BusinessCampaignPage() {
 
       {/* ── 9. BOTTOM CTA ── */}
       <section className="w-full max-w-[1400px] mx-auto px-4 sm:px-6 py-8 mb-8">
-        <div className="rounded-[24px] p-10 md:p-16 text-center" style={{ background: "#FF7F0052" }}>
-          <h2 className="text-[32px] md:text-[44px] font-extrabold text-[#0a111e] leading-tight">
+        <div className="rounded-[20px] sm:rounded-[24px] p-6 sm:p-10 md:p-16 text-center" style={{ background: "#FF7F0052" }}>
+          <h2 className="text-[24px] sm:text-[32px] md:text-[44px] font-extrabold text-[#0a111e] leading-tight">
             Ready To Stock Up From India?
           </h2>
-          <p className="text-[17px] md:text-[18px] text-[#444] leading-relaxed max-w-2xl mx-auto mt-4 mb-8 font-medium">
+          <p className="text-[15px] md:text-[18px] text-[#444] leading-relaxed max-w-2xl mx-auto mt-4 mb-8 font-medium">
             Send Us Your List And Pickup Location. We'll Handle Pickup, Shipping And Customs.
           </p>
-          <div className="flex flex-wrap gap-4 justify-center items-center">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-stretch sm:items-center">
             <a
               href="https://wa.me/917070506070"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 font-bold text-[15px] px-8 py-4 rounded-full text-[#0a111e] no-underline transition-transform hover:scale-105"
+              className="flex items-center justify-center gap-2 font-bold text-[15px] px-8 py-4 rounded-full text-[#0a111e] no-underline transition-transform hover:scale-105 w-full sm:w-auto"
               style={{ background: "#23c961" }}
             >
               <svg className="w-5 h-5" viewBox="0 0 24 24" fill="#0a111e">
@@ -743,7 +726,7 @@ export default function BusinessCampaignPage() {
             </a>
             <a
               href="tel:+917070506070"
-              className="flex items-center gap-2 font-bold text-[15px] px-8 py-4 rounded-full text-white no-underline transition-transform hover:scale-105"
+              className="flex items-center justify-center gap-2 font-bold text-[15px] px-8 py-4 rounded-full text-white no-underline transition-transform hover:scale-105 w-full sm:w-auto"
               style={{ background: "#e77419" }}
             >
               <Phone className="w-5 h-5" /> Call +91 7070506070

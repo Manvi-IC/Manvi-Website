@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Link from "next/link";
@@ -31,7 +31,9 @@ const localTranslations: Record<
     banner_title: string;
     card_title: string;
     card_subtitle: string;
-    input_placeholder: string;
+    country_placeholder: string;
+    zipcode_placeholder: string;
+    service_placeholder: string;
     btn_check: string;
     success_msg: string;
     fail_msg: string;
@@ -46,8 +48,10 @@ const localTranslations: Record<
     banner_title: "Serviceable Zipcode",
     card_title: "Check Delivery\nAvailability In Your Area",
     card_subtitle:
-      "Enter Your International ZIP Code Or Indian PIN Code Below To Instantly Check If We Deliver To Your Location.",
-    input_placeholder: "Enter ZIP Code (Intl) / PIN Code (India)",
+      "Select Your Destination Country And Enter Zip/PIN Code Below To Instantly Check Delivery Feasibility.",
+    country_placeholder: "Select Country...",
+    zipcode_placeholder: "Enter ZIP / PIN Code (Optional)",
+    service_placeholder: "Select Service",
     btn_check: "Check Availability",
     success_msg: "Great News! We Serve Your Area",
     fail_msg: "We're Not There Yet",
@@ -62,8 +66,10 @@ const localTranslations: Record<
     banner_title: "सेवा योग्य पिनकोड",
     card_title: "अपने क्षेत्र में डिलीवरी\nउपलब्धता की जांच करें",
     card_subtitle:
-      "यह जांचने के लिए कि क्या हम आपकी जगह पर डिलीवरी करते हैं, अपना शहर या पिनकोड दर्ज करें।",
-    input_placeholder: "शहर या पिनकोड दर्ज करें",
+      "डिलीवरी की व्यवहार्यता की तुरंत जांच करने के लिए नीचे अपने गंतव्य देश का चयन करें और ज़िप/पिन कोड दर्ज करें।",
+    country_placeholder: "देश चुनें...",
+    zipcode_placeholder: "पिनकोड / ज़िप कोड दर्ज करें (वैकल्पिक)",
+    service_placeholder: "सेवा चुनें",
     btn_check: "उपलब्धता जांचें",
     success_msg: "खुशखबरी! हम आपके क्षेत्र में सेवा प्रदान करते हैं",
     fail_msg: "हम अभी वहाँ नहीं हैं",
@@ -78,8 +84,10 @@ const localTranslations: Record<
     banner_title: "ਸੇਵਾ ਯੋਗ ਪਿੰਨ ਕੋਡ",
     card_title: "ਆਪਣੇ ਖੇਤਰ ਵਿੱਚ ਡਿਲਿਵਰੀ\nਉਪਲਬਧਤਾ ਦੀ ਜਾਂਚ ਕਰੋ",
     card_subtitle:
-      "ਇਹ ਦੇਖਣ ਲਈ ਕਿ ਕੀ ਅਸੀਂ ਤੁਹਾਡੇ ਸਥਾਨ 'ਤੇ ਡਿਲਿਵਰੀ ਕਰਦੇ ਹਾਂ, ਆਪਣਾ ਸ਼ਹਿਰ ਜਾਂ ਪਿੰਨ ਕੋਡ ਦਰਜ ਕਰੋ।",
-    input_placeholder: "ਸ਼ਹਿਰ ਜਾਂ ਪਿੰਨ ਕੋਡ ਦਰਜ ਕਰੋ",
+      "ਡਿਲਿਵਰੀ ਦੀ ਸੰਭਾਵਨਾ ਦੀ ਤੁਰੰਤ ਜਾਂਚ ਕਰਨ ਲਈ ਹੇਠਾਂ ਆਪਣੇ ਦੇਸ਼ ਦੀ ਚੋਣ ਕਰੋ ਅਤੇ ਜ਼ਿਪ/ਪਿਨ ਕੋਡ ਦਰਜ ਕਰੋ।",
+    country_placeholder: "ਦੇਸ਼ ਚੁਣੋ...",
+    zipcode_placeholder: "ਪਿੰਨ ਕੋਡ / ਜ਼ਿਪ ਕੋਡ ਦਰਜ ਕਰੋ (ਵੈਕਲਪਿਕ)",
+    service_placeholder: "ਸੇਵਾ ਚੁਣੋ",
     btn_check: "ਉਪਲਬਧਤਾ ਦੀ ਜਾਂਚ ਕਰੋ",
     success_msg: "ਖੁਸ਼ਖਬਰੀ! ਅਸੀਂ ਤੁਹਾਡੇ ਖੇਤਰ ਵਿੱਚ ਸੇਵਾ ਕਰਦੇ ਹਾਂ",
     fail_msg: "ਅਸੀਂ ਅਜੇ ਉੱਥੇ ਨਹੀਂ ਪਹੁੰਚੇ",
@@ -94,8 +102,10 @@ const localTranslations: Record<
     banner_title: "Code postal desservi",
     card_title: "Vérifier la disponibilité\nde la livraison",
     card_subtitle:
-      "Entrez votre ville ou code postal ci-dessous pour vérifier si nous livrons chez vous.",
-    input_placeholder: "Entrez la ville ou le code postal",
+      "Sélectionnez votre pays de destination et entrez le code postal ci-dessous pour vérifier la faisabilité de la livraison.",
+    country_placeholder: "Sélectionnez le pays...",
+    zipcode_placeholder: "Entrez le code postal (optionnel)",
+    service_placeholder: "Sélectionnez le service",
     btn_check: "Vérifier la disponibilité",
     success_msg: "Bonne nouvelle ! Nous desservons votre zone",
     fail_msg: "Nous n'y sommes pas encore",
@@ -110,8 +120,10 @@ const localTranslations: Record<
     banner_title: "Códigos postales disponibles",
     card_title: "Verificar disponibilidad de\nentrega en su área",
     card_subtitle:
-      "Ingrese su ciudad o código postal a continuación para verificar si realizamos entregas en su ubicación.",
-    input_placeholder: "Ingrese ciudad o código postal",
+      "Seleccione su país de destino e ingrese el código postal a continuación para verificar la factibilidad de la entrega.",
+    country_placeholder: "Seleccione el país...",
+    zipcode_placeholder: "Ingrese el código postal (opcional)",
+    service_placeholder: "Seleccionar servicio",
     btn_check: "Verificar disponibilidad",
     success_msg: "¡Buenas noticias! Servimos su área",
     fail_msg: "Aún no estamos allí",
@@ -150,13 +162,42 @@ export default function ZipcodePage() {
     },
   ];
 
-  const [query, setQuery] = useState("");
+  const [country, setCountry] = useState("");
+  const [zipcode, setZipcode] = useState("");
+  const [service, setService] = useState("");
   const [status, setStatus] = useState<"idle" | "success" | "fail">("idle");
   const [cities, setCities] = useState<CityGroup[]>(initialCities);
+  const [countryMappings, setCountryMappings] = useState<{country: string, services: string[]}[]>([]);
+
+  useEffect(() => {
+    fetch('/api/site-settings')
+      .then(res => res.json())
+      .then(data => {
+         if (data.success && data.data && data.data.countryServiceMapping) {
+            setCountryMappings(data.data.countryServiceMapping);
+         }
+      })
+      .catch(err => console.error("Failed to fetch country mappings", err));
+  }, []);
+
+  const defaultMappings = [
+    { country: "USA", services: ["DHL", "ARAMEX", "UPS", "FEDEX", "SELF - DUTY Paid"] },
+    { country: "UK", services: ["DHL", "ARAMEX", "UPS", "FEDEX", "SELF - DUTY Paid"] },
+    { country: "AUSTRALIA", services: ["DHL", "ARAMEX", "UPS", "FEDEX", "SELF - DUTY Paid"] },
+    { country: "CANADA", services: ["DHL", "ARAMEX", "UPS", "FEDEX", "SELF - DUTY Paid"] },
+    { country: "EUROPE", services: ["DHL", "ARAMEX", "UPS", "FEDEX", "SELF - DUTY Paid"] },
+  ];
+  
+  const activeMappings = countryMappings.length > 0 ? countryMappings : defaultMappings;
+  const availableServices = country 
+    ? (activeMappings.find(m => m.country.toUpperCase() === country.toUpperCase())?.services || [])
+    : [];
 
   // Detailed success state variables
   const [matchedCountry, setMatchedCountry] = useState("");
   const [matchedPostcode, setMatchedPostcode] = useState("");
+  const [matchedCity, setMatchedCity] = useState("");
+  const [matchedState, setMatchedState] = useState("");
   const [matchedDeliveryTime, setMatchedDeliveryTime] = useState("");
   const [matchedIsRemote, setMatchedIsRemote] = useState(false);
   const [matchedDetails, setMatchedDetails] = useState("");
@@ -164,30 +205,35 @@ export default function ZipcodePage() {
 
   const handleCheck = async (e: React.FormEvent) => {
     e.preventDefault();
-    const cleanQuery = query.trim();
+    const cleanCountry = country.trim();
+    const cleanZipcode = zipcode.trim();
 
-    if (!cleanQuery) {
+    if (!cleanCountry || !service) {
       setStatus("idle");
       setCities(initialCities);
       return;
     }
 
     try {
-      const result = await checkZipcodeAction(cleanQuery);
+      const result = await checkZipcodeAction(cleanCountry, cleanZipcode);
 
       if (result.status === "success") {
         setStatus("success");
-        setMatchedCountry(result.country || "");
-        setMatchedPostcode(result.postcode || cleanQuery.toUpperCase());
+        setMatchedCountry(result.country || cleanCountry.toUpperCase());
+        setMatchedPostcode(result.postcode || (cleanZipcode ? cleanZipcode.toUpperCase() : "All Regions"));
+        setMatchedCity(result.city || "");
+        setMatchedState(result.state || "");
         setMatchedDeliveryTime(result.deliveryTime || "Serviceable");
         setMatchedIsRemote(!!result.isRemote);
         setMatchedDetails(result.details || "");
         setMatchedNotes(result.notes || "");
 
+        const searchLabel = cleanZipcode ? `${cleanCountry} - ${cleanZipcode}` : cleanCountry;
+
         if (result.matches && result.matches.length > 0) {
           setCities([
             {
-              city: `Matches for "${cleanQuery}"`,
+              city: `Matches for "${searchLabel}"`,
               items: result.matches.map((m) => ({
                 zip: m.zip,
                 days: m.days,
@@ -201,7 +247,7 @@ export default function ZipcodePage() {
               city: result.country || "Search Match",
               items: [
                 {
-                  zip: result.postcode || cleanQuery.toUpperCase(),
+                  zip: result.postcode || (cleanZipcode ? cleanZipcode.toUpperCase() : "All Regions"),
                   days: result.deliveryTime || "Serviceable",
                   highlighted: true,
                 },
@@ -215,7 +261,7 @@ export default function ZipcodePage() {
         setCities(initialCities);
       }
     } catch (err) {
-      console.error("Error validating zipcode:", err);
+      console.warn("Error validating zipcode:", err);
       setStatus("fail");
       setCities(initialCities);
     }
@@ -254,16 +300,65 @@ export default function ZipcodePage() {
               </div>
 
               <form onSubmit={handleCheck} className="flex flex-col gap-4">
-                <input
-                  type="text"
-                  placeholder={t.input_placeholder}
-                  value={query}
-                  onChange={(e) => setQuery(e.target.value)}
-                  className="bg-white text-[#333] text-[14px] font-medium rounded-xl px-5 py-4 focus:outline-none placeholder:text-gray-400 border border-gray-200 shadow-sm w-full"
-                />
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-[12px] font-extrabold text-[#1c1f2e] uppercase tracking-wider pl-0.5">
+                    Country <span className="text-red-500">*</span>
+                  </label>
+                  <select
+                    required
+                    value={country}
+                    onChange={(e) => {
+                      setCountry(e.target.value);
+                      setService("");
+                    }}
+                    className="bg-white text-[#333] text-[14px] font-semibold rounded-xl px-5 py-4 focus:outline-none border border-gray-200 shadow-sm w-full cursor-pointer appearance-none bg-[url('data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%23666%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E')] bg-[length:18px_18px] bg-[right_20px_center] bg-no-repeat pr-12"
+                  >
+                    <option value="" disabled hidden>
+                      {t.country_placeholder}
+                    </option>
+                    {activeMappings.map((mapping, idx) => (
+                      <option key={idx} value={mapping.country.toUpperCase()}>
+                        {mapping.country.toUpperCase()}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-[12px] font-extrabold text-[#1c1f2e] uppercase tracking-wider pl-0.5">
+                    Service <span className="text-red-500">*</span>
+                  </label>
+                  <select
+                    required
+                    value={service}
+                    onChange={(e) => setService(e.target.value)}
+                    className="bg-white text-[#333] text-[14px] font-semibold rounded-xl px-5 py-4 focus:outline-none border border-gray-200 shadow-sm w-full cursor-pointer appearance-none bg-[url('data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%23666%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E')] bg-[length:18px_18px] bg-[right_20px_center] bg-no-repeat pr-12"
+                  >
+                    <option value="" disabled hidden>
+                      {t.service_placeholder}
+                    </option>
+                    {availableServices.map((svc, idx) => (
+                      <option key={idx} value={svc}>{svc}</option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-[12px] font-extrabold text-[#1c1f2e] uppercase tracking-wider pl-0.5">
+                    Zipcode / Pincode
+                  </label>
+                  <input
+                    type="text"
+                    placeholder={t.zipcode_placeholder}
+                    value={zipcode}
+                    onChange={(e) => setZipcode(e.target.value)}
+                    className="bg-white text-[#333] text-[14px] font-medium rounded-xl px-5 py-4 focus:outline-none placeholder:text-gray-400 border border-gray-200 shadow-sm w-full"
+                  />
+                </div>
+
                 <button
                   type="submit"
-                  className="bg-[#f27a1a] hover:bg-orange-600 text-white font-bold text-[14px] py-4 rounded-xl transition-all active:scale-98 cursor-pointer flex items-center justify-center gap-2"
+                  className="bg-[#f27a1a] hover:bg-orange-600 text-white font-bold text-[14px] py-4 rounded-xl transition-all active:scale-98 cursor-pointer flex items-center justify-center gap-2 mt-2"
                 >
                   {t.btn_check}
                 </button>
@@ -286,6 +381,18 @@ export default function ZipcodePage() {
                       <div>
                         <span className="text-gray-400">Postcode/Area:</span>{" "}
                         {matchedPostcode}
+                      </div>
+                    )}
+                    {matchedCity && (
+                      <div>
+                        <span className="text-gray-400">City:</span>{" "}
+                        {matchedCity}
+                      </div>
+                    )}
+                    {matchedState && (
+                      <div>
+                        <span className="text-gray-400">State/Province:</span>{" "}
+                        {matchedState}
                       </div>
                     )}
                     {matchedDeliveryTime && (
