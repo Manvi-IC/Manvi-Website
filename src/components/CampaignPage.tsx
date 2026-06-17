@@ -274,7 +274,14 @@ export default function CampaignPage() {
 
   useEffect(() => {
     fetch('/api/site-settings')
-      .then(res => res.json())
+      .then(res => {
+        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+        const contentType = res.headers.get("content-type");
+        if (!contentType || !contentType.includes("application/json")) {
+          throw new TypeError("Response is not JSON");
+        }
+        return res.json();
+      })
       .then(data => {
         if (data.success && data.data) {
           setOfferDetails({
@@ -284,7 +291,7 @@ export default function CampaignPage() {
           });
         }
       })
-      .catch(err => console.error("Failed to fetch site settings", err));
+      .catch(err => console.error("Failed to fetch site settings:", err.message));
   }, []);
 
   return (
