@@ -99,48 +99,67 @@ export default function Footer() {
               </h3>
               <div className="w-full h-[1px] bg-white/30" />
             </div>
-            <div className="flex flex-col gap-3 text-[14px] text-white/85 font-medium">
-              <Link href="/" className="hover:text-white transition-colors">
-                {t.nav_home}
-              </Link>
-              <Link href="/about" className="hover:text-white transition-colors">
-                {t.nav_about}
-              </Link>
-              <Link href="/services" className="hover:text-white transition-colors">
-                {t.nav_services}
-              </Link>
-              <Link href="/track" className="hover:text-white transition-colors">
-                {t.nav_track_shipment}
-              </Link>
-              <Link href="/quote" className="hover:text-white transition-colors">
-                {t.nav_quote}
-              </Link>
-              <Link href="/contact" className="hover:text-white transition-colors">
-                {t.nav_contact}
-              </Link>
-              <Link href="/faq" className="hover:text-white transition-colors">
-                {t.bc_faq}
-              </Link>
-              {/* ── NEW: Pickup Availability link ── */}
-              <Link
-                href="/pickup-availability"
-                className="hover:text-white transition-colors flex items-center gap-1.5"
-              >
-                📦 Pickup Availability
-              </Link>
-              {/* ── NEW: Campaign link ── */}
-              <Link
-                href="/campaign"
-                className="hover:text-white transition-colors font-bold flex items-center gap-1.5"
-              >
-                🎯 Campaign
-              </Link>
-              <Link
-                href="/business-campaign"
-                className="hover:text-white transition-colors font-bold flex items-center gap-1.5 mt-1"
-              >
-                🏢 Business Campaign
-              </Link>
+            <div className="grid grid-cols-2 gap-x-4 text-[14px] text-white/85 font-medium">
+              {/* Left Column */}
+              <div className="flex flex-col gap-3">
+                <Link href="/" className="hover:text-white transition-colors">
+                  {t.nav_home}
+                </Link>
+                <Link href="/about" className="hover:text-white transition-colors">
+                  {t.nav_about}
+                </Link>
+                <Link href="/services" className="hover:text-white transition-colors">
+                  {t.nav_services}
+                </Link>
+                <Link href="/track" className="hover:text-white transition-colors">
+                  {t.nav_track_shipment}
+                </Link>
+                <Link href="/quote" className="hover:text-white transition-colors">
+                  {t.nav_quote}
+                </Link>
+                <Link href="/contact" className="hover:text-white transition-colors">
+                  {t.nav_contact}
+                </Link>
+                <Link href="/faq" className="hover:text-white transition-colors">
+                  {t.bc_faq}
+                </Link>
+              </div>
+
+              {/* Right Column */}
+              <div className="flex flex-col gap-3">
+                {/* ── NEW: Pickup Availability link ── */}
+                <Link
+                  href="/pickup-availability"
+                  className="hover:text-white transition-colors"
+                >
+                  Pickup Availability
+                </Link>
+                {/* ── NEW: Campaign link ── */}
+                <Link
+                  href="/campaign"
+                  className="hover:text-white transition-colors font-bold"
+                >
+                  Campaign
+                </Link>
+                <Link
+                  href="/business-campaign"
+                  className="hover:text-white transition-colors font-bold"
+                >
+                  Business Campaign
+                </Link>
+                <Link
+                  href="/blog"
+                  className="hover:text-white transition-colors"
+                >
+                  Blog
+                </Link>
+                <Link
+                  href="/career"
+                  className="hover:text-white transition-colors"
+                >
+                  Career
+                </Link>
+              </div>
             </div>
           </div>
 

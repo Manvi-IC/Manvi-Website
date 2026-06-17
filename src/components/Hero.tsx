@@ -605,25 +605,25 @@ export default function Hero() {
                       </textPath>
                     </text>
                   </svg>
-                  </a>
-                </div>
+                </a>
+              </div>
 
-                <div className="w-24 sm:w-32 flex-shrink-0" />
+              <div className="w-24 sm:w-32 flex-shrink-0" />
 
-                <div className="flex items-center gap-6 w-full sm:w-auto justify-between sm:justify-end">
-                  <div className="flex gap-1.5">
-                    <div className="w-2 h-2 rounded-full bg-[#f27a1a]" />
-                    <div className="w-2 h-2 rounded-full bg-[#f27a1a]" />
-                    <div className="w-2 h-2 rounded-full bg-white/40" />
-                    <div className="w-2 h-2 rounded-full bg-white/40" />
-                  </div>
-                  <button className="border border-white/50 text-white text-[12px] font-semibold px-5 py-2 rounded-lg hover:bg-white/10 transition-colors">
-                    {t.hero_read_more}
-                  </button>
+              <div className="flex items-center gap-6 w-full sm:w-auto justify-between sm:justify-end">
+                <div className="flex gap-1.5">
+                  <div className="w-2 h-2 rounded-full bg-[#f27a1a]" />
+                  <div className="w-2 h-2 rounded-full bg-[#f27a1a]" />
+                  <div className="w-2 h-2 rounded-full bg-white/40" />
+                  <div className="w-2 h-2 rounded-full bg-white/40" />
                 </div>
+                <Link href="/services" className="border border-white/50 text-white text-[12px] font-semibold px-5 py-2 rounded-lg hover:bg-white/10 transition-colors">
+                  {t.hero_read_more}
+                </Link>
               </div>
             </div>
           </div>
+        </div>
 
         {/* Action Tabs */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mt-5">
