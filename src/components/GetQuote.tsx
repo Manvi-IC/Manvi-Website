@@ -185,8 +185,8 @@ function ServiceCard({
     <div
       onClick={() => onSelect(labelKey)}
       className={`relative rounded-xl border-2 p-5 cursor-pointer transition-all ${selected
-          ? "border-[#f27a1a] bg-orange-50 shadow-md"
-          : "border-gray-200 bg-white hover:border-orange-300 hover:shadow-sm"
+        ? "border-[#f27a1a] bg-orange-50 shadow-md"
+        : "border-gray-200 bg-white hover:border-orange-300 hover:shadow-sm"
         }`}
     >
       {selected && (
@@ -357,6 +357,8 @@ export default function GetQuote() {
           <p className="text-white/70 text-sm max-w-md">{t.quote_banner_sub}</p>
         </div>
       </section>
+
+
 
       <main className="flex-grow max-w-425 w-full mx-auto px-6 py-12">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
