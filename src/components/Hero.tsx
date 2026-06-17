@@ -1,3 +1,4 @@
+// app/components/Hero.tsx
 "use client";
 import { useState } from "react";
 import {
@@ -149,7 +150,7 @@ interface Quote {
   tat: string;
 }
 
-/* ── Quotes Modal ─────────────────────────────────────────── */
+/* ── Quotes Modal ── */
 function QuotesModal({
   quotes,
   destLabel,
@@ -165,6 +166,8 @@ function QuotesModal({
   onSelect: (key: string) => void;
   onClose: () => void;
 }) {
+  const { t } = useLanguage(); // ✅ FIX: Added useLanguage hook here
+
   return (
     /* Backdrop */
     <div
@@ -213,14 +216,15 @@ function QuotesModal({
               <div
                 key={key}
                 onClick={() => onSelect(key)}
-                className={`relative rounded-xl border-2 p-4 cursor-pointer transition-all ${isSelected
-                  ? "border-[#e77419] bg-[#e77419]/10"
-                  : "border-zinc-700 bg-zinc-800/60 hover:border-zinc-500"
-                  }`}
+                className={`relative rounded-xl border-2 p-4 cursor-pointer transition-all ${
+                  isSelected
+                    ? "border-[#e77419] bg-[#e77419]/10"
+                    : "border-zinc-700 bg-zinc-800/60 hover:border-zinc-500"
+                }`}
               >
                 {isSelected && (
                   <div className="absolute -top-2.5 left-3 bg-[#e77419] text-white text-[9px] font-bold px-2 py-0.5 rounded-full">
-                    SELECTED
+                    {t.form_selected}
                   </div>
                 )}
 
@@ -235,22 +239,22 @@ function QuotesModal({
                       </span>
                       {q.zone && (
                         <span className="text-[10px] bg-white/10 text-zinc-300 px-2 py-0.5 rounded-full font-mono">
-                          Zone {q.zone}
+                          {t.form_zone} {q.zone}
                         </span>
                       )}
                       <span className="text-[10px] bg-white/10 text-zinc-300 px-2 py-0.5 rounded-full">
-                        {q.rateType === "S" ? "Slab" : "Per kg"}
+                        {q.rateType === "S" ? t.form_slab : t.form_per_kg}
                       </span>
                       {/* Duty badge */}
                       {dutyPaid ? (
                         <span className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-green-500/20 text-green-400">
                           <CheckCircle2 size={9} strokeWidth={2.5} />
-                          DUTY PAID
+                          {t.form_duty_paid}
                         </span>
                       ) : (
                         <span className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-red-500/20 text-red-400">
                           <AlertCircle size={9} strokeWidth={2.5} />
-                          DUTY UNPAID
+                          {t.form_duty_unpaid}
                         </span>
                       )}
                     </div>
@@ -267,7 +271,7 @@ function QuotesModal({
                       ₹{Math.round(q.totalPrice).toLocaleString("en-IN")}
                     </p>
                     <p className="text-[10px] text-zinc-500 mt-0.5">
-                      GST inclusive
+                      {t.form_gst_inc}
                     </p>
                   </div>
                 </div>
@@ -278,18 +282,14 @@ function QuotesModal({
 
         {/* Footer */}
         <div className="px-5 py-3 border-t border-white/10 text-center">
-          <p className="text-[11px] text-zinc-500">
-            Final rates may vary · Call{" "}
-            <strong className="text-zinc-400">+91 7070-506070</strong> to
-            confirm
-          </p>
+          <p className="text-[11px] text-zinc-500">{t.form_final_rates_msg}</p>
         </div>
       </div>
     </div>
   );
 }
 
-/* ── Hero ─────────────────────────────────────────────────── */
+/* ── Hero ── */
 export default function Hero() {
   const { t } = useLanguage();
   const [destination, setDestination] = useState("");
@@ -313,9 +313,9 @@ export default function Hero() {
   const volWt =
     parseFloat(length) && parseFloat(breadth) && parseFloat(height)
       ? (
-        (parseFloat(length) * parseFloat(breadth) * parseFloat(height)) /
-        5000
-      ).toFixed(2)
+          (parseFloat(length) * parseFloat(breadth) * parseFloat(height)) /
+          5000
+        ).toFixed(2)
       : null;
 
   const chargeableWt = volWt
@@ -367,7 +367,7 @@ export default function Hero() {
       } else {
         alert(
           data.message ||
-          "No services available for this destination/weight combination.",
+            "No services available for this destination/weight combination.",
         );
       }
     } catch (err: any) {
@@ -417,7 +417,7 @@ export default function Hero() {
                   }}
                   className="w-full bg-white text-[#333] text-[13px] font-medium rounded-xl px-4 py-3 focus:outline-none appearance-none"
                 >
-                  <option value="">Select Destination Country</option>
+                  <option value="">{t.form_select_dest}</option>
                   {DESTINATIONS.map((d) => (
                     <option key={d.value} value={d.value}>
                       {d.flag} {d.label}
@@ -443,8 +443,8 @@ export default function Hero() {
                   >
                     <option value="">
                       {destination === "EUROPE"
-                        ? "Select European Country"
-                        : "Select Country"}
+                        ? t.form_select_euro
+                        : t.form_select_country}
                     </option>
                     {subCountryOptions.map((c) => (
                       <option key={c} value={c}>
@@ -463,7 +463,7 @@ export default function Hero() {
               {requiresZip && (
                 <input
                   type="text"
-                  placeholder={`Zipcode / Postcode (required for ${destObj?.label})`}
+                  placeholder={`${t.form_zipcode} (required for ${destObj?.label})`}
                   value={zipcode}
                   onChange={(e) => setZipcode(e.target.value.toUpperCase())}
                   className="w-full bg-white text-[#333] text-[13px] font-medium rounded-xl px-4 py-3 focus:outline-none placeholder:text-gray-400"
@@ -473,7 +473,7 @@ export default function Hero() {
               {/* Actual weight */}
               <input
                 type="number"
-                placeholder="Actual Weight (kg)"
+                placeholder={t.form_actual_wt}
                 value={actualWt}
                 onChange={(e) => setActualWt(e.target.value)}
                 min="0.001"
@@ -484,13 +484,13 @@ export default function Hero() {
               {/* Dimensions */}
               <div className="flex flex-col gap-1">
                 <span className="text-white/80 text-[11px] font-semibold tracking-wide uppercase pl-1">
-                  Volume Weight Dimensions (cm) — optional
+                  {t.form_vol_wt_dim}
                 </span>
                 <div className="grid grid-cols-3 gap-2">
                   {[
-                    { val: length, setter: setLength, label: "Length" },
-                    { val: breadth, setter: setBreadth, label: "Breadth" },
-                    { val: height, setter: setHeight, label: "Height" },
+                    { val: length, setter: setLength, label: t.form_length },
+                    { val: breadth, setter: setBreadth, label: t.form_breadth },
+                    { val: height, setter: setHeight, label: t.form_height },
                   ].map(({ val, setter, label }) => (
                     <input
                       key={label}
@@ -508,8 +508,14 @@ export default function Hero() {
               {/* Live weight preview */}
               {(actualWt || volWt) && (
                 <div className="bg-white/20 rounded-xl px-4 py-3 flex justify-between text-white text-xs font-semibold">
-                  {volWt && <span>Vol wt: {volWt} kg</span>}
-                  <span>Chargeable: {chargeableWt} kg</span>
+                  {volWt && (
+                    <span>
+                      {t.form_vol_wt} {volWt} kg
+                    </span>
+                  )}
+                  <span>
+                    {t.form_chargeable} {chargeableWt} kg
+                  </span>
                 </div>
               )}
 
@@ -518,7 +524,7 @@ export default function Hero() {
                 disabled={loading}
                 className="mt-2 bg-[#0b1220] hover:bg-slate-800 text-white font-bold text-[13px] py-3 px-6 rounded-xl transition-all active:scale-95 cursor-pointer flex items-center justify-center gap-1.5 disabled:opacity-70"
               >
-                {loading ? "Calculating..." : t.hero_get_quote}{" "}
+                {loading ? t.form_calculating : t.hero_get_quote}{" "}
                 {!loading && (
                   <ArrowUpRight className="h-4 w-4" strokeWidth={2.5} />
                 )}
@@ -526,7 +532,7 @@ export default function Hero() {
             </form>
           </div>
 
-          {/* ── RIGHT: Dark Image Card — always unchanged ── */}
+          {/* ── RIGHT: Dark Image Card ── */}
           <div className="relative rounded-[16px] min-h-[485px] lg:h-auto flex flex-col justify-between">
             <div className="absolute inset-0 rounded-[16px] rounded-bl-[18px] overflow-hidden">
               <Image
