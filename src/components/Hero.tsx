@@ -216,11 +216,10 @@ function QuotesModal({
               <div
                 key={key}
                 onClick={() => onSelect(key)}
-                className={`relative rounded-xl border-2 p-4 cursor-pointer transition-all ${
-                  isSelected
+                className={`relative rounded-xl border-2 p-4 cursor-pointer transition-all ${isSelected
                     ? "border-[#e77419] bg-[#e77419]/10"
                     : "border-zinc-700 bg-zinc-800/60 hover:border-zinc-500"
-                }`}
+                  }`}
               >
                 {isSelected && (
                   <div className="absolute -top-2.5 left-3 bg-[#e77419] text-white text-[9px] font-bold px-2 py-0.5 rounded-full">
@@ -313,9 +312,9 @@ export default function Hero() {
   const volWt =
     parseFloat(length) && parseFloat(breadth) && parseFloat(height)
       ? (
-          (parseFloat(length) * parseFloat(breadth) * parseFloat(height)) /
-          5000
-        ).toFixed(2)
+        (parseFloat(length) * parseFloat(breadth) * parseFloat(height)) /
+        5000
+      ).toFixed(2)
       : null;
 
   const chargeableWt = volWt
@@ -367,7 +366,7 @@ export default function Hero() {
       } else {
         alert(
           data.message ||
-            "No services available for this destination/weight combination.",
+          "No services available for this destination/weight combination.",
         );
       }
     } catch (err: any) {
@@ -615,6 +614,8 @@ export default function Hero() {
               </div>
 
               <div className="w-24 sm:w-32 flex-shrink-0" />
+
+
 
               <div className="flex items-center gap-6 w-full sm:w-auto justify-between sm:justify-end">
                 <div className="flex gap-1.5">
