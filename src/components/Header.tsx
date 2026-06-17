@@ -64,15 +64,15 @@ export default function Header() {
   return (
     <>
       {/* Top utility bar */}
-      <div className="bg-[#0b1220] text-zinc-400 text-[11px] font-medium py-2.5 px-4 sm:px-6 border-b border-white/5">
+      <div className="bg-[#0b1220] text-zinc-300 text-[12px] font-semibold py-3.5 px-4 sm:px-6 border-b border-white/5">
         <div className="max-w-425 mx-auto flex justify-between items-center">
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-2">
-              <Phone className="h-3 w-3 text-white" />
+              <Phone className="h-3.5 w-3.5 text-white" />
               <span className="text-white/90">+91 7070-506070</span>
             </div>
             <div className="flex items-center gap-2">
-              <Mail className="h-3 w-3 text-white" />
+              <Mail className="h-3.5 w-3.5 text-white" />
               <span className="text-white/90">Info@manvicourier.com</span>
             </div>
           </div>
@@ -86,7 +86,7 @@ export default function Header() {
                   behavior="scroll"
                   direction="left"
                   scrollamount="3"
-                  className="text-[12px] font-extrabold tracking-wide whitespace-pre"
+                  className="text-[13.5px] font-extrabold tracking-wide whitespace-pre"
                   style={{ color: "#f27a1a" }}
                 >
                   {marqueeText}
@@ -112,14 +112,14 @@ export default function Header() {
                 aria-expanded={isLangOpen}
                 aria-haspopup="listbox"
               >
-                <Globe className="h-3 w-3" />
+                <Globe className="h-3.5 w-3.5" />
                 <span>
                   {currentLang
                     ? `${currentLang.flag} ${currentLang.native}`
                     : t.nav_language}
                 </span>
                 <ChevronDown
-                  className={`h-3 w-3 transition-transform duration-200 ${isLangOpen ? "rotate-180" : ""}`}
+                  className={`h-3.5 w-3.5 transition-transform duration-200 ${isLangOpen ? "rotate-180" : ""}`}
                 />
               </button>
 
