@@ -2,8 +2,14 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { Geist } from "next/font/google";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+
+const geistSans = Geist({
+  variable: "--font-geist-sans",
+  subsets: ["latin"],
+});
 
 // Types
 interface BlogPost {
@@ -142,7 +148,7 @@ export default function BlogPage(): React.ReactElement {
     : BLOG_POSTS.filter((post) => post.category === filter);
 
   return (
-    <div className="blog-wrapper">
+    <div className={`blog-wrapper ${geistSans.variable}`}>
       <Header />
       
       <style jsx>{`
@@ -156,8 +162,8 @@ export default function BlogPage(): React.ReactElement {
           --accent: #f27a1a;
           --accent-deep: #db660c;
           --accent-soft: #fed7aa;
-          --display: "Bricolage Grotesque", Georgia, serif;
-          --body: "Hanken Grotesk", system-ui, sans-serif;
+          --display: var(--font-geist-sans, -apple-system), BlinkMacSystemFont, "Segoe UI", "Roboto", sans-serif;
+          --body: var(--font-geist-sans, -apple-system), BlinkMacSystemFont, "Segoe UI", "Roboto", sans-serif;
           --radius: 16px;
           
           font-family: var(--body);
