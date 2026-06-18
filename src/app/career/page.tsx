@@ -1,17 +1,18 @@
-// app/careers/page.tsx
+// app/careers/page.tsx (FIXED)
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Geist } from "next/font/google";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import ApplyModal from "./ApplyModal";
+import SpeculativeApplyModal from "./SpeculativeApplyModal";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
 });
 
-// Types
 interface StatItem {
   label: string;
   value: string;
@@ -24,13 +25,14 @@ interface ValueItem {
 }
 
 interface RoleItem {
-  id: string;
+  _id: string;
   title: string;
   department: string;
   location: string;
   tag: string;
   description: string;
   responsibilities: string[];
+  isActive: boolean;
 }
 
 interface StepItem {
@@ -39,7 +41,6 @@ interface StepItem {
   description: string;
 }
 
-// Constants
 const STATS: StatItem[] = [
   { value: "50,000+", label: "International shipments delivered" },
   { value: "10,000+", label: "Happy customers worldwide" },
@@ -74,93 +75,6 @@ const VALUES: ValueItem[] = [
   },
 ];
 
-const ROLES: RoleItem[] = [
-  {
-    id: "operations-exec",
-    title: "Operations Executive",
-    department: "Operations",
-    location: "Dwarka, New Delhi",
-    tag: "Operations",
-    description:
-      "Own the day-to-day movement of shipments — coordinating pickups, carriers and deliveries so parcels reach families on time.",
-    responsibilities: [
-      "Coordinate pickups and hand-offs to carrier partners",
-      "Track shipments and resolve exceptions proactively",
-      "Keep customers updated across their journey",
-    ],
-  },
-  {
-    id: "customs-specialist",
-    title: "Customs Documentation Specialist",
-    department: "Customs",
-    location: "Dwarka, New Delhi",
-    tag: "Customs",
-    description:
-      "Be the expert who navigates global borders — preparing and verifying paperwork so shipments clear customs smoothly.",
-    responsibilities: [
-      "Prepare export/import documentation",
-      "Liaise with carrier partners and customs brokers",
-      "Stay current on destination-country regulations",
-    ],
-  },
-  {
-    id: "biz-dev",
-    title: "International Business Development",
-    department: "Sales",
-    location: "Dwarka / Hybrid",
-    tag: "Sales",
-    description:
-      "Grow our commercial and bulk-shipping accounts across the USA, UK, Canada and Australia.",
-    responsibilities: [
-      "Build relationships with businesses sourcing from India",
-      "Develop bulk and recurring-shipment accounts",
-      "Work with operations to deliver on promises",
-    ],
-  },
-  {
-    id: "customer-support",
-    title: "Customer Support Associate (WhatsApp)",
-    department: "Support",
-    location: "Dwarka, New Delhi",
-    tag: "Support",
-    description:
-      "Be the friendly, fast voice customers reach on WhatsApp and calls — turning questions into confident bookings.",
-    responsibilities: [
-      "Respond to enquiries on WhatsApp, email and phone",
-      "Capture order and pickup details accurately",
-      "Follow up so no customer is left waiting",
-    ],
-  },
-  {
-    id: "marketing-manager",
-    title: "Performance Marketing Manager",
-    department: "Marketing",
-    location: "Dwarka / Hybrid",
-    tag: "Marketing",
-    description:
-      "Run paid campaigns on Meta and Google that reach the diaspora and businesses abroad — and turn clicks into enquiries.",
-    responsibilities: [
-      "Plan and optimise Meta & Google ad campaigns",
-      "Own budgets, targeting and reporting",
-      "Work with creative on landing pages and ads",
-    ],
-  },
-  {
-    id: "warehouse-coordinator",
-    title: "Pickup & Warehouse Coordinator",
-    department: "Operations",
-    location: "Delhi NCR",
-    tag: "Operations",
-    description:
-      "Keep goods moving on the ground — organising pickups across North India and prepping consignments for dispatch.",
-    responsibilities: [
-      "Schedule and verify pickups",
-      "Inspect, weigh and pack consignments",
-      "Maintain accurate inventory records",
-    ],
-  },
-];
-
 const STEPS: StepItem[] = [
   {
     number: "01",
@@ -185,8 +99,32 @@ const STEPS: StepItem[] = [
   },
 ];
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+
 export default function CareerPage(): React.ReactElement {
-  // Intersection Observer for reveal animations
+  const [roles, setRoles] = useState<RoleItem[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [selectedJob, setSelectedJob] = useState<RoleItem | null>(null);
+  const [showApplyModal, setShowApplyModal] = useState(false);
+  const [showSpeculativeModal, setShowSpeculativeModal] = useState(false);
+
+  useEffect(() => {
+    const fetchJobs = async () => {
+      try {
+        const res = await fetch(`${API_URL}/admin/jobs?active=true`);
+        const data = await res.json();
+        if (data.success) {
+          setRoles(data.data);
+        }
+      } catch (error) {
+        console.error("Failed to fetch jobs:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchJobs();
+  }, []);
+
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -202,13 +140,47 @@ export default function CareerPage(): React.ReactElement {
 
     document.querySelectorAll(".reveal").forEach((el) => observer.observe(el));
     return () => observer.disconnect();
-  }, []);
+  }, [loading]);
+
+  const handleApply = (job: RoleItem) => {
+    setSelectedJob(job);
+    setShowApplyModal(true);
+  };
+
+  const handleSpeculativeApply = () => {
+    setShowSpeculativeModal(true);
+  };
 
   return (
-    <div className={`career-wrapper ${geistSans.variable}`}>
+    <div className="career-wrapper">
       <Header />
 
-      <style jsx>{`
+      {showApplyModal && selectedJob && (
+        <ApplyModal
+          job={selectedJob}
+          onClose={() => {
+            setShowApplyModal(false);
+            setSelectedJob(null);
+          }}
+          onSuccess={() => {
+            setShowApplyModal(false);
+            setSelectedJob(null);
+          }}
+        />
+      )}
+
+      {showSpeculativeModal && (
+        <SpeculativeApplyModal
+          onClose={() => {
+            setShowSpeculativeModal(false);
+          }}
+          onSuccess={() => {
+            setShowSpeculativeModal(false);
+          }}
+        />
+      )}
+
+      <style jsx global>{`
         .career-wrapper {
           --paper: #f8fafc;
           --paper-2: #ffffff;
@@ -219,8 +191,8 @@ export default function CareerPage(): React.ReactElement {
           --accent: #f27a1a;
           --accent-deep: #db660c;
           --accent-soft: #fed7aa;
-          --display: var(--font-geist-sans, -apple-system), BlinkMacSystemFont, "Segoe UI", "Roboto", sans-serif;
-          --body: var(--font-geist-sans, -apple-system), BlinkMacSystemFont, "Segoe UI", "Roboto", sans-serif;
+          --display: ${geistSans.style.fontFamily}, -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", sans-serif;
+          --body: ${geistSans.style.fontFamily}, -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", sans-serif;
           --radius: 16px;
 
           font-family: var(--body);
@@ -282,7 +254,6 @@ export default function CareerPage(): React.ReactElement {
           color: var(--accent-deep);
         }
 
-        /* Hero */
         .career-hero {
           background:
             radial-gradient(
@@ -352,7 +323,6 @@ export default function CareerPage(): React.ReactElement {
           border-color: var(--ink);
         }
 
-        /* Hero stats card */
         .hero-stats {
           background: var(--panel);
           color: #eaf0f4;
@@ -416,7 +386,6 @@ export default function CareerPage(): React.ReactElement {
           }
         }
 
-        /* Sections */
         .section {
           padding: 64px 0;
         }
@@ -436,7 +405,6 @@ export default function CareerPage(): React.ReactElement {
           margin-top: 10px;
         }
 
-        /* Values grid */
         .values-grid {
           display: grid;
           grid-template-columns: repeat(4, 1fr);
@@ -486,28 +454,30 @@ export default function CareerPage(): React.ReactElement {
           }
         }
 
-        /* Roles section (dark) */
         .roles-section {
           background: linear-gradient(180deg, #0d1527, #142838);
+          padding: 64px 0;
         }
-        .roles-section .section-head h2,
-        .roles-section .section-head p {
-          color: #eaf0f4;
+        .roles-section .section-head h2 {
+          color: #ffffff;
         }
         .roles-section .section-head p {
           color: #aebcc7;
         }
+        .roles-section .section-head .eyebrow {
+          color: var(--accent);
+        }
 
         .role-accordion {
-          background: rgba(255, 255, 255, 0.04);
-          border: 1px solid rgba(255, 255, 255, 0.09);
+          background: rgba(255, 255, 255, 0.05);
+          border: 1px solid rgba(255, 255, 255, 0.1);
           border-radius: var(--radius);
           margin-bottom: 12px;
           overflow: hidden;
           transition: border-color 0.2s;
         }
         .role-accordion:hover {
-          border-color: rgba(242, 122, 26, 0.3);
+          border-color: rgba(242, 122, 26, 0.4);
         }
         .role-accordion summary {
           list-style: none;
@@ -516,7 +486,7 @@ export default function CareerPage(): React.ReactElement {
           align-items: center;
           gap: 16px;
           padding: 20px 22px;
-          color: #eef3f7;
+          color: #ffffff;
           user-select: none;
         }
         .role-accordion summary::-webkit-details-marker {
@@ -524,32 +494,39 @@ export default function CareerPage(): React.ReactElement {
         }
         .role-accordion .role-title {
           flex: 1;
+          min-width: 0;
         }
         .role-accordion .role-title b {
           font-family: var(--display);
           font-size: 1.22rem;
           font-weight: 700;
+          color: #ffffff !important;
           display: block;
         }
         .role-accordion .role-title span {
           color: #9fb0bb;
           font-size: 0.88rem;
+          display: block;
+          margin-top: 2px;
         }
         .role-accordion .role-tag {
-          background: rgba(242, 122, 26, 0.16);
+          background: rgba(242, 122, 26, 0.2);
           color: var(--accent);
           font-size: 0.74rem;
           font-weight: 700;
-          padding: 5px 11px;
+          padding: 5px 14px;
           border-radius: 100px;
           white-space: nowrap;
           letter-spacing: 0.04em;
+          flex-shrink: 0;
         }
         .role-accordion .chevron {
           color: var(--accent);
           font-size: 1.5rem;
           transition: transform 0.25s ease;
           flex: none;
+          margin-left: auto;
+          font-weight: 300;
         }
         .role-accordion[open] .chevron {
           transform: rotate(45deg);
@@ -559,31 +536,38 @@ export default function CareerPage(): React.ReactElement {
           color: #bcc9d2;
           font-size: 0.96rem;
         }
+        .role-accordion .role-body p {
+          color: #d0dce6;
+          margin-bottom: 12px;
+        }
         .role-accordion .role-body ul {
           margin: 6px 0 18px 18px;
           list-style-type: disc;
         }
-        .role-accordion .role-body li {
-          margin: 4px 0;
+        .role-accordion .role-body ul li {
+          margin: 6px 0;
+          color: #c8d4dd;
         }
         .role-accordion .apply-btn {
           display: inline-flex;
           gap: 8px;
           align-items: center;
           background: var(--accent);
-          color: #fff;
+          color: #ffffff !important;
           font-weight: 700;
-          padding: 11px 20px;
+          padding: 11px 24px;
           border-radius: 100px;
           font-size: 0.92rem;
           text-decoration: none;
           transition: background 0.2s;
+          border: none;
+          cursor: pointer;
+          margin-top: 4px;
         }
         .role-accordion .apply-btn:hover {
           background: var(--accent-deep);
         }
 
-        /* Steps */
         .steps-grid {
           display: grid;
           grid-template-columns: repeat(4, 1fr);
@@ -636,7 +620,6 @@ export default function CareerPage(): React.ReactElement {
           }
         }
 
-        /* CTA band */
         .cta-band {
           background: var(--accent);
           color: #fff;
@@ -650,6 +633,7 @@ export default function CareerPage(): React.ReactElement {
           font-size: clamp(1.7rem, 4vw, 2.6rem);
           font-weight: 800;
           margin-bottom: 10px;
+          color: #ffffff;
         }
         .cta-band p {
           font-size: 1.08rem;
@@ -665,7 +649,20 @@ export default function CareerPage(): React.ReactElement {
           background: #000;
         }
 
-        /* Reveal animation */
+        .loading-jobs {
+          color: #aebcc7;
+          text-align: center;
+          padding: 30px 0;
+          font-size: 1.1rem;
+        }
+        .no-jobs {
+          color: #aebcc7;
+          text-align: center;
+          padding: 30px 0;
+          opacity: 0.7;
+          font-size: 1.1rem;
+        }
+
         .reveal {
           opacity: 0;
           transform: translateY(16px);
@@ -709,12 +706,12 @@ export default function CareerPage(): React.ReactElement {
                   <a href="#openings" className="btn btn-primary">
                     View Open Roles
                   </a>
-                  <a
-                    href="mailto:careers@manvicourier.com?subject=Job%20Application%20%E2%80%94%20Manvi%20International"
+                  <button
+                    onClick={handleSpeculativeApply}
                     className="btn btn-ghost"
                   >
                     Email Your CV
-                  </a>
+                  </button>
                 </div>
               </div>
               <aside className="hero-stats">
@@ -759,7 +756,7 @@ export default function CareerPage(): React.ReactElement {
         </section>
 
         {/* OPEN ROLES */}
-        <section className="section roles-section" id="openings">
+        <section className="roles-section" id="openings">
           <div className="wrap">
             <div className="section-head reveal">
               <div className="route-indicator">
@@ -777,32 +774,40 @@ export default function CareerPage(): React.ReactElement {
               </p>
             </div>
 
-            {ROLES.map((role) => (
-              <details key={role.id} className="role-accordion reveal">
-                <summary>
-                  <div className="role-title">
-                    <b>{role.title}</b>
-                    <span>{role.location}</span>
+            {loading ? (
+              <div className="loading-jobs">Loading available positions...</div>
+            ) : roles.length === 0 ? (
+              <div className="no-jobs">
+                No open positions at the moment. Check back soon!
+              </div>
+            ) : (
+              roles.map((role) => (
+                <details key={role._id} className="role-accordion reveal">
+                  <summary>
+                    <div className="role-title">
+                      <b>{role.title}</b>
+                      <span>{role.location}</span>
+                    </div>
+                    <span className="role-tag">{role.tag}</span>
+                    <span className="chevron">+</span>
+                  </summary>
+                  <div className="role-body">
+                    <p>{role.description}</p>
+                    <ul>
+                      {role.responsibilities.map((item, i) => (
+                        <li key={i}>{item}</li>
+                      ))}
+                    </ul>
+                    <button
+                      onClick={() => handleApply(role)}
+                      className="apply-btn"
+                    >
+                      Apply for this role →
+                    </button>
                   </div>
-                  <span className="role-tag">{role.tag}</span>
-                  <span className="chevron">+</span>
-                </summary>
-                <div className="role-body">
-                  <p>{role.description}</p>
-                  <ul>
-                    {role.responsibilities.map((item, i) => (
-                      <li key={i}>{item}</li>
-                    ))}
-                  </ul>
-                  <a
-                    href={`mailto:careers@manvicourier.com?subject=Application%20%E2%80%94%20${encodeURIComponent(role.title)}`}
-                    className="apply-btn"
-                  >
-                    Apply for this role →
-                  </a>
-                </div>
-              </details>
-            ))}
+                </details>
+              ))
+            )}
           </div>
         </section>
 
@@ -843,12 +848,12 @@ export default function CareerPage(): React.ReactElement {
                 We're always looking for sharp people who care about getting
                 things where they need to be. Tell us how you'd help.
               </p>
-              <a
-                href="mailto:careers@manvicourier.com?subject=Speculative%20Application%20%E2%80%94%20Manvi%20International"
+              <button
+                onClick={handleSpeculativeApply}
                 className="btn btn-primary"
               >
                 Send Your CV Anyway
-              </a>
+              </button>
             </div>
           </div>
         </section>

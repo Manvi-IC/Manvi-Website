@@ -1,12 +1,67 @@
+// app/admin/layout.tsx (FIXED)
+"use client";
+
 import { logoutAction } from '../actions';
-import { LayoutDashboard, LogOut, Package, Users, Settings } from 'lucide-react';
+import { 
+  LayoutDashboard, 
+  LogOut, 
+  Package, 
+  Settings, 
+  Briefcase,
+  FileText
+} from 'lucide-react';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
+
+// Make sure API_URL is defined
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
 export default function AdminLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const [pendingCount, setPendingCount] = useState(0);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchPendingCount = async () => {
+      try {
+        console.log(`📊 Fetching pending count from: ${API_URL}/admin/applications/stats`);
+        const res = await fetch(`${API_URL}/admin/applications/stats`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          // Add this if you need credentials
+          credentials: 'include',
+        });
+
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: ${res.status}`);
+        }
+
+        const data = await res.json();
+        console.log('📊 Pending count response:', data);
+        
+        if (data.success) {
+          setPendingCount(data.data.pending || 0);
+        }
+      } catch (error) {
+        console.error("Failed to fetch pending count:", error);
+        // Don't set pending count on error - keep it at 0
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPendingCount();
+
+    // Optional: Refresh count every 30 seconds
+    const interval = setInterval(fetchPendingCount, 30000);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <div className="min-h-screen bg-gray-100 flex">
       {/* Sidebar */}
@@ -26,6 +81,24 @@ export default function AdminLayout({
           <Link href="/admin/service-mapping" className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-slate-800 text-slate-400 hover:text-slate-100 transition-colors">
             <Settings size={20} />
             Serviceable Zipcode Mapping
+          </Link>
+          <Link href="/admin/jobs" className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-slate-800 text-slate-400 hover:text-slate-100 transition-colors">
+            <Briefcase size={20} />
+            Jobs
+          </Link>
+          <Link href="/admin/applications" className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-slate-800 text-slate-400 hover:text-slate-100 transition-colors">
+            <FileText size={20} />
+            Applications
+            {!loading && pendingCount > 0 && (
+              <span className="ml-auto bg-red-500 text-white text-xs px-2 py-0.5 rounded-full min-w-[20px] text-center animate-pulse">
+                {pendingCount}
+              </span>
+            )}
+            {!loading && pendingCount === 0 && (
+              <span className="ml-auto text-xs px-2 py-0.5 text-gray-400">
+                0
+              </span>
+            )}
           </Link>
           <Link href="/admin/site-settings" className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-slate-800 text-slate-400 hover:text-slate-100 transition-colors">
             <Settings size={20} />
