@@ -370,6 +370,7 @@ export default function Hero() {
         );
       }
     } catch (err: any) {
+      console.error("Hero quote handler error:", err);
       alert("Failed to get quote: " + err.message);
     } finally {
       setLoading(false);
