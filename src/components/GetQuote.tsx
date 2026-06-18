@@ -329,6 +329,7 @@ export default function GetQuote() {
       const first = data.quotes[0];
       setSelectedService(`${first.service}__${first.rateType}`);
     } catch (err: any) {
+      console.error("GetQuote handler error:", err);
       setError(err.message);
     } finally {
       setLoading(false);
