@@ -2,8 +2,14 @@
 "use client";
 
 import React, { useEffect } from "react";
+import { Geist } from "next/font/google";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+
+const geistSans = Geist({
+  variable: "--font-geist-sans",
+  subsets: ["latin"],
+});
 
 // Types
 interface StatItem {
@@ -199,7 +205,7 @@ export default function CareerPage(): React.ReactElement {
   }, []);
 
   return (
-    <div className="career-wrapper">
+    <div className={`career-wrapper ${geistSans.variable}`}>
       <Header />
 
       <style jsx>{`
@@ -213,8 +219,8 @@ export default function CareerPage(): React.ReactElement {
           --accent: #f27a1a;
           --accent-deep: #db660c;
           --accent-soft: #fed7aa;
-          --display: "Bricolage Grotesque", Georgia, serif;
-          --body: "Hanken Grotesk", system-ui, sans-serif;
+          --display: var(--font-geist-sans, -apple-system), BlinkMacSystemFont, "Segoe UI", "Roboto", sans-serif;
+          --body: var(--font-geist-sans, -apple-system), BlinkMacSystemFont, "Segoe UI", "Roboto", sans-serif;
           --radius: 16px;
 
           font-family: var(--body);
