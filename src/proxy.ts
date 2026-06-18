@@ -19,7 +19,7 @@ export function proxy(request: NextRequest) {
   // 2. API Header Injection Logic
   if (request.nextUrl.pathname.startsWith('/api')) {
     const requestHeaders = new Headers(request.headers);
-    requestHeaders.set('x-database', 'manvi');
+    requestHeaders.set('x-database', process.env.NEXT_PUBLIC_X_DATABASE || 'manvi');
     
     return NextResponse.next({
       request: {
