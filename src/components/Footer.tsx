@@ -211,26 +211,46 @@ export default function Footer() {
               </h3>
               <div className="w-full h-[1px] bg-white/30" />
             </div>
-            <div className="flex flex-col gap-5">
-              <div className="flex items-center gap-4">
-                <Phone className="w-[18px] h-[18px] text-white shrink-0" />
+            <div className="flex flex-col gap-3">
+              {/* Phone - reduced gap */}
+              <div className="flex items-center gap-3">
+                <Phone className="w-[16px] h-[16px] text-white shrink-0" />
                 <span className="text-[14px] text-white/85 font-medium">
                   +91 7070-506070
                 </span>
               </div>
-              <div className="flex items-center gap-4">
-                <Mail className="w-[18px] h-[18px] text-white shrink-0" />
+              {/* Email - reduced gap */}
+              <div className="flex items-center gap-3">
+                <Mail className="w-[16px] h-[16px] text-white shrink-0" />
                 <span className="text-[14px] text-white/85 font-medium">
                   info@manvicourier.com
                 </span>
               </div>
-              <div className="flex items-start gap-4">
-                <MapPin className="w-[18px] h-[18px] text-white shrink-0 mt-0.5" />
-                <div className="flex flex-col text-[14px] text-white/85 font-medium">
+              {/* Address - reduced gap */}
+              <div className="flex items-start gap-3">
+                <MapPin className="w-[16px] h-[16px] text-white shrink-0 mt-0.5" />
+                <div className="flex flex-col text-[14px] text-white/85 font-medium leading-relaxed">
                   <span>C-699, Palam Extension, Sector 7,</span>
                   <span>Dwarka, New Delhi, 110077</span>
                 </div>
               </div>
+            </div>
+
+            {/* Map */}
+            <div
+              className="w-full rounded-[20px] overflow-hidden mt-1"
+              style={{ height: "200px" }}
+            >
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3502.1234567890!2d77.0691071!3d28.5850824!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390d1bec78b44a8d%3A0xdaff70b1db8da2c0!2sManvi%20International%20Courier!5e0!3m2!1sen!2sin!4v1234567890"
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title="Manvi International Courier Location"
+              />
             </div>
           </div>
         </div>
