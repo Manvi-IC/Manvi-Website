@@ -4,6 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import { Plus, Minus } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
+import Link from "next/link";
 
 const CustomIcon = () => (
   <svg
@@ -56,43 +57,45 @@ export default function Bespoke() {
 
             {/* Bottom Right Cutout Illusion */}
             <div className="absolute -bottom-6 -right-6 w-32 h-32 sm:w-40 sm:h-40 bg-[#eef0f5] rounded-full flex items-center justify-center pointer-events-none">
-              <div className="w-20 h-20 sm:w-28 sm:h-28 bg-[#ff8a00] rounded-full relative flex items-center justify-center shadow-lg pointer-events-auto cursor-pointer hover:scale-105 transition-transform duration-300">
-                <svg
-                  className="w-6 h-6 sm:w-8 sm:h-8 text-white z-10"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2.5"
-                  viewBox="0 0 24 24"
-                  aria-hidden
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25"
-                  />
-                </svg>
-                <svg
-                  className="absolute inset-0 w-full h-full animate-[spin_24s_linear_infinite]"
-                  viewBox="0 0 100 100"
-                  aria-hidden
-                >
-                  <path
-                    id="textPathCircleBespoke"
-                    d="M 50, 50 m -35, 0 a 35,35 0 1,1 70,0 a 35,35 0 1,1 -70,0"
+              <Link href="/services">
+                <div className="w-20 h-20 sm:w-28 sm:h-28 bg-[#ff8a00] rounded-full relative flex items-center justify-center shadow-lg pointer-events-auto cursor-pointer hover:scale-105 transition-transform duration-300">
+                  <svg
+                    className="w-6 h-6 sm:w-8 sm:h-8 text-white z-10"
                     fill="none"
-                  />
-                  <text>
-                    <textPath
-                      href="#textPathCircleBespoke"
-                      startOffset="0"
-                      className="text-[12px] fill-white font-bold tracking-[0.15em] uppercase"
-                      textLength="220"
-                    >
-                      {t.bespoke_read_more}
-                    </textPath>
-                  </text>
-                </svg>
-              </div>
+                    stroke="currentColor"
+                    strokeWidth="2.5"
+                    viewBox="0 0 24 24"
+                    aria-hidden
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25"
+                    />
+                  </svg>
+                  <svg
+                    className="absolute inset-0 w-full h-full animate-[spin_24s_linear_infinite]"
+                    viewBox="0 0 100 100"
+                    aria-hidden
+                  >
+                    <path
+                      id="textPathCircleBespoke"
+                      d="M 50, 50 m -35, 0 a 35,35 0 1,1 70,0 a 35,35 0 1,1 -70,0"
+                      fill="none"
+                    />
+                    <text>
+                      <textPath
+                        href="#textPathCircleBespoke"
+                        startOffset="0"
+                        className="text-[12px] fill-white font-bold tracking-[0.15em] uppercase"
+                        textLength="220"
+                      >
+                        {t.bespoke_read_more}
+                      </textPath>
+                    </text>
+                  </svg>
+                </div>
+              </Link>
             </div>
           </div>
 
