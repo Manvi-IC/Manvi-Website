@@ -606,6 +606,14 @@ export default function ContactPage() {
                 >
                   DPD Tracking <ArrowUpRight className="w-3.5 h-3.5" />
                 </a>
+                <a
+                  href="https://www.couriersplease.com.au/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[#f27a1a] font-bold text-[14px] flex items-center gap-1 hover:underline"
+                >
+                  Courier Please <ArrowUpRight className="w-3.5 h-3.5" />
+                </a>
               </div>
             </div>
           </div>
