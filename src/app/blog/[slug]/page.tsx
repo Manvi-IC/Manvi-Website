@@ -403,10 +403,23 @@ export default function BlogPostPage({ params }: PageProps) {
         }
 
         .post-container {
-          max-width: 1000px;
+          max-width: 1250px;
           margin: 0 auto;
           padding: 40px 24px 80px;
           width: 100%;
+          display: grid;
+          grid-template-columns: 220px 1fr;
+          gap: 48px;
+          align-items: start;
+        }
+
+        .blog-sidebar {
+          position: sticky;
+          top: 120px;
+          display: flex;
+          flex-direction: column;
+          gap: 24px;
+          align-self: start;
         }
 
         .back-link {
@@ -417,11 +430,8 @@ export default function BlogPostPage({ params }: PageProps) {
           text-decoration: none;
           font-weight: 600;
           font-size: 0.92rem;
-          margin-bottom: 30px;
           transition: color 0.2s;
-          max-width: 1000px;
-          margin-left: auto;
-          margin-right: auto;
+          margin: 0;
           width: 100%;
         }
 
@@ -431,8 +441,7 @@ export default function BlogPostPage({ params }: PageProps) {
 
         /* Post Header */
         .post-header {
-          margin: 0 auto 34px;
-          max-width: 1000px;
+          margin-bottom: 34px;
           width: 100%;
         }
 
@@ -780,6 +789,29 @@ export default function BlogPostPage({ params }: PageProps) {
           border-radius: 4px;
         }
 
+        @media (max-width: 1024px) {
+          .post-container {
+            grid-template-columns: 1fr;
+            gap: 32px;
+            padding-top: 24px;
+          }
+          .blog-sidebar {
+            position: static;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--line);
+            padding-bottom: 20px;
+            gap: 16px;
+          }
+          .back-link {
+            width: auto;
+          }
+          .top-left-translation-bar {
+            width: auto;
+          }
+        }
+
         @media (max-width: 768px) {
           .split-container {
             flex-direction: column !important;
@@ -795,16 +827,22 @@ export default function BlogPostPage({ params }: PageProps) {
           }
         }
 
+        @media (max-width: 600px) {
+          .blog-sidebar {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 12px;
+          }
+        }
+
         /* Minimal Top-Left Translation Bar */
         .top-left-translation-bar {
           display: flex;
           align-items: center;
           gap: 8px;
-          margin-bottom: 24px;
-          max-width: 1000px;
-          margin-left: auto;
-          margin-right: auto;
+          margin: 0;
           width: 100%;
+          flex-wrap: wrap;
         }
         .translate-icon {
           font-size: 1.1rem;
@@ -973,40 +1011,42 @@ export default function BlogPostPage({ params }: PageProps) {
       `}</style>
 
       <div className="post-container">
-        <Link href="/blog" className="back-link">
-          <span>←</span> Back to all posts
-        </Link>
+        <aside className="blog-sidebar">
+          <Link href="/blog" className="back-link">
+            <span>←</span> Back to all posts
+          </Link>
 
-        {/* Top-Left Minimal Translation Bar */}
-        <div className="top-left-translation-bar">
-          <span className="translate-icon">🌐</span>
-          <select
-            value={activeTransLang}
-            onChange={(e) => handleLangSelect(e.target.value)}
-            className="translation-select-minimal"
-            disabled={translationState === "translating"}
-          >
-            <option value="en">English (Original)</option>
-            <option value="hi">हिन्दी (Hindi)</option>
-            <option value="pa">ਪੰਜਾਬੀ (Punjabi)</option>
-            <option value="fr">Français (French)</option>
-            <option value="es">Español (Spanish)</option>
-          </select>
-          {translationState === "translating" && (
-            <span className="translating-status-minimal">
-              <RefreshCw className="animate-spin h-3.5 w-3.5 text-[#f27a1a]" style={{ verticalAlign: "middle" }} />
-              Translating...
-            </span>
-          )}
-          {activeTransLang !== "en" && translationState === "success" && (
-            <button 
-              onClick={() => handleLangSelect("en")}
-              className="view-original-btn-minimal"
+          {/* Top-Left Minimal Translation Bar */}
+          <div className="top-left-translation-bar">
+            <span className="translate-icon">🌐</span>
+            <select
+              value={activeTransLang}
+              onChange={(e) => handleLangSelect(e.target.value)}
+              className="translation-select-minimal"
+              disabled={translationState === "translating"}
             >
-              Show Original
-            </button>
-          )}
-        </div>
+              <option value="en">English (Original)</option>
+              <option value="hi">हिन्दी (Hindi)</option>
+              <option value="pa">ਪੰਜਾਬੀ (Punjabi)</option>
+              <option value="fr">Français (French)</option>
+              <option value="es">Español (Spanish)</option>
+            </select>
+            {translationState === "translating" && (
+              <span className="translating-status-minimal">
+                <RefreshCw className="animate-spin h-3.5 w-3.5 text-[#f27a1a]" style={{ verticalAlign: "middle" }} />
+                Translating...
+              </span>
+            )}
+            {activeTransLang !== "en" && translationState === "success" && (
+              <button 
+                onClick={() => handleLangSelect("en")}
+                className="view-original-btn-minimal"
+              >
+                Show Original
+              </button>
+            )}
+          </div>
+        </aside>
 
         <article>
           <header className="post-header">
