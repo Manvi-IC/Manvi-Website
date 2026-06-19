@@ -216,7 +216,7 @@ export default function Footer() {
               <div className="flex items-center gap-3">
                 <Phone className="w-[16px] h-[16px] text-white shrink-0" />
                 <span className="text-[14px] text-white/85 font-medium">
-                  +91 7070-506070
+                  +91 70 70 50 60 70
                 </span>
               </div>
               {/* Email - reduced gap */}

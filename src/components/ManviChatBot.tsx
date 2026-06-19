@@ -42,7 +42,7 @@ const chatbotTranslations: Record<Language, {
       "Refund Policies":
         "Refunds are processed within 5-7 business days. Items must be returned in original condition. Need help with a specific order?",
       "Contact Us":
-        "You can reach us at support@manvi.com or call +91 7070-506070 (Mon-Sat, 9am-6pm).",
+        "You can reach us at support@manvi.com or call +91 70 70 50 60 70 (Mon-Sat, 9am-6pm).",
       "Quick FAQ":
         "Here are our top FAQs:\n• Delivery takes 3-7 days\n• Free shipping on orders ₹500+\n• Returns accepted within 30 days",
     },
@@ -69,7 +69,7 @@ const chatbotTranslations: Record<Language, {
       "रिफंड नीतियां":
         "रिफंड 5-7 कार्य दिवसों के भीतर संसाधित किए जाते हैं। सामान मूल स्थिति में लौटाया जाना चाहिए।",
       "संपर्क करें":
-        "आप हमसे support@manvi.com पर संपर्क कर सकते हैं या +91 7070-506070 (सोम-शनि, सुबह 9 बजे से शाम 6 बजे तक) पर कॉल कर सकते हैं।",
+        "आप हमसे support@manvi.com पर संपर्क कर सकते हैं या +91 70 70 50 60 70 (सोम-शनि, सुबह 9 बजे से शाम 6 बजे तक) पर कॉल कर सकते हैं।",
       "त्वरित प्रश्न":
         "यहाँ हमारे मुख्य प्रश्न हैं:\n• डिलीवरी में 3-7 दिन लगते हैं\n• ₹500+ के ऑर्डर पर मुफ्त शिपिंग\n• 30 दिनों के भीतर रिटर्न स्वीकार्य है",
     },
@@ -96,7 +96,7 @@ const chatbotTranslations: Record<Language, {
       "ਰਿਫੰਡ ਨੀਤੀਆਂ":
         "ਰਿਫੰਡ 5-7 ਕਾਰੋਬਾਰੀ ਦਿਨਾਂ ਦੇ ਅੰਦਰ ਪ੍ਰੋਸੈਸ ਕੀਤੇ ਜਾਂਦੇ ਹਨ। ਚੀਜ਼ਾਂ ਅਸਲ ਸਥਿਤੀ ਵਿੱਚ ਵਾਪਸ ਕੀਤੀਆਂ ਜਾਣੀਆਂ ਚਾਹੀਦੀਆਂ ਹਨ।",
       "ਸੰਪਰਕ ਕਰੋ":
-        "ਤੁਸੀਂ support@manvi.com 'ਤੇ ਸਾਡੇ ਤੱਕ ਪਹੁੰਚ ਸਕਦੇ ਹੋ ਜਾਂ +91 7070-506070 (ਸੋਮ-ਸ਼ਨੀ, ਸਵੇਰੇ 9 ਵਜੇ ਤੋਂ ਸ਼ਾਮ 6 ਵਜੇ ਤੱਕ) 'ਤੇ ਕਾਲ ਕਰ ਸਕਦੇ ਹੋ।",
+        "ਤੁਸੀਂ support@manvi.com 'ਤੇ ਸਾਡੇ ਤੱਕ ਪਹੁੰਚ ਸਕਦੇ ਹੋ ਜਾਂ +91 70 70 50 60 70 (ਸੋਮ-ਸ਼ਨੀ, ਸਵੇਰੇ 9 ਵਜੇ ਤੋਂ ਸ਼ਾਮ 6 ਵਜੇ ਤੱਕ) 'ਤੇ ਕਾਲ ਕਰ ਸਕਦੇ ਹੋ।",
       "ਤੁਰੰਤ ਸਵਾਲ":
         "ਇੱਥੇ ਸਾਡੇ ਮੁੱਖ ਸਵਾਲ ਹਨ:\n• ਡਿਲਿਵਰੀ ਲਈ 3-7 ਦਿਨ ਲੱਗਦੇ ਹਨ\n• ₹500+ ਦੇ ਆਰਡਰਾਂ 'ਤੇ ਮੁਫ਼ਤ ਸ਼ਿਪਿੰਗ\n• 30 ਦਿਨਾਂ ਦੇ ਅੰਦਰ ਵਾਪਸੀ ਸਵੀਕਾਰਯੋਗ ਹੈ",
     },
@@ -123,7 +123,7 @@ const chatbotTranslations: Record<Language, {
       "Politiques de remboursement":
         "Les remboursements sont traités sous 5 à 7 jours ouvrables. Les articles doivent être retournés dans leur état d'origine.",
       "Contactez-nous":
-        "Vous pouvez nous joindre à support@manvi.com ou appeler le +91 7070-506070 (Lun-Sam, 9h-18h).",
+        "Vous pouvez nous joindre à support@manvi.com ou appeler le +91 70 70 50 60 70 (Lun-Sam, 9h-18h).",
       "FAQ rapide":
         "Voici nos principales FAQ :\n• La livraison prend 3 à 7 jours\n• Livraison gratuite dès 500 ₹\n• Retours acceptés sous 30 jours",
     },
@@ -150,7 +150,7 @@ const chatbotTranslations: Record<Language, {
       "Políticas de reembolso":
         "Los reembolsos se procesan dentro de 5 a 7 días hábiles. Los artículos deben devolverse en su estado original.",
       "Contáctanos":
-        "Puedes escribirnos a support@manvi.com o llamar al +91 7070-506070 (Lun-Sáb, 9am-6pm).",
+        "Puedes escribirnos a support@manvi.com o llamar al +91 70 70 50 60 70 (Lun-Sáb, 9am-6pm).",
       "Preguntas frecuentes rápidas":
         "Aquí están nuestras principales preguntas frecuentes:\n• La entrega demora de 3 a 7 días\n• Envío gratis en pedidos de ₹500+\n• Se aceptan devoluciones dentro de los 30 días",
     },
