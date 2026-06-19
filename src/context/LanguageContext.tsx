@@ -572,7 +572,7 @@ const translations: Record<Language, Translations> = {
     claim_tab1_d3_num: "03",
     claim_tab1_d3_title: "Third-Party Dependency",
     claim_tab1_d3_desc:
-      'As an international logistics provider, Manvi International\'s claim resolution is strictly contingent upon the official investigation reports and confirmation from our global courier partners, including but not limited to <strong class="font-extrabold text-[#1c1f2e]">DHL, FedEx, UPS, DPD, and Aramex</strong>',
+      'As an international logistics provider, Manvi International\'s claim resolution is strictly contingent upon the official investigation reports and confirmation from our global courier partners, including but not limited to <strong class="font-extrabold text-[#1c1f2e]">DHL, FedEx, UPS and Aramex</strong>',
     claim_tab2_title: "Return To Origin (RTO) Shipments",
     claim_tab2_subtext:
       "Returned shipments for non-delivery, incorrect addresses, or refusal qualify for refunds.",
@@ -651,7 +651,7 @@ const translations: Record<Language, Translations> = {
     contact_info: "Contact Info",
     footer_tagline: "Connecting families, bridging distances",
     footer_desc:
-      "Trusted by 10,000+ happy customers and with over 50,000 successful international shipments, we deliver fast, secure, and seamless courier and freight solutions you can rely on.",
+      "Trusted by 100K+ happy customers and with over 1M+ successful international shipments, we deliver fast, secure, and seamless courier and freight solutions you can rely on.",
     footer_social: "Social Network",
     footer_quick_links: "Quick Links",
     footer_office_info: "Office Info",
@@ -1065,7 +1065,7 @@ const translations: Record<Language, Translations> = {
     contact_info: "संपर्क जानकारी",
     footer_tagline: "परिवारों को जोड़ना, दूरियां मिटाना",
     footer_desc:
-      "10,000+ खुश ग्राहकों द्वारा भरोसेमंद और 50,000 से अधिक सफल अंतर्राष्ट्रीय शिपमेंट के साथ, हम तेज़, सुरक्षित और निर्बाध कूरियर और माल समाधान प्रदान करते हैं।",
+      "100K+ खुश ग्राहकों द्वारा भरोसेमंद और 1M+ से अधिक सफल अंतर्राष्ट्रीय शिपमेंट के साथ, हम तेज़, सुरक्षित और निर्बाध कूरियर और माल समाधान प्रदान करते हैं।",
     footer_social: "सोशल नेटवर्क",
     footer_quick_links: "त्वरित लिंक",
     footer_office_info: "कार्यालय जानकारी",
@@ -1480,7 +1480,7 @@ const translations: Record<Language, Translations> = {
     contact_info: "ਸੰਪਰਕ ਜਾਣਕਾਰੀ",
     footer_tagline: "ਪਰਿਵਾਰਾਂ ਨੂੰ ਜੋੜਨਾ, ਦੂਰੀਆਂ ਮਿਟਾਉਣਾ",
     footer_desc:
-      "10,000+ ਖੁਸ਼ ਗਾਹਕਾਂ ਦੁਆਰਾ ਭਰੋਸੇਯੋਗ ਅਤੇ 50,000 ਤੋਂ ਵੱਧ ਸਫਲ ਅੰਤਰਰਾਸ਼ਟਰੀ ਸ਼ਿਪਮੈਂਟਾਂ ਦੇ ਨਾਲ, ਅਸੀਂ ਤੇਜ਼, ਸੁਰੱਖਿਅਤ ਅਤੇ ਨਿਰਵਿਘਨ ਕੂਰੀਅਰ ਹੱਲ ਪ੍ਰਦਾਨ ਕਰਦੇ ਹਾਂ।",
+      "100K+ ਖੁਸ਼ ਗਾਹਕਾਂ ਦੁਆਰਾ ਭਰੋਸੇਯੋਗ ਅਤੇ 1M+ ਤੋਂ ਵੱਧ ਸਫਲ ਅੰਤਰਰਾਸ਼ਟਰੀ ਸ਼ਿਪਮੈਂਟਾਂ ਦੇ ਨਾਲ, ਅਸੀਂ ਤੇਜ਼, ਸੁਰੱਖਿਅਤ ਅਤੇ ਨਿਰਵਿਘਨ ਕੂਰੀਅਰ ਹੱਲ ਪ੍ਰਦਾਨ ਕਰਦੇ ਹਾਂ।",
     footer_social: "ਸੋਸ਼ਲ ਨੈੱਟਵਰਕ",
     footer_quick_links: "ਤੇਜ਼ ਲਿੰਕ",
     footer_office_info: "ਦਫ਼ਤਰ ਜਾਣਕਾਰੀ",
@@ -1898,7 +1898,7 @@ const translations: Record<Language, Translations> = {
     contact_info: "Coordonnées",
     footer_tagline: "Connecter les familles, rapprocher les distances",
     footer_desc:
-      "Approuvé par plus de 10 000 clients satisfaits et avec plus de 50 000 expéditions internationales réussies, nous livrons des solutions de messagerie et de fret rapides, sécurisées et transparentes sur lesquelles vous pouvez compter.",
+      "Approuvé par plus de 100K+ clients satisfaits et avec plus de 1M+ expéditions internationales réussies, nous livrons des solutions de messagerie et de fret rapides, sécurisées et transparentes sur lesquelles vous pouvez compter.",
     footer_social: "Réseau social",
     footer_quick_links: "Liens rapides",
     footer_office_info: "Infos bureau",
@@ -2316,7 +2316,7 @@ const translations: Record<Language, Translations> = {
     contact_info: "Información de contacto",
     footer_tagline: "Conectando familias, acortando distancias",
     footer_desc:
-      "De confianza para más de 10,000 clientes satisfechos y con más de 50,000 envíos internacionales exitosos, entregamos soluciones de mensajería y carga rápidas, seguras y fluidas en las que puedes confiar.",
+      "De confianza para más de 100K+ clientes satisfechos y con más de 1M+ envíos internacionales exitosos, entregamos soluciones de mensajería y carga rápidas, seguras y fluidas en las que puedes confiar.",
     footer_social: "Red social",
     footer_quick_links: "Enlaces rápidos",
     footer_office_info: "Información de oficina",
