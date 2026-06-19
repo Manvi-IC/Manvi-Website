@@ -104,6 +104,10 @@ export default function AdminLayout({
             <Settings size={20} />
             Site Settings
           </Link>
+          <Link href="/admin/blog" className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-slate-800 text-slate-400 hover:text-slate-100 transition-colors">
+            <FileText size={20} />
+            Blogs
+          </Link>
           <Link href="/admin/settings" className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-slate-800 text-slate-400 hover:text-slate-100 transition-colors">
             <Settings size={20} />
             Profile Settings
