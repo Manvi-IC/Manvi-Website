@@ -1,6 +1,8 @@
 // app/blog/page.tsx
 "use client";
 
+export const dynamic = "force-dynamic";
+
 import React, { useState, useEffect } from "react";
 import { Geist } from "next/font/google";
 import Header from "@/components/Header";
@@ -11,110 +13,43 @@ const geistSans = Geist({
   subsets: ["latin"],
 });
 
-// Types
-interface BlogPost {
-  id: string;
-  category: string;
-  icon: string;
-  tag: string;
-  title: string;
-  description: string;
-  readTime: string;
-  thumbClass: string;
-  featured?: boolean;
-}
+import { 
+  type BlogPost, 
+  type FilterCategory, 
+  BLOG_POSTS, 
+  FEATURED_POST, 
+  CATEGORIES 
+} from "./data";
 
-type FilterCategory = "all" | "guides" | "customs" | "logistics" | "gifting" | "news";
-
-// Constants
-const BLOG_POSTS: BlogPost[] = [
-  {
-    id: "1",
-    category: "customs",
-    icon: "📋",
-    tag: "Customs & Compliance",
-    title: "A simple guide to international customs clearance.",
-    description: "What paperwork actually matters, who handles it, and how to avoid your shipment getting stuck at the border.",
-    readTime: "6 min",
-    thumbClass: "thumb-customs"
-  },
-  {
-    id: "2",
-    category: "guides",
-    icon: "📦",
-    tag: "Shipping Guides",
-    title: "Document, parcel or cargo: which service do you need?",
-    description: "The three ways to ship with us explained in plain terms — so you pick the right one and pay only for what you need.",
-    readTime: "5 min",
-    thumbClass: ""
-  },
-  {
-    id: "3",
-    category: "logistics",
-    icon: "🏬",
-    tag: "International Logistics",
-    title: "Bulk sourcing from India for your overseas store.",
-    description: "How Indian restaurants, grocers and boutiques abroad restock from India — pickup, freight and recurring shipments made simple.",
-    readTime: "7 min",
-    thumbClass: "thumb-logistics"
-  },
-  {
-    id: "4",
-    category: "customs",
-    icon: "⚠️",
-    tag: "Customs & Compliance",
-    title: "What you can't ship: a guide to prohibited goods.",
-    description: "From hazardous chemicals to precious stones — the items we can't move, and how to check before you book.",
-    readTime: "4 min",
-    thumbClass: "thumb-prohibited"
-  },
-  {
-    id: "5",
-    category: "guides",
-    icon: "📍",
-    tag: "Shipping Guides",
-    title: "Real-time tracking, explained.",
-    description: "Your tracking number, what each status means, and how to follow your parcel's journey from pickup to doorstep.",
-    readTime: "4 min",
-    thumbClass: ""
-  },
-  {
-    id: "6",
-    category: "gifting",
-    icon: "🍬",
-    tag: "Festive & Gifting",
-    title: "Sending sweets & food items overseas: what to know.",
-    description: "Packing, shelf-life and customs tips for getting mithai and homemade favourites to loved ones abroad, fresh.",
-    readTime: "5 min",
-    thumbClass: "thumb-gifting"
-  }
-];
-
-const FEATURED_POST: BlogPost = {
-  id: "featured",
-  category: "gifting",
-  icon: "🎁",
-  tag: "Festive & Gifting",
-  title: "How To Send Rakhi Gifts From India To Your Family Abroad.",
-  description: "From choosing what to send to clearing customs in time for the festival — a complete, no-stress guide for families in the USA, UK, Canada and Australia.",
-  readTime: "8 min",
-  thumbClass: "thumb-featured",
-  featured: true
-};
-
-const CATEGORIES: { id: FilterCategory; label: string }[] = [
-  { id: "all", label: "All" },
-  { id: "guides", label: "Shipping Guides" },
-  { id: "customs", label: "Customs & Compliance" },
-  { id: "logistics", label: "International Logistics" },
-  { id: "gifting", label: "Festive & Gifting" },
-  { id: "news", label: "Company News" }
-];
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
 export default function BlogPage(): React.ReactElement {
   const [filter, setFilter] = useState<FilterCategory>("all");
   const [newsletterMessage, setNewsletterMessage] = useState<string>("");
   const [email, setEmail] = useState<string>("");
+  const [blogs, setBlogs] = useState<BlogPost[]>(BLOG_POSTS);
+  const [featuredPost, setFeaturedPost] = useState<BlogPost>(FEATURED_POST);
+  const [loading, setLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    const loadBlogs = async () => {
+      try {
+        const res = await fetch(`${API_URL}/api/blogs`);
+        const data = await res.json();
+        if (data.success && data.data && data.data.length > 0) {
+          const list: BlogPost[] = data.data;
+          const feat = list.find((p) => p.featured) || list[0];
+          setFeaturedPost(feat);
+          setBlogs(list.filter((p) => p.slug !== feat.slug));
+        }
+      } catch (err) {
+        console.warn("Failed to fetch blogs from API, falling back to static local data", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadBlogs();
+  }, []);
 
   // Intersection Observer for reveal animations
   useEffect(() => {
@@ -132,7 +67,7 @@ export default function BlogPage(): React.ReactElement {
 
     document.querySelectorAll(".reveal").forEach((el) => observer.observe(el));
     return () => observer.disconnect();
-  }, []);
+  }, [blogs, featuredPost]);
 
   const handleSubscribe = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
@@ -144,8 +79,8 @@ export default function BlogPage(): React.ReactElement {
   };
 
   const filteredPosts = filter === "all" 
-    ? BLOG_POSTS 
-    : BLOG_POSTS.filter((post) => post.category === filter);
+    ? blogs 
+    : blogs.filter((post) => post.category === filter);
 
   return (
     <div className={`blog-wrapper ${geistSans.variable}`}>
@@ -183,7 +118,7 @@ export default function BlogPage(): React.ReactElement {
         }
 
         .wrap {
-          max-width: 1080px;
+          max-width: 1400px;
           margin: 0 auto;
           padding: 0 24px;
         }
@@ -635,20 +570,20 @@ export default function BlogPage(): React.ReactElement {
       {/* FEATURED POST */}
       <section className="section-spacing" style={{ paddingTop: "18px" }}>
         <div className="wrap">
-          <a href="#" className="blog-featured reveal" aria-label="Read featured article">
-            <div className={`blog-thumb ${FEATURED_POST.thumbClass}`}>
-              <span className="icon">{FEATURED_POST.icon}</span>
+          <a href={`/blog/${featuredPost.slug}`} className="blog-featured reveal" aria-label="Read featured article">
+            <div className={`blog-thumb ${featuredPost.thumbClass}`}>
+              <span className="icon">{featuredPost.icon}</span>
             </div>
             <div className="featured-content">
-              <span className="blog-tag">{FEATURED_POST.tag}</span>
-              <h2>{FEATURED_POST.title}</h2>
-              <p>{FEATURED_POST.description}</p>
+              <span className="blog-tag">{featuredPost.tag}</span>
+              <h2>{featuredPost.title}</h2>
+              <p>{featuredPost.description}</p>
               <span className="read-link">Read the guide →</span>
               <div className="post-meta">
-                <span className="avatar">M</span>
-                <span>Manvi Team</span>
+                <span className="avatar">{featuredPost.author?.avatarInitials || "M"}</span>
+                <span>{featuredPost.author?.name || "Manvi Team"}</span>
                 <span>·</span>
-                <span>{FEATURED_POST.readTime}</span>
+                <span>{featuredPost.readTime}</span>
               </div>
             </div>
           </a>
@@ -660,7 +595,7 @@ export default function BlogPage(): React.ReactElement {
         <div className="wrap">
           <div className="blog-grid">
             {filteredPosts.map((post) => (
-              <a key={post.id} href="#" className="blog-post reveal">
+              <a key={post._id || post.slug || post.id} href={`/blog/${post.slug}`} className="blog-post reveal">
                 <div className={`blog-thumb ${post.thumbClass}`}>
                   <span className="icon">{post.icon}</span>
                 </div>
@@ -669,8 +604,8 @@ export default function BlogPage(): React.ReactElement {
                   <h3>{post.title}</h3>
                   <p>{post.description}</p>
                   <div className="post-meta">
-                    <span className="avatar">M</span>
-                    <span>Manvi Team</span>
+                    <span className="avatar">{post.author?.avatarInitials || "M"}</span>
+                    <span>{post.author?.name || "Manvi Team"}</span>
                     <span>·</span>
                     <span>{post.readTime}</span>
                   </div>
