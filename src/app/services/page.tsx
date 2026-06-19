@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Image from "next/image";
@@ -436,36 +437,96 @@ export default function ServicesPage() {
   const lang: Language = language || "en";
   const t = localTranslations[lang] || localTranslations.en;
 
+  const [activeSection, setActiveSection] = useState("dhl");
+
+  const scrollToSection = (id: string) => {
+    const element = document.getElementById(id);
+    if (element) {
+      const headerOffset = 100; // offset for the sticky header
+      const elementPosition = element.getBoundingClientRect().top + window.scrollY;
+      const offsetPosition = elementPosition - headerOffset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth"
+      });
+      window.history.pushState(null, "", `#${id}`);
+      setActiveSection(id);
+    }
+  };
+
+  useEffect(() => {
+    const sectionIds = ["dhl", "ups", "fedex", "aramex", "fedex-medicine", "direct"];
+    const observers = sectionIds.map((id) => {
+      const el = document.getElementById(id);
+      if (!el) return null;
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting && entry.intersectionRatio >= 0.3) {
+              setActiveSection(id);
+            }
+          });
+        },
+        {
+          rootMargin: "-100px 0px -40% 0px",
+          threshold: [0.3],
+        }
+      );
+
+      observer.observe(el);
+      return { observer, el };
+    });
+
+    return () => {
+      observers.forEach((obs) => {
+        if (obs) {
+          obs.observer.unobserve(obs.el);
+        }
+      });
+    };
+  }, []);
+
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.location.hash) {
+      const hashId = window.location.hash.substring(1);
+      setTimeout(() => {
+        scrollToSection(hashId);
+      }, 150);
+    }
+  }, []);
+
   const navItems = [
     {
       name: "DHL",
       icon: <Globe className="w-5 h-5 text-[#f27a1a]" />,
-      active: true,
+      id: "dhl",
     },
     {
       name: "UPS",
       icon: <ShieldCheck className="w-5 h-5 text-[#f27a1a]" />,
-      active: false,
+      id: "ups",
     },
     {
       name: "FedEx",
       icon: <Zap className="w-5 h-5 text-[#f27a1a]" />,
-      active: false,
+      id: "fedex",
     },
     {
       name: "FedEx - Medicine & Special Content",
       icon: <Package className="w-5 h-5 text-[#f27a1a]" />,
-      active: false,
+      id: "fedex-medicine",
     },
     {
       name: "Aramex",
       icon: <Truck className="w-5 h-5 text-[#f27a1a]" />,
-      active: false,
+      id: "aramex",
     },
     {
       name: t.lbl_direct_badge,
       icon: <Globe className="w-5 h-5 text-[#f27a1a]" />,
-      active: false,
+      id: "direct",
     },
   ];
 
@@ -636,20 +697,26 @@ export default function ServicesPage() {
               </div>
 
               <div className="flex flex-col gap-3 mt-2">
-                {navItems.map((item, i) => (
-                  <button
-                    key={i}
-                    className={`flex items-center gap-4 p-3 rounded-xl transition-all text-left group bg-white
-                      ${item.active ? "border border-[#f27a1a] shadow-sm" : "border border-transparent hover:border-[#f27a1a]/30 shadow-sm"}`}
-                  >
-                    <div className="w-8 h-8 rounded-full bg-orange-50 flex items-center justify-center shrink-0">
-                      {item.icon}
-                    </div>
-                    <span className="font-bold text-sm text-[#1c1f2e] group-hover:text-[#f27a1a] transition-colors leading-snug">
-                      {item.name}
-                    </span>
-                  </button>
-                ))}
+                {navItems.map((item, i) => {
+                  const isActive = activeSection === item.id;
+                  return (
+                    <button
+                      key={i}
+                      onClick={() => scrollToSection(item.id)}
+                      className={`flex items-center gap-4 p-3 rounded-xl transition-all text-left group bg-white cursor-pointer
+                        ${isActive ? "border border-[#f27a1a] shadow-sm bg-orange-50/10" : "border border-transparent hover:border-[#f27a1a]/30 shadow-sm"}`}
+                    >
+                      <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 transition-colors
+                        ${isActive ? "bg-orange-100" : "bg-orange-50"}`}>
+                        {item.icon}
+                      </div>
+                      <span className={`font-bold text-sm transition-colors leading-snug group-hover:text-[#f27a1a]
+                        ${isActive ? "text-[#f27a1a]" : "text-[#1c1f2e]"}`}>
+                        {item.name}
+                      </span>
+                    </button>
+                  );
+                })}
               </div>
             </div>
 
@@ -684,6 +751,7 @@ export default function ServicesPage() {
             {serviceDetails.map((service, idx) => (
               <div
                 key={service.id}
+                id={service.id}
                 className="bg-[#f8f9fa] rounded-2xl shadow-md border border-gray-100/50 p-6 sm:p-8 md:p-10 flex flex-col"
               >
                 {/* Header */}
