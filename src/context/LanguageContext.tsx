@@ -372,9 +372,9 @@ const translations: Record<Language, Translations> = {
     b2b_hero_title_line2: "Delivered To Your Business",
     b2b_hero_title_line3: "In Your Country.",
     b2b_hero_subtext:
-      "Run An Indian Restaurant, Grocery, Boutique Or Garment Store Abroad? Tell Us <strong>What You Need And Where It Is In India —</strong> Spices, Groceries, Fabrics, Ethnic Wear — And We'll Pick It Up In Bulk And Deliver It To Your Door. <strong>Customs Handled.</strong>",
+      "Run An Indian Restaurant, Grocery, Boutique Or Garment Store Abroad? Tell Us What You Need And Where It Is In India — Spices, Groceries, Fabrics, Ethnic Wear — And We'll Pick It Up In Bulk And Deliver It To Your Door. Customs Handled.",
     b2b_hero_trusted: "Trusted By Indian Businesses Worldwide",
-    b2b_hero_destinations: "USA · UK · Canada · Australia",
+    b2b_hero_destinations: "USA · UK · Canada · Australia · Europe",
     b2b_call_now: "Call Now",
     b2b_partners_title: "Trusted Delivery",
     b2b_partners_subtitle: "Partners",
@@ -409,7 +409,7 @@ const translations: Record<Language, Translations> = {
     b2b_where_title: "Where We Pick Up And Deliver",
     b2b_pickup_title: "Pickup Across India",
     b2b_pickup_desc:
-      "We specialise in North India — with pan-India pickup available on request.",
+      "We specialise in North and West India — with pan-India pickup available on request.",
     b2b_pan_india: "+ Pan-India",
     b2b_delivery_title: "Delivery Destinations",
     b2b_worldwide: "+ Worldwide",
@@ -572,7 +572,7 @@ const translations: Record<Language, Translations> = {
     claim_tab1_d3_num: "03",
     claim_tab1_d3_title: "Third-Party Dependency",
     claim_tab1_d3_desc:
-      'As an international logistics provider, Manvi International\'s claim resolution is strictly contingent upon the official investigation reports and confirmation from our global courier partners, including but not limited to <strong class="font-extrabold text-[#1c1f2e]">DHL, FedEx, UPS, DPD, and Aramex</strong>',
+      'As an international logistics provider, Manvi International\'s claim resolution is strictly contingent upon the official investigation reports and confirmation from our global courier partners, including but not limited to <strong class="font-extrabold text-[#1c1f2e]">DHL, FedEx, UPS, DPD, and Aramex',
     claim_tab2_title: "Return To Origin (RTO) Shipments",
     claim_tab2_subtext:
       "Returned shipments for non-delivery, incorrect addresses, or refusal qualify for refunds.",
@@ -581,7 +581,7 @@ const translations: Record<Language, Translations> = {
     claim_tab2_d1_num: "01",
     claim_tab2_d1_title: "Processing Timeline",
     claim_tab2_d1_desc:
-      'Refunds for RTO shipments will be initiated within <strong class="font-extrabold text-[#1c1f2e]">2 to 3 working days</strong>',
+      'Refunds for RTO shipments will be initiated within <strong class="font-extrabold text-[#1c1f2e]">2 to 3 working days',
     claim_tab2_d2_num: "02",
     claim_tab2_d2_title: "Verification Requirement",
     claim_tab2_d2_desc:
@@ -735,7 +735,7 @@ const translations: Record<Language, Translations> = {
     campaign_where_title: "Where We Pick Up and Deliver",
     campaign_pickup_title: "📍 Pickup Across India",
     campaign_pickup_desc:
-      "We specialise in North India, with pan-India pickup available on request.",
+      "We specialise in North and West India, with pan-India pickup available on request.",
     campaign_pan_india: "+ Pan-India",
     campaign_delivery_title: "✈️ Delivery Destinations",
     campaign_worldwide: "+ Worldwide",
@@ -789,7 +789,7 @@ const translations: Record<Language, Translations> = {
     b2b_hero_title_line2: "आपके व्यवसाय तक पहुंचाया जाएगा",
     b2b_hero_title_line3: "आपके देश में।",
     b2b_hero_subtext:
-      "विदेश में भारतीय रेस्तरां, किराना, बुटीक या वस्त्र स्टोर चलाते हैं? हमें बताएं <strong>आपको क्या चाहिए और यह भारत में कहाँ है —</strong> मसाले, किराना, कपड़े, पारंपरिक पहनावा — और हम इसे थोक में उठाकर आपके दरवाजे तक पहुंचाएंगे। <strong>कस्टम क्लीयरेंस हम संभालेंगे।</strong>",
+      "विदेश में भारतीय रेस्तरां, किराना, बुटीक या वस्त्र स्टोर चलाते हैं? हमें बताएं आपको क्या चाहिए और यह भारत में कहाँ है — मसाले, किराना, कपड़े, पारंपरिक पहनावा — और हम इसे थोक में उठाकर आपके दरवाजे तक पहुंचाएंगे। कस्टम क्लीयरेंस हम संभालेंगे।",
     b2b_hero_trusted: "दुनिया भर में भारतीय व्यवसायों द्वारा भरोसेमंद",
     b2b_hero_destinations: "USA · UK · कनाडा · ऑस्ट्रेलिया",
     b2b_call_now: "अभी कॉल करें",
@@ -987,7 +987,7 @@ const translations: Record<Language, Translations> = {
     claim_tab1_d3_num: "03",
     claim_tab1_d3_title: "तृतीय-पक्ष निर्भरता",
     claim_tab1_d3_desc:
-      'एक अंतर्राष्ट्रीय लॉजिस्टिक्स प्रदाता के रूप में, मानवी इंटरनेशनल का दावा समाधान हमारे वैश्विक कूरियर साझेदारों की आधिकारिक जांच रिपोर्ट पर निर्भर है, जिसमें <strong class="font-extrabold text-[#1c1f2e]">DHL, FedEx और UPS</strong> शामिल हैं।',
+      'एक अंतर्राष्ट्रीय लॉजिस्टिक्स प्रदाता के रूप में, मानवी इंटरनेशनल का दावा समाधान हमारे वैश्विक कूरियर साझेदारों की आधिकारिक जांच रिपोर्ट पर निर्भर है, जिसमें <strong class="font-extrabold text-[#1c1f2e]">DHL, FedEx और UPS शामिल हैं।',
     claim_tab2_title: "मूल स्थान पर वापसी (RTO) शिपमेंट",
     claim_tab2_subtext:
       "गैर-डिलीवरी, गलत पते या इनकार के लिए वापस किए गए शिपमेंट धनवापसी के योग्य हैं।",
@@ -996,7 +996,7 @@ const translations: Record<Language, Translations> = {
     claim_tab2_d1_num: "01",
     claim_tab2_d1_title: "प्रोसेसिंग समयसीमा",
     claim_tab2_d1_desc:
-      'RTO शिपमेंट के लिए धनवापसी <strong class="font-extrabold text-[#1c1f2e]">2 से 3 कार्यदिवसों</strong> के भीतर शुरू की जाएगी।',
+      'RTO शिपमेंट के लिए धनवापसी <strong class="font-extrabold text-[#1c1f2e]">2 से 3 कार्यदिवसों के भीतर शुरू की जाएगी।',
     claim_tab2_d2_num: "02",
     claim_tab2_d2_title: "सत्यापन आवश्यकता",
     claim_tab2_d2_desc:
@@ -1204,7 +1204,7 @@ const translations: Record<Language, Translations> = {
     b2b_hero_title_line2: "ਤੁਹਾਡੇ ਕਾਰੋਬਾਰ ਤੱਕ ਪਹੁੰਚਾਇਆ ਜਾਵੇਗਾ",
     b2b_hero_title_line3: "ਤੁਹਾਡੇ ਦੇਸ਼ ਵਿੱਚ।",
     b2b_hero_subtext:
-      "ਵਿਦੇਸ਼ ਵਿੱਚ ਭਾਰਤੀ ਰੈਸਟੋਰੈਂਟ, ਕਰਿਆਨਾ, ਬੁਟੀਕ ਜਾਂ ਵਸਤਰ ਸਟੋਰ ਚਲਾਉਂਦੇ ਹੋ? ਸਾਨੂੰ ਦੱਸੋ <strong>ਤੁਹਾਨੂੰ ਕੀ ਚਾਹੀਦਾ ਹੈ ਅਤੇ ਇਹ ਭਾਰਤ ਵਿੱਚ ਕਿੱਥੇ ਹੈ —</strong> ਮਸਾਲੇ, ਕਰਿਆਨਾ, ਕੱਪੜੇ, ਪਰੰਪਰਾਗਤ ਪਹਿਰਾਵਾ — ਅਤੇ ਅਸੀਂ ਇਸਨੂੰ ਬਲਕ ਵਿੱਚ ਚੁੱਕ ਕੇ ਤੁਹਾਡੇ ਦਰਵਾਜ਼ੇ ਤੱਕ ਪਹੁੰਚਾਵਾਂਗੇ। <strong>ਕਸਟਮ ਕਲੀਅਰੈਂਸ ਅਸੀਂ ਸੰਭਾਲਾਂਗੇ।</strong>",
+      "ਵਿਦੇਸ਼ ਵਿੱਚ ਭਾਰਤੀ ਰੈਸਟੋਰੈਂਟ, ਕਰਿਆਨਾ, ਬੁਟੀਕ ਜਾਂ ਵਸਤਰ ਸਟੋਰ ਚਲਾਉਂਦੇ ਹੋ? ਸਾਨੂੰ ਦੱਸੋ ਤੁਹਾਨੂੰ ਕੀ ਚਾਹੀਦਾ ਹੈ ਅਤੇ ਇਹ ਭਾਰਤ ਵਿੱਚ ਕਿੱਥੇ ਹੈ — ਮਸਾਲੇ, ਕਰਿਆਨਾ, ਕੱਪੜੇ, ਪਰੰਪਰਾਗਤ ਪਹਿਰਾਵਾ — ਅਤੇ ਅਸੀਂ ਇਸਨੂੰ ਬਲਕ ਵਿੱਚ ਚੁੱਕ ਕੇ ਤੁਹਾਡੇ ਦਰਵਾਜ਼ੇ ਤੱਕ ਪਹੁੰਚਾਵਾਂਗੇ। ਕਸਟਮ ਕਲੀਅਰੈਂਸ ਅਸੀਂ ਸੰਭਾਲਾਂਗੇ।",
     b2b_hero_trusted: "ਦੁਨੀਆ ਭਰ ਵਿੱਚ ਭਾਰਤੀ ਕਾਰੋਬਾਰਾਂ ਦੁਆਰਾ ਭਰੋਸੇਯੋਗ",
     b2b_hero_destinations: "USA · UK · ਕੈਨੇਡਾ · ਆਸਟ੍ਰੇਲੀਆ",
     b2b_call_now: "ਹੁਣੇ ਕਾਲ ਕਰੋ",
@@ -1402,7 +1402,7 @@ const translations: Record<Language, Translations> = {
     claim_tab1_d3_num: "03",
     claim_tab1_d3_title: "ਤੀਜੀ-ਧਿਰ ਨਿਰਭਰਤਾ",
     claim_tab1_d3_desc:
-      'ਇੱਕ ਅੰਤਰਰਾਸ਼ਟਰੀ ਲੌਜਿਸਟਿਕਸ ਪ੍ਰਦਾਤਾ ਵਜੋਂ, ਮਾਨਵੀ ਇੰਟਰਨੈਸ਼ਨਲ ਦਾ ਦਾਅਵਾ ਹੱਲ ਸਾਡੇ ਵਿਸ਼ਵ ਕੂਰੀਅਰ ਸਾਂਝੇਦਾਰਾਂ ਤੋਂ ਅਧਿਕਾਰਤ ਜਾਂਚ ਰਿਪੋਰਟਾਂ \'ਤੇ ਨਿਰਭਰ ਕਰਦਾ ਹੈ, ਜਿਸ ਵਿੱਚ <strong class="font-extrabold text-[#1c1f2e]">DHL, FedEx ਅਤੇ UPS</strong> ਸ਼ਾਮਲ ਹਨ।',
+      'ਇੱਕ ਅੰਤਰਰਾਸ਼ਟਰੀ ਲੌਜਿਸਟਿਕਸ ਪ੍ਰਦਾਤਾ ਵਜੋਂ, ਮਾਨਵੀ ਇੰਟਰਨੈਸ਼ਨਲ ਦਾ ਦਾਅਵਾ ਹੱਲ ਸਾਡੇ ਵਿਸ਼ਵ ਕੂਰੀਅਰ ਸਾਂਝੇਦਾਰਾਂ ਤੋਂ ਅਧਿਕਾਰਤ ਜਾਂਚ ਰਿਪੋਰਟਾਂ \'ਤੇ ਨਿਰਭਰ ਕਰਦਾ ਹੈ, ਜਿਸ ਵਿੱਚ <strong class="font-extrabold text-[#1c1f2e]">DHL, FedEx ਅਤੇ UPS ਸ਼ਾਮਲ ਹਨ।',
     claim_tab2_title: "ਮੂਲ ਸਥਾਨ ਵਾਪਸੀ (RTO) ਸ਼ਿਪਮੈਂਟ",
     claim_tab2_subtext:
       "ਗੈਰ-ਡਿਲੀਵਰੀ, ਗਲਤ ਪਤੇ ਜਾਂ ਇਨਕਾਰ ਲਈ ਵਾਪਸ ਕੀਤੇ ਸ਼ਿਪਮੈਂਟ ਵਾਪਸੀ ਦੇ ਯੋਗ ਹਨ।",
@@ -1411,7 +1411,7 @@ const translations: Record<Language, Translations> = {
     claim_tab2_d1_num: "01",
     claim_tab2_d1_title: "ਪ੍ਰਕਿਰਿਆ ਸਮਾਂ-ਸੀਮਾ",
     claim_tab2_d1_desc:
-      'RTO ਸ਼ਿਪਮੈਂਟਾਂ ਲਈ ਵਾਪਸੀ <strong class="font-extrabold text-[#1c1f2e]">2 ਤੋਂ 3 ਕਾਰੋਬਾਰੀ ਦਿਨਾਂ</strong> ਵਿੱਚ ਸ਼ੁਰੂ ਕੀਤੀ ਜਾਵੇਗੀ।',
+      'RTO ਸ਼ਿਪਮੈਂਟਾਂ ਲਈ ਵਾਪਸੀ <strong class="font-extrabold text-[#1c1f2e]">2 ਤੋਂ 3 ਕਾਰੋਬਾਰੀ ਦਿਨਾਂ ਵਿੱਚ ਸ਼ੁਰੂ ਕੀਤੀ ਜਾਵੇਗੀ।',
     claim_tab2_d2_num: "02",
     claim_tab2_d2_title: "ਤਸਦੀਕ ਲੋੜ",
     claim_tab2_d2_desc:
@@ -1619,7 +1619,7 @@ const translations: Record<Language, Translations> = {
     b2b_hero_title_line2: "Livré à votre entreprise",
     b2b_hero_title_line3: "Dans votre pays.",
     b2b_hero_subtext:
-      "Vous dirigez un restaurant indien, une épicerie, une boutique ou un magasin de vêtements à l'étranger ? Dites-nous <strong>ce dont vous avez besoin et où il se trouve en Inde —</strong> épices, épicerie, tissus, vêtements ethniques — et nous le récupérerons en vrac et le livrerons à votre porte. <strong>Douane gérée.</strong>",
+      "Vous dirigez un restaurant indien, une épicerie, une boutique ou un magasin de vêtements à l'étranger ? Dites-nous ce dont vous avez besoin et où il se trouve en Inde — épices, épicerie, tissus, vêtements ethniques — et nous le récupérerons en vrac et le livrerons à votre porte. Douane gérée.",
     b2b_hero_trusted:
       "Approuvé par les entreprises indiennes dans le monde entier",
     b2b_hero_destinations: "États-Unis · Royaume-Uni · Canada · Australie",
@@ -1822,7 +1822,7 @@ const translations: Record<Language, Translations> = {
     claim_tab1_d3_num: "03",
     claim_tab1_d3_title: "Dépendance tierce",
     claim_tab1_d3_desc:
-      'En tant que prestataire logistique international, la résolution des réclamations de Manvi International dépend des rapports d\'enquête de nos partenaires, notamment <strong class="font-extrabold text-[#1c1f2e]">DHL, FedEx et UPS</strong>.',
+      'En tant que prestataire logistique international, la résolution des réclamations de Manvi International dépend des rapports d\'enquête de nos partenaires, notamment <strong class="font-extrabold text-[#1c1f2e]">DHL, FedEx et UPS.',
     claim_tab2_title: "Retour à l'origine (RTO)",
     claim_tab2_subtext:
       "Les envois retournés pour non-livraison, adresse incorrecte ou refus sont éligibles au remboursement.",
@@ -1831,7 +1831,7 @@ const translations: Record<Language, Translations> = {
     claim_tab2_d1_num: "01",
     claim_tab2_d1_title: "Délai de traitement",
     claim_tab2_d1_desc:
-      'Les remboursements pour les envois RTO seront initiés dans <strong class="font-extrabold text-[#1c1f2e]">2 à 3 jours ouvrables</strong>.',
+      'Les remboursements pour les envois RTO seront initiés dans <strong class="font-extrabold text-[#1c1f2e]">2 à 3 jours ouvrables.',
     claim_tab2_d2_num: "02",
     claim_tab2_d2_title: "Exigence de vérification",
     claim_tab2_d2_desc:
@@ -2040,7 +2040,7 @@ const translations: Record<Language, Translations> = {
     b2b_hero_title_line2: "Entregado a su negocio",
     b2b_hero_title_line3: "En su país.",
     b2b_hero_subtext:
-      "¿Dirige un restaurante indio, una tienda de comestibles, una boutique o una tienda de ropa en el extranjero? Díganos <strong>qué necesita y dónde está en India —</strong> especias, comestibles, telas, ropa étnica — y lo recogeremos al por mayor y lo entregaremos en su puerta. <strong>Aduanas gestionadas.</strong>",
+      "¿Dirige un restaurante indio, una tienda de comestibles, una boutique o una tienda de ropa en el extranjero? Díganos qué necesita y dónde está en India — especias, comestibles, telas, ropa étnica — y lo recogeremos al por mayor y lo entregaremos en su puerta. Aduanas gestionadas.",
     b2b_hero_trusted: "Aprobado por empresas indias en todo el mundo",
     b2b_hero_destinations: "EE.UU. · Reino Unido · Canadá · Australia",
     b2b_call_now: "Llame ahora",
@@ -2241,7 +2241,7 @@ const translations: Record<Language, Translations> = {
     claim_tab1_d3_num: "03",
     claim_tab1_d3_title: "Dependencia de terceros",
     claim_tab1_d3_desc:
-      'Como proveedor logístico internacional, la resolución de reclamaciones de Manvi International depende de los informes de investigación de nuestros socios, incluyendo <strong class="font-extrabold text-[#1c1f2e]">DHL, FedEx y UPS</strong>.',
+      'Como proveedor logístico internacional, la resolución de reclamaciones de Manvi International depende de los informes de investigación de nuestros socios, incluyendo <strong class="font-extrabold text-[#1c1f2e]">DHL, FedEx y UPS.',
     claim_tab2_title: "Envíos retornados al origen (RTO)",
     claim_tab2_subtext:
       "Los envíos devueltos por no entrega, dirección incorrecta o rechazo califican para reembolso.",
@@ -2250,7 +2250,7 @@ const translations: Record<Language, Translations> = {
     claim_tab2_d1_num: "01",
     claim_tab2_d1_title: "Plazo de procesamiento",
     claim_tab2_d1_desc:
-      'Los reembolsos para envíos RTO se iniciarán en <strong class="font-extrabold text-[#1c1f2e]">2 a 3 días hábiles</strong>.',
+      'Los reembolsos para envíos RTO se iniciarán en <strong class="font-extrabold text-[#1c1f2e]">2 a 3 días hábiles.',
     claim_tab2_d2_num: "02",
     claim_tab2_d2_title: "Requisito de verificación",
     claim_tab2_d2_desc:
@@ -2455,7 +2455,7 @@ interface LanguageContextType {
 
 const LanguageContext = createContext<LanguageContextType>({
   language: "en",
-  setLanguage: () => {},
+  setLanguage: () => { },
   t: translations.en,
 });
 
