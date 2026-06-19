@@ -466,7 +466,7 @@ const translations: Record<Language, Translations> = {
     b2b_cta_title: "Ready To Stock Up From India?",
     b2b_cta_sub:
       "Send Us Your List And Pickup Location. We'll Handle Pickup, Shipping And Customs.",
-    b2b_call: "Call +91 7070506070",
+    b2b_call: "Call +91 70 70 50 60 70",
     nav_about: "About us",
     nav_services: "Services",
     nav_track: "Track now",
@@ -651,7 +651,7 @@ const translations: Record<Language, Translations> = {
     contact_info: "Contact Info",
     footer_tagline: "Connecting families, bridging distances",
     footer_desc:
-      "Trusted by 10,000+ happy customers and with over 50,000 successful international shipments, we deliver fast, secure, and seamless courier and freight solutions you can rely on.",
+      "Trusted by 100K+ happy customers and with over 1M+ successful international shipments, we deliver fast, secure, and seamless courier and freight solutions you can rely on.",
     footer_social: "Social Network",
     footer_quick_links: "Quick Links",
     footer_office_info: "Office Info",
@@ -676,7 +676,7 @@ const translations: Record<Language, Translations> = {
     form_duty_unpaid: "DUTY UNPAID",
     form_gst_inc: "GST inclusive",
     form_final_rates_msg:
-      "Final rates may vary · Call +91 7070-506070 to confirm",
+      "Final rates may vary · Call +91 70 70 50 60 70 to confirm",
     form_services_found: "Services Found",
     form_services_found_text: "service(s) found",
     quote_banner_title: "Get a Quote",
@@ -775,7 +775,7 @@ const translations: Record<Language, Translations> = {
     campaign_cta_title: "Send Your Parcel from India Today.",
     campaign_cta_sub:
       "Tell us where it is in India and where it needs to go. We'll handle everything else; pickup to delivery.",
-    campaign_call: "Call +91 7070 506070",
+    campaign_call: "Call +91 70 70 50 60 70",
   },
 
   hi: {
@@ -1065,7 +1065,7 @@ const translations: Record<Language, Translations> = {
     contact_info: "संपर्क जानकारी",
     footer_tagline: "परिवारों को जोड़ना, दूरियां मिटाना",
     footer_desc:
-      "10,000+ खुश ग्राहकों द्वारा भरोसेमंद और 50,000 से अधिक सफल अंतर्राष्ट्रीय शिपमेंट के साथ, हम तेज़, सुरक्षित और निर्बाध कूरियर और माल समाधान प्रदान करते हैं।",
+      "100K+ खुश ग्राहकों द्वारा भरोसेमंद और 1M+ से अधिक सफल अंतर्राष्ट्रीय शिपमेंट के साथ, हम तेज़, सुरक्षित और निर्बाध कूरियर और माल समाधान प्रदान करते हैं।",
     footer_social: "सोशल नेटवर्क",
     footer_quick_links: "त्वरित लिंक",
     footer_office_info: "कार्यालय जानकारी",
@@ -1090,7 +1090,7 @@ const translations: Record<Language, Translations> = {
     form_duty_unpaid: "शुल्क का भुगतान नहीं किया गया",
     form_gst_inc: "जीएसटी सहित",
     form_final_rates_msg:
-      "अंतिम दरें भिन्न हो सकती हैं · पुष्टि के लिए +91 7070-506070 पर कॉल करें",
+      "अंतिम दरें भिन्न हो सकती हैं · पुष्टि के लिए +91 70 70 50 60 70 पर कॉल करें",
     form_services_found: "सेवाएं मिलीं",
     form_services_found_text: "सेवा(एं) मिली(ं)",
     quote_banner_title: "कोटेशन लें",
@@ -1480,7 +1480,7 @@ const translations: Record<Language, Translations> = {
     contact_info: "ਸੰਪਰਕ ਜਾਣਕਾਰੀ",
     footer_tagline: "ਪਰਿਵਾਰਾਂ ਨੂੰ ਜੋੜਨਾ, ਦੂਰੀਆਂ ਮਿਟਾਉਣਾ",
     footer_desc:
-      "10,000+ ਖੁਸ਼ ਗਾਹਕਾਂ ਦੁਆਰਾ ਭਰੋਸੇਯੋਗ ਅਤੇ 50,000 ਤੋਂ ਵੱਧ ਸਫਲ ਅੰਤਰਰਾਸ਼ਟਰੀ ਸ਼ਿਪਮੈਂਟਾਂ ਦੇ ਨਾਲ, ਅਸੀਂ ਤੇਜ਼, ਸੁਰੱਖਿਅਤ ਅਤੇ ਨਿਰਵਿਘਨ ਕੂਰੀਅਰ ਹੱਲ ਪ੍ਰਦਾਨ ਕਰਦੇ ਹਾਂ।",
+      "100K+ ਖੁਸ਼ ਗਾਹਕਾਂ ਦੁਆਰਾ ਭਰੋਸੇਯੋਗ ਅਤੇ 1M+ ਤੋਂ ਵੱਧ ਸਫਲ ਅੰਤਰਰਾਸ਼ਟਰੀ ਸ਼ਿਪਮੈਂਟਾਂ ਦੇ ਨਾਲ, ਅਸੀਂ ਤੇਜ਼, ਸੁਰੱਖਿਅਤ ਅਤੇ ਨਿਰਵਿਘਨ ਕੂਰੀਅਰ ਹੱਲ ਪ੍ਰਦਾਨ ਕਰਦੇ ਹਾਂ।",
     footer_social: "ਸੋਸ਼ਲ ਨੈੱਟਵਰਕ",
     footer_quick_links: "ਤੇਜ਼ ਲਿੰਕ",
     footer_office_info: "ਦਫ਼ਤਰ ਜਾਣਕਾਰੀ",
@@ -1505,7 +1505,7 @@ const translations: Record<Language, Translations> = {
     form_duty_unpaid: "ਡਿਊਟੀ ਅਦਾ ਨਹੀਂ ਕੀਤੀ",
     form_gst_inc: "ਜੀ.ਐਸ.ਟੀ. ਸਮੇਤ",
     form_final_rates_msg:
-      "ਅੰਤਿਮ ਦਰਾਂ ਵੱਖਰੀਆਂ ਹੋ ਸਕਦੀਆਂ ਹਨ · ਪੁਸ਼ਟੀ ਲਈ +91 7070-506070 'ਤੇ ਕਾਲ ਕਰੋ",
+      "ਅੰਤਿਮ ਦਰਾਂ ਵੱਖਰੀਆਂ ਹੋ ਸਕਦੀਆਂ ਹਨ · ਪੁਸ਼ਟੀ ਲਈ +91 70 70 50 60 70 'ਤੇ ਕਾਲ ਕਰੋ",
     form_services_found: "ਸੇਵਾਵਾਂ ਮਿਲੀਆਂ",
     form_services_found_text: "ਸੇਵਾ(ਵਾਂ) ਮਿਲੀ(ਆਂ)",
     quote_banner_title: "ਕੋਟੇਸ਼ਨ ਲਓ",
@@ -1898,7 +1898,7 @@ const translations: Record<Language, Translations> = {
     contact_info: "Coordonnées",
     footer_tagline: "Connecter les familles, rapprocher les distances",
     footer_desc:
-      "Approuvé par plus de 10 000 clients satisfaits et avec plus de 50 000 expéditions internationales réussies, nous livrons des solutions de messagerie et de fret rapides, sécurisées et transparentes sur lesquelles vous pouvez compter.",
+      "Approuvé par plus de 100K+ clients satisfaits et avec plus de 1M+ expéditions internationales réussies, nous livrons des solutions de messagerie et de fret rapides, sécurisées et transparentes sur lesquelles vous pouvez compter.",
     footer_social: "Réseau social",
     footer_quick_links: "Liens rapides",
     footer_office_info: "Infos bureau",
@@ -1923,7 +1923,7 @@ const translations: Record<Language, Translations> = {
     form_duty_unpaid: "TAXES NON PAYÉES",
     form_gst_inc: "TTC",
     form_final_rates_msg:
-      "Les tarifs finaux peuvent varier · Appelez le +91 7070-506070 pour confirmer",
+      "Les tarifs finaux peuvent varier · Appelez le +91 70 70 50 60 70 pour confirmer",
     form_services_found: "Services trouvés",
     form_services_found_text: "service(s) trouvé(s)",
     quote_banner_title: "Obtenir un devis",
@@ -2316,7 +2316,7 @@ const translations: Record<Language, Translations> = {
     contact_info: "Información de contacto",
     footer_tagline: "Conectando familias, acortando distancias",
     footer_desc:
-      "De confianza para más de 10,000 clientes satisfechos y con más de 50,000 envíos internacionales exitosos, entregamos soluciones de mensajería y carga rápidas, seguras y fluidas en las que puedes confiar.",
+      "De confianza para más de 100K+ clientes satisfechos y con más de 1M+ envíos internacionales exitosos, entregamos soluciones de mensajería y carga rápidas, seguras y fluidas en las que puedes confiar.",
     footer_social: "Red social",
     footer_quick_links: "Enlaces rápidos",
     footer_office_info: "Información de oficina",
@@ -2341,7 +2341,7 @@ const translations: Record<Language, Translations> = {
     form_duty_unpaid: "IMPUESTOS NO PAGADOS",
     form_gst_inc: "IVA incluido",
     form_final_rates_msg:
-      "Las tarifas finales pueden variar · Llame al +91 7070-506070 para confirmar",
+      "Las tarifas finales pueden variar · Llame al +91 70 70 50 60 70 para confirmar",
     form_services_found: "Servicios encontrados",
     form_services_found_text: "servicio(s) encontrado(s)",
     quote_banner_title: "Obtener presupuesto",

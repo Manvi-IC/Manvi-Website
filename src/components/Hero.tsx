@@ -216,10 +216,11 @@ function QuotesModal({
               <div
                 key={key}
                 onClick={() => onSelect(key)}
-                className={`relative rounded-xl border-2 p-4 cursor-pointer transition-all ${isSelected
+                className={`relative rounded-xl border-2 p-4 cursor-pointer transition-all ${
+                  isSelected
                     ? "border-[#e77419] bg-[#e77419]/10"
                     : "border-zinc-700 bg-zinc-800/60 hover:border-zinc-500"
-                  }`}
+                }`}
               >
                 {isSelected && (
                   <div className="absolute -top-2.5 left-3 bg-[#e77419] text-white text-[9px] font-bold px-2 py-0.5 rounded-full">
@@ -227,49 +228,58 @@ function QuotesModal({
                   </div>
                 )}
 
-                <div className="flex items-start justify-between gap-3">
-                  {/* Left */}
-                  <div className="flex-1 min-w-0">
+                <div className="flex items-start justify-between gap-4 p-3 rounded-xl bg-white/5 hover:bg-white/10 transition-all duration-200">
+                  {/* Left Section */}
+                  <div className="flex-1 min-w-0 space-y-2">
+                    {/* Tags Row */}
                     <div className="flex items-center gap-1.5 flex-wrap">
                       <span
-                        className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${networkColor}`}
+                        className={`text-[10px] font-semibold px-2.5 py-0.5 rounded-full ${networkColor}`}
                       >
-                        {networkLabel}
+                        {q.service}
                       </span>
+
                       {q.zone && (
-                        <span className="text-[10px] bg-white/10 text-zinc-300 px-2 py-0.5 rounded-full font-mono">
+                        <span className="text-[10px] bg-white/10 text-zinc-300 px-2.5 py-0.5 rounded-full font-mono">
                           {t.form_zone} {q.zone}
                         </span>
                       )}
-                      <span className="text-[10px] bg-white/10 text-zinc-300 px-2 py-0.5 rounded-full">
+
+                      <span className="text-[10px] bg-white/10 text-zinc-300 px-2.5 py-0.5 rounded-full">
                         {q.rateType === "S" ? t.form_slab : t.form_per_kg}
                       </span>
-                      {/* Duty badge */}
+
+                      {/* Duty Badge - More subtle */}
                       {dutyPaid ? (
-                        <span className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-green-500/20 text-green-400">
-                          <CheckCircle2 size={9} strokeWidth={2.5} />
+                        <span className="inline-flex items-center gap-1 text-[10px] font-medium px-2.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/20">
+                          <CheckCircle2 size={10} strokeWidth={2} />
                           {t.form_duty_paid}
                         </span>
                       ) : (
-                        <span className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-red-500/20 text-red-400">
-                          <AlertCircle size={9} strokeWidth={2.5} />
+                        <span className="inline-flex items-center gap-1 text-[10px] font-medium px-2.5 py-0.5 rounded-full bg-rose-500/15 text-rose-400 border border-rose-500/20">
+                          <AlertCircle size={10} strokeWidth={2} />
                           {t.form_duty_unpaid}
                         </span>
                       )}
                     </div>
 
-                    <p className="mt-2 text-[13px] font-bold text-white leading-tight">
-                      {q.service}
-                    </p>
-                    <p className="text-[11px] text-zinc-400 mt-0.5">{q.tat}</p>
+                    {/* Main Content */}
+                    <div>
+                      <p className="text-[20px] font-semibold text-white leading-snug tracking-wide">
+                        {networkLabel}
+                      </p>
+                      <p className="text-[11px] text-zinc-400 mt-1 font-medium">
+                        {q.tat}
+                      </p>
+                    </div>
                   </div>
 
-                  {/* Right */}
-                  <div className="text-right shrink-0">
-                    <p className="text-[20px] font-extrabold text-[#e77419] leading-none">
+                  {/* Right Section - Price */}
+                  <div className="text-right shrink-0 pt-0.5">
+                    <p className="text-[22px] font-extrabold text-[#e77419] leading-none tracking-tight">
                       ₹{Math.round(q.totalPrice).toLocaleString("en-IN")}
                     </p>
-                    <p className="text-[10px] text-zinc-500 mt-0.5">
+                    <p className="text-[10px] text-zinc-500 mt-1 font-medium tracking-wide uppercase">
                       {t.form_gst_inc}
                     </p>
                   </div>
@@ -312,9 +322,9 @@ export default function Hero() {
   const volWt =
     parseFloat(length) && parseFloat(breadth) && parseFloat(height)
       ? (
-        (parseFloat(length) * parseFloat(breadth) * parseFloat(height)) /
-        5000
-      ).toFixed(2)
+          (parseFloat(length) * parseFloat(breadth) * parseFloat(height)) /
+          5000
+        ).toFixed(2)
       : null;
 
   const chargeableWt = volWt
@@ -366,7 +376,7 @@ export default function Hero() {
       } else {
         alert(
           data.message ||
-          "No services available for this destination/weight combination.",
+            "No services available for this destination/weight combination.",
         );
       }
     } catch (err: any) {
@@ -616,8 +626,6 @@ export default function Hero() {
 
               <div className="w-24 sm:w-32 flex-shrink-0" />
 
-
-
               <div className="flex items-center gap-6 w-full sm:w-auto justify-between sm:justify-end">
                 <div className="flex gap-1.5">
                   <div className="w-2 h-2 rounded-full bg-[#f27a1a]" />
@@ -625,7 +633,10 @@ export default function Hero() {
                   <div className="w-2 h-2 rounded-full bg-white/40" />
                   <div className="w-2 h-2 rounded-full bg-white/40" />
                 </div>
-                <Link href="/services" className="border border-white/50 text-white text-[12px] font-semibold px-5 py-2 rounded-lg hover:bg-white/10 transition-colors">
+                <Link
+                  href="/about"
+                  className="border border-white/50 text-white text-[12px] font-semibold px-5 py-2 rounded-lg hover:bg-white/10 transition-colors"
+                >
                   {t.hero_read_more}
                 </Link>
               </div>

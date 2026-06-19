@@ -36,7 +36,7 @@ export default function Contact() {
                 {t.contact_call}
               </span>
               <span className="text-[14px] text-gray-500 font-medium">
-                +91 7070-506070
+                +91 70 70 50 60 70
               </span>
               <a
                 href="#"

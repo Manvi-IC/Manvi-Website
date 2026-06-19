@@ -69,7 +69,7 @@ export default function Header() {
           <div className="flex items-center justify-between sm:justify-start gap-4 w-full md:w-auto">
             <div className="flex items-center gap-1.5 sm:gap-2">
               <Phone className="h-3.5 w-3.5 text-white shrink-0" />
-              <span className="text-white/90 truncate">+91 7070-506070</span>
+              <span className="text-white/90 truncate">+91 70 70 50 60 70</span>
             </div>
             <div className="flex items-center gap-1.5 sm:gap-2">
               <Mail className="h-3.5 w-3.5 text-white shrink-0" />

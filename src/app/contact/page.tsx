@@ -280,9 +280,15 @@ export default function ContactPage() {
     setIsSubmitting(true);
 
     const params = new URLSearchParams();
-    params.append("xnQsjsdp", "f7ffb6c004b236239387ad91cb729a74c1e77cb13adfc0cbfe03c73418d28c0b");
+    params.append(
+      "xnQsjsdp",
+      "f7ffb6c004b236239387ad91cb729a74c1e77cb13adfc0cbfe03c73418d28c0b",
+    );
     params.append("zc_gad", "");
-    params.append("xmIwtLD", "f1bf89877bb4f869e7a83c4c2a590303921e0786b879cb5c209a4995d86f4181287878d06b7e5465b22c5ca523125edc");
+    params.append(
+      "xmIwtLD",
+      "f1bf89877bb4f869e7a83c4c2a590303921e0786b879cb5c209a4995d86f4181287878d06b7e5465b22c5ca523125edc",
+    );
     params.append("actionType", "TGVhZHM=");
     params.append("returnURL", "null");
 
@@ -383,21 +389,28 @@ export default function ContactPage() {
                       key={tab.id}
                       onClick={() => {
                         setActiveTab(tab.id);
-                        const element = document.getElementById(`contact-tab-${tab.id}`);
+                        const element = document.getElementById(
+                          `contact-tab-${tab.id}`,
+                        );
                         if (element) {
-                          element.scrollIntoView({ behavior: "smooth", block: "center" });
+                          element.scrollIntoView({
+                            behavior: "smooth",
+                            block: "center",
+                          });
                         }
                       }}
-                      className={`flex items-center gap-4 px-6 py-4.5 rounded-2xl border transition-all text-left w-full font-sans ${isActive
-                        ? "bg-white border-[#f27a1a] shadow-sm text-[#f27a1a]"
-                        : "bg-white border-transparent hover:border-gray-200 text-gray-700"
-                        }`}
+                      className={`flex items-center gap-4 px-6 py-4.5 rounded-2xl border transition-all text-left w-full font-sans ${
+                        isActive
+                          ? "bg-white border-[#f27a1a] shadow-sm text-[#f27a1a]"
+                          : "bg-white border-transparent hover:border-gray-200 text-gray-700"
+                      }`}
                     >
                       <span
-                        className={`text-[12px] font-extrabold px-2.5 py-1 rounded-full shrink-0 ${isActive
-                          ? "bg-orange-100 text-[#f27a1a]"
-                          : "bg-gray-100 text-gray-400"
-                          }`}
+                        className={`text-[12px] font-extrabold px-2.5 py-1 rounded-full shrink-0 ${
+                          isActive
+                            ? "bg-orange-100 text-[#f27a1a]"
+                            : "bg-gray-100 text-gray-400"
+                        }`}
                       >
                         {tab.id}
                       </span>
@@ -432,8 +445,9 @@ export default function ContactPage() {
             {/* Card 1: Direct Communication Channels */}
             <div
               id="contact-tab-01"
-              className={`bg-[#eef0f5] rounded-4xl p-8 lg:p-10 shadow-sm border border-gray-200/50 flex flex-col gap-6 transition-all duration-300 ${activeTab === "01" ? "ring-2 ring-[#f27a1a]/50" : ""
-                }`}
+              className={`bg-[#eef0f5] rounded-4xl p-8 lg:p-10 shadow-sm border border-gray-200/50 flex flex-col gap-6 transition-all duration-300 ${
+                activeTab === "01" ? "ring-2 ring-[#f27a1a]/50" : ""
+              }`}
             >
               <div className="flex items-center gap-4">
                 <span className="text-[12px] font-extrabold bg-orange-100 text-[#f27a1a] px-3 py-1.5 rounded-full shrink-0">
@@ -453,7 +467,7 @@ export default function ContactPage() {
                   <div className="text-[14px] font-semibold text-gray-500">
                     {t.phone_label}{" "}
                     <span className="text-[#f27a1a] font-bold">
-                      +91 7070 506070
+                      +91 70 70 50 60 70
                     </span>
                   </div>
                 </div>
@@ -490,8 +504,9 @@ export default function ContactPage() {
             {/* Card 2: Visit Our Head Office */}
             <div
               id="contact-tab-02"
-              className={`bg-[#eef0f5] rounded-4xl p-8 lg:p-10 shadow-sm border border-gray-200/50 flex flex-col gap-6 transition-all duration-300 ${activeTab === "02" ? "ring-2 ring-[#f27a1a]/50" : ""
-                }`}
+              className={`bg-[#eef0f5] rounded-4xl p-8 lg:p-10 shadow-sm border border-gray-200/50 flex flex-col gap-6 transition-all duration-300 ${
+                activeTab === "02" ? "ring-2 ring-[#f27a1a]/50" : ""
+              }`}
             >
               <div className="flex items-center gap-4">
                 <span className="text-[12px] font-extrabold bg-orange-100 text-[#f27a1a] px-3 py-1.5 rounded-full shrink-0">
@@ -519,8 +534,9 @@ export default function ContactPage() {
             {/* Card 3: Operating Hours */}
             <div
               id="contact-tab-03"
-              className={`bg-[#eef0f5] rounded-4xl p-8 lg:p-10 shadow-sm border border-gray-200/50 flex flex-col gap-6 transition-all duration-300 ${activeTab === "03" ? "ring-2 ring-[#f27a1a]/50" : ""
-                }`}
+              className={`bg-[#eef0f5] rounded-4xl p-8 lg:p-10 shadow-sm border border-gray-200/50 flex flex-col gap-6 transition-all duration-300 ${
+                activeTab === "03" ? "ring-2 ring-[#f27a1a]/50" : ""
+              }`}
             >
               <div className="flex items-center gap-4">
                 <span className="text-[12px] font-extrabold bg-orange-100 text-[#f27a1a] px-3 py-1.5 rounded-full shrink-0">
@@ -550,8 +566,9 @@ export default function ContactPage() {
             {/* Card 4: Global Reach Support */}
             <div
               id="contact-tab-04"
-              className={`bg-[#eef0f5] rounded-4xl p-8 lg:p-10 shadow-sm border border-gray-200/50 flex flex-col gap-6 transition-all duration-300 ${activeTab === "04" ? "ring-2 ring-[#f27a1a]/50" : ""
-                }`}
+              className={`bg-[#eef0f5] rounded-4xl p-8 lg:p-10 shadow-sm border border-gray-200/50 flex flex-col gap-6 transition-all duration-300 ${
+                activeTab === "04" ? "ring-2 ring-[#f27a1a]/50" : ""
+              }`}
             >
               <div className="flex items-center gap-4">
                 <span className="text-[12px] font-extrabold bg-orange-100 text-[#f27a1a] px-3 py-1.5 rounded-full shrink-0">
@@ -605,6 +622,14 @@ export default function ContactPage() {
                   className="text-[#f27a1a] font-bold text-[14px] flex items-center gap-1 hover:underline"
                 >
                   DPD Tracking <ArrowUpRight className="w-3.5 h-3.5" />
+                </a>
+                <a
+                  href="https://www.couriersplease.com.au/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[#f27a1a] font-bold text-[14px] flex items-center gap-1 hover:underline"
+                >
+                  Courier Please <ArrowUpRight className="w-3.5 h-3.5" />
                 </a>
               </div>
             </div>
