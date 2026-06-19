@@ -8,10 +8,9 @@ import Footer from "@/components/Footer";
 import ApplyModal from "./ApplyModal";
 import SpeculativeApplyModal from "./SpeculativeApplyModal";
 
-const leagueSpartan = League_Spartan({
-  variable: "--font-league-spartan",
+const geist = Geist({
+  variable: "--font-geist-sans",
   subsets: ["latin"],
-  weight: ["700"],
 });
 
 interface StatItem {
@@ -153,7 +152,7 @@ export default function CareerPage(): React.ReactElement {
   };
 
   return (
-    <div className="career-wrapper">
+    <div className={`career-wrapper ${geist.variable}`}>
       <Header />
 
       {showApplyModal && selectedJob && (
@@ -192,8 +191,8 @@ export default function CareerPage(): React.ReactElement {
           --accent: #f27a1a;
           --accent-deep: #db660c;
           --accent-soft: #fed7aa;
-          --display: ${leagueSpartan.style.fontFamily}, -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", sans-serif;
-          --body: ${leagueSpartan.style.fontFamily}, -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", sans-serif;
+          --display: ${geist.style.fontFamily}, -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", sans-serif;
+          --body: ${geist.style.fontFamily}, -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", sans-serif;
           --radius: 16px;
 
           font-family: var(--body);
