@@ -42,8 +42,8 @@ interface StepItem {
 }
 
 const STATS: StatItem[] = [
-  { value: "50,000+", label: "International shipments delivered" },
-  { value: "10,000+", label: "Happy customers worldwide" },
+  { value: "1M+", label: "International shipments delivered" },
+  { value: "100K+", label: "Happy customers worldwide" },
   { value: "98%", label: "Delivery success rate" },
   { value: "5", label: "Global carrier partners" },
 ];
