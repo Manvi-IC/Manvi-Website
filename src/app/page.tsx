@@ -9,6 +9,7 @@ import Prohibited from "@/components/Prohibited";
 import FAQ from "@/components/FAQ";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
+import Testimonials from "@/components/Testimonials";
 import dynamic from "next/dynamic";
 const ManviChatBot = dynamic(() => import("@/components/ManviChatBot"));
 const ManviWhatsApp = dynamic(() => import("@/components/ManviWhatsApp"));
@@ -68,6 +69,8 @@ export default function Home() {
           </div>
         </div>
       </ScrollReveal>
+
+      <Testimonials />
 
       <ScrollReveal>
         <FAQ />
