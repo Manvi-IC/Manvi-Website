@@ -11,6 +11,7 @@ import {
   FileText
 } from 'lucide-react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 // Make sure API_URL is defined
@@ -21,6 +22,7 @@ export default function AdminLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const pathname = usePathname();
   const [pendingCount, setPendingCount] = useState(0);
   const [loading, setLoading] = useState(true);
 
@@ -70,23 +72,23 @@ export default function AdminLayout({
           Manvi Admin Panel
         </div>
         <nav className="flex-1 px-4 py-6 space-y-2">
-          <Link href="/admin" className="flex items-center gap-3 px-3 py-2 rounded-md bg-slate-800 text-slate-100">
+          <Link href="/admin" className={`flex items-center gap-3 px-3 py-2 rounded-md transition-colors ${pathname === '/admin' ? 'bg-slate-800 text-[#f27a1a] font-medium' : 'hover:bg-slate-800 text-slate-400 hover:text-slate-100'}`}>
             <LayoutDashboard size={20} />
             Dashboard
           </Link>
-          <Link href="/admin/upload-rates" className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-slate-800 text-slate-400 hover:text-slate-100 transition-colors">
+          <Link href="/admin/upload-rates" className={`flex items-center gap-3 px-3 py-2 rounded-md transition-colors ${pathname?.startsWith('/admin/upload-rates') ? 'bg-slate-800 text-[#f27a1a] font-medium' : 'hover:bg-slate-800 text-slate-400 hover:text-slate-100'}`}>
             <Package size={20} />
             Upload Rates
           </Link>
-          <Link href="/admin/service-mapping" className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-slate-800 text-slate-400 hover:text-slate-100 transition-colors">
+          <Link href="/admin/service-mapping" className={`flex items-center gap-3 px-3 py-2 rounded-md transition-colors ${pathname?.startsWith('/admin/service-mapping') ? 'bg-slate-800 text-[#f27a1a] font-medium' : 'hover:bg-slate-800 text-slate-400 hover:text-slate-100'}`}>
             <Settings size={20} />
             Serviceable Zipcode Mapping
           </Link>
-          <Link href="/admin/jobs" className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-slate-800 text-slate-400 hover:text-slate-100 transition-colors">
+          <Link href="/admin/jobs" className={`flex items-center gap-3 px-3 py-2 rounded-md transition-colors ${pathname?.startsWith('/admin/jobs') ? 'bg-slate-800 text-[#f27a1a] font-medium' : 'hover:bg-slate-800 text-slate-400 hover:text-slate-100'}`}>
             <Briefcase size={20} />
             Jobs
           </Link>
-          <Link href="/admin/applications" className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-slate-800 text-slate-400 hover:text-slate-100 transition-colors">
+          <Link href="/admin/applications" className={`flex items-center gap-3 px-3 py-2 rounded-md transition-colors ${pathname?.startsWith('/admin/applications') ? 'bg-slate-800 text-[#f27a1a] font-medium' : 'hover:bg-slate-800 text-slate-400 hover:text-slate-100'}`}>
             <FileText size={20} />
             Applications
             {!loading && pendingCount > 0 && (
@@ -100,15 +102,15 @@ export default function AdminLayout({
               </span>
             )}
           </Link>
-          <Link href="/admin/site-settings" className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-slate-800 text-slate-400 hover:text-slate-100 transition-colors">
+          <Link href="/admin/site-settings" className={`flex items-center gap-3 px-3 py-2 rounded-md transition-colors ${pathname?.startsWith('/admin/site-settings') ? 'bg-slate-800 text-[#f27a1a] font-medium' : 'hover:bg-slate-800 text-slate-400 hover:text-slate-100'}`}>
             <Settings size={20} />
             Site Settings
           </Link>
-          <Link href="/admin/blog" className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-slate-800 text-slate-400 hover:text-slate-100 transition-colors">
+          <Link href="/admin/blog" className={`flex items-center gap-3 px-3 py-2 rounded-md transition-colors ${pathname?.startsWith('/admin/blog') ? 'bg-slate-800 text-[#f27a1a] font-medium' : 'hover:bg-slate-800 text-slate-400 hover:text-slate-100'}`}>
             <FileText size={20} />
             Blogs
           </Link>
-          <Link href="/admin/settings" className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-slate-800 text-slate-400 hover:text-slate-100 transition-colors">
+          <Link href="/admin/settings" className={`flex items-center gap-3 px-3 py-2 rounded-md transition-colors ${pathname === '/admin/settings' ? 'bg-slate-800 text-[#f27a1a] font-medium' : 'hover:bg-slate-800 text-slate-400 hover:text-slate-100'}`}>
             <Settings size={20} />
             Profile Settings
           </Link>

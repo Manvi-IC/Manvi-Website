@@ -213,6 +213,7 @@ export default function CampaignPage() {
     title: "Limited-Time Offer",
     subtitle: "₹679/kg to USA, ends soon",
     endDate: DEFAULT_OFFER_END,
+    showOffer: true,
   });
 
   const sliderSettings = {
@@ -259,6 +260,7 @@ export default function CampaignPage() {
             endDate: data.data.offerEndDate
               ? new Date(data.data.offerEndDate)
               : DEFAULT_OFFER_END,
+            showOffer: data.data.showOffer ?? true,
           });
         }
       })
@@ -733,13 +735,15 @@ export default function CampaignPage() {
       {/* ── 7. TIMER + FAQ ── */}
       <section className="w-full flex flex-col justify-center items-center mx-auto py-10">
         {/* Compact Timer */}
-        <div className="mb-14 w-full max-w-[1400px] px-4 sm:px-6">
-          <CompactTimer
-            endDate={offerDetails.endDate}
-            title={offerDetails.title}
-            subtitle={offerDetails.subtitle}
-          />
-        </div>
+        {offerDetails.showOffer && (
+          <div className="mb-14 w-full max-w-[1400px] px-4 sm:px-6">
+            <CompactTimer
+              endDate={offerDetails.endDate}
+              title={offerDetails.title}
+              subtitle={offerDetails.subtitle}
+            />
+          </div>
+        )}
 
         {/* FAQ */}
         <div className="bg-[#e5e6eb] rounded-xl p-8 sm:p-14 max-w-[1400px] w-full mx-4 sm:mx-6">
@@ -774,9 +778,8 @@ export default function CampaignPage() {
                     >
                       <span>{t[f.qKey as keyof typeof t]}</span>
                       <ChevronDown
-                        className={`w-5 h-5 text-[#e77419] shrink-0 mt-0.5 transition-transform duration-300 ${
-                          isActive ? "rotate-180" : ""
-                        }`}
+                        className={`w-5 h-5 text-[#e77419] shrink-0 mt-0.5 transition-transform duration-300 ${isActive ? "rotate-180" : ""
+                          }`}
                       />
                     </h3>
                   </div>
