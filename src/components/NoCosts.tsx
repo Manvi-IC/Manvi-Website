@@ -22,11 +22,12 @@ export default function NoCosts() {
           <p className="text-[13px] text-gray-500 font-medium leading-relaxed">
             {t.nocost_desc}
           </p>
-          <Link href="/quote">
-            <button className="border-2 border-[#ff8a00] text-[#ff8a00] hover:bg-[#ff8a00] hover:text-white transition-colors duration-300 rounded-md px-6 py-2.5 text-[14.5px] font-extrabold flex items-center gap-1.5 mt-2">
-              {t.nocost_btn}{" "}
-              <ArrowUpRight className="h-[18px] w-[18px]" strokeWidth={2.5} />
-            </button>
+          <Link
+            href="/quote"
+            className="border-2 border-[#ff8a00] text-[#ff8a00] hover:bg-[#ff8a00] hover:text-white transition-colors duration-300 rounded-md px-6 py-2.5 text-[14.5px] font-extrabold flex items-center gap-1.5 mt-2"
+          >
+            {t.nocost_btn}{" "}
+            <ArrowUpRight className="h-[18px] w-[18px]" strokeWidth={2.5} />
           </Link>
         </div>
       </div>
