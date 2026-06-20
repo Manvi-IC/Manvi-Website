@@ -13,6 +13,7 @@ export default function NoCosts() {
           <div className="border border-orange-300/80 text-[#ff8a00] rounded-full px-4 py-1 text-[12px] font-extrabold w-fit tracking-wide bg-transparent">
             {t.nocost_badge}
           </div>
+          {/* Render as plain text only — no dangerouslySetInnerHTML */}
           <h2 className="text-[28px] md:text-[44px] font-extrabold text-[#1c1f2e] leading-[1.1] tracking-tight whitespace-pre-line">
             {t.nocost_title}
           </h2>
@@ -26,7 +27,7 @@ export default function NoCosts() {
             href="/quote"
             className="border-2 border-[#ff8a00] text-[#ff8a00] hover:bg-[#ff8a00] hover:text-white transition-colors duration-300 rounded-md px-6 py-2.5 text-[14.5px] font-extrabold flex items-center gap-1.5 mt-2"
           >
-            {t.nocost_btn}{" "}
+            <span>{t.nocost_btn}</span>
             <ArrowUpRight className="h-[18px] w-[18px]" strokeWidth={2.5} />
           </Link>
         </div>
