@@ -626,7 +626,7 @@ const translations: Record<Language, Translations> = {
     faq_title: "Questions? Glad you asked",
     faq_q1: "Where can i send my packages?",
     faq_a1:
-      "Almost anywhere! We have a strong presence in the USA, Canada, UK, Europe, and Australia. Whether it's a big city or a quiet suburb, we'll get it there.",
+      "We have our own network USA, Canada, UK, Europe, and Australia. Whether it's a big city or a quiet suburb, we'll get it there. Further, for locations other than these we offer branded services.",
     faq_q2: "How Much Does It Cost?",
     faq_a2:
       "Pricing depends on destination, weight, and service type. Parcel shipping to the USA starts from ₹679/kg.",

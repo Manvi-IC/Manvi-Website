@@ -26,7 +26,7 @@ export default function NoCosts() {
             href="/quote"
             className="border-2 border-[#ff8a00] text-[#ff8a00] hover:bg-[#ff8a00] hover:text-white transition-colors duration-300 rounded-md px-6 py-2.5 text-[14.5px] font-extrabold flex items-center gap-1.5 mt-2"
           >
-            {t.nocost_btn}{" "}
+            <span>{t.nocost_btn}</span>
             <ArrowUpRight className="h-[18px] w-[18px]" strokeWidth={2.5} />
           </Link>
         </div>
