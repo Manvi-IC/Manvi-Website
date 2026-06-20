@@ -178,7 +178,7 @@ function QuotesModal({
       }}
     >
       {/* Panel */}
-      <div className="bg-[#0b1220] rounded-2xl w-full max-w-lg max-h-[90vh] flex flex-col shadow-2xl border border-white/10">
+      <div className="bg-[#0D1527] rounded-2xl w-full max-w-lg max-h-[90vh] flex flex-col shadow-2xl border border-white/10">
         {/* Header */}
         <div className="flex items-start justify-between gap-3 p-5 border-b border-white/10">
           <div>
@@ -532,7 +532,7 @@ export default function Hero() {
               <button
                 type="submit"
                 disabled={loading}
-                className="mt-2 bg-[#0b1220] hover:bg-slate-800 text-white font-bold text-[13px] py-3 px-6 rounded-xl transition-all active:scale-95 cursor-pointer flex items-center justify-center gap-1.5 disabled:opacity-70"
+                className="mt-2 bg-[#0D1527] hover:bg-slate-800 text-white font-bold text-[13px] py-3 px-6 rounded-xl transition-all active:scale-95 cursor-pointer flex items-center justify-center gap-1.5 disabled:opacity-70"
               >
                 {loading ? t.form_calculating : t.hero_get_quote}{" "}
                 {!loading && (
@@ -671,7 +671,7 @@ export default function Hero() {
             <Link
               key={tab.href}
               href={tab.href}
-              className="flex items-center justify-center gap-2 sm:gap-3 bg-[#0b1220] hover:bg-[#f27a1a] rounded-[14px] sm:rounded-2xl text-[12px] sm:text-[14px] font-semibold text-white py-3 sm:py-4 transition-all text-center px-2"
+              className="flex items-center justify-center gap-2 sm:gap-3 bg-[#0D1527] hover:bg-[#f27a1a] rounded-[14px] sm:rounded-2xl text-[12px] sm:text-[14px] font-semibold text-white py-3 sm:py-4 transition-all text-center px-2"
             >
               {tab.icon} <span className="truncate">{tab.label}</span>
             </Link>
