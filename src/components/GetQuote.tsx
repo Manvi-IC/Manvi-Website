@@ -339,7 +339,7 @@ export default function GetQuote() {
   return (
     <div className="min-h-screen bg-[#f8f9fa] text-[#0f172a] font-sans flex flex-col antialiased">
       {/* Banner Section */}
-      <section className="relative bg-[#0b1220] overflow-hidden min-h-55 flex items-center py-12 px-6">
+      <section className="relative bg-[#0D1527] overflow-hidden min-h-55 flex items-center py-12 px-6">
         <div
           className="absolute inset-0 z-0 opacity-20 bg-cover bg-center"
           style={{ backgroundImage: `url('/banner.jpg')` }}
@@ -557,7 +557,7 @@ export default function GetQuote() {
             {result && (
               <>
                 {/* Summary Card */}
-                <div className="bg-[#0b1220] rounded-2xl px-6 py-5 flex flex-wrap gap-4 text-white shadow-sm">
+                <div className="bg-[#0D1527] rounded-2xl px-6 py-5 flex flex-wrap gap-4 text-white shadow-sm">
                   <div className="flex-1 min-w-[120px]">
                     <p className="text-[10px] text-gray-400 uppercase tracking-wider font-bold">
                       Destination
