@@ -50,7 +50,7 @@ const localTranslations: Record<
     card_subtitle:
       "Select Your Destination Country And Enter Zip/PIN Code Below To Instantly Check Delivery Feasibility.",
     country_placeholder: "Select Country...",
-    zipcode_placeholder: "Enter ZIP / PIN Code (Optional)",
+    zipcode_placeholder: "Enter ZIP",
     service_placeholder: "Select Service",
     btn_check: "Check Availability",
     success_msg: "Great news! We serve your area",
@@ -141,41 +141,19 @@ export default function ZipcodePage() {
   const lang: Language = language || "en";
   const t = localTranslations[lang] || localTranslations.en;
 
-  const initialCities: CityGroup[] = [
-    {
-      city: "New York, NY",
-      items: [
-        { zip: "10001", days: `6-9 ${t.business_days}` },
-        { zip: "10002", days: `6-9 ${t.business_days}` },
-        { zip: "10003", days: `6-9 ${t.business_days}` },
-        { zip: "10004", days: `6-9 ${t.business_days}` },
-      ],
-    },
-    {
-      city: "Los Angeles, CA",
-      items: [
-        { zip: "90001", days: `7-11 ${t.business_days}` },
-        { zip: "90002", days: `7-11 ${t.business_days}` },
-        { zip: "90003", days: `6-10 ${t.business_days}` },
-        { zip: "90004", days: `7-11 ${t.business_days}` },
-      ],
-    },
-  ];
-
   const [country, setCountry] = useState("");
   const [zipcode, setZipcode] = useState("");
   const [service, setService] = useState("");
   const [status, setStatus] = useState<"idle" | "success" | "fail">("idle");
-  const [cities, setCities] = useState<CityGroup[]>(initialCities);
-  const [countryMappings, setCountryMappings] = useState<{country: string, services: string[]}[]>([]);
+  const [countryMappings, setCountryMappings] = useState<{ country: string, services: string[] }[]>([]);
 
   useEffect(() => {
     fetch('/api/site-settings')
       .then(res => res.json())
       .then(data => {
-         if (data.success && data.data && data.data.countryServiceMapping) {
-            setCountryMappings(data.data.countryServiceMapping);
-         }
+        if (data.success && data.data && data.data.countryServiceMapping) {
+          setCountryMappings(data.data.countryServiceMapping);
+        }
       })
       .catch(err => console.error("Failed to fetch country mappings", err));
   }, []);
@@ -187,9 +165,9 @@ export default function ZipcodePage() {
     { country: "CANADA", services: ["DHL", "ARAMEX", "UPS", "FEDEX", "SELF - DUTY Paid"] },
     { country: "EUROPE", services: ["DHL", "ARAMEX", "UPS", "FEDEX", "SELF - DUTY Paid"] },
   ];
-  
+
   const activeMappings = countryMappings.length > 0 ? countryMappings : defaultMappings;
-  const availableServices = country 
+  const availableServices = country
     ? (activeMappings.find(m => m.country.toUpperCase() === country.toUpperCase())?.services || [])
     : [];
 
@@ -210,7 +188,6 @@ export default function ZipcodePage() {
 
     if (!cleanCountry || !service) {
       setStatus("idle");
-      setCities(initialCities);
       return;
     }
 
@@ -228,42 +205,12 @@ export default function ZipcodePage() {
         setMatchedDetails(result.details || "");
         setMatchedNotes(result.notes || "");
 
-        const searchLabel = cleanZipcode ? `${cleanCountry} - ${cleanZipcode}` : cleanCountry;
-
-        if (result.matches && result.matches.length > 0) {
-          setCities([
-            {
-              city: `Matches for "${searchLabel}"`,
-              items: result.matches.map((m) => ({
-                zip: m.zip,
-                days: m.days,
-                highlighted: true,
-              })),
-            },
-          ]);
-        } else {
-          setCities([
-            {
-              city: result.country || "Search Match",
-              items: [
-                {
-                  zip: result.postcode || (cleanZipcode ? cleanZipcode.toUpperCase() : "All Regions"),
-                  days: result.deliveryTime || "Serviceable",
-                  highlighted: true,
-                },
-              ],
-            },
-            ...initialCities,
-          ]);
-        }
       } else {
         setStatus("fail");
-        setCities(initialCities);
       }
     } catch (err) {
       console.warn("Error validating zipcode:", err);
       setStatus("fail");
-      setCities(initialCities);
     }
   };
 
@@ -272,7 +219,7 @@ export default function ZipcodePage() {
       <Header />
 
       {/* Top Banner Section */}
-      <section className="relative bg-[#0b1220] overflow-hidden min-h-55 flex items-center py-12 px-6">
+      <section className="relative bg-[#0D1527] overflow-hidden min-h-55 flex items-center py-12 px-6">
         <div className="absolute inset-0 z-0 opacity-20 bg-[url('https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=2000&q=80')] bg-cover bg-center" />
         <div className="max-w-425 w-full mx-auto flex flex-col md:flex-row justify-between items-start md:items-center relative z-10 gap-4">
           <div>
@@ -323,7 +270,7 @@ export default function ZipcodePage() {
                     ))}
                   </select>
                 </div>
-                
+
                 <div className="flex flex-col gap-1.5">
                   <label className="text-[12px] font-extrabold text-[#1c1f2e] uppercase tracking-wider pl-0.5">
                     Service <span className="text-red-500">*</span>
@@ -345,7 +292,7 @@ export default function ZipcodePage() {
 
                 <div className="flex flex-col gap-1.5">
                   <label className="text-[12px] font-extrabold text-[#1c1f2e] uppercase tracking-wider pl-0.5">
-                    Zipcode / Pincode
+                    Zipcode
                   </label>
                   <input
                     type="text"
@@ -364,74 +311,7 @@ export default function ZipcodePage() {
                 </button>
               </form>
 
-              {/* Status Alert Cards */}
-              {status === "success" && (
-                <div className="bg-[#ecfdf5] border border-[#10b981] rounded-2xl p-5 flex flex-col gap-2.5 shadow-sm">
-                  <div className="flex items-center gap-2 text-[#059669] font-extrabold text-[14px]">
-                    <CheckCircle2 className="w-5 h-5 shrink-0" />
-                    <span>{t.success_msg}</span>
-                  </div>
 
-                  <div className="text-[13px] text-gray-600 font-semibold pl-7 flex flex-col gap-1.5 border-t border-emerald-100/50 pt-2.5">
-                    <div>
-                      <span className="text-gray-400">Country:</span>{" "}
-                      {matchedCountry}
-                    </div>
-                    {matchedPostcode && (
-                      <div>
-                        <span className="text-gray-400">Postcode/Area:</span>{" "}
-                        {matchedPostcode}
-                      </div>
-                    )}
-                    {matchedCity && (
-                      <div>
-                        <span className="text-gray-400">City:</span>{" "}
-                        {matchedCity}
-                      </div>
-                    )}
-                    {matchedState && (
-                      <div>
-                        <span className="text-gray-400">State/Province:</span>{" "}
-                        {matchedState}
-                      </div>
-                    )}
-                    {matchedDeliveryTime && (
-                      <div>
-                        <span className="text-gray-400">Est. Delivery:</span>{" "}
-                        {matchedDeliveryTime}
-                      </div>
-                    )}
-                    <div>
-                      <span className="text-gray-400">Zone Type:</span>{" "}
-                      {matchedIsRemote
-                        ? "Remote Area (Surcharges may apply)"
-                        : "Standard Zone"}
-                    </div>
-                    {matchedDetails && (
-                      <div className="text-xs text-gray-500 italic mt-1 font-medium">
-                        {matchedDetails}
-                      </div>
-                    )}
-                    {matchedNotes && (
-                      <div className="text-xs text-gray-500 bg-emerald-50/50 p-2.5 rounded-lg mt-1 font-medium leading-relaxed">
-                        {matchedNotes}
-                      </div>
-                    )}
-                  </div>
-                </div>
-              )}
-
-              {status === "fail" && (
-                <div className="bg-[#fef2f2] border border-[#ef4444] rounded-2xl p-5 flex flex-col gap-1.5 shadow-sm">
-                  <div className="flex items-center gap-2 text-[#dc2626] font-extrabold text-[14px]">
-                    <AlertTriangle className="w-5 h-5 shrink-0" />
-                    <span>{t.fail_msg}</span>
-                  </div>
-                  <span className="text-[13px] text-gray-500 font-semibold pl-7">
-                    {t.fail_submsg}
-                  </span>
-                </div>
-              )}
             </div>
 
             {/* Card 2: Need Assistance */}
@@ -452,44 +332,91 @@ export default function ZipcodePage() {
             </div>
           </div>
 
-          {/* Right Column List */}
+          {/* Right Column List / Results */}
           <div className="lg:col-span-7 flex flex-col gap-8">
-            {cities.map((group, gIdx) => (
-              <div key={gIdx} className="flex flex-col gap-4">
-                {/* City Heading Row */}
-                <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-full bg-orange-100 flex items-center justify-center shrink-0">
-                    <MapPin className="w-4 h-4 text-[#f27a1a]" />
-                  </div>
-                  <h3 className="text-[20px] md:text-[22px] font-extrabold text-[#1c1f2e]">
-                    {group.city}
-                  </h3>
+            {status === "success" && (
+              <div className="bg-[#ecfdf5] border border-[#10b981] rounded-4xl p-8 lg:p-10 flex flex-col gap-6 shadow-sm h-full justify-center">
+                <div className="flex items-center gap-3 text-[#059669] font-extrabold text-[24px]">
+                  <CheckCircle2 className="w-8 h-8 shrink-0" />
+                  <span>{t.success_msg}</span>
                 </div>
 
-                {/* List Items */}
-                <div className="flex flex-col gap-3.5">
-                  {group.items.map((item, iIdx) => (
-                    <div
-                      key={iIdx}
-                      className={`flex justify-between items-center px-6 py-4.5 rounded-2xl border transition-all ${item.highlighted
-                          ? "bg-[#fff7ed] border-[#fed7aa] shadow-sm"
-                          : "bg-white border-gray-100 shadow-sm"
-                        }`}
-                    >
-                      <div className="flex items-center gap-3">
-                        <div className="w-2 h-2 rounded-full bg-[#f27a1a] shrink-0" />
-                        <span className="text-[15px] font-extrabold text-[#1c1f2e]">
-                          {item.zip}
-                        </span>
-                      </div>
-                      <span className="text-[13.5px] text-gray-400 font-bold">
-                        {item.days}
-                      </span>
+                <div className="text-[16px] text-gray-600 font-semibold pl-11 flex flex-col gap-4 border-t border-emerald-200 pt-6">
+                  <div className="flex items-center">
+                    <span className="text-gray-400 w-36">Country:</span>
+                    <span className="text-[#1c1f2e] text-[18px]">{matchedCountry}</span>
+                  </div>
+                  {matchedPostcode && (
+                    <div className="flex items-center">
+                      <span className="text-gray-400 w-36">Postcode/Area:</span>
+                      <span className="text-[#1c1f2e] text-[18px]">{matchedPostcode}</span>
                     </div>
-                  ))}
+                  )}
+                  {matchedCity && (
+                    <div className="flex items-center">
+                      <span className="text-gray-400 w-36">City:</span>
+                      <span className="text-[#1c1f2e] text-[18px]">{matchedCity}</span>
+                    </div>
+                  )}
+                  {matchedState && (
+                    <div className="flex items-center">
+                      <span className="text-gray-400 w-36">State/Province:</span>
+                      <span className="text-[#1c1f2e] text-[18px]">{matchedState}</span>
+                    </div>
+                  )}
+                  {matchedDeliveryTime && (
+                    <div className="flex items-center">
+                      <span className="text-gray-400 w-36">Est. Delivery:</span>
+                      <span className="text-[#1c1f2e] text-[18px]">{matchedDeliveryTime}</span>
+                    </div>
+                  )}
+                  <div className="flex items-center">
+                    <span className="text-gray-400 w-36">Zone Type:</span>
+                    <span className="text-[#1c1f2e] text-[18px]">
+                      {matchedIsRemote
+                        ? "Remote Area (Surcharges may apply)"
+                        : "Standard Zone"}
+                    </span>
+                  </div>
+                  {matchedDetails && (
+                    <div className="text-sm text-gray-500 italic mt-2 font-medium">
+                      {matchedDetails}
+                    </div>
+                  )}
+                  {matchedNotes && (
+                    <div className="text-sm text-[#059669] bg-emerald-100/50 p-4 rounded-xl mt-2 font-medium leading-relaxed">
+                      {matchedNotes}
+                    </div>
+                  )}
                 </div>
               </div>
-            ))}
+            )}
+
+            {status === "fail" && (
+              <div className="bg-[#fef2f2] border border-[#ef4444] rounded-4xl p-8 lg:p-10 flex flex-col gap-4 shadow-sm h-full justify-center">
+                <div className="flex items-center gap-3 text-[#dc2626] font-extrabold text-[24px]">
+                  <AlertTriangle className="w-8 h-8 shrink-0" />
+                  <span>{t.fail_msg}</span>
+                </div>
+                <span className="text-[16px] text-gray-500 font-semibold pl-11">
+                  {t.fail_submsg}
+                </span>
+              </div>
+            )}
+
+            {status === "idle" && (
+              <div className="bg-[#eef0f5] rounded-4xl p-8 lg:p-14 flex flex-col items-center justify-center text-center gap-4 h-full min-h-80 shadow-sm border border-gray-200/50">
+                <MapPin size={56} className="text-gray-300" />
+                <div>
+                  <p className="text-[#1c1f2e] font-bold text-lg">
+                    Check Availability
+                  </p>
+                  <p className="text-gray-400 text-sm mt-1">
+                    Please enter a country and service to check delivery availability
+                  </p>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </main>

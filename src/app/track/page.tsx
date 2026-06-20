@@ -225,7 +225,7 @@ export default function TrackPage() {
       <Header />
 
       {/* Banner Section */}
-      <section className="relative bg-[#0b1220] overflow-hidden min-h-55 flex items-center py-12 px-6">
+      <section className="relative bg-[#0D1527] overflow-hidden min-h-55 flex items-center py-12 px-6">
         <div className="absolute inset-0 z-0 opacity-20 bg-[url('https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=2000&q=80')] bg-cover bg-center" />
         <div className="max-w-425 w-full mx-auto flex flex-col md:flex-row justify-between items-start md:items-center relative z-10 gap-4">
           <div>
@@ -505,7 +505,7 @@ export default function TrackPage() {
                   referrerPolicy="no-referrer"
                   className="absolute inset-0 z-0"
                 />
-                <div className="absolute top-4 left-4 z-10 bg-[#0b1220]/90 text-white text-xs font-bold px-3 py-1.5 rounded-full border border-white/10 flex items-center gap-1.5 shadow-md">
+                <div className="absolute top-4 left-4 z-10 bg-[#0D1527]/90 text-white text-xs font-bold px-3 py-1.5 rounded-full border border-white/10 flex items-center gap-1.5 shadow-md">
                   <MapPin className="w-3.5 h-3.5 text-[#f27a1a]" /> {t.live_map}
                 </div>
               </div>

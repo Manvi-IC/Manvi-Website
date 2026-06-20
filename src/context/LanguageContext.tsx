@@ -659,7 +659,7 @@ const translations: Record<Language, Translations> = {
     form_select_dest: "Select Destination Country",
     form_select_euro: "Select European Country",
     form_select_country: "Select Country",
-    form_zipcode: "Zipcode / Postcode",
+    form_zipcode: "Zipcode",
     form_actual_wt: "Actual Weight (kg)",
     form_vol_wt_dim: "Volume Weight Dimensions (cm) — optional",
     form_length: "Length",

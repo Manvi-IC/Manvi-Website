@@ -151,7 +151,7 @@ export default function FAQPage() {
       <Header />
 
       {/* Top Banner Section */}
-      <section className="relative bg-[#0b1220] overflow-hidden min-h-55 flex items-center py-12 px-6">
+      <section className="relative bg-[#0D1527] overflow-hidden min-h-55 flex items-center py-12 px-6">
         <div className="absolute inset-0 z-0 opacity-20 bg-[url('https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=2000&q=80')] bg-cover bg-center" />
         <div className="max-w-425 w-full mx-auto flex flex-col md:flex-row justify-between items-start md:items-center relative z-10 gap-4">
           <div>

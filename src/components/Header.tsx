@@ -63,8 +63,9 @@ export default function Header() {
 
   return (
     <>
-      {/* Top utility bar */}
-      <div className="bg-[#0b1220] text-zinc-300 text-[12px] font-semibold py-3.5 px-4 sm:px-6 border-b border-white/5">
+      <div className="sticky top-0 z-50 w-full flex flex-col">
+        {/* Top utility bar */}
+        <div className="bg-[#0D1527] text-zinc-300 text-[12px] font-semibold py-3.5 px-4 sm:px-6 border-b border-white/5 relative z-50">
         <div className="max-w-425 mx-auto flex flex-col md:flex-row justify-between items-center gap-2.5 md:gap-0">
           <div className="flex items-center justify-between sm:justify-start gap-4 w-full md:w-auto">
             <div className="flex items-center gap-1.5 sm:gap-2">
@@ -173,8 +174,8 @@ export default function Header() {
       </div>
 
       {/* Main header */}
-      <header className="sticky top-0 z-50 px-4 sm:px-6 py-4">
-        <div className="max-w-425 mx-auto bg-[#0b1220] rounded-2xl px-6 sm:px-8 py-4 flex justify-between items-center">
+      <header className="px-4 sm:px-6 py-4 relative z-50">
+        <div className="max-w-425 mx-auto bg-[#0D1527] rounded-2xl px-6 sm:px-8 py-4 flex justify-between items-center">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-3">
             <img
@@ -293,6 +294,7 @@ export default function Header() {
           </div>
         </div>
       </header>
+      </div>
 
       {/* Mobile Menu Dropdown */}
       {isMobileMenuOpen && (
