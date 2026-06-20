@@ -712,8 +712,8 @@ const translations: Record<Language, Translations> = {
     campaign_hero_title_highlight2: "Your Door Worldwide.",
     campaign_hero_subtext:
       "Documents, gifts, parcels, and commercial shipments to the USA, UK, Canada, Australia and beyond. Doorstep pickup. Customs handled. Real-time tracking.",
-    campaign_hero_trusted: "Trusted By 10,000+ Families Worldwide",
-    campaign_hero_shipments: "50,000+ Shipments Delivered",
+    campaign_hero_trusted: "Trusted By 100K+ Families Worldwide",
+    campaign_hero_shipments: "1M+ Shipments Delivered",
     campaign_partners_title: "Trusted Delivery\nPartners ✈️",
     campaign_how_it_works_badge: "How It Works",
     campaign_how_it_works_title: "Ship in Four Simple Steps",
@@ -1126,8 +1126,8 @@ const translations: Record<Language, Translations> = {
     campaign_hero_title_highlight2: "दुनिया भर में आपके दरवाजे तक।",
     campaign_hero_subtext:
       "USA, UK, कनाडा, ऑस्ट्रेलिया और अन्य देशों में दस्तावेज़, उपहार, पार्सल और वाणिज्यिक शिपमेंट। घर से पिकअप। कस्टम क्लीयरेंस। रियल-टाइम ट्रैकिंग।",
-    campaign_hero_trusted: "दुनिया भर में 10,000+ परिवारों द्वारा भरोसेमंद",
-    campaign_hero_shipments: "50,000+ शिपमेंट डिलीवर किए गए",
+    campaign_hero_trusted: "दुनिया भर में 100K+ परिवारों द्वारा भरोसेमंद",
+    campaign_hero_shipments: "1M+ शिपमेंट डिलीवर किए गए",
     campaign_partners_title: "भरोसेमंद डिलीवरी\nपार्टनर्स ✈️",
     campaign_how_it_works_badge: "यह कैसे काम करता है",
     campaign_how_it_works_title: "चार सरल चरणों में शिप करें",
@@ -1541,8 +1541,8 @@ const translations: Record<Language, Translations> = {
     campaign_hero_title_highlight2: "ਦੁਨੀਆ ਭਰ ਵਿੱਚ ਤੁਹਾਡੇ ਦਰਵਾਜ਼ੇ ਤੱਕ।",
     campaign_hero_subtext:
       "USA, UK, ਕੈਨੇਡਾ, ਆਸਟ੍ਰੇਲੀਆ ਅਤੇ ਹੋਰ ਦੇਸ਼ਾਂ ਵਿੱਚ ਦਸਤਾਵੇਜ਼, ਤੋਹਫ਼ੇ, ਪਾਰਸਲ ਅਤੇ ਵਪਾਰਕ ਸ਼ਿਪਮੈਂਟ। ਘਰ ਤੋਂ ਪਿਕਅੱਪ। ਕਸਟਮ ਕਲੀਅਰੈਂਸ। ਰੀਅਲ-ਟਾਈਮ ਟਰੈਕਿੰਗ।",
-    campaign_hero_trusted: "ਦੁਨੀਆ ਭਰ ਵਿੱਚ 10,000+ ਪਰਿਵਾਰਾਂ ਦੁਆਰਾ ਭਰੋਸੇਯੋਗ",
-    campaign_hero_shipments: "50,000+ ਸ਼ਿਪਮੈਂਟ ਡਿਲੀਵਰ ਕੀਤੇ ਗਏ",
+    campaign_hero_trusted: "ਦੁਨੀਆ ਭਰ ਵਿੱਚ 100K+ ਪਰਿਵਾਰਾਂ ਦੁਆਰਾ ਭਰੋਸੇਯੋਗ",
+    campaign_hero_shipments: "1M+ ਸ਼ਿਪਮੈਂਟ ਡਿਲੀਵਰ ਕੀਤੇ ਗਏ",
     campaign_partners_title: "ਭਰੋਸੇਯੋਗ ਡਿਲੀਵਰੀ\nਪਾਰਟਨਰ ✈️",
     campaign_how_it_works_badge: "ਇਹ ਕਿਵੇਂ ਕੰਮ ਕਰਦਾ ਹੈ",
     campaign_how_it_works_title: "ਚਾਰ ਸਰਲ ਕਦਮਾਂ ਵਿੱਚ ਸ਼ਿਪ ਕਰੋ",
@@ -2377,8 +2377,8 @@ const translations: Record<Language, Translations> = {
     campaign_hero_subtext:
       "Documentos, regalos, paquetes y envíos comerciales a EE.UU., Reino Unido, Canadá, Australia y más allá. Recogida en la puerta. Aduanas gestionadas. Seguimiento en tiempo real.",
     campaign_hero_trusted:
-      "Aprobado por más de 10,000 familias en todo el mundo",
-    campaign_hero_shipments: "Más de 50,000 envíos entregados",
+      "Aprobado por más de 100K+ familias en todo el mundo",
+    campaign_hero_shipments: "Más de 1M+ envíos entregados",
     campaign_partners_title: "Socios de entrega\nde confianza ✈️",
     campaign_how_it_works_badge: "Cómo funciona",
     campaign_how_it_works_title: "Envíe en cuatro pasos sencillos",
