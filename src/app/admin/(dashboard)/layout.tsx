@@ -65,7 +65,7 @@ export default function AdminLayout({
   return (
     <div className="min-h-screen bg-gray-100 flex">
       {/* Sidebar */}
-      <aside className="w-64 bg-[#0b1220] text-white flex flex-col hidden md:flex">
+      <aside className="w-64 bg-[#0D1527] text-white flex flex-col hidden md:flex">
         <div className="h-16 flex items-center px-6 bg-[#050914] font-bold text-xl tracking-wider">
           Manvi Admin Panel
         </div>
