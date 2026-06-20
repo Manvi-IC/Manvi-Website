@@ -437,7 +437,7 @@ export default function ServicesPage() {
   const lang: Language = language || "en";
   const t = localTranslations[lang] || localTranslations.en;
 
-  const [activeSection, setActiveSection] = useState("dhl");
+  const [activeSection, setActiveSection] = useState("direct");
 
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
@@ -456,7 +456,7 @@ export default function ServicesPage() {
   };
 
   useEffect(() => {
-    const sectionIds = ["dhl", "ups", "fedex", "aramex", "fedex-medicine", "direct"];
+    const sectionIds = ["direct", "dhl", "ups", "fedex", "aramex", "fedex-medicine"];
     const observers = sectionIds.map((id) => {
       const el = document.getElementById(id);
       if (!el) return null;
@@ -499,6 +499,11 @@ export default function ServicesPage() {
 
   const navItems = [
     {
+      name: t.lbl_direct_badge,
+      icon: <Globe className="w-5 h-5 text-[#f27a1a]" />,
+      id: "direct",
+    },
+    {
       name: "DHL",
       icon: <Globe className="w-5 h-5 text-[#f27a1a]" />,
       id: "dhl",
@@ -523,11 +528,7 @@ export default function ServicesPage() {
       icon: <Truck className="w-5 h-5 text-[#f27a1a]" />,
       id: "aramex",
     },
-    {
-      name: t.lbl_direct_badge,
-      icon: <Globe className="w-5 h-5 text-[#f27a1a]" />,
-      id: "direct",
-    },
+    
   ];
 
   const serviceDetails = [
@@ -748,6 +749,245 @@ export default function ServicesPage() {
 
           {/* Right Content */}
           <div className="flex flex-col gap-8">
+                        {/* DIRECT (SELF-NETWORK) SERVICES */}
+            <div
+              id="direct"
+              className="bg-[#f8f9fa] rounded-2xl shadow-md border border-gray-100/50 p-6 sm:p-8 md:p-10 flex flex-col"
+            >
+              <div className="mb-6">
+                <span className="inline-block border border-[#f27a1a] text-[#f27a1a] font-bold text-xs px-4 py-1.5 rounded-full uppercase tracking-wide">
+                  {t.lbl_direct_badge}
+                </span>
+              </div>
+              <h3 className="text-3xl font-extrabold text-[#1c1f2e] mb-2">
+                {t.lbl_direct_title}
+              </h3>
+              <p className="text-gray-500 text-sm font-bold leading-relaxed mb-6">
+                {t.lbl_direct_sub}
+              </p>
+
+              <h5 className="font-extrabold text-sm text-[#1c1f2e] mb-4">
+                {t.label_nondox}
+              </h5>
+
+              <div className="flex flex-col gap-6">
+                {/* UK */}
+                <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-sm">
+                  <h4 className="text-2xl font-extrabold text-[#f27a1a] mb-2">
+                    {t.lbl_uk_title}
+                  </h4>
+                  <h5 className="font-bold text-[#1c1f2e] text-sm mb-3">
+                    {t.lbl_uk_sub}
+                  </h5>
+                  <p className="text-gray-400 text-xs font-medium mb-4">
+                    {t.lbl_uk_desc}
+                  </p>
+
+                  <ul className="flex flex-col gap-1.5 mb-4">
+                    {[
+                      { l: t.tbl_dest, v: "United Kingdom" },
+                      { l: t.tbl_weight, v: "500g - 30kg per box" },
+                      { l: "Box size", v: "Up to 90x70x60 cm" },
+                      { l: t.tbl_limit, v: "No limit" },
+                      { l: t.tbl_delivery, v: "6-8 working days" },
+                    ].map((item, i) => (
+                      <li
+                        key={i}
+                        className="text-xs text-gray-500 font-medium flex items-center"
+                      >
+                        <span className="w-1 h-1 rounded-full bg-gray-400 mr-2 shrink-0" />
+                        <span className="text-gray-500 mr-1">{item.l}:</span>{" "}
+                        {item.v}
+                      </li>
+                    ))}
+                  </ul>
+                  <p className="text-gray-400 text-[10px] font-medium">
+                    {t.lbl_uk_note}
+                  </p>
+                </div>
+
+                {/* Europe */}
+                <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-sm">
+                  <h4 className="text-2xl font-extrabold text-[#f27a1a] mb-2">
+                    {t.lbl_eu_title}
+                  </h4>
+                  <h5 className="font-bold text-[#1c1f2e] text-sm mb-3">
+                    {t.lbl_eu_sub}
+                  </h5>
+                  <p className="text-gray-400 text-xs font-medium mb-4">
+                    {t.lbl_eu_desc}
+                  </p>
+
+                  <ul className="flex flex-col gap-1.5">
+                    {[
+                      { l: t.tbl_dest, v: "All of Europe" },
+                      { l: t.tbl_weight, v: "1kg - 30kg per box" },
+                      { l: "Box size", v: "Up to 90x70x60 cm" },
+                      { l: "Boxes", v: "Single piece" },
+                      { l: t.tbl_limit, v: "No limit" },
+                      { l: t.tbl_delivery, v: "12-15 working days" },
+                    ].map((item, i) => (
+                      <li
+                        key={i}
+                        className="text-xs text-gray-500 font-medium flex items-center"
+                      >
+                        <span className="w-1 h-1 rounded-full bg-gray-400 mr-2 shrink-0" />
+                        <span className="text-gray-500 mr-1">{item.l}:</span>{" "}
+                        {item.v}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* Canada */}
+                <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-sm">
+                  <h4 className="text-2xl font-extrabold text-[#f27a1a] mb-2">
+                    {t.lbl_ca_title}
+                  </h4>
+                  <h5 className="font-bold text-[#1c1f2e] text-sm mb-3">
+                    {t.lbl_ca_sub}
+                  </h5>
+                  <p className="text-gray-400 text-xs font-medium mb-5">
+                    {t.lbl_ca_desc}
+                  </p>
+
+                  <div className="overflow-x-auto pb-4">
+                    <table className="w-full text-left min-w-[500px] border-collapse">
+                      <thead>
+                        <tr className="border-b border-gray-200">
+                          <th className="font-bold text-xs text-[#1c1f2e] pb-3">
+                            Route
+                          </th>
+                          <th className="font-bold text-xs text-[#1c1f2e] pb-3">
+                            {t.tbl_weight}
+                          </th>
+                          <th className="font-bold text-xs text-[#1c1f2e] pb-3">
+                            {t.tbl_limit}
+                          </th>
+                          <th className="font-bold text-xs text-[#1c1f2e] pb-3">
+                            {t.tbl_delivery}
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr className="border-b border-gray-100">
+                          <td className="text-xs font-medium text-gray-500 py-4">
+                            Via Vancouver (YVR)
+                          </td>
+                          <td className="text-xs font-medium text-gray-500 py-4">
+                            20kg/box, no total limit
+                          </td>
+                          <td className="text-xs font-medium text-gray-500 py-4">
+                            No limit
+                          </td>
+                          <td className="text-xs font-medium text-gray-500 py-4">
+                            12-15 working days
+                          </td>
+                        </tr>
+                        <tr className="border-b border-gray-100">
+                          <td className="text-xs font-medium text-gray-500 py-4">
+                            Via Toronto (YYZ)
+                          </td>
+                          <td className="text-xs font-medium text-gray-500 py-4">
+                            20kg/box, no total limit
+                          </td>
+                          <td className="text-xs font-medium text-gray-500 py-4">
+                            No limit
+                          </td>
+                          <td className="text-xs font-medium text-gray-500 py-4">
+                            12-15 working days
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <p className="text-gray-400 text-[10px] font-medium mt-2">
+                    Box size: Up to 90x70x60 cm | Single or multiple pieces
+                    accepted
+                  </p>
+                </div>
+
+                {/* Australia */}
+                <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-sm">
+                  <h4 className="text-2xl font-extrabold text-[#f27a1a] mb-2">
+                    {t.lbl_au_title}
+                  </h4>
+                  <h5 className="font-bold text-[#1c1f2e] text-sm mb-3">
+                    {t.lbl_au_sub}
+                  </h5>
+                  <p className="text-gray-400 text-xs font-medium mb-5">
+                    {t.lbl_au_desc}
+                  </p>
+
+                  <div className="overflow-x-auto pb-4">
+                    <table className="w-full text-left min-w-[400px] border-collapse mb-6">
+                      <thead>
+                        <tr className="border-b border-gray-200">
+                          <th className="font-bold text-xs text-[#1c1f2e] pb-3">
+                            Zone
+                          </th>
+                          <th className="font-bold text-xs text-[#1c1f2e] pb-3">
+                            {t.tbl_delivery}
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr className="border-b border-gray-100">
+                          <td className="text-xs font-medium text-gray-500 py-4">
+                            Zone 1
+                          </td>
+                          <td className="text-xs font-medium text-gray-500 py-4">
+                            12-15 working days
+                          </td>
+                        </tr>
+                        <tr className="border-b border-gray-100">
+                          <td className="text-xs font-medium text-gray-500 py-4">
+                            Zone 2
+                          </td>
+                          <td className="text-xs font-medium text-gray-500 py-4">
+                            15-18 working days
+                          </td>
+                        </tr>
+                        <tr className="border-b border-gray-100">
+                          <td className="text-xs font-medium text-gray-500 py-4">
+                            Zones 3-8
+                          </td>
+                          <td className="text-xs font-medium text-gray-500 py-4">
+                            18-22 working days
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <ul className="flex flex-col gap-1.5 mb-5">
+                    {[
+                      {
+                        l: t.tbl_weight,
+                        v: "500g - 20kg per box, no limit on total shipment weight",
+                      },
+                      { l: "Box size", v: "Up to 90x70x60 cm" },
+                      { l: "Boxes", v: "Single or multiple pieces" },
+                      { l: t.tbl_limit, v: "No limit" },
+                    ].map((item, i) => (
+                      <li
+                        key={i}
+                        className="text-xs text-gray-500 font-medium flex items-center"
+                      >
+                        <span className="w-1 h-1 rounded-full bg-gray-400 mr-2 shrink-0" />
+                        <span className="text-gray-500 mr-1">{item.l}:</span>{" "}
+                        {item.v}
+                      </li>
+                    ))}
+                  </ul>
+
+                  <p className="text-[#f27a1a] text-[11px] font-bold">
+                    {t.lbl_au_note}
+                  </p>
+                </div>
+              </div>
+            </div>
+
             {serviceDetails.map((service, idx) => (
               <div
                 key={service.id}
@@ -1058,244 +1298,7 @@ export default function ServicesPage() {
               </div>
             </div>
 
-            {/* DIRECT (SELF-NETWORK) SERVICES */}
-            <div
-              id="direct"
-              className="bg-[#f8f9fa] rounded-2xl shadow-md border border-gray-100/50 p-6 sm:p-8 md:p-10 flex flex-col"
-            >
-              <div className="mb-6">
-                <span className="inline-block border border-[#f27a1a] text-[#f27a1a] font-bold text-xs px-4 py-1.5 rounded-full uppercase tracking-wide">
-                  {t.lbl_direct_badge}
-                </span>
-              </div>
-              <h3 className="text-3xl font-extrabold text-[#1c1f2e] mb-2">
-                {t.lbl_direct_title}
-              </h3>
-              <p className="text-gray-500 text-sm font-bold leading-relaxed mb-6">
-                {t.lbl_direct_sub}
-              </p>
 
-              <h5 className="font-extrabold text-sm text-[#1c1f2e] mb-4">
-                {t.label_nondox}
-              </h5>
-
-              <div className="flex flex-col gap-6">
-                {/* UK */}
-                <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-sm">
-                  <h4 className="text-2xl font-extrabold text-[#f27a1a] mb-2">
-                    {t.lbl_uk_title}
-                  </h4>
-                  <h5 className="font-bold text-[#1c1f2e] text-sm mb-3">
-                    {t.lbl_uk_sub}
-                  </h5>
-                  <p className="text-gray-400 text-xs font-medium mb-4">
-                    {t.lbl_uk_desc}
-                  </p>
-
-                  <ul className="flex flex-col gap-1.5 mb-4">
-                    {[
-                      { l: t.tbl_dest, v: "United Kingdom" },
-                      { l: t.tbl_weight, v: "500g - 30kg per box" },
-                      { l: "Box size", v: "Up to 90x70x60 cm" },
-                      { l: t.tbl_limit, v: "No limit" },
-                      { l: t.tbl_delivery, v: "6-8 working days" },
-                    ].map((item, i) => (
-                      <li
-                        key={i}
-                        className="text-xs text-gray-500 font-medium flex items-center"
-                      >
-                        <span className="w-1 h-1 rounded-full bg-gray-400 mr-2 shrink-0" />
-                        <span className="text-gray-500 mr-1">{item.l}:</span>{" "}
-                        {item.v}
-                      </li>
-                    ))}
-                  </ul>
-                  <p className="text-gray-400 text-[10px] font-medium">
-                    {t.lbl_uk_note}
-                  </p>
-                </div>
-
-                {/* Europe */}
-                <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-sm">
-                  <h4 className="text-2xl font-extrabold text-[#f27a1a] mb-2">
-                    {t.lbl_eu_title}
-                  </h4>
-                  <h5 className="font-bold text-[#1c1f2e] text-sm mb-3">
-                    {t.lbl_eu_sub}
-                  </h5>
-                  <p className="text-gray-400 text-xs font-medium mb-4">
-                    {t.lbl_eu_desc}
-                  </p>
-
-                  <ul className="flex flex-col gap-1.5">
-                    {[
-                      { l: t.tbl_dest, v: "All of Europe" },
-                      { l: t.tbl_weight, v: "1kg - 30kg per box" },
-                      { l: "Box size", v: "Up to 90x70x60 cm" },
-                      { l: "Boxes", v: "Single piece" },
-                      { l: t.tbl_limit, v: "No limit" },
-                      { l: t.tbl_delivery, v: "12-15 working days" },
-                    ].map((item, i) => (
-                      <li
-                        key={i}
-                        className="text-xs text-gray-500 font-medium flex items-center"
-                      >
-                        <span className="w-1 h-1 rounded-full bg-gray-400 mr-2 shrink-0" />
-                        <span className="text-gray-500 mr-1">{item.l}:</span>{" "}
-                        {item.v}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                {/* Canada */}
-                <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-sm">
-                  <h4 className="text-2xl font-extrabold text-[#f27a1a] mb-2">
-                    {t.lbl_ca_title}
-                  </h4>
-                  <h5 className="font-bold text-[#1c1f2e] text-sm mb-3">
-                    {t.lbl_ca_sub}
-                  </h5>
-                  <p className="text-gray-400 text-xs font-medium mb-5">
-                    {t.lbl_ca_desc}
-                  </p>
-
-                  <div className="overflow-x-auto pb-4">
-                    <table className="w-full text-left min-w-[500px] border-collapse">
-                      <thead>
-                        <tr className="border-b border-gray-200">
-                          <th className="font-bold text-xs text-[#1c1f2e] pb-3">
-                            Route
-                          </th>
-                          <th className="font-bold text-xs text-[#1c1f2e] pb-3">
-                            {t.tbl_weight}
-                          </th>
-                          <th className="font-bold text-xs text-[#1c1f2e] pb-3">
-                            {t.tbl_limit}
-                          </th>
-                          <th className="font-bold text-xs text-[#1c1f2e] pb-3">
-                            {t.tbl_delivery}
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr className="border-b border-gray-100">
-                          <td className="text-xs font-medium text-gray-500 py-4">
-                            Via Vancouver (YVR)
-                          </td>
-                          <td className="text-xs font-medium text-gray-500 py-4">
-                            20kg/box, no total limit
-                          </td>
-                          <td className="text-xs font-medium text-gray-500 py-4">
-                            No limit
-                          </td>
-                          <td className="text-xs font-medium text-gray-500 py-4">
-                            12-15 working days
-                          </td>
-                        </tr>
-                        <tr className="border-b border-gray-100">
-                          <td className="text-xs font-medium text-gray-500 py-4">
-                            Via Toronto (YYZ)
-                          </td>
-                          <td className="text-xs font-medium text-gray-500 py-4">
-                            20kg/box, no total limit
-                          </td>
-                          <td className="text-xs font-medium text-gray-500 py-4">
-                            No limit
-                          </td>
-                          <td className="text-xs font-medium text-gray-500 py-4">
-                            12-15 working days
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                  <p className="text-gray-400 text-[10px] font-medium mt-2">
-                    Box size: Up to 90x70x60 cm | Single or multiple pieces
-                    accepted
-                  </p>
-                </div>
-
-                {/* Australia */}
-                <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-sm">
-                  <h4 className="text-2xl font-extrabold text-[#f27a1a] mb-2">
-                    {t.lbl_au_title}
-                  </h4>
-                  <h5 className="font-bold text-[#1c1f2e] text-sm mb-3">
-                    {t.lbl_au_sub}
-                  </h5>
-                  <p className="text-gray-400 text-xs font-medium mb-5">
-                    {t.lbl_au_desc}
-                  </p>
-
-                  <div className="overflow-x-auto pb-4">
-                    <table className="w-full text-left min-w-[400px] border-collapse mb-6">
-                      <thead>
-                        <tr className="border-b border-gray-200">
-                          <th className="font-bold text-xs text-[#1c1f2e] pb-3">
-                            Zone
-                          </th>
-                          <th className="font-bold text-xs text-[#1c1f2e] pb-3">
-                            {t.tbl_delivery}
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr className="border-b border-gray-100">
-                          <td className="text-xs font-medium text-gray-500 py-4">
-                            Zone 1
-                          </td>
-                          <td className="text-xs font-medium text-gray-500 py-4">
-                            12-15 working days
-                          </td>
-                        </tr>
-                        <tr className="border-b border-gray-100">
-                          <td className="text-xs font-medium text-gray-500 py-4">
-                            Zone 2
-                          </td>
-                          <td className="text-xs font-medium text-gray-500 py-4">
-                            15-18 working days
-                          </td>
-                        </tr>
-                        <tr className="border-b border-gray-100">
-                          <td className="text-xs font-medium text-gray-500 py-4">
-                            Zones 3-8
-                          </td>
-                          <td className="text-xs font-medium text-gray-500 py-4">
-                            18-22 working days
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-
-                  <ul className="flex flex-col gap-1.5 mb-5">
-                    {[
-                      {
-                        l: t.tbl_weight,
-                        v: "500g - 20kg per box, no limit on total shipment weight",
-                      },
-                      { l: "Box size", v: "Up to 90x70x60 cm" },
-                      { l: "Boxes", v: "Single or multiple pieces" },
-                      { l: t.tbl_limit, v: "No limit" },
-                    ].map((item, i) => (
-                      <li
-                        key={i}
-                        className="text-xs text-gray-500 font-medium flex items-center"
-                      >
-                        <span className="w-1 h-1 rounded-full bg-gray-400 mr-2 shrink-0" />
-                        <span className="text-gray-500 mr-1">{item.l}:</span>{" "}
-                        {item.v}
-                      </li>
-                    ))}
-                  </ul>
-
-                  <p className="text-[#f27a1a] text-[11px] font-bold">
-                    {t.lbl_au_note}
-                  </p>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </main>
