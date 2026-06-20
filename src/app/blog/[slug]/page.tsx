@@ -51,7 +51,7 @@ function SlideshowBlock({ block }: { block: BlogBlock }) {
         ) : (
           <div className="slideshow-placeholder">No Image URL</div>
         )}
-        
+
         {images.length > 1 && (
           <>
             <button type="button" className="slideshow-btn prev" onClick={handlePrev}>&larr;</button>
@@ -59,14 +59,14 @@ function SlideshowBlock({ block }: { block: BlogBlock }) {
           </>
         )}
       </div>
-      
+
       <div className="slideshow-meta">
         {currentImage.caption && <div className="slideshow-caption">{currentImage.caption}</div>}
         {images.length > 1 && (
           <div className="slideshow-dots">
             {images.map((_, idx) => (
-              <span 
-                key={idx} 
+              <span
+                key={idx}
                 className={`slideshow-dot ${idx === currentIndex ? "active" : ""}`}
                 onClick={() => setCurrentIndex(idx)}
               />
@@ -158,7 +158,7 @@ const translatePostData = async (originalPost: BlogPost, targetLang: string): Pr
 export default function BlogPostPage({ params }: PageProps) {
   const { slug } = use(params);
   const { language: globalLang } = useLanguage();
-  
+
   const [post, setPost] = useState<BlogPost | undefined>(() => getPostBySlug(slug));
   const [related, setRelated] = useState<BlogPost[]>(() => {
     const p = getPostBySlug(slug);
@@ -183,7 +183,7 @@ export default function BlogPostPage({ params }: PageProps) {
   // Sync translation language when site global language changes
   useEffect(() => {
     if (!post) return;
-    
+
     if (globalLang && globalLang !== activeTransLang) {
       handleLangSelect(globalLang);
     }
@@ -191,21 +191,21 @@ export default function BlogPostPage({ params }: PageProps) {
 
   const handleLangSelect = async (targetLang: string) => {
     if (!post) return;
-    
+
     setActiveTransLang(targetLang);
-    
+
     if (targetLang === "en") {
       setTranslatedPost(null);
       setTranslationState("idle");
       return;
     }
-    
+
     if (translationCache[targetLang]) {
       setTranslatedPost(translationCache[targetLang]);
       setTranslationState("success");
       return;
     }
-    
+
     setTranslationState("translating");
     try {
       const translated = await translatePostData(post, targetLang);
@@ -225,7 +225,7 @@ export default function BlogPostPage({ params }: PageProps) {
         const data = await res.json();
         if (data.success && data.data) {
           setPost(data.data);
-          
+
           const allRes = await fetch(`${API_URL}/api/blogs`);
           const allData = await allRes.json();
           if (allData.success && allData.data) {
@@ -879,12 +879,10 @@ export default function BlogPostPage({ params }: PageProps) {
         /* Booking CTA Banner */
         .booking-cta-banner {
           background: linear-gradient(135deg, #0d1527, #1e293b);
-          border-radius: 20px;
-          padding: 36px;
+          padding: 60px 24px;
           text-align: center;
           color: #fff;
-          margin: 60px 0 40px;
-          border: 1px solid rgba(255, 255, 255, 0.08);
+          width: 100%;
           position: relative;
           overflow: hidden;
         }
@@ -930,9 +928,8 @@ export default function BlogPostPage({ params }: PageProps) {
 
         /* Related Articles */
         .related-section {
-          border-top: 1px solid var(--line);
-          padding-top: 60px;
-          margin-top: 60px;
+          padding-top: 40px;
+          margin-bottom: 60px;
         }
 
         .related-section h3 {
@@ -1029,7 +1026,7 @@ export default function BlogPostPage({ params }: PageProps) {
               </span>
             )}
             {activeTransLang !== "en" && translationState === "success" && (
-              <button 
+              <button
                 onClick={() => handleLangSelect("en")}
                 className="view-original-btn-minimal"
               >
@@ -1068,21 +1065,27 @@ export default function BlogPostPage({ params }: PageProps) {
           )}
 
           <div className="article-content">
-            {displayPost.content.map((block, idx) => renderBlock(block, idx))}
+            {displayPost.content.map((block, idx) => (
+              <React.Fragment key={idx}>
+                {renderBlock(block, idx)}
+              </React.Fragment>
+            ))}
           </div>
         </article>
+      </div>
 
-        {/* CTA Banner */}
-        <div className="booking-cta-banner">
-          <h3>Need to ship internationally?</h3>
-          <p>
-            Get a reliable quote, check pin code serviceability, or arrange a doorstep pickup from our logistics team.
-          </p>
-          <Link href="/zipcode" className="cta-btn">
-            Calculate Shipping Cost
-          </Link>
-        </div>
+      {/* CTA Banner */}
+      <div className="booking-cta-banner">
+        <h3>Need to Ship Internationally?</h3>
+        <p>
+          Get a reliable quote, check pin code serviceability, or arrange a doorstep pickup from our logistics team.
+        </p>
+        <Link href="/zipcode" className="cta-btn">
+          Calculate Shipping Cost
+        </Link>
+      </div>
 
+      <div className="post-container" style={{ paddingTop: 0 }}>
         {/* Related Section */}
         {related.length > 0 && (
           <div className="related-section">
