@@ -2,7 +2,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Geist, League_Spartan } from "next/font/google";
+import { Geist } from "next/font/google";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ApplyModal from "./ApplyModal";
@@ -42,8 +42,8 @@ interface StepItem {
 }
 
 const STATS: StatItem[] = [
-  { value: "50,000+", label: "International shipments delivered" },
-  { value: "10,000+", label: "Happy customers worldwide" },
+  { value: "1M+", label: "International shipments delivered" },
+  { value: "100K+", label: "Happy customers worldwide" },
   { value: "98%", label: "Delivery success rate" },
   { value: "5", label: "Global carrier partners" },
 ];
@@ -191,8 +191,12 @@ export default function CareerPage(): React.ReactElement {
           --accent: #f27a1a;
           --accent-deep: #db660c;
           --accent-soft: #fed7aa;
-          --display: ${geist.style.fontFamily}, -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", sans-serif;
-          --body: ${geist.style.fontFamily}, -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", sans-serif;
+          --display:
+            ${geist.style.fontFamily}, -apple-system, BlinkMacSystemFont,
+            "Segoe UI", "Roboto", sans-serif;
+          --body:
+            ${geist.style.fontFamily}, -apple-system, BlinkMacSystemFont,
+            "Segoe UI", "Roboto", sans-serif;
           --radius: 16px;
 
           font-family: var(--body);
@@ -214,7 +218,8 @@ export default function CareerPage(): React.ReactElement {
         }
 
         .wrap {
-          max-width: 1080px;
+          max-width: 106rem;
+          width: 100%;
           margin: 0 auto;
           padding: 0 24px;
         }
