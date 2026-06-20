@@ -488,9 +488,9 @@ export default function BusinessCampaignPage() {
             </h3>
             <p className="text-[14px] sm:text-[15px] text-[#555] leading-relaxed">
               {t.b2b_what_ship_desc}{" "}
-              <strong className="text-[#ff7a00] font-extrabold">
+              <span className="text-[#ff7a00] font-extrabold">
                 {t.b2b_what_ship_ask}
-              </strong>{" "}
+              </span>{" "}
               {t.b2b_what_ship_confirm}
             </p>
           </div>
@@ -694,9 +694,8 @@ export default function BusinessCampaignPage() {
                     >
                       <span>{t[f.qKey as keyof typeof t]}</span>
                       <ChevronDown
-                        className={`w-5 h-5 text-[#ff7a00] shrink-0 mt-0.5 transition-transform duration-300 ${
-                          isActive ? "rotate-180" : ""
-                        }`}
+                        className={`w-5 h-5 text-[#ff7a00] shrink-0 mt-0.5 transition-transform duration-300 ${isActive ? "rotate-180" : ""
+                          }`}
                       />
                     </h3>
                   </div>

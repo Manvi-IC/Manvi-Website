@@ -403,23 +403,23 @@ export default function BlogPostPage({ params }: PageProps) {
         }
 
         .post-container {
-          max-width: 1250px;
+          max-width: 1000px;
           margin: 0 auto;
           padding: 40px 24px 80px;
           width: 100%;
-          display: grid;
-          grid-template-columns: 220px 1fr;
-          gap: 48px;
-          align-items: start;
+          position: relative;
         }
 
         .blog-sidebar {
-          position: sticky;
-          top: 120px;
           display: flex;
-          flex-direction: column;
-          gap: 24px;
-          align-self: start;
+          flex-direction: row;
+          justify-content: space-between;
+          align-items: center;
+          border-bottom: 1px solid var(--line);
+          padding-bottom: 16px;
+          margin-bottom: 30px;
+          gap: 16px;
+          width: 100%;
         }
 
         .back-link {
@@ -432,7 +432,6 @@ export default function BlogPostPage({ params }: PageProps) {
           font-size: 0.92rem;
           transition: color 0.2s;
           margin: 0;
-          width: 100%;
         }
 
         .back-link:hover {
@@ -789,26 +788,18 @@ export default function BlogPostPage({ params }: PageProps) {
           border-radius: 4px;
         }
 
-        @media (max-width: 1024px) {
-          .post-container {
-            grid-template-columns: 1fr;
-            gap: 32px;
-            padding-top: 24px;
-          }
+        @media (min-width: 1300px) {
           .blog-sidebar {
-            position: static;
-            flex-direction: row;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid var(--line);
-            padding-bottom: 20px;
-            gap: 16px;
-          }
-          .back-link {
-            width: auto;
-          }
-          .top-left-translation-bar {
-            width: auto;
+            position: absolute;
+            left: -180px;
+            top: 40px;
+            width: 150px;
+            flex-direction: column;
+            align-items: flex-start;
+            border-bottom: none;
+            padding-bottom: 0;
+            margin-bottom: 0;
+            gap: 24px;
           }
         }
 
