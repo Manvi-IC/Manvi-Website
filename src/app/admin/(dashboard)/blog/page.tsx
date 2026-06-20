@@ -97,6 +97,8 @@ interface BlogBlock {
   caption?: string;
   layout?: string; // e.g. "left-image", "right-image", "top-image", "bottom-image"
   images?: Array<{ src: string; alt?: string; caption?: string }>;
+  buttonText?: string;
+  buttonLink?: string;
 }
 
 interface BlogPost {
@@ -134,6 +136,7 @@ export default function BlogManagementPage() {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [message, setMessage] = useState<{ text: string; type: "success" | "error" } | null>(null);
+  const [insertMenuIndex, setInsertMenuIndex] = useState<number | null>(null);
 
   // Form State
   const [title, setTitle] = useState("");
@@ -234,7 +237,7 @@ export default function BlogManagementPage() {
   };
 
   // Block Helpers
-  const addBlock = (type: "paragraph" | "subheading" | "list" | "callout" | "image" | "heading" | "divider" | "slideshow") => {
+  const addBlock = (type: "paragraph" | "subheading" | "list" | "callout" | "image" | "heading" | "divider" | "slideshow", insertIndex?: number) => {
     const newBlock: BlogBlock = { type };
     if (type === "paragraph") {
       newBlock.text = "";
@@ -259,7 +262,14 @@ export default function BlogManagementPage() {
       newBlock.alt = "";
       newBlock.caption = "";
     }
-    setContentBlocks([...contentBlocks, newBlock]);
+    
+    if (typeof insertIndex === "number") {
+      const newBlocks = [...contentBlocks];
+      newBlocks.splice(insertIndex, 0, newBlock);
+      setContentBlocks(newBlocks);
+    } else {
+      setContentBlocks([...contentBlocks, newBlock]);
+    }
   };
 
   const removeBlock = (index: number) => {
@@ -525,63 +535,17 @@ export default function BlogManagementPage() {
 
           {/* Structured Content Blocks */}
           <div className="border-t pt-6 space-y-4">
-              <div className="flex flex-wrap gap-2.5">
-                <button
-                  type="button"
-                  onClick={() => addBlock("paragraph")}
-                  className="bg-blue-50 text-blue-700 hover:bg-blue-100 border border-blue-200 text-xs px-3.5 py-2 rounded-lg font-bold transition-all active:scale-95 flex items-center gap-1.5 shadow-sm"
-                >
-                  <AlignLeft size={14} />
-                  Paragraph
-                </button>
-                <button
-                  type="button"
-                  onClick={() => addBlock("heading")}
-                  className="bg-amber-50 text-amber-700 hover:bg-amber-100 border border-amber-200 text-xs px-3.5 py-2 rounded-lg font-bold transition-all active:scale-95 flex items-center gap-1.5 shadow-sm"
-                >
-                  <Heading size={14} />
-                  Heading (H2-H4)
-                </button>
-                <button
-                  type="button"
-                  onClick={() => addBlock("list")}
-                  className="bg-teal-50 text-teal-700 hover:bg-teal-100 border border-teal-200 text-xs px-3.5 py-2 rounded-lg font-bold transition-all active:scale-95 flex items-center gap-1.5 shadow-sm"
-                >
-                  <List size={14} />
-                  List Items
-                </button>
-                <button
-                  type="button"
-                  onClick={() => addBlock("callout")}
-                  className="bg-rose-50 text-rose-700 hover:bg-rose-100 border border-rose-200 text-xs px-3.5 py-2 rounded-lg font-bold transition-all active:scale-95 flex items-center gap-1.5 shadow-sm"
-                >
-                  <HelpCircle size={14} />
-                  Callout Box
-                </button>
-                <button
-                  type="button"
-                  onClick={() => addBlock("image")}
-                  className="bg-emerald-50 text-emerald-700 hover:bg-emerald-100 border border-emerald-200 text-xs px-3.5 py-2 rounded-lg font-bold transition-all active:scale-95 flex items-center gap-1.5 shadow-sm"
-                >
-                  <Image size={14} />
-                  Single Image
-                </button>
-                <button
-                  type="button"
-                  onClick={() => addBlock("slideshow")}
-                  className="bg-violet-50 text-violet-700 hover:bg-violet-100 border border-violet-200 text-xs px-3.5 py-2 rounded-lg font-bold transition-all active:scale-95 flex items-center gap-1.5 shadow-sm"
-                >
-                  <Layers size={14} />
-                  Slideshow
-                </button>
-                <button
-                  type="button"
-                  onClick={() => addBlock("divider")}
-                  className="bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200 text-xs px-3.5 py-2 rounded-lg font-bold transition-all active:scale-95 flex items-center gap-1.5 shadow-sm"
-                >
-                  <span>—</span>
-                  Divider
-                </button>
+              <div className="mb-4">
+                <h3 className="text-sm font-bold text-gray-700 mb-2">Append Section</h3>
+                <div className="flex flex-wrap gap-2.5">
+                  <button type="button" onClick={() => addBlock("paragraph")} className="bg-blue-50 text-blue-700 hover:bg-blue-100 border border-blue-200 text-xs px-3.5 py-2 rounded-lg font-bold transition-all active:scale-95 flex items-center gap-1.5 shadow-sm"><AlignLeft size={14} /> Paragraph</button>
+                  <button type="button" onClick={() => addBlock("heading")} className="bg-amber-50 text-amber-700 hover:bg-amber-100 border border-amber-200 text-xs px-3.5 py-2 rounded-lg font-bold transition-all active:scale-95 flex items-center gap-1.5 shadow-sm"><Heading size={14} /> Heading (H2-H4)</button>
+                  <button type="button" onClick={() => addBlock("list")} className="bg-teal-50 text-teal-700 hover:bg-teal-100 border border-teal-200 text-xs px-3.5 py-2 rounded-lg font-bold transition-all active:scale-95 flex items-center gap-1.5 shadow-sm"><List size={14} /> List Items</button>
+                  <button type="button" onClick={() => addBlock("callout")} className="bg-rose-50 text-rose-700 hover:bg-rose-100 border border-rose-200 text-xs px-3.5 py-2 rounded-lg font-bold transition-all active:scale-95 flex items-center gap-1.5 shadow-sm"><HelpCircle size={14} /> Callout Box</button>
+                  <button type="button" onClick={() => addBlock("image")} className="bg-emerald-50 text-emerald-700 hover:bg-emerald-100 border border-emerald-200 text-xs px-3.5 py-2 rounded-lg font-bold transition-all active:scale-95 flex items-center gap-1.5 shadow-sm"><Image size={14} /> Single Image</button>
+                  <button type="button" onClick={() => addBlock("slideshow")} className="bg-violet-50 text-violet-700 hover:bg-violet-100 border border-violet-200 text-xs px-3.5 py-2 rounded-lg font-bold transition-all active:scale-95 flex items-center gap-1.5 shadow-sm"><Layers size={14} /> Slideshow</button>
+                  <button type="button" onClick={() => addBlock("divider")} className="bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200 text-xs px-3.5 py-2 rounded-lg font-bold transition-all active:scale-95 flex items-center gap-1.5 shadow-sm"><span>—</span> Divider</button>
+                </div>
               </div>
 
               <div className="space-y-5 bg-slate-50 p-6 rounded-2xl border border-gray-100">
@@ -656,7 +620,32 @@ export default function BlogManagementPage() {
                   const blockMeta = getBlockStyles(block.type);
 
                   return (
-                    <div key={idx} className={`bg-white border border-gray-150 rounded-xl p-5 flex gap-4 items-start shadow-sm hover:shadow-md hover:border-gray-250 transition-all duration-200 ${blockMeta.border}`}>
+                    <div key={idx} className="space-y-4">
+                      {insertMenuIndex === idx && (
+                        <div className="bg-white border-2 border-dashed border-[#e77419]/40 rounded-xl p-4 shadow-sm relative animate-in fade-in zoom-in-95 duration-200">
+                          <button
+                            type="button"
+                            onClick={() => setInsertMenuIndex(null)}
+                            className="absolute top-2 right-2 text-gray-400 hover:text-gray-700 bg-gray-100 rounded-full p-1"
+                          >
+                            <X size={14} />
+                          </button>
+                          <div className="text-xs font-bold text-[#e77419] mb-3 uppercase tracking-wider flex items-center gap-1">
+                            <Plus size={14} /> Insert Section
+                          </div>
+                          <div className="flex flex-wrap gap-2.5">
+                            <button type="button" onClick={() => { addBlock("paragraph", idx); setInsertMenuIndex(null); }} className="bg-blue-50 text-blue-700 hover:bg-blue-100 border border-blue-200 text-xs px-3 py-1.5 rounded-lg font-bold transition-all"><AlignLeft size={13} className="inline mr-1" />Paragraph</button>
+                            <button type="button" onClick={() => { addBlock("heading", idx); setInsertMenuIndex(null); }} className="bg-amber-50 text-amber-700 hover:bg-amber-100 border border-amber-200 text-xs px-3 py-1.5 rounded-lg font-bold transition-all"><Heading size={13} className="inline mr-1" />Heading</button>
+                            <button type="button" onClick={() => { addBlock("list", idx); setInsertMenuIndex(null); }} className="bg-teal-50 text-teal-700 hover:bg-teal-100 border border-teal-200 text-xs px-3 py-1.5 rounded-lg font-bold transition-all"><List size={13} className="inline mr-1" />List</button>
+                            <button type="button" onClick={() => { addBlock("callout", idx); setInsertMenuIndex(null); }} className="bg-rose-50 text-rose-700 hover:bg-rose-100 border border-rose-200 text-xs px-3 py-1.5 rounded-lg font-bold transition-all"><HelpCircle size={13} className="inline mr-1" />Callout</button>
+                            <button type="button" onClick={() => { addBlock("image", idx); setInsertMenuIndex(null); }} className="bg-emerald-50 text-emerald-700 hover:bg-emerald-100 border border-emerald-200 text-xs px-3 py-1.5 rounded-lg font-bold transition-all"><Image size={13} className="inline mr-1" />Image</button>
+                            <button type="button" onClick={() => { addBlock("slideshow", idx); setInsertMenuIndex(null); }} className="bg-violet-50 text-violet-700 hover:bg-violet-100 border border-violet-200 text-xs px-3 py-1.5 rounded-lg font-bold transition-all"><Layers size={13} className="inline mr-1" />Slideshow</button>
+                            <button type="button" onClick={() => { addBlock("divider", idx); setInsertMenuIndex(null); }} className="bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200 text-xs px-3 py-1.5 rounded-lg font-bold transition-all"><span className="inline mr-1">—</span>Divider</button>
+                          </div>
+                        </div>
+                      )}
+
+                      <div className={`bg-white border border-gray-150 rounded-xl p-5 flex gap-4 items-start shadow-sm hover:shadow-md hover:border-gray-250 transition-all duration-200 ${blockMeta.border}`}>
                       {/* Position Controllers */}
                       <div className="flex flex-col gap-1.5 text-gray-400 self-stretch justify-center items-center px-1 border-r border-gray-100 pr-3.5">
                         <button
@@ -689,14 +678,32 @@ export default function BlogManagementPage() {
                             {blockMeta.icon}
                             {blockMeta.label}
                           </span>
-                          <button
-                            type="button"
-                            onClick={() => removeBlock(idx)}
-                            className="text-gray-400 hover:text-red-500 hover:bg-red-50 p-1 rounded transition-all"
-                            title="Delete Block"
-                          >
-                            <Trash2 size={16} />
-                          </button>
+                          <div className="flex items-center gap-1">
+                            <button
+                              type="button"
+                              onClick={() => setInsertMenuIndex(idx)}
+                              className="text-[11px] font-bold text-[#e77419] hover:bg-orange-50 px-2 py-1 rounded transition-colors mr-1 flex items-center gap-1"
+                              title="Insert new block above this one"
+                            >
+                              <Plus size={12} /> Above
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => setInsertMenuIndex(idx + 1)}
+                              className="text-[11px] font-bold text-[#e77419] hover:bg-orange-50 px-2 py-1 rounded transition-colors mr-2 flex items-center gap-1"
+                              title="Insert new block below this one"
+                            >
+                              <Plus size={12} /> Below
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => removeBlock(idx)}
+                              className="text-gray-400 hover:text-red-500 hover:bg-red-50 p-1 rounded transition-all"
+                              title="Delete Block"
+                            >
+                              <Trash2 size={16} />
+                            </button>
+                          </div>
                         </div>
 
                       {/* Render custom fields based on block type */}
@@ -884,13 +891,37 @@ export default function BlogManagementPage() {
                       )}
 
                       {block.type === "callout" && (
-                        <textarea
-                          rows={2}
-                          className="w-full border border-amber-200 bg-amber-50 text-amber-900 rounded-lg p-2.5 focus:border-[#e77419] focus:outline-none text-sm font-medium"
-                          placeholder="Write tip/callout text..."
-                          value={block.text || ""}
-                          onChange={(e) => updateBlockField(idx, "text", e.target.value)}
-                        />
+                        <div className="space-y-3">
+                          <textarea
+                            rows={2}
+                            className="w-full border border-amber-200 bg-amber-50 text-amber-900 rounded-lg p-2.5 focus:border-[#e77419] focus:outline-none text-sm font-medium"
+                            placeholder="Write tip/callout text..."
+                            value={block.text || ""}
+                            onChange={(e) => updateBlockField(idx, "text", e.target.value)}
+                          />
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 bg-amber-50/50 p-3 rounded-lg border border-amber-100">
+                            <div>
+                              <label className="block text-[10px] font-bold text-amber-700 uppercase mb-1">Button Name (Optional)</label>
+                              <input
+                                type="text"
+                                className="w-full border border-amber-200 rounded p-2 text-xs focus:outline-none focus:border-[#e77419] bg-white"
+                                placeholder="e.g. Learn More"
+                                value={block.buttonText || ""}
+                                onChange={(e) => updateBlockField(idx, "buttonText", e.target.value)}
+                              />
+                            </div>
+                            <div>
+                              <label className="block text-[10px] font-bold text-amber-700 uppercase mb-1">Button Link (Optional)</label>
+                              <input
+                                type="text"
+                                className="w-full border border-amber-200 rounded p-2 text-xs focus:outline-none focus:border-[#e77419] bg-white"
+                                placeholder="e.g. /services or https://..."
+                                value={block.buttonLink || ""}
+                                onChange={(e) => updateBlockField(idx, "buttonLink", e.target.value)}
+                              />
+                            </div>
+                          </div>
+                        </div>
                       )}
 
                       {block.type === "list" && (
@@ -959,9 +990,24 @@ export default function BlogManagementPage() {
                       )}
                     </div>
                   </div>
+
+                    </div>
                   );
                 })
               )}
+            </div>
+
+            <div className="mt-6 pt-4 pb-2 border-t">
+              <h3 className="text-sm font-bold text-gray-700 mb-3 flex items-center gap-2"><Plus size={16} className="text-[#e77419]"/> Append Section Below</h3>
+              <div className="flex flex-wrap gap-2.5">
+                <button type="button" onClick={() => addBlock("paragraph")} className="bg-blue-50 text-blue-700 hover:bg-blue-100 border border-blue-200 text-xs px-3.5 py-2 rounded-lg font-bold transition-all active:scale-95 flex items-center gap-1.5 shadow-sm"><AlignLeft size={14} /> Paragraph</button>
+                <button type="button" onClick={() => addBlock("heading")} className="bg-amber-50 text-amber-700 hover:bg-amber-100 border border-amber-200 text-xs px-3.5 py-2 rounded-lg font-bold transition-all active:scale-95 flex items-center gap-1.5 shadow-sm"><Heading size={14} /> Heading (H2-H4)</button>
+                <button type="button" onClick={() => addBlock("list")} className="bg-teal-50 text-teal-700 hover:bg-teal-100 border border-teal-200 text-xs px-3.5 py-2 rounded-lg font-bold transition-all active:scale-95 flex items-center gap-1.5 shadow-sm"><List size={14} /> List Items</button>
+                <button type="button" onClick={() => addBlock("callout")} className="bg-rose-50 text-rose-700 hover:bg-rose-100 border border-rose-200 text-xs px-3.5 py-2 rounded-lg font-bold transition-all active:scale-95 flex items-center gap-1.5 shadow-sm"><HelpCircle size={14} /> Callout Box</button>
+                <button type="button" onClick={() => addBlock("image")} className="bg-emerald-50 text-emerald-700 hover:bg-emerald-100 border border-emerald-200 text-xs px-3.5 py-2 rounded-lg font-bold transition-all active:scale-95 flex items-center gap-1.5 shadow-sm"><Image size={14} /> Single Image</button>
+                <button type="button" onClick={() => addBlock("slideshow")} className="bg-violet-50 text-violet-700 hover:bg-violet-100 border border-violet-200 text-xs px-3.5 py-2 rounded-lg font-bold transition-all active:scale-95 flex items-center gap-1.5 shadow-sm"><Layers size={14} /> Slideshow</button>
+                <button type="button" onClick={() => addBlock("divider")} className="bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200 text-xs px-3.5 py-2 rounded-lg font-bold transition-all active:scale-95 flex items-center gap-1.5 shadow-sm"><span>—</span> Divider</button>
+              </div>
             </div>
           </div>
 
