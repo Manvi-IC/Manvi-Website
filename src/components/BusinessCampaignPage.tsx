@@ -100,7 +100,7 @@ const PICKUP_CITIES = [
   "Gujarat",
   "Mumbai",
 ];
-const DESTINATIONS = ["USA", "UK", "Canada", "Australia", "EUROPE"];
+const DESTINATIONS = ["USA", "UK", "Canada", "Australia", "Europe"];
 const PARTNERS = ["Aramex", "Courier Please", "DHL", "DPD", "FedEx", "UPS"];
 
 const TESTIMONIALS = [
