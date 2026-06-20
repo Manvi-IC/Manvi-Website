@@ -32,7 +32,7 @@ export default function WhyWeLead() {
             </div>
             <div className="flex items-center gap-6">
               <span className="text-[32px] sm:text-[42px] font-extrabold text-[#ff8a00] leading-none tracking-tight">
-                98%
+                99.97%
               </span>
               <div className="w-full h-[1.5px] bg-[#ff8a00]/30 my-4 transition-colors duration-300 group-hover:bg-[#ff8a00]/50" />
               <p className="text-[11px] text-gray-500 font-medium leading-relaxed sm:max-w-[85%]">

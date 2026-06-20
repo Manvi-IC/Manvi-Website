@@ -544,7 +544,7 @@ const translations: Record<Language, Translations> = {
     wwl_card2_label: "Elite partnerships",
     wwl_card2_stat: "Multiple\ncountries",
     wwl_card2_desc:
-      "Collaboration with world-class carriers including DHL, FedEx, UPS, Aramex, and DPD.",
+      "Collaboration with world-class carriers including Aramex, Courier Please, DHL, DPD, FedEx and UPS.",
     wwl_card3_label: "Customs mastery",
     wwl_card3_stat: "1000+",
     wwl_card3_desc:
@@ -572,7 +572,7 @@ const translations: Record<Language, Translations> = {
     claim_tab1_d3_num: "03",
     claim_tab1_d3_title: "Third-Party Dependency",
     claim_tab1_d3_desc:
-      'As an international logistics provider, Manvi International\'s claim resolution is strictly contingent upon the official investigation reports and confirmation from our global courier partners, including but not limited to <strong class="font-extrabold text-[#1c1f2e]">DHL, FedEx, UPS, DPD, and Aramex',
+      'As an international logistics provider, Manvi International\'s claim resolution is strictly contingent upon the official investigation reports and confirmation from our global courier partners, including but not limited to <strong class="font-extrabold text-[#1c1f2e]">Aramex, Courier Please, DHL, DPD, FedEx and UPS',
     claim_tab2_title: "Return To Origin (RTO) Shipments",
     claim_tab2_subtext:
       "Returned shipments for non-delivery, incorrect addresses, or refusal qualify for refunds.",
