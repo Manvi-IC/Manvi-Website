@@ -13,6 +13,7 @@ export default function SiteSettingsPage() {
     offerTitle: "",
     offerSubtitle: "",
     offerEndDate: "",
+    showOffer: true,
     countryServiceMapping: [] as { country: string, services: string[] }[],
   });
 
@@ -37,6 +38,7 @@ export default function SiteSettingsPage() {
           offerEndDate: data.data.offerEndDate 
             ? new Date(data.data.offerEndDate).toISOString().slice(0, 16) 
             : "",
+          showOffer: data.data.showOffer ?? true,
           countryServiceMapping: data.data.countryServiceMapping || [],
         });
       }
@@ -48,9 +50,10 @@ export default function SiteSettingsPage() {
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value, type } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [e.target.name]: e.target.value,
+      [name]: type === 'radio' && (value === 'true' || value === 'false') ? value === 'true' : value,
     }));
   };
 
@@ -137,6 +140,32 @@ export default function SiteSettingsPage() {
           <div>
             <h2 className="text-lg font-medium text-gray-900 mb-4 border-b pb-2">Limited-Time Offer</h2>
             <div className="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-2">
+              <div className="sm:col-span-2">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Show Offer Box
+                </label>
+                <div className="flex items-center">
+                  <button
+                    type="button"
+                    onClick={() => setFormData(prev => ({ ...prev, showOffer: !prev.showOffer }))}
+                    className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-[#e77419] focus:ring-offset-2 ${
+                      formData.showOffer ? 'bg-[#e77419]' : 'bg-gray-200'
+                    }`}
+                    role="switch"
+                    aria-checked={formData.showOffer}
+                  >
+                    <span
+                      aria-hidden="true"
+                      className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${
+                        formData.showOffer ? 'translate-x-5' : 'translate-x-0'
+                      }`}
+                    />
+                  </button>
+                  <span className="ml-3 text-sm font-medium text-gray-700">
+                    {formData.showOffer ? 'Visible' : 'Hidden'}
+                  </span>
+                </div>
+              </div>
               <div className="sm:col-span-2">
                 <label htmlFor="offerTitle" className="block text-sm font-medium text-gray-700 mb-1">
                   Offer Title
