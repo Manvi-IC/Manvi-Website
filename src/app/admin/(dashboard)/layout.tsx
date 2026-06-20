@@ -2,11 +2,11 @@
 "use client";
 
 import { logoutAction } from '../actions';
-import { 
-  LayoutDashboard, 
-  LogOut, 
-  Package, 
-  Settings, 
+import {
+  LayoutDashboard,
+  LogOut,
+  Package,
+  Settings,
   Briefcase,
   FileText
 } from 'lucide-react';
@@ -43,7 +43,7 @@ export default function AdminLayout({
 
         const data = await res.json();
         console.log('📊 Pending count response:', data);
-        
+
         if (data.success) {
           setPendingCount(data.data.pending || 0);
         }
@@ -67,7 +67,7 @@ export default function AdminLayout({
       {/* Sidebar */}
       <aside className="w-64 bg-[#0b1220] text-white flex flex-col hidden md:flex">
         <div className="h-16 flex items-center px-6 bg-[#050914] font-bold text-xl tracking-wider">
-          M5C ADMIN
+          Manvi Admin Panel
         </div>
         <nav className="flex-1 px-4 py-6 space-y-2">
           <Link href="/admin" className="flex items-center gap-3 px-3 py-2 rounded-md bg-slate-800 text-slate-100">
