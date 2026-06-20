@@ -12,7 +12,7 @@ const OrangeCircleIcon = ({ children }: { children: React.ReactNode }) => (
 // ── Banner ──────────────────────────────────────────────────────────
 function AboutBanner({ title }: { title: string }) {
   return (
-    <section className="relative bg-[#0b1220] overflow-hidden min-h-55 flex items-center py-12 px-6">
+    <section className="relative bg-[#0D1527] overflow-hidden min-h-55 flex items-center py-12 px-6">
       <div
         className="absolute inset-0 z-0 opacity-20 bg-cover bg-center"
         style={{ backgroundImage: `url('/banner.jpg')` }}
