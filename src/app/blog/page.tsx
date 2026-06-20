@@ -13,12 +13,12 @@ const geistSans = Geist({
   subsets: ["latin"],
 });
 
-import { 
-  type BlogPost, 
-  type FilterCategory, 
-  BLOG_POSTS, 
-  FEATURED_POST, 
-  CATEGORIES 
+import {
+  type BlogPost,
+  type FilterCategory,
+  BLOG_POSTS,
+  FEATURED_POST,
+  CATEGORIES,
 } from "./data";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
@@ -43,7 +43,10 @@ export default function BlogPage(): React.ReactElement {
           setBlogs(list.filter((p) => p.slug !== feat.slug));
         }
       } catch (err) {
-        console.warn("Failed to fetch blogs from API, falling back to static local data", err);
+        console.warn(
+          "Failed to fetch blogs from API, falling back to static local data",
+          err,
+        );
       } finally {
         setLoading(false);
       }
@@ -62,7 +65,7 @@ export default function BlogPage(): React.ReactElement {
           }
         });
       },
-      { threshold: 0.1 }
+      { threshold: 0.1 },
     );
 
     document.querySelectorAll(".reveal").forEach((el) => observer.observe(el));
@@ -78,14 +81,13 @@ export default function BlogPage(): React.ReactElement {
     }
   };
 
-  const filteredPosts = filter === "all" 
-    ? blogs 
-    : blogs.filter((post) => post.category === filter);
+  const filteredPosts =
+    filter === "all" ? blogs : blogs.filter((post) => post.category === filter);
 
   return (
     <div className={`blog-wrapper ${geistSans.variable}`}>
       <Header />
-      
+
       <style jsx>{`
         .blog-wrapper {
           --paper: #f8fafc;
@@ -97,10 +99,14 @@ export default function BlogPage(): React.ReactElement {
           --accent: #f27a1a;
           --accent-deep: #db660c;
           --accent-soft: #fed7aa;
-          --display: var(--font-geist-sans, -apple-system), BlinkMacSystemFont, "Segoe UI", "Roboto", sans-serif;
-          --body: var(--font-geist-sans, -apple-system), BlinkMacSystemFont, "Segoe UI", "Roboto", sans-serif;
+          --display:
+            var(--font-geist-sans, -apple-system), BlinkMacSystemFont,
+            "Segoe UI", "Roboto", sans-serif;
+          --body:
+            var(--font-geist-sans, -apple-system), BlinkMacSystemFont,
+            "Segoe UI", "Roboto", sans-serif;
           --radius: 16px;
-          
+
           font-family: var(--body);
           color: var(--ink);
           background: var(--paper);
@@ -110,7 +116,9 @@ export default function BlogPage(): React.ReactElement {
           flex-direction: column;
         }
 
-        .blog-wrapper h1, .blog-wrapper h2, .blog-wrapper h3 {
+        .blog-wrapper h1,
+        .blog-wrapper h2,
+        .blog-wrapper h3 {
           font-family: var(--display);
           line-height: 1.06;
           letter-spacing: -0.02em;
@@ -118,7 +126,8 @@ export default function BlogPage(): React.ReactElement {
         }
 
         .wrap {
-          max-width: 1400px;
+          max-width: 106rem;
+          width: 100%;
           margin: 0 auto;
           padding: 0 24px;
         }
@@ -161,7 +170,13 @@ export default function BlogPage(): React.ReactElement {
 
         /* Hero */
         .blog-hero {
-          background: radial-gradient(80% 120% at 90% -30%, rgba(242, 122, 26, 0.16), transparent 60%), var(--paper);
+          background:
+            radial-gradient(
+              80% 120% at 90% -30%,
+              rgba(242, 122, 26, 0.16),
+              transparent 60%
+            ),
+            var(--paper);
           padding: 58px 0 30px;
         }
         .blog-hero h1 {
@@ -225,7 +240,10 @@ export default function BlogPage(): React.ReactElement {
           content: "";
           position: absolute;
           inset: 0;
-          background-image: radial-gradient(rgba(255, 255, 255, 0.14) 1px, transparent 1px);
+          background-image: radial-gradient(
+            rgba(255, 255, 255, 0.14) 1px,
+            transparent 1px
+          );
           background-size: 16px 16px;
           opacity: 0.5;
           pointer-events: none;
@@ -268,7 +286,9 @@ export default function BlogPage(): React.ReactElement {
           border-radius: 22px;
           overflow: hidden;
           padding: 14px;
-          transition: transform 0.2s ease, box-shadow 0.2s ease;
+          transition:
+            transform 0.2s ease,
+            box-shadow 0.2s ease;
           text-decoration: none;
           color: inherit;
         }
@@ -329,7 +349,9 @@ export default function BlogPage(): React.ReactElement {
           overflow: hidden;
           display: flex;
           flex-direction: column;
-          transition: transform 0.2s ease, box-shadow 0.2s ease;
+          transition:
+            transform 0.2s ease,
+            box-shadow 0.2s ease;
           text-decoration: none;
           color: inherit;
         }
@@ -385,7 +407,11 @@ export default function BlogPage(): React.ReactElement {
           width: 28px;
           height: 28px;
           border-radius: 50%;
-          background: linear-gradient(140deg, var(--accent), var(--accent-deep));
+          background: linear-gradient(
+            140deg,
+            var(--accent),
+            var(--accent-deep)
+          );
           color: #241404;
           display: grid;
           place-items: center;
@@ -411,7 +437,11 @@ export default function BlogPage(): React.ReactElement {
           width: 180px;
           height: 180px;
           border-radius: 50%;
-          background: radial-gradient(circle, rgba(242, 122, 26, 0.35), transparent 70%);
+          background: radial-gradient(
+            circle,
+            rgba(242, 122, 26, 0.35),
+            transparent 70%
+          );
           pointer-events: none;
         }
         .blog-newsletter h2 {
@@ -527,7 +557,9 @@ export default function BlogPage(): React.ReactElement {
         .reveal {
           opacity: 0;
           transform: translateY(16px);
-          transition: opacity 0.6s ease, transform 0.6s ease;
+          transition:
+            opacity 0.6s ease,
+            transform 0.6s ease;
         }
         .reveal.in {
           opacity: 1;
@@ -550,9 +582,15 @@ export default function BlogPage(): React.ReactElement {
             <span className="plane">✈</span>
           </div>
           <span className="eyebrow">The Manvi Blog</span>
-          <h1>Stories From <span className="highlight">The Network.</span></h1>
-          <p>Practical guides to international shipping, customs and sourcing — plus stories from the families and businesses we connect across the world.</p>
-          
+          <h1>
+            Stories From <span className="highlight">The Network.</span>
+          </h1>
+          <p>
+            Practical guides to international shipping, customs and sourcing —
+            plus stories from the families and businesses we connect across the
+            world.
+          </p>
+
           <div className="blog-filters">
             {CATEGORIES.map((cat) => (
               <button
@@ -570,7 +608,11 @@ export default function BlogPage(): React.ReactElement {
       {/* FEATURED POST */}
       <section className="section-spacing" style={{ paddingTop: "18px" }}>
         <div className="wrap">
-          <a href={`/blog/${featuredPost.slug}`} className="blog-featured reveal" aria-label="Read featured article">
+          <a
+            href={`/blog/${featuredPost.slug}`}
+            className="blog-featured reveal"
+            aria-label="Read featured article"
+          >
             <div className={`blog-thumb ${featuredPost.thumbClass}`}>
               <span className="icon">{featuredPost.icon}</span>
             </div>
@@ -580,7 +622,9 @@ export default function BlogPage(): React.ReactElement {
               <p>{featuredPost.description}</p>
               <span className="read-link">Read the guide →</span>
               <div className="post-meta">
-                <span className="avatar">{featuredPost.author?.avatarInitials || "M"}</span>
+                <span className="avatar">
+                  {featuredPost.author?.avatarInitials || "M"}
+                </span>
                 <span>{featuredPost.author?.name || "Manvi Team"}</span>
                 <span>·</span>
                 <span>{featuredPost.readTime}</span>
@@ -595,7 +639,11 @@ export default function BlogPage(): React.ReactElement {
         <div className="wrap">
           <div className="blog-grid">
             {filteredPosts.map((post) => (
-              <a key={post._id || post.slug || post.id} href={`/blog/${post.slug}`} className="blog-post reveal">
+              <a
+                key={post._id || post.slug || post.id}
+                href={`/blog/${post.slug}`}
+                className="blog-post reveal"
+              >
                 <div className={`blog-thumb ${post.thumbClass}`}>
                   <span className="icon">{post.icon}</span>
                 </div>
@@ -604,7 +652,9 @@ export default function BlogPage(): React.ReactElement {
                   <h3>{post.title}</h3>
                   <p>{post.description}</p>
                   <div className="post-meta">
-                    <span className="avatar">{post.author?.avatarInitials || "M"}</span>
+                    <span className="avatar">
+                      {post.author?.avatarInitials || "M"}
+                    </span>
                     <span>{post.author?.name || "Manvi Team"}</span>
                     <span>·</span>
                     <span>{post.readTime}</span>
@@ -615,7 +665,9 @@ export default function BlogPage(): React.ReactElement {
           </div>
 
           <div className="blog-pagination">
-            <a href="#" className="active">1</a>
+            <a href="#" className="active">
+              1
+            </a>
             <a href="#">2</a>
             <a href="#">3</a>
             <a href="#">Next →</a>
@@ -628,7 +680,10 @@ export default function BlogPage(): React.ReactElement {
         <div className="wrap">
           <div className="blog-newsletter reveal">
             <h2>Never Miss A Shipping Tip.</h2>
-            <p>Guides, festive deadlines and offers — straight to your inbox. No spam, just useful.</p>
+            <p>
+              Guides, festive deadlines and offers — straight to your inbox. No
+              spam, just useful.
+            </p>
             <form className="newsletter-form" onSubmit={handleSubscribe}>
               <input
                 type="email"
