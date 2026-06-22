@@ -1,5 +1,8 @@
 "use server";
 
+import fs from "fs/promises";
+import path from "path";
+
 import {
   canadaZones,
   ausZones,
@@ -240,8 +243,8 @@ export async function checkZipcodeAction(countryInput: string, zipInput: string 
   const res = await checkZipcodeActionRaw(countryInput, zipInput);
   if (res.status === "success" && zipInput.trim()) {
     const geo = await resolveCityState(res.country || countryInput, cleanZip);
-    res.city = geo.city;
-    res.state = geo.state;
+    res.city = res.city || geo.city;
+    res.state = res.state || geo.state;
   }
   return res;
 }
@@ -308,9 +311,102 @@ async function checkZipcodeActionRaw(countryInput: string, zipInput: string = ""
     }
   };
 
-  const canonCountry = canonicalCountryMap[cleanCountry];
+  const canonCountry = canonicalCountryMap[cleanCountry] || cleanCountry;
   if (!canonCountry) {
     return { status: "fail" };
+  }
+
+  // Check ODA/OPA list first
+  if (canonCountry && cleanZip) {
+    try {
+      const odaPath = path.join(process.cwd(), "public", "oda_data.json");
+      const odaRaw = await fs.readFile(odaPath, "utf-8");
+      const odaData = JSON.parse(odaRaw);
+      
+      let odaCountryKey = canonCountry.toUpperCase();
+      if (odaCountryKey === "UK" || odaCountryKey === "UNITED KINGDOM" || odaCountryKey === "GREAT BRITAIN" || odaCountryKey === "GB") {
+        odaCountryKey = "GREAT BRITAIN (UK)";
+      } else if (odaCountryKey === "USA" || odaCountryKey === "US" || odaCountryKey === "UNITED STATES") {
+        odaCountryKey = "UNITED STATES";
+      } else if (odaCountryKey === "SOUTH KOREA" || odaCountryKey === "KOREA" || odaCountryKey === "KOREA (SOUTH)") {
+        odaCountryKey = "KOREA (SOUTH)";
+      } else if (odaCountryKey === "CROATIA") {
+        odaCountryKey = "CROATIA (HRVATSKA)";
+      } else if (odaCountryKey === "SERBIA") {
+        odaCountryKey = "SERBIA (KOSOVO)";
+      } else if (odaCountryKey === "NEW ZEALAND") {
+        odaCountryKey = "NEW ZEALAND (AOTEAROA)";
+      }
+
+      const countryOdaRules = odaData.filter((r: any) => r.canonCountry === odaCountryKey);
+      
+      let isOdaMatch = false;
+      let matchedCityName = "";
+      for (const rule of countryOdaRules) {
+        if (rule.city) {
+          const targetCity = rule.city.toUpperCase().replace(/\s+/g, "");
+          if (targetCity === cleanZip) {
+            isOdaMatch = true;
+            matchedCityName = rule.city;
+            break;
+          }
+          
+          // Fuzzy match Levenshtein
+          const dist = getLevenshteinDistance(targetCity, cleanZip);
+          const targetLen = targetCity.length;
+          let threshold = 1;
+          if (targetLen > 10) {
+            threshold = 3;
+          } else if (targetLen > 5) {
+            threshold = 2;
+          }
+          if (dist <= threshold) {
+            isOdaMatch = true;
+            matchedCityName = rule.city;
+            break;
+          }
+        }
+        if (rule.beginPostal && rule.endPostal) {
+           const zipStr = cleanZip;
+           const beginStr = String(rule.beginPostal).toUpperCase().replace(/\s+/g, "");
+           const endStr = String(rule.endPostal).toUpperCase().replace(/\s+/g, "");
+           
+           if (beginStr === endStr && isNaN(Number(beginStr))) {
+             if (zipStr.startsWith(beginStr)) {
+               isOdaMatch = true;
+               break;
+             }
+           } else if (!isNaN(Number(zipStr)) && !isNaN(Number(beginStr)) && !isNaN(Number(endStr))) {
+             if (Number(zipStr) >= Number(beginStr) && Number(zipStr) <= Number(endStr)) {
+               isOdaMatch = true;
+               break;
+             }
+           } else {
+             if (zipStr.localeCompare(beginStr) >= 0 && zipStr.localeCompare(endStr) <= 0) {
+               isOdaMatch = true;
+               break;
+             }
+           }
+        }
+      }
+
+      if (isOdaMatch) {
+         return {
+           status: "success",
+           country: canonCountry,
+           postcode: cleanZip,
+           city: matchedCityName || undefined,
+           deliveryTime: "12-15 Business Days",
+           isRemote: true,
+           details: matchedCityName 
+             ? `Serviceable Area in ${canonCountry} (matched as ${matchedCityName})`
+             : `Serviceable Area in ${canonCountry}`,
+           notes: "This is a remote area and extra charges will be applied."
+         };
+      }
+    } catch (e) {
+      console.error("Failed to load or process ODA data", e);
+    }
   }
 
   // If no zipcode is provided, return overall country serviceability success
@@ -543,4 +639,63 @@ async function checkZipcodeActionRaw(countryInput: string, zipInput: string = ""
     details: `Serviceable Postcode in ${canonCountry}`,
     notes: "Standard delivery coverage applies."
   };
+}
+
+function getLevenshteinDistance(a: string, b: string): number {
+  const matrix = [];
+  for (let i = 0; i <= b.length; i++) {
+    matrix[i] = [i];
+  }
+  for (let j = 0; j <= a.length; j++) {
+    matrix[0][j] = j;
+  }
+  for (let i = 1; i <= b.length; i++) {
+    for (let j = 1; j <= a.length; j++) {
+      if (b.charAt(i - 1) === a.charAt(j - 1)) {
+        matrix[i][j] = matrix[i - 1][j - 1];
+      } else {
+        matrix[i][j] = Math.min(
+          matrix[i - 1][j - 1] + 1, // substitution
+          matrix[i][j - 1] + 1,     // insertion
+          matrix[i - 1][j] + 1      // deletion
+        );
+      }
+    }
+  }
+  return matrix[b.length][a.length];
+}
+
+export async function getCitiesAction(countryInput: string): Promise<string[]> {
+  try {
+    const cleanCountry = countryInput.trim().toUpperCase();
+    
+    let odaCountryKey = cleanCountry;
+    if (odaCountryKey === "UK" || odaCountryKey === "UNITED KINGDOM" || odaCountryKey === "GREAT BRITAIN" || odaCountryKey === "GB") {
+      odaCountryKey = "GREAT BRITAIN (UK)";
+    } else if (odaCountryKey === "USA" || odaCountryKey === "US" || odaCountryKey === "UNITED STATES") {
+      odaCountryKey = "UNITED STATES";
+    } else if (odaCountryKey === "SOUTH KOREA" || odaCountryKey === "KOREA" || odaCountryKey === "KOREA (SOUTH)") {
+      odaCountryKey = "KOREA (SOUTH)";
+    } else if (odaCountryKey === "CROATIA") {
+      odaCountryKey = "CROATIA (HRVATSKA)";
+    } else if (odaCountryKey === "SERBIA") {
+      odaCountryKey = "SERBIA (KOSOVO)";
+    } else if (odaCountryKey === "NEW ZEALAND") {
+      odaCountryKey = "NEW ZEALAND (AOTEAROA)";
+    }
+
+    const odaPath = path.join(process.cwd(), "public", "oda_data.json");
+    const odaRaw = await fs.readFile(odaPath, "utf-8");
+    const odaData = JSON.parse(odaRaw);
+    
+    const cities = odaData
+      .filter((r: any) => r.canonCountry === odaCountryKey && r.city)
+      .map((r: any) => r.city);
+      
+    // De-duplicate and sort
+    return Array.from(new Set(cities)).sort() as string[];
+  } catch (e) {
+    console.error("Failed to load cities list", e);
+    return [];
+  }
 }
