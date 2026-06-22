@@ -4,8 +4,9 @@ import { useState, useEffect } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Link from "next/link";
+import odaMeta from "@/lib/oda_meta.json";
 
-import { checkZipcodeAction } from "./actions";
+import { checkZipcodeAction, getCitiesAction } from "./actions";
 import { useLanguage, Language } from "@/context/LanguageContext";
 import {
   MapPin,
@@ -136,16 +137,43 @@ const localTranslations: Record<
   },
 };
 
+function toOdaCountry(country: string): string {
+  const c = country.trim().toUpperCase();
+  if (c === "UK" || c === "UNITED KINGDOM" || c === "GREAT BRITAIN" || c === "GB") {
+    return "GREAT BRITAIN (UK)";
+  }
+  if (c === "USA" || c === "US" || c === "UNITED STATES" || c === "UNITED STATES OF AMERICA") {
+    return "UNITED STATES";
+  }
+  if (c === "SOUTH KOREA" || c === "KOREA" || c === "KOREA (SOUTH)") {
+    return "KOREA (SOUTH)";
+  }
+  if (c === "CROATIA") {
+    return "CROATIA (HRVATSKA)";
+  }
+  if (c === "SERBIA") {
+    return "SERBIA (KOSOVO)";
+  }
+  if (c === "NEW ZEALAND") {
+    return "NEW ZEALAND (AOTEAROA)";
+  }
+  return c;
+}
+
 export default function ZipcodePage() {
   const { language } = useLanguage();
   const lang: Language = language || "en";
   const t = localTranslations[lang] || localTranslations.en;
 
   const [country, setCountry] = useState("");
+  const [subCountry, setSubCountry] = useState("");
   const [zipcode, setZipcode] = useState("");
   const [service, setService] = useState("");
   const [status, setStatus] = useState<"idle" | "success" | "fail">("idle");
   const [countryMappings, setCountryMappings] = useState<{ country: string, services: string[] }[]>([]);
+  
+  const [citiesList, setCitiesList] = useState<string[]>([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
 
   useEffect(() => {
     fetch('/api/site-settings')
@@ -158,6 +186,26 @@ export default function ZipcodePage() {
       .catch(err => console.error("Failed to fetch country mappings", err));
   }, []);
 
+  useEffect(() => {
+    const fetchCities = async () => {
+      const effectiveCountry = country.toUpperCase() === "INTERNATIONAL" ? subCountry : country;
+      if (effectiveCountry) {
+        const key = toOdaCountry(effectiveCountry);
+        const meta = (odaMeta as any)[key];
+        if (meta?.usesCity && !meta?.usesPostal) {
+          const list = await getCitiesAction(effectiveCountry);
+          setCitiesList(list);
+        } else {
+          setCitiesList([]);
+        }
+      } else {
+        setCitiesList([]);
+      }
+    };
+    fetchCities();
+    setZipcode("");
+  }, [country, subCountry]);
+
   const defaultMappings = [
     { country: "USA", services: ["DHL", "ARAMEX", "UPS", "FEDEX", "SELF - DUTY Paid"] },
     { country: "UK", services: ["DHL", "ARAMEX", "UPS", "FEDEX", "SELF - DUTY Paid"] },
@@ -168,8 +216,23 @@ export default function ZipcodePage() {
 
   const activeMappings = countryMappings.length > 0 ? countryMappings : defaultMappings;
   const availableServices = country
-    ? (activeMappings.find(m => m.country.toUpperCase() === country.toUpperCase())?.services || [])
+    ? (activeMappings.find(m => m.country.toUpperCase() === country.toUpperCase())?.services || ["DHL", "ARAMEX", "UPS", "FEDEX", "SELF - DUTY Paid"])
     : [];
+
+  // Get active mapped countries
+  const activeMappedCountries = activeMappings.map(m => m.country.toUpperCase());
+  
+  // Get ODA countries
+  const odaCountries = Object.keys(odaMeta).map(c => c.toUpperCase());
+  
+  // Combine other countries (excluding the active mapped ones and INTERNATIONAL)
+  const otherCountries = odaCountries.filter(c => !activeMappedCountries.includes(c) && c !== "INTERNATIONAL");
+  otherCountries.sort(); // Sort alphabetically
+  
+  const mainCountries = [...activeMappedCountries];
+  if (!mainCountries.includes("INTERNATIONAL")) {
+    mainCountries.push("INTERNATIONAL");
+  }
 
   // Detailed success state variables
   const [matchedCountry, setMatchedCountry] = useState("");
@@ -181,9 +244,27 @@ export default function ZipcodePage() {
   const [matchedDetails, setMatchedDetails] = useState("");
   const [matchedNotes, setMatchedNotes] = useState("");
 
+  const effectiveCountry = country.toUpperCase() === "INTERNATIONAL" ? subCountry : country;
+  const canonCountry = effectiveCountry.trim().toUpperCase();
+  const odaCountryKey = toOdaCountry(canonCountry);
+  const countryMeta = odaCountryKey ? (odaMeta as any)[odaCountryKey] : null;
+
+  let zipcodePlaceholder = t.zipcode_placeholder;
+  let zipcodeLabel = "Zipcode";
+  if (countryMeta?.usesCity && !countryMeta?.usesPostal) {
+    zipcodePlaceholder = `Enter City (required for ${canonCountry})`;
+    zipcodeLabel = "City";
+  } else if (countryMeta?.usesPostal) {
+    zipcodePlaceholder = `Enter Zipcode (required for ${canonCountry})`;
+    zipcodeLabel = "Zipcode";
+  } else if (canonCountry) {
+    zipcodePlaceholder = `Enter Zipcode / City (required for ${canonCountry})`;
+    zipcodeLabel = "Zipcode / City";
+  }
+
   const handleCheck = async (e: React.FormEvent) => {
     e.preventDefault();
-    const cleanCountry = country.trim();
+    const cleanCountry = country.toUpperCase() === "INTERNATIONAL" ? subCountry.trim() : country.trim();
     const cleanZipcode = zipcode.trim();
 
     if (!cleanCountry || !service) {
@@ -256,6 +337,7 @@ export default function ZipcodePage() {
                     value={country}
                     onChange={(e) => {
                       setCountry(e.target.value);
+                      setSubCountry("");
                       setService("");
                     }}
                     className="bg-white text-[#333] text-[14px] font-semibold rounded-xl px-5 py-4 focus:outline-none border border-gray-200 shadow-sm w-full cursor-pointer appearance-none bg-[url('data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%23666%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E')] bg-[length:18px_18px] bg-[right_20px_center] bg-no-repeat pr-12"
@@ -263,13 +345,36 @@ export default function ZipcodePage() {
                     <option value="" disabled hidden>
                       {t.country_placeholder}
                     </option>
-                    {activeMappings.map((mapping, idx) => (
-                      <option key={idx} value={mapping.country.toUpperCase()}>
-                        {mapping.country.toUpperCase()}
+                    {mainCountries.map((c, idx) => (
+                      <option key={idx} value={c}>
+                        {c}
                       </option>
                     ))}
                   </select>
                 </div>
+
+                {country === "INTERNATIONAL" && (
+                  <div className="flex flex-col gap-1.5 transition-all duration-300">
+                    <label className="text-[12px] font-extrabold text-[#1c1f2e] uppercase tracking-wider pl-0.5">
+                      Destination Country <span className="text-red-500">*</span>
+                    </label>
+                    <select
+                      required
+                      value={subCountry}
+                      onChange={(e) => setSubCountry(e.target.value)}
+                      className="bg-white text-[#333] text-[14px] font-semibold rounded-xl px-5 py-4 focus:outline-none border border-gray-200 shadow-sm w-full cursor-pointer appearance-none bg-[url('data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%23666%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E')] bg-[length:18px_18px] bg-[right_20px_center] bg-no-repeat pr-12"
+                    >
+                      <option value="" disabled hidden>
+                        Select Destination Country...
+                      </option>
+                      {otherCountries.map((c, idx) => (
+                        <option key={idx} value={c}>
+                          {c}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                )}
 
                 <div className="flex flex-col gap-1.5">
                   <label className="text-[12px] font-extrabold text-[#1c1f2e] uppercase tracking-wider pl-0.5">
@@ -290,17 +395,48 @@ export default function ZipcodePage() {
                   </select>
                 </div>
 
-                <div className="flex flex-col gap-1.5">
+                <div className="flex flex-col gap-1.5 relative">
                   <label className="text-[12px] font-extrabold text-[#1c1f2e] uppercase tracking-wider pl-0.5">
-                    Zipcode
+                    {zipcodeLabel}
                   </label>
                   <input
                     type="text"
-                    placeholder={t.zipcode_placeholder}
+                    placeholder={zipcodePlaceholder}
                     value={zipcode}
-                    onChange={(e) => setZipcode(e.target.value)}
+                    onChange={(e) => {
+                      setZipcode(e.target.value);
+                      setShowSuggestions(true);
+                    }}
+                    onFocus={() => setShowSuggestions(true)}
+                    onBlur={() => {
+                      // Delay closing so that click events on suggestions can trigger first
+                      setTimeout(() => setShowSuggestions(false), 200);
+                    }}
                     className="bg-white text-[#333] text-[14px] font-medium rounded-xl px-5 py-4 focus:outline-none placeholder:text-gray-400 border border-gray-200 shadow-sm w-full"
                   />
+                  {showSuggestions && citiesList.length > 0 && zipcode.trim() && (
+                    (() => {
+                      const filtered = citiesList.filter(c => c.toLowerCase().includes(zipcode.toLowerCase())).slice(0, 5);
+                      if (filtered.length === 0) return null;
+                      return (
+                        <div className="absolute left-0 right-0 top-full mt-1 bg-white border border-gray-200 rounded-xl shadow-lg z-50 overflow-hidden max-h-60 overflow-y-auto">
+                          {filtered.map((s, idx) => (
+                            <button
+                              key={idx}
+                              type="button"
+                              onClick={() => {
+                                setZipcode(s);
+                                setShowSuggestions(false);
+                              }}
+                              className="w-full text-left px-5 py-3 hover:bg-gray-50 text-[14px] text-[#333] font-medium transition-colors border-b border-gray-100 last:border-0"
+                            >
+                              {s}
+                            </button>
+                          ))}
+                        </div>
+                      );
+                    })()
+                  )}
                 </div>
 
                 <button
@@ -374,17 +510,27 @@ export default function ZipcodePage() {
                     <span className="text-gray-400 w-36">Zone Type:</span>
                     <span className="text-[#1c1f2e] text-[18px]">
                       {matchedIsRemote
-                        ? "Remote Area (Surcharges may apply)"
+                        ? "Remote Area"
                         : "Standard Zone"}
                     </span>
                   </div>
+                  {matchedIsRemote && (
+                    <div className="text-sm text-amber-800 bg-amber-50 border border-amber-200 p-4 rounded-xl mt-2 font-bold flex items-center gap-2 shadow-sm">
+                      <AlertTriangle className="w-5 h-5 shrink-0 text-amber-500" />
+                      This is a remote area and extra charges will be applied.
+                    </div>
+                  )}
                   {matchedDetails && (
                     <div className="text-sm text-gray-500 italic mt-2 font-medium">
                       {matchedDetails}
                     </div>
                   )}
-                  {matchedNotes && (
-                    <div className="text-sm text-[#059669] bg-emerald-100/50 p-4 rounded-xl mt-2 font-medium leading-relaxed">
+                  {matchedNotes && matchedNotes !== "This is a remote area and extra charges will be applied." && (
+                    <div className={`text-sm p-4 rounded-xl mt-2 font-medium leading-relaxed ${
+                      matchedIsRemote 
+                        ? "text-amber-800 bg-amber-50 border border-amber-200" 
+                        : "text-[#059669] bg-emerald-100/50 border border-emerald-200"
+                    }`}>
                       {matchedNotes}
                     </div>
                   )}

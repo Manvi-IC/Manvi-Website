@@ -1,0 +1,557 @@
+{
+  "ANDORRA": {
+    "name": "Andorra",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "UNITED ARAB EMIRATES": {
+    "name": "United Arab Emirates",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "ANTIGUA AND BARBUDA": {
+    "name": "Antigua and Barbuda",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "ALBANIA": {
+    "name": "Albania",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "NETHERLANDS ANTILLES": {
+    "name": "Netherlands Antilles",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "ARGENTINA": {
+    "name": "Argentina",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "AUSTRIA": {
+    "name": "Austria",
+    "usesCity": false,
+    "usesPostal": true
+  },
+  "AUSTRALIA": {
+    "name": "Australia",
+    "usesCity": false,
+    "usesPostal": true
+  },
+  "AZERBAIJAN": {
+    "name": "Azerbaijan",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "BOSNIA AND HERZEGOVINA": {
+    "name": "Bosnia and Herzegovina",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "BAHRAIN": {
+    "name": "Bahrain",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "BOLIVIA": {
+    "name": "Bolivia",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "BONAIRE, SINT EUSTATIUS AND SABA": {
+    "name": "Bonaire, Sint Eustatius and Saba",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "BRAZIL": {
+    "name": "Brazil",
+    "usesCity": false,
+    "usesPostal": true
+  },
+  "BAHAMAS": {
+    "name": "Bahamas",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "BELARUS": {
+    "name": "Belarus",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "BELIZE": {
+    "name": "Belize",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "CANADA": {
+    "name": "Canada",
+    "usesCity": false,
+    "usesPostal": true
+  },
+  "SWITZERLAND": {
+    "name": "Switzerland",
+    "usesCity": false,
+    "usesPostal": true
+  },
+  "COOK ISLANDS": {
+    "name": "Cook Islands",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "CHILE": {
+    "name": "Chile",
+    "usesCity": false,
+    "usesPostal": true
+  },
+  "CHINA": {
+    "name": "China",
+    "usesCity": false,
+    "usesPostal": true
+  },
+  "COLOMBIA": {
+    "name": "Colombia",
+    "usesCity": false,
+    "usesPostal": true
+  },
+  "COSTA RICA": {
+    "name": "Costa Rica",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "CURACAO": {
+    "name": "Curacao",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "CYPRUS": {
+    "name": "Cyprus",
+    "usesCity": false,
+    "usesPostal": true
+  },
+  "CZECH REPUBLIC": {
+    "name": "Czech Republic",
+    "usesCity": false,
+    "usesPostal": true
+  },
+  "GERMANY": {
+    "name": "Germany",
+    "usesCity": false,
+    "usesPostal": true
+  },
+  "DENMARK": {
+    "name": "Denmark",
+    "usesCity": false,
+    "usesPostal": true
+  },
+  "DOMINICA": {
+    "name": "Dominica",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "DOMINICAN REPUBLIC": {
+    "name": "Dominican Republic",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "ECUADOR": {
+    "name": "Ecuador",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "SPAIN": {
+    "name": "Spain",
+    "usesCity": false,
+    "usesPostal": true
+  },
+  "FINLAND": {
+    "name": "Finland",
+    "usesCity": false,
+    "usesPostal": true
+  },
+  "FIJI": {
+    "name": "Fiji",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "FAROE ISLANDS": {
+    "name": "Faroe Islands",
+    "usesCity": false,
+    "usesPostal": true
+  },
+  "FRANCE": {
+    "name": "France",
+    "usesCity": false,
+    "usesPostal": true
+  },
+  "GREAT BRITAIN (UK)": {
+    "name": "Great Britain (UK)",
+    "usesCity": false,
+    "usesPostal": true
+  },
+  "GRENADA": {
+    "name": "Grenada",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "GEORGIA": {
+    "name": "Georgia",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "FRENCH GUIANA": {
+    "name": "French Guiana",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "GREENLAND": {
+    "name": "Greenland",
+    "usesCity": false,
+    "usesPostal": true
+  },
+  "GUADELOUPE": {
+    "name": "Guadeloupe",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "GREECE": {
+    "name": "Greece",
+    "usesCity": false,
+    "usesPostal": true
+  },
+  "GUYANA": {
+    "name": "Guyana",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "HONG KONG": {
+    "name": "Hong Kong",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "HONDURAS": {
+    "name": "Honduras",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "CROATIA (HRVATSKA)": {
+    "name": "Croatia (Hrvatska)",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "HAITI": {
+    "name": "Haiti",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "HUNGARY": {
+    "name": "Hungary",
+    "usesCity": false,
+    "usesPostal": true
+  },
+  "INDONESIA": {
+    "name": "Indonesia",
+    "usesCity": false,
+    "usesPostal": true
+  },
+  "ISRAEL": {
+    "name": "Israel",
+    "usesCity": false,
+    "usesPostal": true
+  },
+  "INDIA": {
+    "name": "India",
+    "usesCity": false,
+    "usesPostal": true
+  },
+  "ITALY": {
+    "name": "Italy",
+    "usesCity": false,
+    "usesPostal": true
+  },
+  "JAMAICA": {
+    "name": "Jamaica",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "JAPAN": {
+    "name": "Japan",
+    "usesCity": false,
+    "usesPostal": true
+  },
+  "CAMBODIA": {
+    "name": "Cambodia",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "KOREA (SOUTH)": {
+    "name": "Korea (South)",
+    "usesCity": false,
+    "usesPostal": true
+  },
+  "KUWAIT": {
+    "name": "Kuwait",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "CAYMAN ISLANDS": {
+    "name": "Cayman Islands",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "KAZAKHSTAN": {
+    "name": "Kazakhstan",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "SAINT LUCIA": {
+    "name": "Saint Lucia",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "MOLDOVA": {
+    "name": "Moldova",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "MONTENEGRO": {
+    "name": "Montenegro",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "MARTINIQUE": {
+    "name": "Martinique",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "MALTA": {
+    "name": "Malta",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "MEXICO": {
+    "name": "Mexico",
+    "usesCity": false,
+    "usesPostal": true
+  },
+  "MALAYSIA": {
+    "name": "Malaysia",
+    "usesCity": false,
+    "usesPostal": true
+  },
+  "NEW CALEDONIA": {
+    "name": "New Caledonia",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "NIGERIA": {
+    "name": "Nigeria",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "NICARAGUA": {
+    "name": "Nicaragua",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "NETHERLANDS": {
+    "name": "Netherlands",
+    "usesCity": false,
+    "usesPostal": true
+  },
+  "NORWAY": {
+    "name": "Norway",
+    "usesCity": false,
+    "usesPostal": true
+  },
+  "NEW ZEALAND (AOTEAROA)": {
+    "name": "New Zealand (Aotearoa)",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "OMAN": {
+    "name": "Oman",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "PANAMA": {
+    "name": "Panama",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "PERU": {
+    "name": "Peru",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "FRENCH POLYNESIA": {
+    "name": "French Polynesia",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "PAPUA NEW GUINEA": {
+    "name": "Papua New Guinea",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "PHILIPPINES": {
+    "name": "Philippines",
+    "usesCity": false,
+    "usesPostal": true
+  },
+  "POLAND": {
+    "name": "Poland",
+    "usesCity": false,
+    "usesPostal": true
+  },
+  "PALESTINIAN TERRITORY": {
+    "name": "Palestinian Territory",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "PORTUGAL": {
+    "name": "Portugal",
+    "usesCity": false,
+    "usesPostal": true
+  },
+  "PARAGUAY": {
+    "name": "Paraguay",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "QATAR": {
+    "name": "Qatar",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "ROMANIA": {
+    "name": "Romania",
+    "usesCity": false,
+    "usesPostal": true
+  },
+  "SERBIA (KOSOVO)": {
+    "name": "Serbia (Kosovo)",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "RUSSIAN FEDERATION": {
+    "name": "Russian Federation",
+    "usesCity": false,
+    "usesPostal": true
+  },
+  "SAUDI ARABIA": {
+    "name": "Saudi Arabia",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "SWEDEN": {
+    "name": "Sweden",
+    "usesCity": false,
+    "usesPostal": true
+  },
+  "SURINAME": {
+    "name": "Suriname",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "EL SALVADOR": {
+    "name": "El Salvador",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "SAINT MARTIN": {
+    "name": "Saint Martin",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "SINT MAARTEN": {
+    "name": "Sint Maarten",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "TURKS AND CAICOS ISLANDS": {
+    "name": "Turks and Caicos Islands",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "THAILAND": {
+    "name": "Thailand",
+    "usesCity": false,
+    "usesPostal": true
+  },
+  "TURKEY": {
+    "name": "Turkey",
+    "usesCity": false,
+    "usesPostal": true
+  },
+  "TRINIDAD AND TOBAGO": {
+    "name": "Trinidad and Tobago",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "TAIWAN": {
+    "name": "Taiwan",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "TANZANIA": {
+    "name": "Tanzania",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "UKRAINE": {
+    "name": "Ukraine",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "UNITED STATES": {
+    "name": "United States",
+    "usesCity": false,
+    "usesPostal": true
+  },
+  "UZBEKISTAN": {
+    "name": "Uzbekistan",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "SAINT VINCENT & THE GRENADINES": {
+    "name": "Saint Vincent & the Grenadines",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "VENEZUELA": {
+    "name": "Venezuela",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "BRITISH VIRGIN ISLANDS": {
+    "name": "British Virgin Islands",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "VIRGIN ISLANDS (U.S.)": {
+    "name": "Virgin Islands (U.S.)",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "VIET NAM": {
+    "name": "Viet Nam",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "VANUATU": {
+    "name": "Vanuatu",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "SOUTH AFRICA": {
+    "name": "South Africa",
+    "usesCity": false,
+    "usesPostal": true
+  },
+  "ZAMBIA": {
+    "name": "Zambia",
+    "usesCity": true,
+    "usesPostal": false
+  }
+}
