@@ -2,12 +2,17 @@
 import { Phone, MessageSquare } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
 
-const WhatsAppIcon = ({ width = 16, height = 16, fill = "currentColor", className = "" }) => (
-  <svg 
-    width={width} 
-    height={height} 
-    viewBox="0 0 24 24" 
-    fill={fill} 
+const WhatsAppIcon = ({
+  width = 16,
+  height = 16,
+  fill = "currentColor",
+  className = "",
+}) => (
+  <svg
+    width={width}
+    height={height}
+    viewBox="0 0 24 24"
+    fill={fill}
     className={className}
     xmlns="http://www.w3.org/2000/svg"
   >
@@ -39,26 +44,38 @@ export default function Contact() {
           </div>
 
           {/* Middle: Call Us */}
-          <div className="flex items-start gap-4">
-            <div className="w-[48px] h-[48px] rounded-full bg-[#ff8a00] flex items-center justify-center shrink-0">
-              <Phone className="w-5 h-5 text-white" strokeWidth={2.5} />
+          <div className="flex flex-col gap-4">
+            <div className="flex items-start gap-4">
+              <div className="w-[48px] h-[48px] rounded-full bg-[#ff8a00] flex items-center justify-center shrink-0">
+                <Phone className="w-5 h-5 text-white" strokeWidth={2.5} />
+              </div>
+              <div className="flex flex-col gap-1">
+                <span className="text-[18px] font-extrabold text-[#1c1f2e]">
+                  {t.contact_call}
+                </span>
+                <span className="text-[14px] text-gray-500 font-medium">
+                  +91 70 70 50 60 70
+                </span>
+              </div>
             </div>
-            <div className="flex flex-col gap-1">
-              <span className="text-[18px] font-extrabold text-[#1c1f2e]">
-                {t.contact_call}
-              </span>
-              <span className="text-[14px] text-gray-500 font-medium">
-                +91 70 70 50 60 70
-              </span>
-              <a
-                href="https://wa.me/917070506070"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-[14px] text-[#ff8a00] font-semibold underline underline-offset-2 hover:text-orange-600 transition-colors flex items-center gap-1.5"
-              >
-                <WhatsAppIcon width={14} height={14} fill="currentColor" />
-                {t.contact_whatsapp}
-              </a>
+
+            <div className="flex items-start gap-4">
+              <div className="w-[48px] h-[48px] rounded-full bg-[#ff8a00] flex items-center justify-center shrink-0">
+                <WhatsAppIcon width={20} height={20} fill="white" />
+              </div>
+              <div className="flex flex-col gap-1">
+                <span className="text-[18px] font-extrabold text-[#1c1f2e]">
+                  {t.contact_whatsapp}
+                </span>
+                <a
+                  href="https://wa.me/917070506070"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[14px] text-gray-500 font-medium hover:text-[#ff8a00] transition-colors"
+                >
+                  +91 70 70 50 60 70
+                </a>
+              </div>
             </div>
           </div>
 
