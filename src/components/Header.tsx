@@ -11,23 +11,25 @@ const LANGUAGES: {
   native: string;
   flag: string;
 }[] = [
-    { code: "hi", label: "Hindi", native: "हिंदी", flag: "🇮🇳" },
-    { code: "pa", label: "Punjabi", native: "ਪੰਜਾਬੀ", flag: "🇮🇳" },
-    { code: "fr", label: "French", native: "Français", flag: "🇫🇷" },
-    { code: "es", label: "Spanish", native: "Español", flag: "🇪🇸" },
-  ];
+  { code: "hi", label: "Hindi", native: "हिंदी", flag: "🇮🇳" },
+  { code: "pa", label: "Punjabi", native: "ਪੰਜਾਬੀ", flag: "🇮🇳" },
+  { code: "fr", label: "French", native: "Français", flag: "🇫🇷" },
+  { code: "es", label: "Spanish", native: "Español", flag: "🇪🇸" },
+];
 
 export default function Header() {
   const pathname = usePathname();
   const { language, setLanguage, t } = useLanguage();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isLangOpen, setIsLangOpen] = useState(false);
-  const [marqueeText, setMarqueeText] = useState("🎉 Send Shipment to USA @ ₹679 per KG  •  T&C Applied  •  🎊 Send Shipment to USA @ ₹679 per KG  •  T&C Applied  •  🎉 Send Shipment to USA @ ₹679 per KG  •  T&C Applied  •");
+  const [marqueeText, setMarqueeText] = useState(
+    "🎉 Send Shipment to USA @ ₹679 per KG  •  T&C Applied  •  🎊 Send Shipment to USA @ ₹679 per KG  •  T&C Applied  •  🎉 Send Shipment to USA @ ₹679 per KG  •  T&C Applied  •",
+  );
   const langRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    fetch('/api/site-settings')
-      .then(res => {
+    fetch("/api/site-settings")
+      .then((res) => {
         if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
         const contentType = res.headers.get("content-type");
         if (!contentType || !contentType.includes("application/json")) {
@@ -35,12 +37,14 @@ export default function Header() {
         }
         return res.json();
       })
-      .then(data => {
+      .then((data) => {
         if (data.success && data.data && data.data.marqueeText) {
           setMarqueeText(data.data.marqueeText);
         }
       })
-      .catch(err => console.warn("Failed to fetch site settings:", err.message));
+      .catch((err) =>
+        console.warn("Failed to fetch site settings:", err.message),
+      );
   }, []);
 
   useEffect(() => {
@@ -69,11 +73,15 @@ export default function Header() {
             <div className="flex items-center justify-between sm:justify-start gap-4 w-full md:w-auto">
               <div className="flex items-center gap-1.5 sm:gap-2">
                 <Phone className="h-3.5 w-3.5 text-white shrink-0" />
-                <span className="text-white/90 truncate">+91 70 70 50 60 70</span>
+                <span className="text-white/90 truncate">
+                  +91 70 70 50 60 70
+                </span>
               </div>
               <div className="flex items-center gap-1.5 sm:gap-2">
                 <Mail className="h-3.5 w-3.5 text-white shrink-0" />
-                <span className="text-white/90 truncate">Info@manvicourier.com</span>
+                <span className="text-white/90 truncate">
+                  Info@manvicourier.com
+                </span>
               </div>
             </div>
 
@@ -95,13 +103,16 @@ export default function Header() {
               })()}
             </div>
 
-            <div className="hidden sm:flex items-center gap-6">
-              <Link href="/zipcode" className="hover:text-white transition-colors">
+            <div className="hidden sm:flex items-center gap-6 overflow-visible">
+              <Link
+                href="/zipcode"
+                className="hover:text-white transition-colors"
+              >
                 {t.nav_zipcode}
               </Link>
 
               {/* Language Dropdown */}
-              <div className="relative" ref={langRef}>
+              <div className="relative overflow-visible" ref={langRef}>
                 <button
                   id="language-selector"
                   onClick={() => setIsLangOpen((prev) => !prev)}
@@ -124,17 +135,17 @@ export default function Header() {
                 {isLangOpen && (
                   <div
                     role="listbox"
-                    className="fixed right-4 sm:right-6 w-44 bg-[#0f1a2e] border border-white/10 rounded-2xl shadow-2xl overflow-hidden z-[200] animate-in fade-in slide-in-from-top-2 duration-150"
-                    style={{ top: "calc(var(--header-top-bar, 48px) + 4px)" }}
+                    className="absolute right-0 top-full mt-2 w-44 bg-[#0f1a2e] border border-white/10 rounded-2xl shadow-2xl overflow-hidden z-[200] animate-in fade-in duration-150"
                   >
                     <button
                       role="option"
                       aria-selected={language === "en"}
                       onClick={() => handleSelectLang("en")}
-                      className={`w-full flex items-center gap-3 px-4 py-2.5 text-[12px] font-semibold transition-colors ${language === "en"
-                        ? "bg-[#f27a1a] text-white"
-                        : "text-zinc-300 hover:bg-white/5 hover:text-white"
-                        }`}
+                      className={`w-full flex items-center gap-3 px-4 py-2.5 text-[12px] font-semibold transition-colors ${
+                        language === "en"
+                          ? "bg-[#f27a1a] text-white"
+                          : "text-zinc-300 hover:bg-white/5 hover:text-white"
+                      }`}
                     >
                       <span className="text-base">🌐</span>
                       <span className="flex flex-col items-start leading-none gap-0.5">
@@ -148,15 +159,18 @@ export default function Header() {
                         role="option"
                         aria-selected={language === lang.code}
                         onClick={() => handleSelectLang(lang.code)}
-                        className={`w-full flex items-center gap-3 px-4 py-2.5 text-[12px] font-semibold transition-colors ${language === lang.code
-                          ? "bg-[#f27a1a] text-white"
-                          : "text-zinc-300 hover:bg-white/5 hover:text-white"
-                          }`}
+                        className={`w-full flex items-center gap-3 px-4 py-2.5 text-[12px] font-semibold transition-colors ${
+                          language === lang.code
+                            ? "bg-[#f27a1a] text-white"
+                            : "text-zinc-300 hover:bg-white/5 hover:text-white"
+                        }`}
                       >
                         <span className="text-base">{lang.flag}</span>
                         <span className="flex flex-col items-start leading-none gap-0.5">
                           <span>{lang.label}</span>
-                          <span className="text-[10px] opacity-60">{lang.native}</span>
+                          <span className="text-[10px] opacity-60">
+                            {lang.native}
+                          </span>
                         </span>
                       </button>
                     ))}
@@ -168,7 +182,7 @@ export default function Header() {
         </div>
 
         {/* Main header */}
-        <header className="px-4 sm:px-6 py-4 relative z-50">
+        <header className="px-4 sm:px-6 py-4 relative z-40">
           <div className="max-w-425 mx-auto bg-[#0D1527] rounded-2xl px-6 sm:px-8 py-4 flex justify-between items-center">
             {/* Logo */}
             <Link href="/" className="flex items-center gap-3">
@@ -238,10 +252,11 @@ export default function Header() {
               {/* Track Now — orange pill pushed to far right */}
               <Link
                 href="/track"
-                className={`ml-4 px-5 py-2 rounded-full text-[13px] font-bold transition-colors whitespace-nowrap ${pathname?.startsWith("/track")
-                  ? "bg-orange-600 text-white"
-                  : "bg-[#f27a1a] text-white hover:bg-orange-600"
-                  }`}
+                className={`ml-4 px-5 py-2 rounded-full text-[13px] font-bold transition-colors whitespace-nowrap ${
+                  pathname?.startsWith("/track")
+                    ? "bg-orange-600 text-white"
+                    : "bg-[#f27a1a] text-white hover:bg-orange-600"
+                }`}
               >
                 {t.nav_track}
               </Link>
@@ -276,22 +291,46 @@ export default function Header() {
       {isMobileMenuOpen && (
         <div className="md:hidden fixed inset-0 top-33.75 z-40 bg-white px-6 py-6 shadow-xl border-t border-gray-100 flex flex-col gap-6 font-sans overflow-y-auto">
           <nav className="flex flex-col gap-4 text-[16px] font-bold text-[#1c1f2e]">
-            <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className={`pb-2 border-b border-gray-100 ${pathname === "/" ? "text-[#f27a1a]" : ""}`}>
+            <Link
+              href="/"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className={`pb-2 border-b border-gray-100 ${pathname === "/" ? "text-[#f27a1a]" : ""}`}
+            >
               {t.nav_home}
             </Link>
-            <Link href="/about" onClick={() => setIsMobileMenuOpen(false)} className={`pb-2 border-b border-gray-100 ${pathname?.startsWith("/about") ? "text-[#f27a1a]" : ""}`}>
+            <Link
+              href="/about"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className={`pb-2 border-b border-gray-100 ${pathname?.startsWith("/about") ? "text-[#f27a1a]" : ""}`}
+            >
               {t.nav_about}
             </Link>
-            <Link href="/track" onClick={() => setIsMobileMenuOpen(false)} className={`pb-2 border-b border-gray-100 ${pathname?.startsWith("/track") ? "text-[#f27a1a]" : ""}`}>
+            <Link
+              href="/track"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className={`pb-2 border-b border-gray-100 ${pathname?.startsWith("/track") ? "text-[#f27a1a]" : ""}`}
+            >
               {t.nav_track_shipment}
             </Link>
-            <Link href="/quote" onClick={() => setIsMobileMenuOpen(false)} className={`pb-2 border-b border-gray-100 ${pathname?.startsWith("/quote") ? "text-[#f27a1a]" : ""}`}>
+            <Link
+              href="/quote"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className={`pb-2 border-b border-gray-100 ${pathname?.startsWith("/quote") ? "text-[#f27a1a]" : ""}`}
+            >
               {t.nav_quote}
             </Link>
-            <Link href="/zipcode" onClick={() => setIsMobileMenuOpen(false)} className={`pb-2 border-b border-gray-100 ${pathname?.startsWith("/zipcode") ? "text-[#f27a1a]" : ""}`}>
+            <Link
+              href="/zipcode"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className={`pb-2 border-b border-gray-100 ${pathname?.startsWith("/zipcode") ? "text-[#f27a1a]" : ""}`}
+            >
               {t.nav_zipcode}
             </Link>
-            <Link href="/contact" onClick={() => setIsMobileMenuOpen(false)} className={`pb-2 border-b border-gray-100 ${pathname?.startsWith("/contact") ? "text-[#f27a1a]" : ""}`}>
+            <Link
+              href="/contact"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className={`pb-2 border-b border-gray-100 ${pathname?.startsWith("/contact") ? "text-[#f27a1a]" : ""}`}
+            >
               {t.nav_contact}
             </Link>
           </nav>
@@ -303,7 +342,10 @@ export default function Header() {
             </p>
             <div className="grid grid-cols-2 gap-2">
               <button
-                onClick={() => { handleSelectLang("en"); setIsMobileMenuOpen(false); }}
+                onClick={() => {
+                  handleSelectLang("en");
+                  setIsMobileMenuOpen(false);
+                }}
                 className={`flex items-center gap-2 px-3 py-2 rounded-xl text-[13px] font-semibold border transition-colors ${language === "en" ? "bg-[#f27a1a] text-white border-[#f27a1a]" : "border-gray-200 text-gray-700 hover:border-[#f27a1a] hover:text-[#f27a1a]"}`}
               >
                 <span>🌐</span> English
@@ -311,7 +353,10 @@ export default function Header() {
               {LANGUAGES.map((lang) => (
                 <button
                   key={lang.code}
-                  onClick={() => { handleSelectLang(lang.code); setIsMobileMenuOpen(false); }}
+                  onClick={() => {
+                    handleSelectLang(lang.code);
+                    setIsMobileMenuOpen(false);
+                  }}
                   className={`flex items-center gap-2 px-3 py-2 rounded-xl text-[13px] font-semibold border transition-colors ${language === lang.code ? "bg-[#f27a1a] text-white border-[#f27a1a]" : "border-gray-200 text-gray-700 hover:border-[#f27a1a] hover:text-[#f27a1a]"}`}
                 >
                   <span>{lang.flag}</span> {lang.label}
