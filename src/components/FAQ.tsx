@@ -10,27 +10,39 @@ export default function FAQ() {
     {
       num: "01",
       q: t.faq_q1,
-      a: t.faq_a1,
+      a: <>{t.faq_a1}</>,
     },
     {
       num: "02",
       q: t.faq_q2,
-      a: t.faq_a2,
+      a: (
+        <>
+          {t.faq_a2}{" "}
+          <a
+            href="/quote"
+            className="text-[#ff8a00] font-semibold underline underline-offset-2 hover:text-orange-600 transition-colors"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {t.faq_q2_link}
+          </a>
+          {t.faq_q2_after}
+        </>
+      ),
     },
     {
       num: "03",
       q: t.faq_q3,
-      a: t.faq_a3,
+      a: <>{t.faq_a3}</>,
     },
     {
       num: "04",
       q: t.faq_q4,
-      a: t.faq_a4,
+      a: <>{t.faq_a4}</>,
     },
     {
       num: "05",
       q: t.faq_q5,
-      a: t.faq_a5,
+      a: <>{t.faq_a5}</>,
     },
   ];
 
