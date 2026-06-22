@@ -60,7 +60,7 @@ export default function Contact() {
             </div>
 
             <div className="flex items-start gap-4">
-              <div className="w-[48px] h-[48px] rounded-full bg-[#ff8a00] flex items-center justify-center shrink-0">
+              <div className="w-[48px] h-[48px] rounded-full bg-[#008000] flex items-center justify-center shrink-0">
                 <WhatsAppIcon width={20} height={20} fill="white" />
               </div>
               <div className="flex flex-col gap-1">

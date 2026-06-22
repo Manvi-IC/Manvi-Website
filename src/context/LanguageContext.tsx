@@ -629,10 +629,10 @@ const translations: Record<Language, Translations> = {
       "We have our own network USA, Canada, UK, Europe, and Australia. Whether it's a big city or a quiet suburb, we'll get it there. Further, for locations other than these we offer branded services.",
     faq_q2: "How Much Does It Cost?",
     faq_a2:
-      "Pricing depends on destination, weight, and service type. Parcel shipping to the USA starts from ₹679/kg.",
+      "Parcel depends on destination, weight, and service type. Get a quote now.",
     faq_q2_link: "Get a quick quote",
     faq_q2_after:
-      " or message us on WhatsApp for an exact price; no hidden charges.",
+      " or message us on WhatsApp for an exact price no hidden charges.",
     faq_q3: "How Long Does Delivery Take?",
     faq_a3:
       "Most shipments arrive within a few days to two weeks depending on destination and service level. We guarantee on-time delivery when you order within our confirmed service windows.",
