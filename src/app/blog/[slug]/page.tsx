@@ -725,25 +725,50 @@ export default function BlogPostPage({ params }: PageProps) {
           border: 1px solid var(--line);
           background: var(--paper-2);
           box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+          scrollbar-width: thin;
+          scrollbar-color: #cbd5e1 transparent;
+        }
+        .article-table-container::-webkit-scrollbar {
+          height: 6px;
+        }
+        .article-table-container::-webkit-scrollbar-track {
+          background: transparent;
+        }
+        .article-table-container::-webkit-scrollbar-thumb {
+          background: #cbd5e1;
+          border-radius: 9999px;
+        }
+        .article-table-container::-webkit-scrollbar-thumb:hover {
+          background: #94a3b8;
         }
         .article-table {
           width: 100%;
           border-collapse: collapse;
           text-align: left;
+          font-size: 0.95rem;
         }
         .article-table th, .article-table td {
-          padding: 16px 20px;
+          padding: 14px 20px;
           border-bottom: 1px solid var(--line);
-          border-right: 1px solid var(--line);
-        }
-        .article-table th:last-child, .article-table td:last-child {
-          border-right: none;
         }
         .article-table th {
-          background: #f8fafc;
+          background: var(--panel);
+          color: #ffffff;
           font-weight: 700;
-          color: var(--panel);
-          font-size: 0.95rem;
+          font-size: 0.88rem;
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+          border-bottom: 2px solid var(--accent);
+        }
+        .article-table td {
+          color: #334155;
+          transition: background 0.15s ease;
+        }
+        .article-table tr:nth-child(even) td {
+          background: #f8fafc;
+        }
+        .article-table tr:hover td {
+          background: #f1f5f9;
         }
         .article-table tr:last-child td {
           border-bottom: none;
