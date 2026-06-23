@@ -107,15 +107,7 @@ export default function Header() {
             })()}
           </div>
 
-          <div className="hidden sm:flex items-center gap-6">
-            <Link
-              href="/zipcode"
-              className="hover:text-white transition-colors"
-            >
-              {t.nav_zipcode}
-            </Link>
-
-            <div className="hidden sm:flex items-center gap-6 overflow-visible">
+          <div className="hidden sm:flex items-center gap-6 overflow-visible">
               <Link
                 href="/zipcode"
                 className="hover:text-white transition-colors"
