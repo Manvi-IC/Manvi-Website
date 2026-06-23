@@ -318,9 +318,12 @@ async function checkZipcodeActionRaw(countryInput: string, zipInput: string = ""
   }
 
   // Check ODA/OPA list first
-  if (canonCountry && cleanZip && (cleanService === "FEDEX" || cleanService === "DHL" || cleanService === "DHL EXPRESS")) {
+  if (canonCountry && cleanZip && (cleanService === "FEDEX" || cleanService === "DHL" || cleanService === "DHL EXPRESS" || cleanService === "UPS")) {
     try {
-      const fileName = cleanService === "FEDEX" ? "oda_data.json" : "dhl_oda_data.json";
+      let fileName = "oda_data.json";
+      if (cleanService === "DHL" || cleanService === "DHL EXPRESS") fileName = "dhl_oda_data.json";
+      else if (cleanService === "UPS") fileName = "ups_oda_data.json";
+      
       const odaPath = path.join(process.cwd(), "public", fileName);
       const odaRaw = await fs.readFile(odaPath, "utf-8");
       const odaData = JSON.parse(odaRaw);
@@ -688,6 +691,7 @@ export async function getCitiesAction(countryInput: string): Promise<string[]> {
 
     const odaPath = path.join(process.cwd(), "public", "oda_data.json");
     const dhlPath = path.join(process.cwd(), "public", "dhl_oda_data.json");
+    const upsPath = path.join(process.cwd(), "public", "ups_oda_data.json");
     
     let cities: string[] = [];
     
@@ -711,6 +715,17 @@ export async function getCitiesAction(countryInput: string): Promise<string[]> {
       cities = cities.concat(dhlCities);
     } catch (e) {
       console.warn("Failed to load dhl_oda_data.json", e);
+    }
+
+    try {
+      const upsRaw = await fs.readFile(upsPath, "utf-8");
+      const upsData = JSON.parse(upsRaw);
+      const upsCities = upsData
+        .filter((r: any) => r.canonCountry === odaCountryKey && r.city)
+        .map((r: any) => r.city);
+      cities = cities.concat(upsCities);
+    } catch (e) {
+      console.warn("Failed to load ups_oda_data.json", e);
     }
       
     // De-duplicate and sort
