@@ -149,6 +149,13 @@ const translatePostData = async (originalPost: BlogPost, targetLang: string): Pr
         })
       );
     }
+    if (block.tableData && block.tableData.length > 0) {
+      newBlock.tableData = await Promise.all(
+        block.tableData.map(async (row) => {
+          return await Promise.all(row.map(cell => translateText(cell, targetLang)));
+        })
+      );
+    }
   });
 
   await Promise.all(contentPromises);
@@ -328,6 +335,30 @@ export default function BlogPostPage({ params }: PageProps) {
         return <hr key={index} className="article-divider" />;
       case "slideshow":
         return <SlideshowBlock key={index} block={block} />;
+      case "table":
+        if (!block.tableData || block.tableData.length === 0) return null;
+        return (
+          <div key={index} className="article-table-container">
+            <table className="article-table">
+              <thead>
+                <tr>
+                  {block.tableData[0].map((header, i) => (
+                    <th key={i}>{header}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {block.tableData.slice(1).map((row, rowIdx) => (
+                  <tr key={rowIdx}>
+                    {row.map((cell, colIdx) => (
+                      <td key={colIdx}>{cell}</td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        );
       case "list":
         const ListTag = block.style === "numbered" ? "ol" : "ul";
         return (
@@ -684,6 +715,38 @@ export default function BlogPostPage({ params }: PageProps) {
           border: 0;
           border-top: 1.5px solid var(--line);
           margin: 56px 0;
+        }
+
+        /* Table styling */
+        .article-table-container {
+          overflow-x: auto;
+          margin: 40px 0;
+          border-radius: 12px;
+          border: 1px solid var(--line);
+          background: var(--paper-2);
+          box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+        }
+        .article-table {
+          width: 100%;
+          border-collapse: collapse;
+          text-align: left;
+        }
+        .article-table th, .article-table td {
+          padding: 16px 20px;
+          border-bottom: 1px solid var(--line);
+          border-right: 1px solid var(--line);
+        }
+        .article-table th:last-child, .article-table td:last-child {
+          border-right: none;
+        }
+        .article-table th {
+          background: #f8fafc;
+          font-weight: 700;
+          color: var(--panel);
+          font-size: 0.95rem;
+        }
+        .article-table tr:last-child td {
+          border-bottom: none;
         }
 
         /* Banner styling */
