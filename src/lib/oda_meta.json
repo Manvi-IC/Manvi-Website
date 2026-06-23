@@ -1013,5 +1013,30 @@
     "name": "ZIMBABWE",
     "usesCity": true,
     "usesPostal": false
+  },
+  "ARMENIA": {
+    "name": "ARMENIA",
+    "usesCity": true,
+    "usesPostal": true
+  },
+  "NORTHERN MARIANA ISLANDS": {
+    "name": "NORTHERN MARIANA ISLANDS",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "RUSSIA": {
+    "name": "RUSSIA",
+    "usesCity": true,
+    "usesPostal": true
+  },
+  "SINGAPORE": {
+    "name": "SINGAPORE",
+    "usesCity": true,
+    "usesPostal": true
+  },
+  "TRINIDAD & TOBAGO": {
+    "name": "TRINIDAD & TOBAGO",
+    "usesCity": true,
+    "usesPostal": false
   }
 }
