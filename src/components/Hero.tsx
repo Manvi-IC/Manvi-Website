@@ -1,6 +1,6 @@
 // app/components/Hero.tsx
 "use client";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import {
   ArrowUpRight,
   Users,
@@ -13,6 +13,9 @@ import {
   X,
   CheckCircle2,
   AlertCircle,
+  Filter,
+  TrendingDown,
+  Clock,
 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
@@ -175,6 +178,8 @@ interface Quote {
   tat: string;
 }
 
+type FilterType = "all" | "cheapest" | "fastest";
+
 /* ── Quotes Modal ─────────────────────────────────────────────────────────── */
 function QuotesModal({
   quotes,
@@ -192,6 +197,73 @@ function QuotesModal({
   onClose: () => void;
 }) {
   const { t } = useLanguage();
+  const [filter, setFilter] = useState<FilterType>("all");
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+  // Parse TAT string to extract days for sorting
+  const getTATDays = (tat: string): number => {
+    const match = tat.match(/(\d+)/);
+    return match ? parseInt(match[0]) : 999;
+  };
+
+  // Sort and filter quotes
+  const getFilteredAndSortedQuotes = (): Quote[] => {
+    let filtered = [...quotes];
+
+    switch (filter) {
+      case "cheapest":
+        filtered.sort((a, b) => a.totalPrice - b.totalPrice);
+        break;
+      case "fastest":
+        filtered.sort((a, b) => getTATDays(a.tat) - getTATDays(b.tat));
+        break;
+      default:
+        // Keep original order
+        break;
+    }
+
+    return filtered;
+  };
+
+  const displayedQuotes = getFilteredAndSortedQuotes();
+
+  // Automatically select first quote when filter changes
+  useEffect(() => {
+    if (displayedQuotes.length > 0) {
+      const firstQuote = displayedQuotes[0];
+      const key = `${firstQuote.service}__${firstQuote.rateType}`;
+      onSelect(key);
+    }
+  }, [filter, displayedQuotes, onSelect]);
+
+  // Scroll to selected card when it changes
+  useEffect(() => {
+    if (selectedService && scrollContainerRef.current) {
+      const selectedElement = scrollContainerRef.current.querySelector(
+        `[data-service-key="${selectedService}"]`,
+      );
+      if (selectedElement) {
+        selectedElement.scrollIntoView({
+          behavior: "smooth",
+          block: "nearest",
+          inline: "center",
+        });
+      }
+    }
+  }, [selectedService]);
+
+  const scroll = (direction: "left" | "right") => {
+    if (scrollContainerRef.current) {
+      const scrollAmount = 320;
+      const newScrollLeft =
+        scrollContainerRef.current.scrollLeft +
+        (direction === "left" ? -scrollAmount : scrollAmount);
+      scrollContainerRef.current.scrollTo({
+        left: newScrollLeft,
+        behavior: "smooth",
+      });
+    }
+  };
 
   return (
     <div
@@ -201,7 +273,7 @@ function QuotesModal({
         if (e.target === e.currentTarget) onClose();
       }}
     >
-      <div className="bg-[#0D1527] rounded-2xl w-full max-w-lg max-h-[90vh] flex flex-col shadow-2xl border border-white/10">
+      <div className="bg-[#0D1527] rounded-2xl w-full max-w-7xl max-h-[95vh] h-[85vh] flex flex-col shadow-2xl border border-white/10">
         <div className="flex items-start justify-between gap-3 p-5 border-b border-white/10">
           <div>
             <p className="text-white font-bold text-base">
@@ -224,19 +296,95 @@ function QuotesModal({
           </button>
         </div>
 
-        <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-3">
-          {quotes.map((q) => {
+        {/* Filter Section */}
+        <div className="px-5 py-3 border-b border-white/10 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Filter size={14} className="text-zinc-400" />
+            <span className="text-zinc-400 text-[11px] font-medium uppercase tracking-wider">
+              Sort by:
+            </span>
+            <div className="flex gap-1.5 ml-1">
+              <button
+                onClick={() => setFilter("all")}
+                className={`px-3 py-1.5 rounded-lg text-[11px] font-semibold transition-all ${
+                  filter === "all"
+                    ? "bg-[#e77419] text-white"
+                    : "bg-white/10 text-zinc-400 hover:bg-white/20 hover:text-white"
+                }`}
+              >
+                Default
+              </button>
+              <button
+                onClick={() => setFilter("cheapest")}
+                className={`px-3 py-1.5 rounded-lg text-[11px] font-semibold transition-all flex items-center gap-1 ${
+                  filter === "cheapest"
+                    ? "bg-[#e77419] text-white"
+                    : "bg-white/10 text-zinc-400 hover:bg-white/20 hover:text-white"
+                }`}
+              >
+                <TrendingDown size={12} />
+                Most Affordable
+              </button>
+              <button
+                onClick={() => setFilter("fastest")}
+                className={`px-3 py-1.5 rounded-lg text-[11px] font-semibold transition-all flex items-center gap-1 ${
+                  filter === "fastest"
+                    ? "bg-[#e77419] text-white"
+                    : "bg-white/10 text-zinc-400 hover:bg-white/20 hover:text-white"
+                }`}
+              >
+                <Clock size={12} />
+                Fastest
+              </button>
+            </div>
+          </div>
+          <div className="flex gap-1">
+            <button
+              onClick={() => scroll("left")}
+              className="p-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-zinc-400 hover:text-white transition-all"
+            >
+              <ChevronLeft size={16} />
+            </button>
+            <button
+              onClick={() => scroll("right")}
+              className="p-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-zinc-400 hover:text-white transition-all"
+            >
+              <ChevronRight size={16} />
+            </button>
+          </div>
+        </div>
+
+        {/* Horizontal Scrollable Container */}
+        <div
+          ref={scrollContainerRef}
+          className="flex-1 overflow-x-auto overflow-y-hidden p-4 gap-4 flex scrollbar-thin scrollbar-thumb-zinc-600 scrollbar-track-transparent"
+          style={{
+            scrollbarWidth: "thin",
+            scrollbarColor: "#3f3f46 transparent",
+          }}
+        >
+          {displayedQuotes.map((q, index) => {
             const key = `${q.service}__${q.rateType}`;
             const isSelected = selectedService === key;
             const networkColor =
               NETWORK_COLORS[q.network] ?? "bg-gray-100 text-gray-700";
             const networkLabel = NETWORK_LABELS[q.network] ?? q.network;
             const dutyPaid = q.network === "SELF";
+
+            // Determine if this quote has a badge
+            let badge = "";
+            if (filter === "cheapest" && index === 0) {
+              badge = "🏆 Best Price";
+            } else if (filter === "fastest" && index === 0) {
+              badge = "⚡ Fastest";
+            }
+
             return (
               <div
                 key={key}
+                data-service-key={key}
                 onClick={() => onSelect(key)}
-                className={`relative rounded-xl border-2 p-4 cursor-pointer transition-all ${
+                className={`relative rounded-xl border-2 p-4 cursor-pointer transition-all min-w-[280px] max-w-[320px] flex-shrink-0 ${
                   isSelected
                     ? "border-[#e77419] bg-[#e77419]/10"
                     : "border-zinc-700 bg-zinc-800/60 hover:border-zinc-500"
@@ -247,50 +395,60 @@ function QuotesModal({
                     {t.form_selected}
                   </div>
                 )}
-                <div className="flex items-start justify-between gap-4 p-3 rounded-xl bg-white/5 hover:bg-white/10 transition-all duration-200">
-                  <div className="flex-1 min-w-0 space-y-2">
-                    <div className="flex items-center gap-1.5 flex-wrap">
-                      <span
-                        className={`text-[10px] font-semibold px-2.5 py-0.5 rounded-full ${networkColor}`}
-                      >
-                        {q.service}
-                      </span>
-                      {q.zone && (
-                        <span className="text-[10px] bg-white/10 text-zinc-300 px-2.5 py-0.5 rounded-full font-mono">
-                          {t.form_zone} {q.zone}
-                        </span>
-                      )}
-                      <span className="text-[10px] bg-white/10 text-zinc-300 px-2.5 py-0.5 rounded-full">
-                        {q.rateType === "S" ? t.form_slab : t.form_per_kg}
-                      </span>
-                      {dutyPaid ? (
-                        <span className="inline-flex items-center gap-1 text-[10px] font-medium px-2.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/20">
-                          <CheckCircle2 size={10} strokeWidth={2} />
-                          {t.form_duty_paid}
-                        </span>
-                      ) : (
-                        <span className="inline-flex items-center gap-1 text-[10px] font-medium px-2.5 py-0.5 rounded-full bg-rose-500/15 text-rose-400 border border-rose-500/20">
-                          <AlertCircle size={10} strokeWidth={2} />
-                          {t.form_duty_unpaid}
-                        </span>
-                      )}
-                    </div>
-                    <div>
-                      <p className="text-[20px] font-semibold text-white leading-snug tracking-wide">
-                        {networkLabel}
-                      </p>
-                      <p className="text-[11px] text-zinc-400 mt-1 font-medium">
-                        {q.tat}
-                      </p>
-                    </div>
+                {badge && (
+                  <div className="absolute -top-2.5 right-3 bg-emerald-500 text-white text-[9px] font-bold px-2 py-0.5 rounded-full">
+                    {badge}
                   </div>
-                  <div className="text-right shrink-0 pt-0.5">
-                    <p className="text-[22px] font-extrabold text-[#e77419] leading-none tracking-tight">
-                      ₹{Math.round(q.totalPrice).toLocaleString("en-IN")}
+                )}
+                <div className="flex flex-col gap-3">
+                  {/* Top row: Service badge, Zone, Rate Type */}
+                  <div className="flex items-center gap-1.5 flex-wrap">
+                    <span
+                      className={`text-[10px] font-semibold px-2.5 py-0.5 rounded-full ${networkColor}`}
+                    >
+                      {q.service}
+                    </span>
+                    {q.zone && (
+                      <span className="text-[10px] bg-white/10 text-zinc-300 px-2.5 py-0.5 rounded-full font-mono">
+                        {t.form_zone} {q.zone}
+                      </span>
+                    )}
+                    <span className="text-[10px] bg-white/10 text-zinc-300 px-2.5 py-0.5 rounded-full">
+                      {q.rateType === "S" ? t.form_slab : t.form_per_kg}
+                    </span>
+                    {dutyPaid ? (
+                      <span className="inline-flex items-center gap-1 text-[10px] font-medium px-2.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/20">
+                        <CheckCircle2 size={10} strokeWidth={2} />
+                        {t.form_duty_paid}
+                      </span>
+                    ) : (
+                      <span className="inline-flex items-center gap-1 text-[10px] font-medium px-2.5 py-0.5 rounded-full bg-rose-500/15 text-rose-400 border border-rose-500/20">
+                        <AlertCircle size={10} strokeWidth={2} />
+                        {t.form_duty_unpaid}
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Middle row: Network name */}
+                  <div>
+                    <p className="text-[18px] font-semibold text-white leading-snug tracking-wide">
+                      {networkLabel}
                     </p>
-                    <p className="text-[10px] text-zinc-500 mt-1 font-medium tracking-wide uppercase">
-                      {t.form_gst_inc}
+                  </div>
+
+                  {/* Bottom row: TAT and Price */}
+                  <div className="flex items-center justify-between">
+                    <p className="text-[12px] text-zinc-400 font-medium">
+                      {q.tat}
                     </p>
+                    <div className="text-right">
+                      <p className="text-[22px] font-extrabold text-[#e77419] leading-none tracking-tight">
+                        ₹{Math.round(q.totalPrice).toLocaleString("en-IN")}
+                      </p>
+                      <p className="text-[10px] text-zinc-500 mt-0.5 font-medium tracking-wide uppercase">
+                        {t.form_gst_inc}
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -299,7 +457,9 @@ function QuotesModal({
         </div>
 
         <div className="px-5 py-3 border-t border-white/10 text-center">
-          <p className="text-[11px] text-zinc-500">{t.form_final_rates_msg}</p>
+          <p className="text-[11px] text-zinc-500">
+            Final rates may vary · Call +91 70 70 50 60 70 to confirm
+          </p>
         </div>
       </div>
     </div>
@@ -733,12 +893,6 @@ export default function Hero() {
                 </Link>
               </div>
             </div>
-
-            {/* Slide counter badge (top-right) */}
-            {/* <div className="absolute top-5 right-5 z-20 bg-black/30 backdrop-blur-sm border border-white/10 rounded-full px-3 py-1 text-[10px] font-bold text-white/70 tabular-nums">
-              {String(current + 1).padStart(2, "0")} /{" "}
-              {String(SLIDES.length).padStart(2, "0")}
-            </div> */}
           </div>
         </div>
 
