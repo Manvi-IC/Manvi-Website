@@ -498,7 +498,7 @@ const translations: Record<Language, Translations> = {
     hero_days: "Days",
     hero_read_more: "Read more",
     hero_legacy_badge: "The Manvi legacy",
-    hero_legacy_heading: "We don't just move parcels;",
+    hero_legacy_heading: "We don't just move parcels",
     hero_legacy_highlight: "We bridge distances.",
     hero_whatsapp: "•Whatsapp us •Whatsapp us •",
     hero_doc_express: "Document express",
@@ -544,7 +544,7 @@ const translations: Record<Language, Translations> = {
     wwl_card2_label: "Elite partnerships",
     wwl_card2_stat: "Multiple\ncountries",
     wwl_card2_desc:
-      "Collaboration with world-class carriers including DHL, FedEx, UPS, Aramex, and DPD.",
+      "Collaboration with world-class carriers including Aramex, Courier Please, DHL, DPD, FedEx and UPS.",
     wwl_card3_label: "Customs mastery",
     wwl_card3_stat: "1000+",
     wwl_card3_desc:
@@ -572,7 +572,7 @@ const translations: Record<Language, Translations> = {
     claim_tab1_d3_num: "03",
     claim_tab1_d3_title: "Third-Party Dependency",
     claim_tab1_d3_desc:
-      'As an international logistics provider, Manvi International\'s claim resolution is strictly contingent upon the official investigation reports and confirmation from our global courier partners, including but not limited to <strong class="font-extrabold text-[#1c1f2e]">DHL, FedEx, UPS, DPD, and Aramex',
+      'As an international logistics provider, Manvi International\'s claim resolution is strictly contingent upon the official investigation reports and confirmation from our global courier partners, including but not limited to <strong class="font-extrabold text-[#1c1f2e]">Aramex, Courier Please, DHL, DPD, FedEx and UPS',
     claim_tab2_title: "Return To Origin (RTO) Shipments",
     claim_tab2_subtext:
       "Returned shipments for non-delivery, incorrect addresses, or refusal qualify for refunds.",
@@ -629,10 +629,10 @@ const translations: Record<Language, Translations> = {
       "We have our own network USA, Canada, UK, Europe, and Australia. Whether it's a big city or a quiet suburb, we'll get it there. Further, for locations other than these we offer branded services.",
     faq_q2: "How Much Does It Cost?",
     faq_a2:
-      "Pricing depends on destination, weight, and service type. Parcel shipping to the USA starts from ₹679/kg.",
+      "Parcel depends on destination, weight, and service type. Get a quote now.",
     faq_q2_link: "Get a quick quote",
     faq_q2_after:
-      " or message us on WhatsApp for an exact price; no hidden charges.",
+      " or message us on WhatsApp for an exact price no hidden charges.",
     faq_q3: "How Long Does Delivery Take?",
     faq_a3:
       "Most shipments arrive within a few days to two weeks depending on destination and service level. We guarantee on-time delivery when you order within our confirmed service windows.",

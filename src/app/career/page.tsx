@@ -44,7 +44,7 @@ interface StepItem {
 const STATS: StatItem[] = [
   { value: "1M+", label: "International shipments delivered" },
   { value: "100K+", label: "Happy customers worldwide" },
-  { value: "98%", label: "Delivery success rate" },
+  { value: "99.97%", label: "Delivery success rate" },
   { value: "5", label: "Global carrier partners" },
 ];
 
@@ -59,7 +59,7 @@ const VALUES: ValueItem[] = [
     icon: "🌍",
     title: "Global Exposure",
     description:
-      "Work across borders, carriers and time zones with partners like DHL, FedEx and Aramex.",
+      "Work across borders, carriers and time zones with partners like Aramex, Courier Please, DHL, DPD, FedEx and UPS.",
   },
   {
     icon: "🤝",
@@ -372,13 +372,15 @@ export default function CareerPage(): React.ReactElement {
         }
         .stat-item .value {
           font-family: var(--display);
-          font-size: 1.9rem;
+          font-size: 2.4rem; /* was 1.9rem */
+          font-weight: 500; /* add bold */
           color: var(--accent);
           min-width: 108px;
         }
         .stat-item .label {
           color: #c4cfd7;
           font-size: 0.95rem;
+          
         }
 
         @media (max-width: 860px) {

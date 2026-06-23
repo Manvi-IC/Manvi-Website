@@ -1,6 +1,6 @@
 // app/components/Hero.tsx
 "use client";
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import {
   ArrowUpRight,
   Users,
@@ -8,6 +8,8 @@ import {
   Headphones,
   MapPin,
   ChevronDown,
+  ChevronLeft,
+  ChevronRight,
   X,
   CheckCircle2,
   AlertCircle,
@@ -15,6 +17,30 @@ import {
 import Link from "next/link";
 import Image from "next/image";
 import { useLanguage } from "@/context/LanguageContext";
+
+/* ── Carousel Slides ─────────────────────────────────────────────────────── */
+const SLIDES = [
+  {
+    src: "/hero-right.jpg",
+    tagline: "Your trusted courier,",
+    highlight: "across every mile.",
+  },
+  {
+    src: "/hero-right-2.jpeg",
+    tagline: "Distance not Divide,",
+    highlight: "with Manvi.",
+  },
+  {
+    src: "/hero-right-3.jpeg",
+    tagline: "Miles don't matter",
+    highlight: "at Manvi.",
+  },
+  {
+    src: "/hero-right-4.jpeg",
+    tagline: "Shipping love,",
+    highlight: "packed in a box.",
+  },
+];
 
 const DESTINATIONS = [
   {
@@ -130,7 +156,6 @@ const NETWORK_LABELS: Record<string, string> = {
   UPS: "UPS",
   FED: "FedEx",
 };
-
 const NETWORK_COLORS: Record<string, string> = {
   SELF: "bg-orange-100 text-orange-700",
   ARA: "bg-purple-100 text-purple-700",
@@ -150,7 +175,7 @@ interface Quote {
   tat: string;
 }
 
-/* ── Quotes Modal ── */
+/* ── Quotes Modal ─────────────────────────────────────────────────────────── */
 function QuotesModal({
   quotes,
   destLabel,
@@ -166,10 +191,9 @@ function QuotesModal({
   onSelect: (key: string) => void;
   onClose: () => void;
 }) {
-  const { t } = useLanguage(); // ✅ FIX: Added useLanguage hook here
+  const { t } = useLanguage();
 
   return (
-    /* Backdrop */
     <div
       className="fixed inset-0 z-50 flex items-center justify-center p-4"
       style={{ background: "rgba(0,0,0,0.65)" }}
@@ -177,9 +201,7 @@ function QuotesModal({
         if (e.target === e.currentTarget) onClose();
       }}
     >
-      {/* Panel */}
       <div className="bg-[#0D1527] rounded-2xl w-full max-w-lg max-h-[90vh] flex flex-col shadow-2xl border border-white/10">
-        {/* Header */}
         <div className="flex items-start justify-between gap-3 p-5 border-b border-white/10">
           <div>
             <p className="text-white font-bold text-base">
@@ -202,7 +224,6 @@ function QuotesModal({
           </button>
         </div>
 
-        {/* Scrollable list */}
         <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-3">
           {quotes.map((q) => {
             const key = `${q.service}__${q.rateType}`;
@@ -211,7 +232,6 @@ function QuotesModal({
               NETWORK_COLORS[q.network] ?? "bg-gray-100 text-gray-700";
             const networkLabel = NETWORK_LABELS[q.network] ?? q.network;
             const dutyPaid = q.network === "SELF";
-
             return (
               <div
                 key={key}
@@ -227,29 +247,22 @@ function QuotesModal({
                     {t.form_selected}
                   </div>
                 )}
-
                 <div className="flex items-start justify-between gap-4 p-3 rounded-xl bg-white/5 hover:bg-white/10 transition-all duration-200">
-                  {/* Left Section */}
                   <div className="flex-1 min-w-0 space-y-2">
-                    {/* Tags Row */}
                     <div className="flex items-center gap-1.5 flex-wrap">
                       <span
                         className={`text-[10px] font-semibold px-2.5 py-0.5 rounded-full ${networkColor}`}
                       >
                         {q.service}
                       </span>
-
                       {q.zone && (
                         <span className="text-[10px] bg-white/10 text-zinc-300 px-2.5 py-0.5 rounded-full font-mono">
                           {t.form_zone} {q.zone}
                         </span>
                       )}
-
                       <span className="text-[10px] bg-white/10 text-zinc-300 px-2.5 py-0.5 rounded-full">
                         {q.rateType === "S" ? t.form_slab : t.form_per_kg}
                       </span>
-
-                      {/* Duty Badge - More subtle */}
                       {dutyPaid ? (
                         <span className="inline-flex items-center gap-1 text-[10px] font-medium px-2.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/20">
                           <CheckCircle2 size={10} strokeWidth={2} />
@@ -262,8 +275,6 @@ function QuotesModal({
                         </span>
                       )}
                     </div>
-
-                    {/* Main Content */}
                     <div>
                       <p className="text-[20px] font-semibold text-white leading-snug tracking-wide">
                         {networkLabel}
@@ -273,8 +284,6 @@ function QuotesModal({
                       </p>
                     </div>
                   </div>
-
-                  {/* Right Section - Price */}
                   <div className="text-right shrink-0 pt-0.5">
                     <p className="text-[22px] font-extrabold text-[#e77419] leading-none tracking-tight">
                       ₹{Math.round(q.totalPrice).toLocaleString("en-IN")}
@@ -289,7 +298,6 @@ function QuotesModal({
           })}
         </div>
 
-        {/* Footer */}
         <div className="px-5 py-3 border-t border-white/10 text-center">
           <p className="text-[11px] text-zinc-500">{t.form_final_rates_msg}</p>
         </div>
@@ -298,9 +306,11 @@ function QuotesModal({
   );
 }
 
-/* ── Hero ── */
+/* ── Hero ─────────────────────────────────────────────────────────────────── */
 export default function Hero() {
   const { t } = useLanguage();
+
+  /* Form state */
   const [destination, setDestination] = useState("");
   const [zoningCountry, setZoningCountry] = useState("");
   const [zipcode, setZipcode] = useState("");
@@ -312,6 +322,12 @@ export default function Hero() {
   const [selectedService, setSelectedService] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
+
+  /* Carousel state */
+  const [current, setCurrent] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const [animating, setAnimating] = useState(false);
+  const [direction, setDirection] = useState<"next" | "prev">("next");
 
   const destObj = DESTINATIONS.find((d) => d.value === destination);
   const requiresZip = destObj?.requiresZip ?? false;
@@ -326,11 +342,40 @@ export default function Hero() {
           5000
         ).toFixed(2)
       : null;
-
   const chargeableWt = volWt
     ? Math.ceil(Math.max(parseFloat(actualWt) || 0, parseFloat(volWt)))
     : Math.ceil(parseFloat(actualWt) || 0);
 
+  /* Auto-advance */
+  const goTo = useCallback(
+    (idx: number, dir: "next" | "prev") => {
+      if (animating) return;
+      setDirection(dir);
+      setAnimating(true);
+      setTimeout(() => {
+        setCurrent(idx);
+        setAnimating(false);
+      }, 500);
+    },
+    [animating],
+  );
+
+  const next = useCallback(
+    () => goTo((current + 1) % SLIDES.length, "next"),
+    [current, goTo],
+  );
+  const prev = useCallback(
+    () => goTo((current - 1 + SLIDES.length) % SLIDES.length, "prev"),
+    [current, goTo],
+  );
+
+  useEffect(() => {
+    if (paused) return;
+    const id = setInterval(next, 4500);
+    return () => clearInterval(id);
+  }, [next, paused]);
+
+  /* Quote fetch */
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!destination || !actualWt) {
@@ -345,28 +390,23 @@ export default function Hero() {
       alert(`Please select a specific country within ${destObj?.label}.`);
       return;
     }
-
     setLoading(true);
     setQuotes([]);
     setSelectedService(null);
-
     try {
       const API_URL =
         process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
       const DB_NAME = process.env.NEXT_PUBLIC_X_DATABASE || "manvi";
-
       const params = new URLSearchParams({ actualWt, country: destination });
       if (length) params.append("length", length);
       if (breadth) params.append("breadth", breadth);
       if (height) params.append("height", height);
       if (zipcode) params.append("zipcode", zipcode);
       if (zoningCountry) params.append("zoningCountry", zoningCountry);
-
       const res = await fetch(`${API_URL}/rates/quote?${params}`, {
         headers: { "x-database": DB_NAME },
       });
       const data = await res.json();
-
       if (data.success && data.quotes?.length > 0) {
         setQuotes(data.quotes);
         setSelectedService(
@@ -380,16 +420,16 @@ export default function Hero() {
         );
       }
     } catch (err: any) {
-      console.error("Hero quote handler error:", err);
       alert("Failed to get quote: " + err.message);
     } finally {
       setLoading(false);
     }
   };
 
+  const slide = SLIDES[current];
+
   return (
     <>
-      {/* ── Modal ── */}
       {showModal && quotes.length > 0 && (
         <QuotesModal
           quotes={quotes}
@@ -440,7 +480,6 @@ export default function Hero() {
                 />
               </div>
 
-              {/* Sub-country (EUROPE / INTERNATIONAL) */}
               {requiresSubCountry && (
                 <div className="relative">
                   <select
@@ -469,7 +508,6 @@ export default function Hero() {
                 </div>
               )}
 
-              {/* Zipcode (AUS / CAN only) */}
               {requiresZip && (
                 <input
                   type="text"
@@ -480,7 +518,6 @@ export default function Hero() {
                 />
               )}
 
-              {/* Actual weight */}
               <input
                 type="number"
                 placeholder={t.form_actual_wt}
@@ -491,7 +528,6 @@ export default function Hero() {
                 className="w-full bg-white text-[#333] text-[13px] font-medium rounded-xl px-4 py-3 focus:outline-none placeholder:text-gray-400"
               />
 
-              {/* Dimensions */}
               <div className="flex flex-col gap-1">
                 <span className="text-white/80 text-[11px] font-semibold tracking-wide uppercase pl-1">
                   {t.form_vol_wt_dim}
@@ -515,7 +551,6 @@ export default function Hero() {
                 </div>
               </div>
 
-              {/* Live weight preview */}
               {(actualWt || volWt) && (
                 <div className="bg-white/20 rounded-xl px-4 py-3 flex justify-between text-white text-xs font-semibold">
                   {volWt && (
@@ -542,44 +577,71 @@ export default function Hero() {
             </form>
           </div>
 
-          {/* ── RIGHT: Dark Image Card ── */}
-          <div className="relative rounded-[16px] min-h-[485px] lg:h-auto flex flex-col justify-between">
-            <div className="absolute inset-0 rounded-[16px] rounded-bl-[18px] overflow-hidden">
-              <Image
-                src="/hero-right.jpg"
-                alt="Manvi Legacy"
-                fill
-                sizes="(max-width: 1024px) 100vw, 50vw"
-                className="object-cover object-center"
-                priority
-              />
-              <div className="absolute inset-0 bg-black/50" />
+          {/* ── RIGHT: Carousel Card ── */}
+          <div
+            className="relative rounded-[16px] min-h-[485px] lg:h-auto flex flex-col justify-between overflow-hidden"
+            onMouseEnter={() => setPaused(true)}
+            onMouseLeave={() => setPaused(false)}
+          >
+            {/* Slides */}
+            {SLIDES.map((s, i) => (
               <div
-                className="absolute inset-0"
-                style={{
-                  background:
-                    "linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.72) 54.84%)",
-                }}
-              />
-            </div>
+                key={s.src}
+                className={`absolute inset-0 transition-opacity duration-500 ${
+                  i === current ? "opacity-100 z-10" : "opacity-0 z-0"
+                }`}
+              >
+                <Image
+                  src={s.src}
+                  alt={s.tagline}
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                  className="object-cover object-center"
+                  priority={i === 0}
+                />
+                {/* Dark gradient overlay */}
+                <div className="absolute inset-0 bg-black/45" />
+                <div
+                  className="absolute inset-0"
+                  style={{
+                    background:
+                      "linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.75) 60%)",
+                  }}
+                />
+              </div>
+            ))}
 
-            {/* Top content */}
-            <div className="relative z-10 p-6 sm:p-8 lg:p-10 flex flex-col gap-3">
+            {/* Top badge — above everything */}
+            <div className="relative z-20 p-6 sm:p-8 lg:p-10 flex flex-col gap-3">
               <span className="text-[11px] font-bold tracking-wider bg-white/15 text-white/90 border border-white/20 w-fit px-3 py-1 rounded-full">
                 {t.hero_legacy_badge}
               </span>
-              <h2 className="text-[30px] sm:text-[34px] md:text-[40px] font-extrabold text-white leading-[1.15] tracking-tight mt-2">
-                {t.hero_legacy_heading}
-                <br />
-                <span className="text-[#f27a1a]">
-                  {t.hero_legacy_highlight}
-                </span>
-              </h2>
             </div>
 
-            {/* Bottom row */}
-            <div className="relative z-10 p-6 sm:p-8 lg:p-10 flex flex-col sm:flex-row items-end justify-between gap-6 sm:gap-0">
-              {/* Cutout corner circle */}
+            {/* Tagline — centre of card, changes per slide */}
+            <div className="absolute inset-0 z-20 flex flex-col justify-end px-8 pb-75 pointer-events-none">
+              <div
+                key={current}
+                className="text-left"
+                style={{ animation: "fadeSlideUp 0.55s ease both" }}
+              >
+                <p className="text-[28px] sm:text-[34px] md:text-[38px] font-extrabold text-white leading-[1.15] tracking-tight drop-shadow-lg">
+                  {slide.tagline.split("\n").map((line, i) => (
+                    <span key={i}>
+                      {line}
+                      <br />
+                    </span>
+                  ))}
+                  {slide.highlight && (
+                    <span className="text-[#f27a1a]">{slide.highlight}</span>
+                  )}
+                </p>
+              </div>
+            </div>
+
+            {/* Bottom bar: WhatsApp + dots + arrows + read more */}
+            <div className="relative z-20 p-6 sm:p-8 lg:p-10 flex flex-col sm:flex-row items-end justify-between gap-6 sm:gap-0">
+              {/* WhatsApp cutout */}
               <div className="absolute -bottom-4 -left-4 w-34 h-34 sm:w-36 sm:h-36 bg-[#f8f9fa] rounded-full flex items-center justify-center pointer-events-none z-20">
                 <a
                   href="https://wa.me/917070506070"
@@ -624,15 +686,45 @@ export default function Hero() {
                 </a>
               </div>
 
+              {/* Spacer for WhatsApp */}
               <div className="w-24 sm:w-32 flex-shrink-0" />
 
-              <div className="flex items-center gap-6 w-full sm:w-auto justify-between sm:justify-end">
-                <div className="flex gap-1.5">
-                  <div className="w-2 h-2 rounded-full bg-[#f27a1a]" />
-                  <div className="w-2 h-2 rounded-full bg-[#f27a1a]" />
-                  <div className="w-2 h-2 rounded-full bg-white/40" />
-                  <div className="w-2 h-2 rounded-full bg-white/40" />
+              {/* Right side: dots + arrows + read more */}
+              <div className="flex items-center gap-4 w-full sm:w-auto justify-between sm:justify-end">
+                {/* Dot indicators */}
+                <div className="flex gap-1.5 items-center">
+                  {SLIDES.map((_, i) => (
+                    <button
+                      key={i}
+                      onClick={() => goTo(i, i > current ? "next" : "prev")}
+                      className={`rounded-full transition-all duration-300 ${
+                        i === current
+                          ? "w-5 h-2 bg-[#f27a1a]"
+                          : "w-2 h-2 bg-white/40 hover:bg-white/60"
+                      }`}
+                      aria-label={`Go to slide ${i + 1}`}
+                    />
+                  ))}
                 </div>
+
+                {/* Arrow controls */}
+                <div className="flex items-center gap-1.5">
+                  <button
+                    onClick={prev}
+                    className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/25 border border-white/20 flex items-center justify-center text-white transition-colors"
+                    aria-label="Previous slide"
+                  >
+                    <ChevronLeft size={15} />
+                  </button>
+                  <button
+                    onClick={next}
+                    className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/25 border border-white/20 flex items-center justify-center text-white transition-colors"
+                    aria-label="Next slide"
+                  >
+                    <ChevronRight size={15} />
+                  </button>
+                </div>
+
                 <Link
                   href="/about"
                   className="border border-white/50 text-white text-[12px] font-semibold px-5 py-2 rounded-lg hover:bg-white/10 transition-colors"
@@ -641,6 +733,12 @@ export default function Hero() {
                 </Link>
               </div>
             </div>
+
+            {/* Slide counter badge (top-right) */}
+            {/* <div className="absolute top-5 right-5 z-20 bg-black/30 backdrop-blur-sm border border-white/10 rounded-full px-3 py-1 text-[10px] font-bold text-white/70 tabular-nums">
+              {String(current + 1).padStart(2, "0")} /{" "}
+              {String(SLIDES.length).padStart(2, "0")}
+            </div> */}
           </div>
         </div>
 
@@ -678,6 +776,14 @@ export default function Hero() {
           ))}
         </div>
       </section>
+
+      {/* Keyframe for tagline fade-up */}
+      <style>{`
+        @keyframes fadeSlideUp {
+          from { opacity: 0; transform: translateY(14px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+      `}</style>
     </>
   );
 }
