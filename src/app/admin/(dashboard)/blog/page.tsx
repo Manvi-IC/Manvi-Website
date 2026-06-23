@@ -19,7 +19,8 @@ import {
   HelpCircle,
   Image,
   Layers,
-  GripVertical
+  GripVertical,
+  Table
 } from "lucide-react";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
@@ -88,7 +89,7 @@ function ImageUploadField({ value, onChange, placeholder = "Image URL", label }:
 }
 
 interface BlogBlock {
-  type: "paragraph" | "subheading" | "list" | "callout" | "image" | "heading" | "divider" | "slideshow";
+  type: "paragraph" | "subheading" | "list" | "callout" | "image" | "heading" | "divider" | "slideshow" | "table";
   text?: string;
   items?: string[];
   style?: string; // e.g. "bullet", "numbered", "h2", "h3", "h4"
@@ -99,6 +100,7 @@ interface BlogBlock {
   images?: Array<{ src: string; alt?: string; caption?: string }>;
   buttonText?: string;
   buttonLink?: string;
+  tableData?: string[][];
 }
 
 interface BlogPost {
@@ -237,7 +239,7 @@ export default function BlogManagementPage() {
   };
 
   // Block Helpers
-  const addBlock = (type: "paragraph" | "subheading" | "list" | "callout" | "image" | "heading" | "divider" | "slideshow", insertIndex?: number) => {
+  const addBlock = (type: "paragraph" | "subheading" | "list" | "callout" | "image" | "heading" | "divider" | "slideshow" | "table", insertIndex?: number) => {
     const newBlock: BlogBlock = { type };
     if (type === "paragraph") {
       newBlock.text = "";
@@ -254,6 +256,8 @@ export default function BlogManagementPage() {
       // visual only
     } else if (type === "slideshow") {
       newBlock.images = [];
+    } else if (type === "table") {
+      newBlock.tableData = [["Header 1", "Header 2"], ["Row 1 Col 1", "Row 1 Col 2"]];
     } else if (type === "list") {
       newBlock.items = [""];
       newBlock.style = "bullet";
@@ -544,6 +548,7 @@ export default function BlogManagementPage() {
                   <button type="button" onClick={() => addBlock("callout")} className="bg-rose-50 text-rose-700 hover:bg-rose-100 border border-rose-200 text-xs px-3.5 py-2 rounded-lg font-bold transition-all active:scale-95 flex items-center gap-1.5 shadow-sm"><HelpCircle size={14} /> Callout Box</button>
                   <button type="button" onClick={() => addBlock("image")} className="bg-emerald-50 text-emerald-700 hover:bg-emerald-100 border border-emerald-200 text-xs px-3.5 py-2 rounded-lg font-bold transition-all active:scale-95 flex items-center gap-1.5 shadow-sm"><Image size={14} /> Single Image</button>
                   <button type="button" onClick={() => addBlock("slideshow")} className="bg-violet-50 text-violet-700 hover:bg-violet-100 border border-violet-200 text-xs px-3.5 py-2 rounded-lg font-bold transition-all active:scale-95 flex items-center gap-1.5 shadow-sm"><Layers size={14} /> Slideshow</button>
+                  <button type="button" onClick={() => addBlock("table")} className="bg-cyan-50 text-cyan-700 hover:bg-cyan-100 border border-cyan-200 text-xs px-3.5 py-2 rounded-lg font-bold transition-all active:scale-95 flex items-center gap-1.5 shadow-sm"><Table size={14} /> Table</button>
                   <button type="button" onClick={() => addBlock("divider")} className="bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200 text-xs px-3.5 py-2 rounded-lg font-bold transition-all active:scale-95 flex items-center gap-1.5 shadow-sm"><span>—</span> Divider</button>
                 </div>
               </div>
@@ -600,6 +605,13 @@ export default function BlogManagementPage() {
                           label: "Image Slideshow",
                           icon: <Layers size={13} className="inline mr-1" />
                         };
+                      case "table":
+                        return {
+                          border: "border-l-4 border-l-cyan-500 focus-within:border-l-cyan-600",
+                          badge: "bg-cyan-50 text-cyan-700 border border-cyan-100",
+                          label: "Data Table",
+                          icon: <Table size={13} className="inline mr-1" />
+                        };
                       case "divider":
                         return {
                           border: "border-l-4 border-l-slate-400 focus-within:border-l-slate-500",
@@ -640,6 +652,7 @@ export default function BlogManagementPage() {
                             <button type="button" onClick={() => { addBlock("callout", idx); setInsertMenuIndex(null); }} className="bg-rose-50 text-rose-700 hover:bg-rose-100 border border-rose-200 text-xs px-3 py-1.5 rounded-lg font-bold transition-all"><HelpCircle size={13} className="inline mr-1" />Callout</button>
                             <button type="button" onClick={() => { addBlock("image", idx); setInsertMenuIndex(null); }} className="bg-emerald-50 text-emerald-700 hover:bg-emerald-100 border border-emerald-200 text-xs px-3 py-1.5 rounded-lg font-bold transition-all"><Image size={13} className="inline mr-1" />Image</button>
                             <button type="button" onClick={() => { addBlock("slideshow", idx); setInsertMenuIndex(null); }} className="bg-violet-50 text-violet-700 hover:bg-violet-100 border border-violet-200 text-xs px-3 py-1.5 rounded-lg font-bold transition-all"><Layers size={13} className="inline mr-1" />Slideshow</button>
+                            <button type="button" onClick={() => { addBlock("table", idx); setInsertMenuIndex(null); }} className="bg-cyan-50 text-cyan-700 hover:bg-cyan-100 border border-cyan-200 text-xs px-3 py-1.5 rounded-lg font-bold transition-all"><Table size={13} className="inline mr-1" />Table</button>
                             <button type="button" onClick={() => { addBlock("divider", idx); setInsertMenuIndex(null); }} className="bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200 text-xs px-3 py-1.5 rounded-lg font-bold transition-all"><span className="inline mr-1">—</span>Divider</button>
                           </div>
                         </div>
@@ -886,6 +899,94 @@ export default function BlogManagementPage() {
                           >
                             <Plus size={14} />
                             Add Image to Slideshow
+                          </button>
+                        </div>
+                      )}
+
+                      {block.type === "table" && (
+                        <div className="space-y-4 bg-slate-50/50 p-3 rounded-lg border border-gray-200 overflow-x-auto">
+                          <div className="flex items-center justify-between">
+                            <div className="text-xs font-bold text-slate-500 uppercase tracking-wider">Table Data ({block.tableData?.length || 0} rows)</div>
+                            <div className="flex gap-2">
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  const rows = block.tableData || [];
+                                  if (rows.length === 0) return;
+                                  const colsCount = rows[0].length;
+                                  if (colsCount >= 8) {
+                                    alert("Maximum 8 columns allowed.");
+                                    return;
+                                  }
+                                  const newRows = rows.map(r => [...r, ""]);
+                                  updateBlockField(idx, "tableData", newRows);
+                                }}
+                                className="bg-cyan-100 text-cyan-700 hover:bg-cyan-200 text-[10px] px-2 py-1 rounded font-bold transition-colors"
+                              >
+                                + Column
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  const rows = block.tableData || [];
+                                  if (rows.length === 0) return;
+                                  if (rows[0].length <= 1) return;
+                                  const newRows = rows.map(r => r.slice(0, -1));
+                                  updateBlockField(idx, "tableData", newRows);
+                                }}
+                                className="bg-red-100 text-red-700 hover:bg-red-200 text-[10px] px-2 py-1 rounded font-bold transition-colors"
+                              >
+                                - Column
+                              </button>
+                            </div>
+                          </div>
+                          
+                          <div className="space-y-2">
+                            {(block.tableData || []).map((row, rowIdx) => (
+                              <div key={rowIdx} className="flex gap-2">
+                                {row.map((cell, colIdx) => (
+                                  <input
+                                    key={colIdx}
+                                    type="text"
+                                    className={`border rounded p-1.5 text-xs focus:outline-none focus:border-[#e77419] flex-1 min-w-[80px] ${rowIdx === 0 ? "font-bold bg-slate-100" : "bg-white"}`}
+                                    value={cell}
+                                    placeholder={rowIdx === 0 ? `Header ${colIdx + 1}` : `Data`}
+                                    onChange={(e) => {
+                                      const newRows = [...(block.tableData || [])];
+                                      newRows[rowIdx] = [...newRows[rowIdx]];
+                                      newRows[rowIdx][colIdx] = e.target.value;
+                                      updateBlockField(idx, "tableData", newRows);
+                                    }}
+                                  />
+                                ))}
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    const newRows = [...(block.tableData || [])];
+                                    newRows.splice(rowIdx, 1);
+                                    updateBlockField(idx, "tableData", newRows);
+                                  }}
+                                  className="text-red-500 hover:text-red-700 p-1 bg-red-50 rounded"
+                                  title="Remove row"
+                                >
+                                  <Trash2 size={14} />
+                                </button>
+                              </div>
+                            ))}
+                          </div>
+
+                          <button
+                            type="button"
+                            onClick={() => {
+                              const rows = block.tableData || [];
+                              const colsCount = rows.length > 0 ? rows[0].length : 2;
+                              const newRow = Array(colsCount).fill("");
+                              updateBlockField(idx, "tableData", [...rows, newRow]);
+                            }}
+                            className="bg-cyan-50 hover:bg-cyan-100 text-cyan-700 text-xs px-3 py-1.5 rounded font-bold transition-colors flex items-center gap-1.5 mt-2"
+                          >
+                            <Plus size={14} />
+                            Add Row
                           </button>
                         </div>
                       )}
