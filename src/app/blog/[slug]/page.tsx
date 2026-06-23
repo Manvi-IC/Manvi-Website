@@ -1092,7 +1092,7 @@ export default function BlogPostPage({ params }: PageProps) {
             <h3>Keep Reading</h3>
             <div className="related-grid">
               {related.map((relPost) => (
-                <Link key={relPost.id} href={`/blog/${relPost.slug}`} className="related-card">
+                <Link key={relPost._id || relPost.id || relPost.slug} href={`/blog/${relPost.slug}`} className="related-card">
                   <span className="related-badge">{relPost.tag}</span>
                   <h4>{relPost.title}</h4>
                   <p>{relPost.description}</p>
