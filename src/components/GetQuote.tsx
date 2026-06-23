@@ -11,6 +11,11 @@ import {
   ChevronDown,
   CheckCircle2,
   AlertCircle,
+  X,
+  Send,
+  User,
+  Phone,
+  Mail,
 } from "lucide-react";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
@@ -164,6 +169,263 @@ function fmtPrice(n: number): string {
   return Math.round(n).toLocaleString("en-IN");
 }
 
+// ─── Apply Now Modal ──────────────────────────────────────────────────────────
+function ApplyModal({
+  open,
+  onClose,
+  quote,
+  result,
+  destination,
+  zoningCountry,
+  zipcode,
+  actualWt,
+  volWt,
+  length,
+  breadth,
+  height,
+  destObj,
+}: {
+  open: boolean;
+  onClose: () => void;
+  quote: Quote | null;
+  result: QuoteResult | null;
+  destination: string;
+  zoningCountry: string;
+  zipcode: string;
+  actualWt: string;
+  volWt: string | null;
+  length: string;
+  breadth: string;
+  height: string;
+  destObj: (typeof DESTINATIONS)[0] | undefined;
+}) {
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState("");
+
+  if (!open || !quote || !result) return null;
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    setError("");
+    if (!name.trim() || !phone.trim() || !email.trim()) {
+      setError("All fields are required.");
+      return;
+    }
+    setSubmitting(true);
+    try {
+      const res = await fetch(`${API_URL}/quote-enquiries`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-database": DB_NAME,
+        },
+        body: JSON.stringify({
+          name: name.trim(),
+          phone: phone.trim(),
+          email: email.trim(),
+          destination,
+          zoningCountry,
+          zipcode,
+          actualWt: parseFloat(actualWt) || 0,
+          volWt: parseFloat(volWt ?? "0") || 0,
+          chargeableWt: result.chargeableWt,
+          length: parseFloat(length) || 0,
+          breadth: parseFloat(breadth) || 0,
+          height: parseFloat(height) || 0,
+          service: quote.service,
+          network: quote.network,
+          zone: quote.zone,
+          rateType: quote.rateType,
+          totalPrice: quote.totalPrice,
+          tat: quote.tat,
+        }),
+      });
+      const data = await res.json();
+      if (!data.success) throw new Error(data.message || "Submission failed");
+      setSubmitted(true);
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const handleClose = () => {
+    setName("");
+    setPhone("");
+    setEmail("");
+    setError("");
+    setSubmitted(false);
+    onClose();
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+      {/* Backdrop */}
+      <div
+        className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+        onClick={handleClose}
+      />
+
+      {/* Modal */}
+      <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden">
+        {/* Header */}
+        <div className="bg-[#0D1527] px-6 py-5 flex items-start justify-between">
+          <div>
+            <p className="text-[#f27a1a] text-[11px] font-extrabold tracking-widest uppercase mb-1">
+              Confirm Your Interest
+            </p>
+            <h3 className="text-white font-extrabold text-lg leading-tight">
+              Apply Now
+            </h3>
+          </div>
+          <button
+            onClick={handleClose}
+            className="text-white/50 hover:text-white transition-colors mt-0.5"
+          >
+            <X size={20} />
+          </button>
+        </div>
+
+        {submitted ? (
+          <div className="px-6 py-12 flex flex-col items-center text-center gap-4">
+            <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center">
+              <CheckCircle2 size={32} className="text-green-600" />
+            </div>
+            <div>
+              <p className="font-extrabold text-[#1c1f2e] text-lg">
+                Enquiry Submitted!
+              </p>
+              <p className="text-gray-500 text-sm mt-1">
+                Our team will reach out to you shortly.
+              </p>
+            </div>
+            <button
+              onClick={handleClose}
+              className="mt-2 bg-[#f27a1a] hover:bg-orange-600 text-white font-bold text-sm py-3 px-8 rounded-xl transition-colors"
+            >
+              Done
+            </button>
+          </div>
+        ) : (
+          <>
+            {/* Selected Service Summary */}
+            <div className="bg-orange-50 border-b border-orange-100 px-6 py-4">
+              <p className="text-[10px] text-gray-400 uppercase tracking-wider font-bold mb-2">
+                Selected Service
+              </p>
+              <div className="flex items-center justify-between gap-4">
+                <div>
+                  <p className="text-sm font-bold text-[#1c1f2e]">
+                    {quote.service}
+                  </p>
+                  <p className="text-xs text-gray-500 mt-0.5">
+                    {destObj?.flag} {destObj?.label ?? destination}
+                    {zoningCountry && ` — ${zoningCountry}`}
+                    {zipcode && ` · ${zipcode}`}
+                  </p>
+                  <p className="text-xs text-gray-400 mt-0.5">{quote.tat}</p>
+                </div>
+                <div className="text-right shrink-0">
+                  <p className="text-xl font-extrabold text-[#f27a1a]">
+                    ₹{fmtPrice(quote.totalPrice)}
+                  </p>
+                  <p className="text-[10px] text-gray-400">
+                    {result.chargeableWt} kg chargeable
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Form */}
+            <form
+              onSubmit={handleSubmit}
+              className="px-6 py-5 flex flex-col gap-4"
+            >
+              <p className="text-sm text-gray-500 font-medium">
+                Fill in your details and our team will contact you to finalise
+                the shipment.
+              </p>
+
+              {/* Name */}
+              <div className="relative">
+                <User
+                  size={15}
+                  className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
+                />
+                <input
+                  type="text"
+                  placeholder="Full Name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  className="w-full bg-[#f8f9fa] text-[#333] text-sm font-medium rounded-xl pl-10 pr-4 py-3.5 focus:outline-none border border-gray-200 placeholder:text-gray-400 focus:border-orange-300 transition-colors"
+                />
+              </div>
+
+              {/* Phone */}
+              <div className="relative">
+                <Phone
+                  size={15}
+                  className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
+                />
+                <input
+                  type="tel"
+                  placeholder="Phone Number"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  className="w-full bg-[#f8f9fa] text-[#333] text-sm font-medium rounded-xl pl-10 pr-4 py-3.5 focus:outline-none border border-gray-200 placeholder:text-gray-400 focus:border-orange-300 transition-colors"
+                />
+              </div>
+
+              {/* Email */}
+              <div className="relative">
+                <Mail
+                  size={15}
+                  className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
+                />
+                <input
+                  type="email"
+                  placeholder="Email Address"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="w-full bg-[#f8f9fa] text-[#333] text-sm font-medium rounded-xl pl-10 pr-4 py-3.5 focus:outline-none border border-gray-200 placeholder:text-gray-400 focus:border-orange-300 transition-colors"
+                />
+              </div>
+
+              {error && (
+                <div className="bg-red-50 border border-red-200 text-red-600 rounded-xl px-4 py-3 text-xs font-semibold flex items-center gap-2">
+                  <span>⚠️</span> {error}
+                </div>
+              )}
+
+              <button
+                type="submit"
+                disabled={submitting}
+                className="bg-[#f27a1a] hover:bg-orange-600 disabled:opacity-60 text-white font-bold text-sm py-3.5 px-6 rounded-xl transition-all active:scale-98 flex items-center justify-center gap-2 mt-1"
+              >
+                {submitting ? (
+                  <>
+                    <Loader2 size={16} className="animate-spin" /> Submitting…
+                  </>
+                ) : (
+                  <>
+                    Submit Enquiry <Send size={15} strokeWidth={2.5} />
+                  </>
+                )}
+              </button>
+            </form>
+          </>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// ─── Service Card ─────────────────────────────────────────────────────────────
 function ServiceCard({
   quote,
   selected,
@@ -184,10 +446,11 @@ function ServiceCard({
   return (
     <div
       onClick={() => onSelect(labelKey)}
-      className={`relative rounded-xl border-2 p-5 cursor-pointer transition-all ${selected
-        ? "border-[#f27a1a] bg-orange-50 shadow-md"
-        : "border-gray-200 bg-white hover:border-orange-300 hover:shadow-sm"
-        }`}
+      className={`relative rounded-xl border-2 p-5 cursor-pointer transition-all ${
+        selected
+          ? "border-[#f27a1a] bg-orange-50 shadow-md"
+          : "border-gray-200 bg-white hover:border-orange-300 hover:shadow-sm"
+      }`}
     >
       {selected && (
         <div className="absolute -top-2.5 left-4 bg-[#f27a1a] text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
@@ -201,7 +464,7 @@ function ServiceCard({
             <span
               className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${networkColor}`}
             >
-              {networkLabel}
+              {quote.service}
             </span>
             {quote.zone && (
               <span className="text-[10px] bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full font-mono">
@@ -224,8 +487,8 @@ function ServiceCard({
             )}
           </div>
 
-          <p className="mt-2 text-sm font-bold text-gray-800 leading-tight">
-            {quote.service}
+          <p className="mt-2 text-xl font-bold text-gray-800 leading-tight">
+            {networkLabel}
           </p>
           <p className="text-xs text-gray-500 mt-1">{quote.tat}</p>
 
@@ -253,6 +516,7 @@ function ServiceCard({
   );
 }
 
+// ─── Main Page ────────────────────────────────────────────────────────────────
 export default function GetQuote() {
   const { t } = useLanguage();
   const [actualWt, setActualWt] = useState("");
@@ -267,6 +531,7 @@ export default function GetQuote() {
   const [result, setResult] = useState<QuoteResult | null>(null);
   const [selectedService, setSelectedService] = useState<string | null>(null);
   const [openFaq, setOpenFaq] = useState<string | null>("01");
+  const [applyModalOpen, setApplyModalOpen] = useState(false);
 
   const destObj = DESTINATIONS.find((d) => d.value === destination);
   const requiresZip = destObj?.requiresZip ?? false;
@@ -277,14 +542,19 @@ export default function GetQuote() {
   const volWt =
     parseFloat(length) && parseFloat(breadth) && parseFloat(height)
       ? (
-        (parseFloat(length) * parseFloat(breadth) * parseFloat(height)) /
-        5000
-      ).toFixed(2)
+          (parseFloat(length) * parseFloat(breadth) * parseFloat(height)) /
+          5000
+        ).toFixed(2)
       : null;
 
   const chargeableWt = volWt
     ? Math.ceil(Math.max(parseFloat(actualWt) || 0, parseFloat(volWt)))
     : Math.ceil(parseFloat(actualWt) || 0);
+
+  const selectedQuote =
+    result?.quotes.find(
+      (q) => `${q.service}__${q.rateType}` === selectedService,
+    ) ?? null;
 
   const handleGetQuote = async (e: FormEvent) => {
     e.preventDefault();
@@ -338,6 +608,23 @@ export default function GetQuote() {
 
   return (
     <div className="min-h-screen bg-[#f8f9fa] text-[#0f172a] font-sans flex flex-col antialiased">
+      {/* Apply Now Modal */}
+      <ApplyModal
+        open={applyModalOpen}
+        onClose={() => setApplyModalOpen(false)}
+        quote={selectedQuote}
+        result={result}
+        destination={destination}
+        zoningCountry={zoningCountry}
+        zipcode={zipcode}
+        actualWt={actualWt}
+        volWt={volWt}
+        length={length}
+        breadth={breadth}
+        height={height}
+        destObj={destObj}
+      />
+
       {/* Banner Section */}
       <section className="relative bg-[#0D1527] overflow-hidden min-h-55 flex items-center py-12 px-6">
         <div
@@ -358,8 +645,6 @@ export default function GetQuote() {
           <p className="text-white/70 text-sm max-w-md">{t.quote_banner_sub}</p>
         </div>
       </section>
-
-
 
       <main className="flex-grow max-w-425 w-full mx-auto px-6 py-12">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
@@ -613,6 +898,29 @@ export default function GetQuote() {
                   })}
                 </div>
 
+                {/* Apply Now Button — shown when a service is selected */}
+                {selectedService && selectedQuote && (
+                  <div className="bg-white rounded-2xl border-2 border-[#f27a1a] p-5 flex items-center justify-between gap-4 shadow-sm">
+                    <div>
+                      <p className="text-xs text-gray-500 font-medium">
+                        Ready to ship with
+                      </p>
+                      <p className="text-sm font-extrabold text-[#1c1f2e] mt-0.5 leading-tight">
+                        {selectedQuote.service}
+                      </p>
+                      <p className="text-[#f27a1a] font-extrabold text-lg mt-0.5">
+                        ₹{fmtPrice(selectedQuote.totalPrice)}
+                      </p>
+                    </div>
+                    <button
+                      onClick={() => setApplyModalOpen(true)}
+                      className="shrink-0 bg-[#f27a1a] hover:bg-orange-600 text-white font-extrabold text-sm py-3.5 px-7 rounded-xl transition-all active:scale-98 flex items-center gap-2 shadow-md shadow-orange-200"
+                    >
+                      Apply Now <ArrowUpRight size={16} strokeWidth={2.5} />
+                    </button>
+                  </div>
+                )}
+
                 <p className="text-xs text-gray-400 text-center px-4">
                   {t.form_final_rates_msg}
                 </p>
@@ -694,7 +1002,11 @@ export default function GetQuote() {
                   </span>
                   <div className="flex flex-col gap-2">
                     <span
-                      className={`text-[16px] font-bold transition-colors ${openFaq === faq.id ? "text-[#1c1f2e]" : "text-[#333b49] group-hover:text-[#1c1f2e]"}`}
+                      className={`text-[16px] font-bold transition-colors ${
+                        openFaq === faq.id
+                          ? "text-[#1c1f2e]"
+                          : "text-[#333b49] group-hover:text-[#1c1f2e]"
+                      }`}
                     >
                       {faq.q}
                     </span>
