@@ -19,7 +19,8 @@ import {
   HelpCircle,
   Image,
   Layers,
-  GripVertical
+  GripVertical,
+  Table
 } from "lucide-react";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
@@ -88,7 +89,7 @@ function ImageUploadField({ value, onChange, placeholder = "Image URL", label }:
 }
 
 interface BlogBlock {
-  type: "paragraph" | "subheading" | "list" | "callout" | "image" | "heading" | "divider" | "slideshow";
+  type: "paragraph" | "subheading" | "list" | "callout" | "image" | "heading" | "divider" | "slideshow" | "table";
   text?: string;
   items?: string[];
   style?: string; // e.g. "bullet", "numbered", "h2", "h3", "h4"
@@ -99,6 +100,7 @@ interface BlogBlock {
   images?: Array<{ src: string; alt?: string; caption?: string }>;
   buttonText?: string;
   buttonLink?: string;
+  tableData?: string[][];
 }
 
 interface BlogPost {
@@ -237,7 +239,7 @@ export default function BlogManagementPage() {
   };
 
   // Block Helpers
-  const addBlock = (type: "paragraph" | "subheading" | "list" | "callout" | "image" | "heading" | "divider" | "slideshow", insertIndex?: number) => {
+  const addBlock = (type: "paragraph" | "subheading" | "list" | "callout" | "image" | "heading" | "divider" | "slideshow" | "table", insertIndex?: number) => {
     const newBlock: BlogBlock = { type };
     if (type === "paragraph") {
       newBlock.text = "";
@@ -254,6 +256,8 @@ export default function BlogManagementPage() {
       // visual only
     } else if (type === "slideshow") {
       newBlock.images = [];
+    } else if (type === "table") {
+      newBlock.tableData = [["Header 1", "Header 2"], ["Row 1 Col 1", "Row 1 Col 2"]];
     } else if (type === "list") {
       newBlock.items = [""];
       newBlock.style = "bullet";
@@ -262,7 +266,7 @@ export default function BlogManagementPage() {
       newBlock.alt = "";
       newBlock.caption = "";
     }
-    
+
     if (typeof insertIndex === "number") {
       const newBlocks = [...contentBlocks];
       newBlocks.splice(insertIndex, 0, newBlock);
@@ -535,20 +539,21 @@ export default function BlogManagementPage() {
 
           {/* Structured Content Blocks */}
           <div className="border-t pt-6 space-y-4">
-              <div className="mb-4">
-                <h3 className="text-sm font-bold text-gray-700 mb-2">Append Section</h3>
-                <div className="flex flex-wrap gap-2.5">
-                  <button type="button" onClick={() => addBlock("paragraph")} className="bg-blue-50 text-blue-700 hover:bg-blue-100 border border-blue-200 text-xs px-3.5 py-2 rounded-lg font-bold transition-all active:scale-95 flex items-center gap-1.5 shadow-sm"><AlignLeft size={14} /> Paragraph</button>
-                  <button type="button" onClick={() => addBlock("heading")} className="bg-amber-50 text-amber-700 hover:bg-amber-100 border border-amber-200 text-xs px-3.5 py-2 rounded-lg font-bold transition-all active:scale-95 flex items-center gap-1.5 shadow-sm"><Heading size={14} /> Heading (H2-H4)</button>
-                  <button type="button" onClick={() => addBlock("list")} className="bg-teal-50 text-teal-700 hover:bg-teal-100 border border-teal-200 text-xs px-3.5 py-2 rounded-lg font-bold transition-all active:scale-95 flex items-center gap-1.5 shadow-sm"><List size={14} /> List Items</button>
-                  <button type="button" onClick={() => addBlock("callout")} className="bg-rose-50 text-rose-700 hover:bg-rose-100 border border-rose-200 text-xs px-3.5 py-2 rounded-lg font-bold transition-all active:scale-95 flex items-center gap-1.5 shadow-sm"><HelpCircle size={14} /> Callout Box</button>
-                  <button type="button" onClick={() => addBlock("image")} className="bg-emerald-50 text-emerald-700 hover:bg-emerald-100 border border-emerald-200 text-xs px-3.5 py-2 rounded-lg font-bold transition-all active:scale-95 flex items-center gap-1.5 shadow-sm"><Image size={14} /> Single Image</button>
-                  <button type="button" onClick={() => addBlock("slideshow")} className="bg-violet-50 text-violet-700 hover:bg-violet-100 border border-violet-200 text-xs px-3.5 py-2 rounded-lg font-bold transition-all active:scale-95 flex items-center gap-1.5 shadow-sm"><Layers size={14} /> Slideshow</button>
-                  <button type="button" onClick={() => addBlock("divider")} className="bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200 text-xs px-3.5 py-2 rounded-lg font-bold transition-all active:scale-95 flex items-center gap-1.5 shadow-sm"><span>—</span> Divider</button>
-                </div>
+            <div className="mb-4">
+              <h3 className="text-sm font-bold text-gray-700 mb-2">Append Section</h3>
+              <div className="flex flex-wrap gap-2.5">
+                <button type="button" onClick={() => addBlock("paragraph")} className="bg-blue-50 text-blue-700 hover:bg-blue-100 border border-blue-200 text-xs px-3.5 py-2 rounded-lg font-bold transition-all active:scale-95 flex items-center gap-1.5 shadow-sm"><AlignLeft size={14} /> Paragraph</button>
+                <button type="button" onClick={() => addBlock("heading")} className="bg-amber-50 text-amber-700 hover:bg-amber-100 border border-amber-200 text-xs px-3.5 py-2 rounded-lg font-bold transition-all active:scale-95 flex items-center gap-1.5 shadow-sm"><Heading size={14} /> Heading (H2-H4)</button>
+                <button type="button" onClick={() => addBlock("list")} className="bg-teal-50 text-teal-700 hover:bg-teal-100 border border-teal-200 text-xs px-3.5 py-2 rounded-lg font-bold transition-all active:scale-95 flex items-center gap-1.5 shadow-sm"><List size={14} /> List Items</button>
+                <button type="button" onClick={() => addBlock("callout")} className="bg-rose-50 text-rose-700 hover:bg-rose-100 border border-rose-200 text-xs px-3.5 py-2 rounded-lg font-bold transition-all active:scale-95 flex items-center gap-1.5 shadow-sm"><HelpCircle size={14} /> Callout Box</button>
+                <button type="button" onClick={() => addBlock("image")} className="bg-emerald-50 text-emerald-700 hover:bg-emerald-100 border border-emerald-200 text-xs px-3.5 py-2 rounded-lg font-bold transition-all active:scale-95 flex items-center gap-1.5 shadow-sm"><Image size={14} /> Single Image</button>
+                <button type="button" onClick={() => addBlock("slideshow")} className="bg-violet-50 text-violet-700 hover:bg-violet-100 border border-violet-200 text-xs px-3.5 py-2 rounded-lg font-bold transition-all active:scale-95 flex items-center gap-1.5 shadow-sm"><Layers size={14} /> Slideshow</button>
+                <button type="button" onClick={() => addBlock("table")} className="bg-cyan-50 text-cyan-700 hover:bg-cyan-100 border border-cyan-200 text-xs px-3.5 py-2 rounded-lg font-bold transition-all active:scale-95 flex items-center gap-1.5 shadow-sm"><Table size={14} /> Table</button>
+                <button type="button" onClick={() => addBlock("divider")} className="bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200 text-xs px-3.5 py-2 rounded-lg font-bold transition-all active:scale-95 flex items-center gap-1.5 shadow-sm"><span>—</span> Divider</button>
               </div>
+            </div>
 
-              <div className="space-y-5 bg-slate-50 p-6 rounded-2xl border border-gray-100">
+            <div className="space-y-5 bg-slate-50 p-6 rounded-2xl border border-gray-100">
               {contentBlocks.length === 0 ? (
                 <div className="text-center py-8 border-2 border-dashed border-gray-250 rounded-xl bg-white">
                   <p className="text-sm text-gray-400">No content blocks added yet. Choose a block type above to construct your article.</p>
@@ -600,6 +605,13 @@ export default function BlogManagementPage() {
                           label: "Image Slideshow",
                           icon: <Layers size={13} className="inline mr-1" />
                         };
+                      case "table":
+                        return {
+                          border: "border-l-4 border-l-cyan-500 focus-within:border-l-cyan-600",
+                          badge: "bg-cyan-50 text-cyan-700 border border-cyan-100",
+                          label: "Data Table",
+                          icon: <Table size={13} className="inline mr-1" />
+                        };
                       case "divider":
                         return {
                           border: "border-l-4 border-l-slate-400 focus-within:border-l-slate-500",
@@ -640,356 +652,450 @@ export default function BlogManagementPage() {
                             <button type="button" onClick={() => { addBlock("callout", idx); setInsertMenuIndex(null); }} className="bg-rose-50 text-rose-700 hover:bg-rose-100 border border-rose-200 text-xs px-3 py-1.5 rounded-lg font-bold transition-all"><HelpCircle size={13} className="inline mr-1" />Callout</button>
                             <button type="button" onClick={() => { addBlock("image", idx); setInsertMenuIndex(null); }} className="bg-emerald-50 text-emerald-700 hover:bg-emerald-100 border border-emerald-200 text-xs px-3 py-1.5 rounded-lg font-bold transition-all"><Image size={13} className="inline mr-1" />Image</button>
                             <button type="button" onClick={() => { addBlock("slideshow", idx); setInsertMenuIndex(null); }} className="bg-violet-50 text-violet-700 hover:bg-violet-100 border border-violet-200 text-xs px-3 py-1.5 rounded-lg font-bold transition-all"><Layers size={13} className="inline mr-1" />Slideshow</button>
+                            <button type="button" onClick={() => { addBlock("table", idx); setInsertMenuIndex(null); }} className="bg-cyan-50 text-cyan-700 hover:bg-cyan-100 border border-cyan-200 text-xs px-3 py-1.5 rounded-lg font-bold transition-all"><Table size={13} className="inline mr-1" />Table</button>
                             <button type="button" onClick={() => { addBlock("divider", idx); setInsertMenuIndex(null); }} className="bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200 text-xs px-3 py-1.5 rounded-lg font-bold transition-all"><span className="inline mr-1">—</span>Divider</button>
                           </div>
                         </div>
                       )}
 
                       <div className={`bg-white border border-gray-150 rounded-xl p-5 flex gap-4 items-start shadow-sm hover:shadow-md hover:border-gray-250 transition-all duration-200 ${blockMeta.border}`}>
-                      {/* Position Controllers */}
-                      <div className="flex flex-col gap-1.5 text-gray-400 self-stretch justify-center items-center px-1 border-r border-gray-100 pr-3.5">
-                        <button
-                          type="button"
-                          onClick={() => moveBlock(idx, "up")}
-                          disabled={idx === 0}
-                          className="hover:text-[#e77419] hover:bg-orange-50 p-1 rounded transition-colors disabled:opacity-20 disabled:hover:bg-transparent"
-                          title="Move Up"
-                        >
-                          <ArrowUp size={16} />
-                        </button>
-                        <span className="bg-slate-100 text-slate-600 rounded-md text-[10px] font-black w-6 h-6 flex items-center justify-center select-none shadow-inner">
-                          {idx + 1}
-                        </span>
-                        <button
-                          type="button"
-                          onClick={() => moveBlock(idx, "down")}
-                          disabled={idx === contentBlocks.length - 1}
-                          className="hover:text-[#e77419] hover:bg-orange-50 p-1 rounded transition-colors disabled:opacity-20 disabled:hover:bg-transparent"
-                          title="Move Down"
-                        >
-                          <ArrowDown size={16} />
-                        </button>
-                      </div>
-
-                      {/* Block Fields */}
-                      <div className="flex-1 space-y-3">
-                        <div className="flex justify-between items-center border-b pb-2 border-slate-50">
-                          <span className={`text-[10px] font-extrabold uppercase tracking-wider px-2.5 py-1 rounded-full flex items-center gap-1 ${blockMeta.badge}`}>
-                            {blockMeta.icon}
-                            {blockMeta.label}
+                        {/* Position Controllers */}
+                        <div className="flex flex-col gap-1.5 text-gray-400 self-stretch justify-center items-center px-1 border-r border-gray-100 pr-3.5">
+                          <button
+                            type="button"
+                            onClick={() => moveBlock(idx, "up")}
+                            disabled={idx === 0}
+                            className="hover:text-[#e77419] hover:bg-orange-50 p-1 rounded transition-colors disabled:opacity-20 disabled:hover:bg-transparent"
+                            title="Move Up"
+                          >
+                            <ArrowUp size={16} />
+                          </button>
+                          <span className="bg-slate-100 text-slate-600 rounded-md text-[10px] font-black w-6 h-6 flex items-center justify-center select-none shadow-inner">
+                            {idx + 1}
                           </span>
-                          <div className="flex items-center gap-1">
-                            <button
-                              type="button"
-                              onClick={() => setInsertMenuIndex(idx)}
-                              className="text-[11px] font-bold text-[#e77419] hover:bg-orange-50 px-2 py-1 rounded transition-colors mr-1 flex items-center gap-1"
-                              title="Insert new block above this one"
-                            >
-                              <Plus size={12} /> Above
-                            </button>
-                            <button
-                              type="button"
-                              onClick={() => setInsertMenuIndex(idx + 1)}
-                              className="text-[11px] font-bold text-[#e77419] hover:bg-orange-50 px-2 py-1 rounded transition-colors mr-2 flex items-center gap-1"
-                              title="Insert new block below this one"
-                            >
-                              <Plus size={12} /> Below
-                            </button>
-                            <button
-                              type="button"
-                              onClick={() => removeBlock(idx)}
-                              className="text-gray-400 hover:text-red-500 hover:bg-red-50 p-1 rounded transition-all"
-                              title="Delete Block"
-                            >
-                              <Trash2 size={16} />
-                            </button>
-                          </div>
+                          <button
+                            type="button"
+                            onClick={() => moveBlock(idx, "down")}
+                            disabled={idx === contentBlocks.length - 1}
+                            className="hover:text-[#e77419] hover:bg-orange-50 p-1 rounded transition-colors disabled:opacity-20 disabled:hover:bg-transparent"
+                            title="Move Down"
+                          >
+                            <ArrowDown size={16} />
+                          </button>
                         </div>
 
-                      {/* Render custom fields based on block type */}
-                      {block.type === "paragraph" && (
-                        <div className="space-y-3">
-                          <textarea
-                            rows={3}
-                            className="w-full border rounded-lg p-2.5 focus:border-[#e77419] focus:outline-none text-sm"
-                            placeholder="Write paragraph text here..."
-                            value={block.text || ""}
-                            onChange={(e) => updateBlockField(idx, "text", e.target.value)}
-                          />
-                          <div className="bg-slate-50 p-3 rounded-lg border border-dashed space-y-3">
-                            <div className="text-xs font-semibold text-gray-500">Inline Image (Optional)</div>
+                        {/* Block Fields */}
+                        <div className="flex-1 min-w-0 space-y-3">
+                          <div className="flex justify-between items-center border-b pb-2 border-slate-50">
+                            <span className={`text-[10px] font-extrabold uppercase tracking-wider px-2.5 py-1 rounded-full flex items-center gap-1 ${blockMeta.badge}`}>
+                              {blockMeta.icon}
+                              {blockMeta.label}
+                            </span>
+                            <div className="flex items-center gap-1">
+                              <button
+                                type="button"
+                                onClick={() => setInsertMenuIndex(idx)}
+                                className="text-[11px] font-bold text-[#e77419] hover:bg-orange-50 px-2 py-1 rounded transition-colors mr-1 flex items-center gap-1"
+                                title="Insert new block above this one"
+                              >
+                                <Plus size={12} /> Above
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => setInsertMenuIndex(idx + 1)}
+                                className="text-[11px] font-bold text-[#e77419] hover:bg-orange-50 px-2 py-1 rounded transition-colors mr-2 flex items-center gap-1"
+                                title="Insert new block below this one"
+                              >
+                                <Plus size={12} /> Below
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => removeBlock(idx)}
+                                className="text-gray-400 hover:text-red-500 hover:bg-red-50 p-1 rounded transition-all"
+                                title="Delete Block"
+                              >
+                                <Trash2 size={16} />
+                              </button>
+                            </div>
+                          </div>
+
+                          {/* Render custom fields based on block type */}
+                          {block.type === "paragraph" && (
+                            <div className="space-y-3">
+                              <textarea
+                                rows={3}
+                                className="w-full border rounded-lg p-2.5 focus:border-[#e77419] focus:outline-none text-sm"
+                                placeholder="Write paragraph text here..."
+                                value={block.text || ""}
+                                onChange={(e) => updateBlockField(idx, "text", e.target.value)}
+                              />
+                              <div className="bg-slate-50 p-3 rounded-lg border border-dashed space-y-3">
+                                <div className="text-xs font-semibold text-gray-500">Inline Image (Optional)</div>
+                                <div className="space-y-2">
+                                  <ImageUploadField
+                                    value={block.src || ""}
+                                    onChange={(url) => updateBlockField(idx, "src", url)}
+                                    placeholder="Image URL or upload file"
+                                    label="Image Source"
+                                  />
+                                  {(block.layout === "left-image" || block.layout === "right-image") && (
+                                    <p className="text-[10px] text-amber-700 bg-amber-50 p-1.5 rounded border border-amber-200 mt-1 font-medium">
+                                      💡 Left/Right layouts require a 1:1 square. Accepted dimensions: <strong>300 x 300 pixels</strong>.
+                                    </p>
+                                  )}
+                                  <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                                    <div>
+                                      <label className="block text-[10px] font-semibold text-gray-500 uppercase">Alt description</label>
+                                      <input
+                                        type="text"
+                                        className="border rounded p-2 text-xs w-full focus:outline-none focus:border-[#e77419] mt-1"
+                                        placeholder="Alt description"
+                                        value={block.alt || ""}
+                                        onChange={(e) => updateBlockField(idx, "alt", e.target.value)}
+                                      />
+                                    </div>
+                                    <div>
+                                      <label className="block text-[10px] font-semibold text-gray-500 uppercase">Alignment Layout</label>
+                                      <select
+                                        className="border rounded p-2 text-xs w-full focus:outline-none bg-white font-medium focus:border-[#e77419] mt-1"
+                                        value={block.layout || "none"}
+                                        onChange={(e) => updateBlockField(idx, "layout", e.target.value)}
+                                      >
+                                        <option value="none">No Image (Text only)</option>
+                                        <option value="left-image">Left Image / Right Para</option>
+                                        <option value="right-image">Right Image / Left Para</option>
+                                        <option value="top-image">Image Above Para</option>
+                                        <option value="bottom-image">Image Below Para</option>
+                                      </select>
+                                    </div>
+                                  </div>
+                                </div>
+                                {(block.layout && block.layout !== "none") && (
+                                  <input
+                                    type="text"
+                                    className="border rounded p-2 text-xs w-full focus:outline-none focus:border-[#e77419]"
+                                    placeholder="Image caption (Optional)"
+                                    value={block.caption || ""}
+                                    onChange={(e) => updateBlockField(idx, "caption", e.target.value)}
+                                  />
+                                )}
+                              </div>
+                            </div>
+                          )}
+
+                          {block.type === "subheading" && (
+                            <input
+                              type="text"
+                              className="w-full border rounded-lg p-2.5 focus:border-[#e77419] focus:outline-none text-sm font-bold"
+                              placeholder="Write section header..."
+                              value={block.text || ""}
+                              onChange={(e) => updateBlockField(idx, "text", e.target.value)}
+                            />
+                          )}
+
+                          {block.type === "heading" && (
+                            <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
+                              <div className="md:col-span-3">
+                                <input
+                                  type="text"
+                                  className="w-full border border-gray-300 rounded-lg p-2.5 focus:border-[#e77419] focus:outline-none text-sm font-bold"
+                                  placeholder="Write heading text here..."
+                                  value={block.text || ""}
+                                  onChange={(e) => updateBlockField(idx, "text", e.target.value)}
+                                />
+                              </div>
+                              <div>
+                                <select
+                                  className="w-full border border-gray-300 rounded-lg p-2.5 focus:border-[#e77419] focus:outline-none bg-white text-sm"
+                                  value={block.style || "h2"}
+                                  onChange={(e) => updateBlockField(idx, "style", e.target.value)}
+                                >
+                                  <option value="h2">H2 (Large)</option>
+                                  <option value="h3">H3 (Medium)</option>
+                                  <option value="h4">H4 (Small)</option>
+                                </select>
+                              </div>
+                            </div>
+                          )}
+
+                          {block.type === "divider" && (
+                            <div className="border border-dashed border-gray-300 rounded-lg p-3 bg-slate-50 text-center text-xs font-semibold text-gray-500">
+                              --- Horizontal Section Divider (Visual line) ---
+                            </div>
+                          )}
+
+                          {block.type === "slideshow" && (
+                            <div className="space-y-4 bg-slate-50/50 p-3 rounded-lg border border-gray-200">
+                              <div className="text-xs font-bold text-slate-500 uppercase tracking-wider">Slideshow Images ({block.images?.length || 0})</div>
+
+                              <div className="space-y-3">
+                                {(block.images || []).map((img, imgIdx) => (
+                                  <div key={imgIdx} className="bg-white border border-gray-200 rounded-lg p-3 flex gap-3 items-start shadow-sm">
+                                    <div className="text-xs font-bold text-gray-400 mt-2">{imgIdx + 1}</div>
+                                    <div className="flex-1 space-y-2">
+                                      <ImageUploadField
+                                        value={img.src}
+                                        onChange={(url) => {
+                                          const newImgs = [...(block.images || [])];
+                                          newImgs[imgIdx] = { ...newImgs[imgIdx], src: url };
+                                          updateBlockField(idx, "images", newImgs);
+                                        }}
+                                        placeholder="/rakhi.jpg or click Upload File"
+                                        label="Image URL / Upload"
+                                      />
+                                      <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                                        <div>
+                                          <label className="text-[10px] font-bold text-gray-400 uppercase block mb-1">Alt description</label>
+                                          <input
+                                            type="text"
+                                            className="w-full border rounded p-1.5 text-xs focus:outline-none focus:border-[#e77419]"
+                                            value={img.alt || ""}
+                                            onChange={(e) => {
+                                              const newImgs = [...(block.images || [])];
+                                              newImgs[imgIdx] = { ...newImgs[imgIdx], alt: e.target.value };
+                                              updateBlockField(idx, "images", newImgs);
+                                            }}
+                                            placeholder="Alt text"
+                                          />
+                                        </div>
+                                        <div>
+                                          <label className="text-[10px] font-bold text-gray-400 uppercase block mb-1">Caption (Optional)</label>
+                                          <input
+                                            type="text"
+                                            className="w-full border rounded p-1.5 text-xs focus:outline-none focus:border-[#e77419]"
+                                            value={img.caption || ""}
+                                            onChange={(e) => {
+                                              const newImgs = [...(block.images || [])];
+                                              newImgs[imgIdx] = { ...newImgs[imgIdx], caption: e.target.value };
+                                              updateBlockField(idx, "images", newImgs);
+                                            }}
+                                            placeholder="Slide caption"
+                                          />
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <button
+                                      type="button"
+                                      onClick={() => {
+                                        const newImgs = (block.images || []).filter((_, i) => i !== imgIdx);
+                                        updateBlockField(idx, "images", newImgs);
+                                      }}
+                                      className="text-red-500 hover:text-red-700 mt-5 p-1"
+                                      title="Remove slide"
+                                    >
+                                      <Trash2 size={15} />
+                                    </button>
+                                  </div>
+                                ))}
+                              </div>
+
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  const newImgs = [...(block.images || []), { src: "", alt: "", caption: "" }];
+                                  updateBlockField(idx, "images", newImgs);
+                                }}
+                                className="bg-[#e77419]/10 hover:bg-[#e77419]/20 text-[#e77419] text-xs px-3 py-1.5 rounded font-bold transition-colors flex items-center gap-1.5 mt-2"
+                              >
+                                <Plus size={14} />
+                                Add Image to Slideshow
+                              </button>
+                            </div>
+                          )}
+
+                          {block.type === "table" && (
+                            <div className="space-y-4 bg-slate-50/50 p-4 rounded-xl border border-slate-200 shadow-inner">
+                              <div className="flex items-center justify-between">
+                                <div className="text-xs font-bold text-slate-500 uppercase tracking-wider">Table Editor ({block.tableData?.length || 0} rows)</div>
+                                <div className="flex gap-2">
+                                  <button
+                                    type="button"
+                                    onClick={() => {
+                                      const rows = block.tableData || [];
+                                      if (rows.length === 0) return;
+                                      const colsCount = rows[0].length;
+                                      if (colsCount >= 8) {
+                                        alert("Maximum 8 columns allowed.");
+                                        return;
+                                      }
+                                      const newRows = rows.map(r => [...r, ""]);
+                                      updateBlockField(idx, "tableData", newRows);
+                                    }}
+                                    className="bg-cyan-50 hover:bg-cyan-100 text-cyan-700 border border-cyan-200 text-[10px] px-2.5 py-1.5 rounded-lg font-bold transition-all hover:scale-95 active:scale-90 shadow-sm flex items-center gap-1"
+                                  >
+                                    <Plus size={11} /> Column
+                                  </button>
+                                  <button
+                                    type="button"
+                                    onClick={() => {
+                                      const rows = block.tableData || [];
+                                      if (rows.length === 0) return;
+                                      if (rows[0].length <= 1) return;
+                                      const newRows = rows.map(r => r.slice(0, -1));
+                                      updateBlockField(idx, "tableData", newRows);
+                                    }}
+                                    className="bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 text-[10px] px-2.5 py-1.5 rounded-lg font-bold transition-all hover:scale-95 active:scale-90 shadow-sm"
+                                  >
+                                    - Column
+                                  </button>
+                                </div>
+                              </div>
+
+                              <div className="overflow-x-auto pb-2 w-full scrollbar-thin">
+                                <div className="space-y-2.5 min-w-max p-1">
+                                  {(block.tableData || []).map((row, rowIdx) => (
+                                    <div key={rowIdx} className="flex gap-2 items-center">
+                                      {row.map((cell, colIdx) => (
+                                        <input
+                                          key={colIdx}
+                                          type="text"
+                                          className={`border rounded-lg px-3 h-8.5 text-xs transition-all outline-none w-[150px] shadow-sm ${rowIdx === 0
+                                            ? "font-bold bg-slate-100 border-slate-350 text-slate-800 placeholder-slate-400 focus:bg-white focus:border-[#e77419] focus:ring-2 focus:ring-[#e77419]/10"
+                                            : "bg-white border-slate-200 text-slate-700 placeholder-slate-300 focus:border-[#e77419] focus:ring-2 focus:ring-[#e77419]/10"
+                                            }`}
+                                          value={cell}
+                                          placeholder={rowIdx === 0 ? `Header ${colIdx + 1}` : `Cell data`}
+                                          onChange={(e) => {
+                                            const newRows = [...(block.tableData || [])];
+                                            newRows[rowIdx] = [...newRows[rowIdx]];
+                                            newRows[rowIdx][colIdx] = e.target.value;
+                                            updateBlockField(idx, "tableData", newRows);
+                                          }}
+                                        />
+                                      ))}
+                                      <button
+                                        type="button"
+                                        onClick={() => {
+                                          const newRows = [...(block.tableData || [])];
+                                          newRows.splice(rowIdx, 1);
+                                          updateBlockField(idx, "tableData", newRows);
+                                        }}
+                                        className="text-red-500 hover:text-red-700 hover:bg-red-100 bg-red-50 border border-red-100 hover:border-red-200 rounded-lg shrink-0 transition-all flex items-center justify-center h-8.5 w-8.5 shadow-sm"
+                                        title="Remove row"
+                                      >
+                                        <Trash2 size={13} />
+                                      </button>
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  const rows = block.tableData || [];
+                                  const colsCount = rows.length > 0 ? rows[0].length : 2;
+                                  const newRow = Array(colsCount).fill("");
+                                  updateBlockField(idx, "tableData", [...rows, newRow]);
+                                }}
+                                className="bg-cyan-50 hover:bg-cyan-100 text-cyan-700 border border-cyan-200 text-xs px-3.5 py-2 rounded-lg font-bold transition-all hover:scale-95 active:scale-90 flex items-center gap-1.5 mt-2 shadow-sm"
+                              >
+                                <Plus size={13} />
+                                Add Row
+                              </button>
+                            </div>
+                          )}
+
+                          {block.type === "callout" && (
+                            <div className="space-y-3">
+                              <textarea
+                                rows={2}
+                                className="w-full border border-amber-200 bg-amber-50 text-amber-900 rounded-lg p-2.5 focus:border-[#e77419] focus:outline-none text-sm font-medium"
+                                placeholder="Write tip/callout text..."
+                                value={block.text || ""}
+                                onChange={(e) => updateBlockField(idx, "text", e.target.value)}
+                              />
+                              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 bg-amber-50/50 p-3 rounded-lg border border-amber-100">
+                                <div>
+                                  <label className="block text-[10px] font-bold text-amber-700 uppercase mb-1">Button Name (Optional)</label>
+                                  <input
+                                    type="text"
+                                    className="w-full border border-amber-200 rounded p-2 text-xs focus:outline-none focus:border-[#e77419] bg-white"
+                                    placeholder="e.g. Learn More"
+                                    value={block.buttonText || ""}
+                                    onChange={(e) => updateBlockField(idx, "buttonText", e.target.value)}
+                                  />
+                                </div>
+                                <div>
+                                  <label className="block text-[10px] font-bold text-amber-700 uppercase mb-1">Button Link (Optional)</label>
+                                  <input
+                                    type="text"
+                                    className="w-full border border-amber-200 rounded p-2 text-xs focus:outline-none focus:border-[#e77419] bg-white"
+                                    placeholder="e.g. /services or https://..."
+                                    value={block.buttonLink || ""}
+                                    onChange={(e) => updateBlockField(idx, "buttonLink", e.target.value)}
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                          )}
+
+                          {block.type === "list" && (
                             <div className="space-y-2">
+                              <div className="flex gap-4">
+                                <label className="flex items-center gap-1.5 text-xs text-gray-600">
+                                  <input
+                                    type="radio"
+                                    name={`style-${idx}`}
+                                    checked={block.style !== "numbered"}
+                                    onChange={() => updateBlockField(idx, "style", "bullet")}
+                                  />
+                                  Bulleted
+                                </label>
+                                <label className="flex items-center gap-1.5 text-xs text-gray-600">
+                                  <input
+                                    type="radio"
+                                    name={`style-${idx}`}
+                                    checked={block.style === "numbered"}
+                                    onChange={() => updateBlockField(idx, "style", "numbered")}
+                                  />
+                                  Numbered
+                                </label>
+                              </div>
+                              <textarea
+                                rows={3}
+                                className="w-full border rounded-lg p-2.5 focus:border-[#e77419] focus:outline-none text-sm"
+                                placeholder="Write each list item on a new line..."
+                                value={block.items?.join("\n") || ""}
+                                onChange={(e) => updateBlockField(idx, "items", e.target.value.split("\n"))}
+                              />
+                            </div>
+                          )}
+
+                          {block.type === "image" && (
+                            <div className="space-y-3">
                               <ImageUploadField
                                 value={block.src || ""}
                                 onChange={(url) => updateBlockField(idx, "src", url)}
                                 placeholder="Image URL or upload file"
                                 label="Image Source"
                               />
-                              {(block.layout === "left-image" || block.layout === "right-image") && (
-                                <p className="text-[10px] text-amber-700 bg-amber-50 p-1.5 rounded border border-amber-200 mt-1 font-medium">
-                                  💡 Left/Right layouts require a 1:1 square. Accepted dimensions: <strong>300 x 300 pixels</strong>.
-                                </p>
-                              )}
-                              <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                                 <div>
-                                  <label className="block text-[10px] font-semibold text-gray-500 uppercase">Alt description</label>
+                                  <label className="block text-xs font-semibold text-gray-500 uppercase mb-1">Alt description</label>
                                   <input
                                     type="text"
-                                    className="border rounded p-2 text-xs w-full focus:outline-none focus:border-[#e77419] mt-1"
+                                    className="w-full border rounded-lg p-2.5 focus:border-[#e77419] focus:outline-none text-sm"
                                     placeholder="Alt description"
                                     value={block.alt || ""}
                                     onChange={(e) => updateBlockField(idx, "alt", e.target.value)}
                                   />
                                 </div>
                                 <div>
-                                  <label className="block text-[10px] font-semibold text-gray-500 uppercase">Alignment Layout</label>
-                                  <select
-                                    className="border rounded p-2 text-xs w-full focus:outline-none bg-white font-medium focus:border-[#e77419] mt-1"
-                                    value={block.layout || "none"}
-                                    onChange={(e) => updateBlockField(idx, "layout", e.target.value)}
-                                  >
-                                    <option value="none">No Image (Text only)</option>
-                                    <option value="left-image">Left Image / Right Para</option>
-                                    <option value="right-image">Right Image / Left Para</option>
-                                    <option value="top-image">Image Above Para</option>
-                                    <option value="bottom-image">Image Below Para</option>
-                                  </select>
-                                </div>
-                              </div>
-                            </div>
-                            {(block.layout && block.layout !== "none") && (
-                              <input
-                                type="text"
-                                className="border rounded p-2 text-xs w-full focus:outline-none focus:border-[#e77419]"
-                                placeholder="Image caption (Optional)"
-                                value={block.caption || ""}
-                                onChange={(e) => updateBlockField(idx, "caption", e.target.value)}
-                              />
-                            )}
-                          </div>
-                        </div>
-                      )}
-
-                      {block.type === "subheading" && (
-                        <input
-                          type="text"
-                          className="w-full border rounded-lg p-2.5 focus:border-[#e77419] focus:outline-none text-sm font-bold"
-                          placeholder="Write section header..."
-                          value={block.text || ""}
-                          onChange={(e) => updateBlockField(idx, "text", e.target.value)}
-                        />
-                      )}
-
-                      {block.type === "heading" && (
-                        <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
-                          <div className="md:col-span-3">
-                            <input
-                              type="text"
-                              className="w-full border border-gray-300 rounded-lg p-2.5 focus:border-[#e77419] focus:outline-none text-sm font-bold"
-                              placeholder="Write heading text here..."
-                              value={block.text || ""}
-                              onChange={(e) => updateBlockField(idx, "text", e.target.value)}
-                            />
-                          </div>
-                          <div>
-                            <select
-                              className="w-full border border-gray-300 rounded-lg p-2.5 focus:border-[#e77419] focus:outline-none bg-white text-sm"
-                              value={block.style || "h2"}
-                              onChange={(e) => updateBlockField(idx, "style", e.target.value)}
-                            >
-                              <option value="h2">H2 (Large)</option>
-                              <option value="h3">H3 (Medium)</option>
-                              <option value="h4">H4 (Small)</option>
-                            </select>
-                          </div>
-                        </div>
-                      )}
-
-                      {block.type === "divider" && (
-                        <div className="border border-dashed border-gray-300 rounded-lg p-3 bg-slate-50 text-center text-xs font-semibold text-gray-500">
-                          --- Horizontal Section Divider (Visual line) ---
-                        </div>
-                      )}
-
-                      {block.type === "slideshow" && (
-                        <div className="space-y-4 bg-slate-50/50 p-3 rounded-lg border border-gray-200">
-                          <div className="text-xs font-bold text-slate-500 uppercase tracking-wider">Slideshow Images ({block.images?.length || 0})</div>
-                          
-                          <div className="space-y-3">
-                            {(block.images || []).map((img, imgIdx) => (
-                              <div key={imgIdx} className="bg-white border border-gray-200 rounded-lg p-3 flex gap-3 items-start shadow-sm">
-                                <div className="text-xs font-bold text-gray-400 mt-2">{imgIdx + 1}</div>
-                                <div className="flex-1 space-y-2">
-                                  <ImageUploadField
-                                    value={img.src}
-                                    onChange={(url) => {
-                                      const newImgs = [...(block.images || [])];
-                                      newImgs[imgIdx] = { ...newImgs[imgIdx], src: url };
-                                      updateBlockField(idx, "images", newImgs);
-                                    }}
-                                    placeholder="/rakhi.jpg or click Upload File"
-                                    label="Image URL / Upload"
+                                  <label className="block text-xs font-semibold text-gray-500 uppercase mb-1">Image caption (Optional)</label>
+                                  <input
+                                    type="text"
+                                    className="w-full border rounded-lg p-2.5 focus:border-[#e77419] focus:outline-none text-sm"
+                                    placeholder="Image caption"
+                                    value={block.caption || ""}
+                                    onChange={(e) => updateBlockField(idx, "caption", e.target.value)}
                                   />
-                                  <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                                    <div>
-                                      <label className="text-[10px] font-bold text-gray-400 uppercase block mb-1">Alt description</label>
-                                      <input
-                                        type="text"
-                                        className="w-full border rounded p-1.5 text-xs focus:outline-none focus:border-[#e77419]"
-                                        value={img.alt || ""}
-                                        onChange={(e) => {
-                                          const newImgs = [...(block.images || [])];
-                                          newImgs[imgIdx] = { ...newImgs[imgIdx], alt: e.target.value };
-                                          updateBlockField(idx, "images", newImgs);
-                                        }}
-                                        placeholder="Alt text"
-                                      />
-                                    </div>
-                                    <div>
-                                      <label className="text-[10px] font-bold text-gray-400 uppercase block mb-1">Caption (Optional)</label>
-                                      <input
-                                        type="text"
-                                        className="w-full border rounded p-1.5 text-xs focus:outline-none focus:border-[#e77419]"
-                                        value={img.caption || ""}
-                                        onChange={(e) => {
-                                          const newImgs = [...(block.images || [])];
-                                          newImgs[imgIdx] = { ...newImgs[imgIdx], caption: e.target.value };
-                                          updateBlockField(idx, "images", newImgs);
-                                        }}
-                                        placeholder="Slide caption"
-                                      />
-                                    </div>
-                                  </div>
                                 </div>
-                                <button
-                                  type="button"
-                                  onClick={() => {
-                                    const newImgs = (block.images || []).filter((_, i) => i !== imgIdx);
-                                    updateBlockField(idx, "images", newImgs);
-                                  }}
-                                  className="text-red-500 hover:text-red-700 mt-5 p-1"
-                                  title="Remove slide"
-                                >
-                                  <Trash2 size={15} />
-                                </button>
                               </div>
-                            ))}
-                          </div>
-
-                          <button
-                            type="button"
-                            onClick={() => {
-                              const newImgs = [...(block.images || []), { src: "", alt: "", caption: "" }];
-                              updateBlockField(idx, "images", newImgs);
-                            }}
-                            className="bg-[#e77419]/10 hover:bg-[#e77419]/20 text-[#e77419] text-xs px-3 py-1.5 rounded font-bold transition-colors flex items-center gap-1.5 mt-2"
-                          >
-                            <Plus size={14} />
-                            Add Image to Slideshow
-                          </button>
-                        </div>
-                      )}
-
-                      {block.type === "callout" && (
-                        <div className="space-y-3">
-                          <textarea
-                            rows={2}
-                            className="w-full border border-amber-200 bg-amber-50 text-amber-900 rounded-lg p-2.5 focus:border-[#e77419] focus:outline-none text-sm font-medium"
-                            placeholder="Write tip/callout text..."
-                            value={block.text || ""}
-                            onChange={(e) => updateBlockField(idx, "text", e.target.value)}
-                          />
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 bg-amber-50/50 p-3 rounded-lg border border-amber-100">
-                            <div>
-                              <label className="block text-[10px] font-bold text-amber-700 uppercase mb-1">Button Name (Optional)</label>
-                              <input
-                                type="text"
-                                className="w-full border border-amber-200 rounded p-2 text-xs focus:outline-none focus:border-[#e77419] bg-white"
-                                placeholder="e.g. Learn More"
-                                value={block.buttonText || ""}
-                                onChange={(e) => updateBlockField(idx, "buttonText", e.target.value)}
-                              />
                             </div>
-                            <div>
-                              <label className="block text-[10px] font-bold text-amber-700 uppercase mb-1">Button Link (Optional)</label>
-                              <input
-                                type="text"
-                                className="w-full border border-amber-200 rounded p-2 text-xs focus:outline-none focus:border-[#e77419] bg-white"
-                                placeholder="e.g. /services or https://..."
-                                value={block.buttonLink || ""}
-                                onChange={(e) => updateBlockField(idx, "buttonLink", e.target.value)}
-                              />
-                            </div>
-                          </div>
+                          )}
                         </div>
-                      )}
-
-                      {block.type === "list" && (
-                        <div className="space-y-2">
-                          <div className="flex gap-4">
-                            <label className="flex items-center gap-1.5 text-xs text-gray-600">
-                              <input
-                                type="radio"
-                                name={`style-${idx}`}
-                                checked={block.style !== "numbered"}
-                                onChange={() => updateBlockField(idx, "style", "bullet")}
-                              />
-                              Bulleted
-                            </label>
-                            <label className="flex items-center gap-1.5 text-xs text-gray-600">
-                              <input
-                                type="radio"
-                                name={`style-${idx}`}
-                                checked={block.style === "numbered"}
-                                onChange={() => updateBlockField(idx, "style", "numbered")}
-                              />
-                              Numbered
-                            </label>
-                          </div>
-                          <textarea
-                            rows={3}
-                            className="w-full border rounded-lg p-2.5 focus:border-[#e77419] focus:outline-none text-sm"
-                            placeholder="Write each list item on a new line..."
-                            value={block.items?.join("\n") || ""}
-                            onChange={(e) => updateBlockField(idx, "items", e.target.value.split("\n"))}
-                          />
-                        </div>
-                      )}
-
-                      {block.type === "image" && (
-                        <div className="space-y-3">
-                          <ImageUploadField
-                            value={block.src || ""}
-                            onChange={(url) => updateBlockField(idx, "src", url)}
-                            placeholder="Image URL or upload file"
-                            label="Image Source"
-                          />
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                            <div>
-                              <label className="block text-xs font-semibold text-gray-500 uppercase mb-1">Alt description</label>
-                              <input
-                                type="text"
-                                className="w-full border rounded-lg p-2.5 focus:border-[#e77419] focus:outline-none text-sm"
-                                placeholder="Alt description"
-                                value={block.alt || ""}
-                                onChange={(e) => updateBlockField(idx, "alt", e.target.value)}
-                              />
-                            </div>
-                            <div>
-                              <label className="block text-xs font-semibold text-gray-500 uppercase mb-1">Image caption (Optional)</label>
-                              <input
-                                type="text"
-                                className="w-full border rounded-lg p-2.5 focus:border-[#e77419] focus:outline-none text-sm"
-                                placeholder="Image caption"
-                                value={block.caption || ""}
-                                onChange={(e) => updateBlockField(idx, "caption", e.target.value)}
-                              />
-                            </div>
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  </div>
+                      </div>
 
                     </div>
                   );
@@ -998,7 +1104,7 @@ export default function BlogManagementPage() {
             </div>
 
             <div className="mt-6 pt-4 pb-2 border-t">
-              <h3 className="text-sm font-bold text-gray-700 mb-3 flex items-center gap-2"><Plus size={16} className="text-[#e77419]"/> Append Section Below</h3>
+              <h3 className="text-sm font-bold text-gray-700 mb-3 flex items-center gap-2"><Plus size={16} className="text-[#e77419]" /> Append Section Below</h3>
               <div className="flex flex-wrap gap-2.5">
                 <button type="button" onClick={() => addBlock("paragraph")} className="bg-blue-50 text-blue-700 hover:bg-blue-100 border border-blue-200 text-xs px-3.5 py-2 rounded-lg font-bold transition-all active:scale-95 flex items-center gap-1.5 shadow-sm"><AlignLeft size={14} /> Paragraph</button>
                 <button type="button" onClick={() => addBlock("heading")} className="bg-amber-50 text-amber-700 hover:bg-amber-100 border border-amber-200 text-xs px-3.5 py-2 rounded-lg font-bold transition-all active:scale-95 flex items-center gap-1.5 shadow-sm"><Heading size={14} /> Heading (H2-H4)</button>
@@ -1006,6 +1112,7 @@ export default function BlogManagementPage() {
                 <button type="button" onClick={() => addBlock("callout")} className="bg-rose-50 text-rose-700 hover:bg-rose-100 border border-rose-200 text-xs px-3.5 py-2 rounded-lg font-bold transition-all active:scale-95 flex items-center gap-1.5 shadow-sm"><HelpCircle size={14} /> Callout Box</button>
                 <button type="button" onClick={() => addBlock("image")} className="bg-emerald-50 text-emerald-700 hover:bg-emerald-100 border border-emerald-200 text-xs px-3.5 py-2 rounded-lg font-bold transition-all active:scale-95 flex items-center gap-1.5 shadow-sm"><Image size={14} /> Single Image</button>
                 <button type="button" onClick={() => addBlock("slideshow")} className="bg-violet-50 text-violet-700 hover:bg-violet-100 border border-violet-200 text-xs px-3.5 py-2 rounded-lg font-bold transition-all active:scale-95 flex items-center gap-1.5 shadow-sm"><Layers size={14} /> Slideshow</button>
+                <button type="button" onClick={() => addBlock("table")} className="bg-cyan-50 text-cyan-700 hover:bg-cyan-100 border border-cyan-200 text-xs px-3.5 py-2 rounded-lg font-bold transition-all active:scale-95 flex items-center gap-1.5 shadow-sm"><Table size={14} /> Table</button>
                 <button type="button" onClick={() => addBlock("divider")} className="bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200 text-xs px-3.5 py-2 rounded-lg font-bold transition-all active:scale-95 flex items-center gap-1.5 shadow-sm"><span>—</span> Divider</button>
               </div>
             </div>

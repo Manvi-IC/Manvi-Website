@@ -553,5 +553,490 @@
     "name": "Zambia",
     "usesCity": true,
     "usesPostal": false
+  },
+  "AFGHANISTAN": {
+    "name": "AFGHANISTAN",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "ALGERIA": {
+    "name": "ALGERIA",
+    "usesCity": false,
+    "usesPostal": true
+  },
+  "ANGOLA": {
+    "name": "ANGOLA",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "ANTIGUA": {
+    "name": "ANTIGUA",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "BANGLADESH": {
+    "name": "BANGLADESH",
+    "usesCity": false,
+    "usesPostal": true
+  },
+  "BENIN": {
+    "name": "BENIN",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "BHUTAN": {
+    "name": "BHUTAN",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "BOTSWANA": {
+    "name": "BOTSWANA",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "BRUNEI": {
+    "name": "BRUNEI",
+    "usesCity": false,
+    "usesPostal": true
+  },
+  "BULGARIA": {
+    "name": "BULGARIA",
+    "usesCity": false,
+    "usesPostal": true
+  },
+  "BURKINA FASO": {
+    "name": "BURKINA FASO",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "CAMEROON": {
+    "name": "CAMEROON",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "CANARY ISLANDS, THE": {
+    "name": "CANARY ISLANDS, THE",
+    "usesCity": false,
+    "usesPostal": true
+  },
+  "CAPE VERDE": {
+    "name": "CAPE VERDE",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "CHAD": {
+    "name": "CHAD",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "CHINA, PEOPLE'S REPUBLIC": {
+    "name": "CHINA, PEOPLE'S REPUBLIC",
+    "usesCity": false,
+    "usesPostal": true
+  },
+  "CONGO": {
+    "name": "CONGO",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "CONGO, THE DEMOCRATIC REPUBLIC OF": {
+    "name": "CONGO, THE DEMOCRATIC REPUBLIC OF",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "COTE D'IVOIRE": {
+    "name": "COTE D'IVOIRE",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "CROATIA": {
+    "name": "CROATIA",
+    "usesCity": false,
+    "usesPostal": true
+  },
+  "CZECH REPUBLIC, THE": {
+    "name": "CZECH REPUBLIC, THE",
+    "usesCity": false,
+    "usesPostal": true
+  },
+  "EGYPT": {
+    "name": "EGYPT",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "ESTONIA": {
+    "name": "ESTONIA",
+    "usesCity": false,
+    "usesPostal": true
+  },
+  "ETHIOPIA": {
+    "name": "ETHIOPIA",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "FRENCH GUYANA": {
+    "name": "FRENCH GUYANA",
+    "usesCity": false,
+    "usesPostal": true
+  },
+  "GABON": {
+    "name": "GABON",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "GAMBIA": {
+    "name": "GAMBIA",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "GHANA": {
+    "name": "GHANA",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "GUATEMALA": {
+    "name": "GUATEMALA",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "GUERNSEY": {
+    "name": "GUERNSEY",
+    "usesCity": false,
+    "usesPostal": true
+  },
+  "GUINEA REPUBLIC": {
+    "name": "GUINEA REPUBLIC",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "GUYANA (BRITISH)": {
+    "name": "GUYANA (BRITISH)",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "ICELAND": {
+    "name": "ICELAND",
+    "usesCity": false,
+    "usesPostal": true
+  },
+  "IRAN (ISLAMIC REPUBLIC OF)": {
+    "name": "IRAN (ISLAMIC REPUBLIC OF)",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "IRELAND, REPUBLIC OF": {
+    "name": "IRELAND, REPUBLIC OF",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "JORDAN": {
+    "name": "JORDAN",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "KOREA, REPUBLIC OF (SOUTH K.)": {
+    "name": "KOREA, REPUBLIC OF (SOUTH K.)",
+    "usesCity": false,
+    "usesPostal": true
+  },
+  "KOREA, THE D.P.R OF (NORTH K.)": {
+    "name": "KOREA, THE D.P.R OF (NORTH K.)",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "KENYA": {
+    "name": "KENYA",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "KOSOVO": {
+    "name": "KOSOVO",
+    "usesCity": false,
+    "usesPostal": true
+  },
+  "LAO PEOPLE'S DEMOCRATIC REPUBLIC": {
+    "name": "LAO PEOPLE'S DEMOCRATIC REPUBLIC",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "LATVIA": {
+    "name": "LATVIA",
+    "usesCity": false,
+    "usesPostal": true
+  },
+  "LEBANON": {
+    "name": "LEBANON",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "LESOTHO": {
+    "name": "LESOTHO",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "LIBERIA": {
+    "name": "LIBERIA",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "LIBYA": {
+    "name": "LIBYA",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "LITHUANIA": {
+    "name": "LITHUANIA",
+    "usesCity": false,
+    "usesPostal": true
+  },
+  "MADAGASCAR": {
+    "name": "MADAGASCAR",
+    "usesCity": false,
+    "usesPostal": true
+  },
+  "MALAWI": {
+    "name": "MALAWI",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "MALDIVES": {
+    "name": "MALDIVES",
+    "usesCity": false,
+    "usesPostal": true
+  },
+  "MALI": {
+    "name": "MALI",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "MAURITIUS": {
+    "name": "MAURITIUS",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "MONGOLIA": {
+    "name": "MONGOLIA",
+    "usesCity": false,
+    "usesPostal": true
+  },
+  "MONTENEGRO, REPUBLIC OF": {
+    "name": "MONTENEGRO, REPUBLIC OF",
+    "usesCity": false,
+    "usesPostal": true
+  },
+  "MOROCCO": {
+    "name": "MOROCCO",
+    "usesCity": false,
+    "usesPostal": true
+  },
+  "MOZAMBIQUE": {
+    "name": "MOZAMBIQUE",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "MYANMAR": {
+    "name": "MYANMAR",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "NAMIBIA": {
+    "name": "NAMIBIA",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "NEPAL": {
+    "name": "NEPAL",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "NETHERLANDS, THE": {
+    "name": "NETHERLANDS, THE",
+    "usesCity": false,
+    "usesPostal": true
+  },
+  "NEW ZEALAND": {
+    "name": "NEW ZEALAND",
+    "usesCity": false,
+    "usesPostal": true
+  },
+  "NIGER": {
+    "name": "NIGER",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "NIUE": {
+    "name": "NIUE",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "NORTH MACEDONIA": {
+    "name": "NORTH MACEDONIA",
+    "usesCity": false,
+    "usesPostal": true
+  },
+  "PAKISTAN": {
+    "name": "PAKISTAN",
+    "usesCity": false,
+    "usesPostal": true
+  },
+  "PHILIPPINES, THE": {
+    "name": "PHILIPPINES, THE",
+    "usesCity": false,
+    "usesPostal": true
+  },
+  "PUERTO RICO": {
+    "name": "PUERTO RICO",
+    "usesCity": false,
+    "usesPostal": true
+  },
+  "RUSSIAN FEDERATION, THE": {
+    "name": "RUSSIAN FEDERATION, THE",
+    "usesCity": false,
+    "usesPostal": true
+  },
+  "SAMOA": {
+    "name": "SAMOA",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "SENEGAL": {
+    "name": "SENEGAL",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "SERBIA, REPUBLIC OF": {
+    "name": "SERBIA, REPUBLIC OF",
+    "usesCity": false,
+    "usesPostal": true
+  },
+  "SIERRA LEONE": {
+    "name": "SIERRA LEONE",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "SLOVAKIA": {
+    "name": "SLOVAKIA",
+    "usesCity": false,
+    "usesPostal": true
+  },
+  "SLOVENIA": {
+    "name": "SLOVENIA",
+    "usesCity": false,
+    "usesPostal": true
+  },
+  "SOLOMON ISLANDS": {
+    "name": "SOLOMON ISLANDS",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "SRI LANKA": {
+    "name": "SRI LANKA",
+    "usesCity": false,
+    "usesPostal": true
+  },
+  "ST. VINCENT": {
+    "name": "ST. VINCENT",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "SWAZILAND": {
+    "name": "SWAZILAND",
+    "usesCity": false,
+    "usesPostal": true
+  },
+  "SYRIA": {
+    "name": "SYRIA",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "TAHITI": {
+    "name": "TAHITI",
+    "usesCity": false,
+    "usesPostal": true
+  },
+  "TAIWAN, CHINA": {
+    "name": "TAIWAN, CHINA",
+    "usesCity": false,
+    "usesPostal": true
+  },
+  "TAJIKISTAN": {
+    "name": "TAJIKISTAN",
+    "usesCity": false,
+    "usesPostal": true
+  },
+  "TOGO": {
+    "name": "TOGO",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "TONGA": {
+    "name": "TONGA",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "TUNISIA": {
+    "name": "TUNISIA",
+    "usesCity": false,
+    "usesPostal": true
+  },
+  "TÜRKIYE": {
+    "name": "TÜRKIYE",
+    "usesCity": false,
+    "usesPostal": true
+  },
+  "UGANDA": {
+    "name": "UGANDA",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "UNITED KINGDOM": {
+    "name": "UNITED KINGDOM",
+    "usesCity": false,
+    "usesPostal": true
+  },
+  "UNITED STATES OF AMERICA": {
+    "name": "UNITED STATES OF AMERICA",
+    "usesCity": false,
+    "usesPostal": true
+  },
+  "URUGUAY": {
+    "name": "URUGUAY",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "VIETNAM": {
+    "name": "VIETNAM",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "ZIMBABWE": {
+    "name": "ZIMBABWE",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "ARMENIA": {
+    "name": "ARMENIA",
+    "usesCity": true,
+    "usesPostal": true
+  },
+  "NORTHERN MARIANA ISLANDS": {
+    "name": "NORTHERN MARIANA ISLANDS",
+    "usesCity": true,
+    "usesPostal": false
+  },
+  "RUSSIA": {
+    "name": "RUSSIA",
+    "usesCity": true,
+    "usesPostal": true
+  },
+  "SINGAPORE": {
+    "name": "SINGAPORE",
+    "usesCity": true,
+    "usesPostal": true
+  },
+  "TRINIDAD & TOBAGO": {
+    "name": "TRINIDAD & TOBAGO",
+    "usesCity": true,
+    "usesPostal": false
   }
 }

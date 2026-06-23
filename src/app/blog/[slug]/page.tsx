@@ -149,6 +149,13 @@ const translatePostData = async (originalPost: BlogPost, targetLang: string): Pr
         })
       );
     }
+    if (block.tableData && block.tableData.length > 0) {
+      newBlock.tableData = await Promise.all(
+        block.tableData.map(async (row) => {
+          return await Promise.all(row.map(cell => translateText(cell, targetLang)));
+        })
+      );
+    }
   });
 
   await Promise.all(contentPromises);
@@ -328,6 +335,30 @@ export default function BlogPostPage({ params }: PageProps) {
         return <hr key={index} className="article-divider" />;
       case "slideshow":
         return <SlideshowBlock key={index} block={block} />;
+      case "table":
+        if (!block.tableData || block.tableData.length === 0) return null;
+        return (
+          <div key={index} className="article-table-container">
+            <table className="article-table">
+              <thead>
+                <tr>
+                  {block.tableData[0].map((header, i) => (
+                    <th key={i}>{header}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {block.tableData.slice(1).map((row, rowIdx) => (
+                  <tr key={rowIdx}>
+                    {row.map((cell, colIdx) => (
+                      <td key={colIdx}>{cell}</td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        );
       case "list":
         const ListTag = block.style === "numbered" ? "ol" : "ul";
         return (
@@ -684,6 +715,63 @@ export default function BlogPostPage({ params }: PageProps) {
           border: 0;
           border-top: 1.5px solid var(--line);
           margin: 56px 0;
+        }
+
+        /* Table styling */
+        .article-table-container {
+          overflow-x: auto;
+          margin: 40px 0;
+          border-radius: 12px;
+          border: 1px solid var(--line);
+          background: var(--paper-2);
+          box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+          scrollbar-width: thin;
+          scrollbar-color: #cbd5e1 transparent;
+        }
+        .article-table-container::-webkit-scrollbar {
+          height: 6px;
+        }
+        .article-table-container::-webkit-scrollbar-track {
+          background: transparent;
+        }
+        .article-table-container::-webkit-scrollbar-thumb {
+          background: #cbd5e1;
+          border-radius: 9999px;
+        }
+        .article-table-container::-webkit-scrollbar-thumb:hover {
+          background: #94a3b8;
+        }
+        .article-table {
+          width: 100%;
+          border-collapse: collapse;
+          text-align: left;
+          font-size: 0.95rem;
+        }
+        .article-table th, .article-table td {
+          padding: 14px 20px;
+          border-bottom: 1px solid var(--line);
+        }
+        .article-table th {
+          background: var(--panel);
+          color: #ffffff;
+          font-weight: 700;
+          font-size: 0.88rem;
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+          border-bottom: 2px solid var(--accent);
+        }
+        .article-table td {
+          color: #334155;
+          transition: background 0.15s ease;
+        }
+        .article-table tr:nth-child(even) td {
+          background: #f8fafc;
+        }
+        .article-table tr:hover td {
+          background: #f1f5f9;
+        }
+        .article-table tr:last-child td {
+          border-bottom: none;
         }
 
         /* Banner styling */
@@ -1092,7 +1180,7 @@ export default function BlogPostPage({ params }: PageProps) {
             <h3>Keep Reading</h3>
             <div className="related-grid">
               {related.map((relPost) => (
-                <Link key={relPost.id} href={`/blog/${relPost.slug}`} className="related-card">
+                <Link key={relPost._id || relPost.id || relPost.slug} href={`/blog/${relPost.slug}`} className="related-card">
                   <span className="related-badge">{relPost.tag}</span>
                   <h4>{relPost.title}</h4>
                   <p>{relPost.description}</p>
