@@ -22,7 +22,8 @@ export default function Header() {
   const { language, setLanguage, t } = useLanguage();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isLangOpen, setIsLangOpen] = useState(false);
-  const [marqueeText, setMarqueeText] = useState("🎉 Send Shipment to USA @ ₹679 per KG  •  T&C Applied  •  🎊 Send Shipment to USA @ ₹679 per KG  •  T&C Applied  •  🎉 Send Shipment to USA @ ₹679 per KG  •  T&C Applied  •");
+  const [showMarquee, setShowMarquee] = useState(true);
+  const [marqueeText, setMarqueeText] = useState("");
   const langRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -36,8 +37,13 @@ export default function Header() {
         return res.json();
       })
       .then(data => {
-        if (data.success && data.data && data.data.marqueeText) {
-          setMarqueeText(data.data.marqueeText);
+        if (data.success && data.data) {
+          if (data.data.marqueeText !== undefined) {
+            setMarqueeText(data.data.marqueeText);
+          }
+          if (data.data.showMarquee !== undefined) {
+            setShowMarquee(data.data.showMarquee);
+          }
         }
       })
       .catch(err => console.warn("Failed to fetch site settings:", err.message));
@@ -80,7 +86,7 @@ export default function Header() {
 
           {/* Marquee offer strip */}
           <div className="flex flex-1 w-full mx-0 md:mx-6 overflow-hidden relative pt-1 md:pt-0">
-            {(() => {
+            {showMarquee && marqueeText && (() => {
               const Marquee = "marquee" as any;
               return (
                 <Marquee
