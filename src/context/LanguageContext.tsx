@@ -498,7 +498,7 @@ const translations: Record<Language, Translations> = {
     hero_days: "Days",
     hero_read_more: "Read more",
     hero_legacy_badge: "The Manvi legacy",
-    hero_legacy_heading: "We don't just move parcels;",
+    hero_legacy_heading: "We don't just move parcels",
     hero_legacy_highlight: "We bridge distances.",
     hero_whatsapp: "•Whatsapp us •Whatsapp us •",
     hero_doc_express: "Document express",
