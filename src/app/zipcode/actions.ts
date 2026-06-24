@@ -173,7 +173,7 @@ async function resolveEuropeCountry(cleanZip: string): Promise<{ canonCountry: s
   return validResult || null;
 }
 
-export async function checkZipcodeAction(countryInput: string, zipInput: string = ""): Promise<ZipcodeResult> {
+export async function checkZipcodeAction(countryInput: string, zipInput: string = "", serviceInput: string = ""): Promise<ZipcodeResult> {
   const cleanCountry = countryInput.trim().toUpperCase();
   const cleanZip = zipInput.trim().toUpperCase().replace(/\s+/g, "");
 
@@ -240,7 +240,7 @@ export async function checkZipcodeAction(countryInput: string, zipInput: string 
     return { status: "fail" };
   }
 
-  const res = await checkZipcodeActionRaw(countryInput, zipInput);
+  const res = await checkZipcodeActionRaw(countryInput, zipInput, serviceInput);
   if (res.status === "success" && zipInput.trim()) {
     const geo = await resolveCityState(res.country || countryInput, cleanZip);
     res.city = res.city || geo.city;
@@ -249,9 +249,10 @@ export async function checkZipcodeAction(countryInput: string, zipInput: string 
   return res;
 }
 
-async function checkZipcodeActionRaw(countryInput: string, zipInput: string = ""): Promise<ZipcodeResult> {
+async function checkZipcodeActionRaw(countryInput: string, zipInput: string = "", serviceInput: string = ""): Promise<ZipcodeResult> {
   const cleanCountry = countryInput.trim().toUpperCase();
   const cleanZip = zipInput.trim().toUpperCase().replace(/\s+/g, "");
+  const cleanService = serviceInput.trim().toUpperCase();
 
   if (!cleanCountry) {
     return { status: "fail" };
@@ -317,9 +318,13 @@ async function checkZipcodeActionRaw(countryInput: string, zipInput: string = ""
   }
 
   // Check ODA/OPA list first
-  if (canonCountry && cleanZip) {
+  if (canonCountry && cleanZip && (cleanService === "FEDEX" || cleanService === "DHL" || cleanService === "DHL EXPRESS" || cleanService === "UPS")) {
     try {
-      const odaPath = path.join(process.cwd(), "public", "oda_data.json");
+      let fileName = "oda_data.json";
+      if (cleanService === "DHL" || cleanService === "DHL EXPRESS") fileName = "dhl_oda_data.json";
+      else if (cleanService === "UPS") fileName = "ups_oda_data.json";
+      
+      const odaPath = path.join(process.cwd(), "public", fileName);
       const odaRaw = await fs.readFile(odaPath, "utf-8");
       const odaData = JSON.parse(odaRaw);
       
@@ -685,12 +690,43 @@ export async function getCitiesAction(countryInput: string): Promise<string[]> {
     }
 
     const odaPath = path.join(process.cwd(), "public", "oda_data.json");
-    const odaRaw = await fs.readFile(odaPath, "utf-8");
-    const odaData = JSON.parse(odaRaw);
+    const dhlPath = path.join(process.cwd(), "public", "dhl_oda_data.json");
+    const upsPath = path.join(process.cwd(), "public", "ups_oda_data.json");
     
-    const cities = odaData
-      .filter((r: any) => r.canonCountry === odaCountryKey && r.city)
-      .map((r: any) => r.city);
+    let cities: string[] = [];
+    
+    try {
+      const odaRaw = await fs.readFile(odaPath, "utf-8");
+      const odaData = JSON.parse(odaRaw);
+      const odaCities = odaData
+        .filter((r: any) => r.canonCountry === odaCountryKey && r.city)
+        .map((r: any) => r.city);
+      cities = cities.concat(odaCities);
+    } catch (e) {
+      console.warn("Failed to load oda_data.json", e);
+    }
+
+    try {
+      const dhlRaw = await fs.readFile(dhlPath, "utf-8");
+      const dhlData = JSON.parse(dhlRaw);
+      const dhlCities = dhlData
+        .filter((r: any) => r.canonCountry === odaCountryKey && r.city)
+        .map((r: any) => r.city);
+      cities = cities.concat(dhlCities);
+    } catch (e) {
+      console.warn("Failed to load dhl_oda_data.json", e);
+    }
+
+    try {
+      const upsRaw = await fs.readFile(upsPath, "utf-8");
+      const upsData = JSON.parse(upsRaw);
+      const upsCities = upsData
+        .filter((r: any) => r.canonCountry === odaCountryKey && r.city)
+        .map((r: any) => r.city);
+      cities = cities.concat(upsCities);
+    } catch (e) {
+      console.warn("Failed to load ups_oda_data.json", e);
+    }
       
     // De-duplicate and sort
     return Array.from(new Set(cities)).sort() as string[];

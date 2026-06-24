@@ -273,7 +273,7 @@ export default function ZipcodePage() {
     }
 
     try {
-      const result = await checkZipcodeAction(cleanCountry, cleanZipcode);
+      const result = await checkZipcodeAction(cleanCountry, cleanZipcode, service);
 
       if (result.status === "success") {
         setStatus("success");
@@ -313,11 +313,10 @@ export default function ZipcodePage() {
 
       {/* Main Grid Content */}
       <main className="flex-grow max-w-425 w-full mx-auto px-6 py-12">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          {/* Left Column Cards */}
-          <div className="lg:col-span-5 flex flex-col gap-6">
-            {/* Card 1: Check Availability */}
-            <div className="bg-[#eef0f5] rounded-4xl p-8 lg:p-10 shadow-sm border border-gray-200/50 flex flex-col gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+          {/* Card 1: Check Availability */}
+          <div className="lg:col-span-5 order-1 h-full">
+            <div className="bg-[#eef0f5] rounded-4xl p-8 lg:p-10 shadow-sm border border-gray-200/50 flex flex-col gap-6 h-full">
               <div className="flex flex-col gap-4">
                 <h2 className="text-[28px] md:text-[32px] font-extrabold text-[#1c1f2e] leading-tight tracking-tight whitespace-pre-line">
                   {t.card_title}
@@ -449,8 +448,10 @@ export default function ZipcodePage() {
 
 
             </div>
+          </div>
 
-            {/* Card 2: Need Assistance */}
+          {/* Card 2: Need Assistance */}
+          <div className="lg:col-span-5 order-2 lg:order-3 mt-6 lg:mt-0">
             <div className="bg-[#eef0f5] rounded-4xl p-8 lg:p-10 shadow-sm border border-gray-200/50 flex flex-col items-start gap-5">
               <h3 className="text-[28px] md:text-[32px] font-extrabold text-[#f27a1a] tracking-tight leading-tight whitespace-pre-line">
                 {t.need_assistance}
@@ -469,7 +470,7 @@ export default function ZipcodePage() {
           </div>
 
           {/* Right Column List / Results */}
-          <div className="lg:col-span-7 flex flex-col gap-8">
+          <div className="lg:col-span-7 flex flex-col gap-8 h-full order-3 lg:order-2 mt-2 lg:mt-0">
             {status === "success" && (
               <div className="bg-[#ecfdf5] border border-[#10b981] rounded-4xl p-8 lg:p-10 flex flex-col gap-6 shadow-sm h-full justify-center">
                 <div className="flex items-center gap-3 text-[#059669] font-extrabold text-[24px]">

@@ -1,7 +1,7 @@
 // app/blog/data.ts
 
 export interface BlogBlock {
-  type: "paragraph" | "subheading" | "list" | "callout" | "image" | "heading" | "divider" | "slideshow";
+  type: "paragraph" | "subheading" | "list" | "callout" | "image" | "heading" | "divider" | "slideshow" | "table";
   text?: string;
   items?: string[];
   style?: string; // e.g. "bullet" | "numbered" | "h2" | "h3" | "h4"
@@ -10,6 +10,7 @@ export interface BlogBlock {
   caption?: string;
   layout?: string; // e.g. "left-image" | "right-image" | "top-image" | "bottom-image" | "none"
   images?: Array<{ src: string; alt?: string; caption?: string }>;
+  tableData?: string[][];
 }
 
 export interface BlogPost {

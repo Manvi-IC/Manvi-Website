@@ -10,6 +10,7 @@ export default function SiteSettingsPage() {
 
   const [formData, setFormData] = useState({
     marqueeText: "",
+    showMarquee: true,
     offerTitle: "",
     offerSubtitle: "",
     offerEndDate: "",
@@ -33,6 +34,7 @@ export default function SiteSettingsPage() {
       if (data.success && data.data) {
         setFormData({
           marqueeText: data.data.marqueeText || "",
+          showMarquee: data.data.showMarquee ?? true,
           offerTitle: data.data.offerTitle || "",
           offerSubtitle: data.data.offerSubtitle || "",
           offerEndDate: data.data.offerEndDate 
@@ -119,6 +121,32 @@ export default function SiteSettingsPage() {
           <div>
             <h2 className="text-lg font-medium text-gray-900 mb-4 border-b pb-2">Top Marquee Strip</h2>
             <div className="grid grid-cols-1 gap-y-6">
+              <div className="sm:col-span-2 mb-4">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Show Marquee
+                </label>
+                <div className="flex items-center">
+                  <button
+                    type="button"
+                    onClick={() => setFormData(prev => ({ ...prev, showMarquee: !prev.showMarquee }))}
+                    className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-[#e77419] focus:ring-offset-2 ${
+                      formData.showMarquee ? 'bg-[#e77419]' : 'bg-gray-200'
+                    }`}
+                    role="switch"
+                    aria-checked={formData.showMarquee}
+                  >
+                    <span
+                      aria-hidden="true"
+                      className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${
+                        formData.showMarquee ? 'translate-x-5' : 'translate-x-0'
+                      }`}
+                    />
+                  </button>
+                  <span className="ml-3 text-sm font-medium text-gray-700">
+                    {formData.showMarquee ? 'Visible' : 'Hidden'}
+                  </span>
+                </div>
+              </div>
               <div>
                 <label htmlFor="marqueeText" className="block text-sm font-medium text-gray-700 mb-1">
                   Marquee Text
@@ -130,7 +158,7 @@ export default function SiteSettingsPage() {
                   value={formData.marqueeText}
                   onChange={handleChange}
                   className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-[#e77419] focus:border-[#e77419] sm:text-sm"
-                  placeholder="🎉 Send Shipment to USA @ ₹679 per KG  •  T&C Applied"
+                  placeholder="Enter marquee text here..."
                 />
               </div>
             </div>

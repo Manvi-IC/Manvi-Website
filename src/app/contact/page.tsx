@@ -282,35 +282,35 @@ export default function ContactPage() {
     const params = new URLSearchParams();
     params.append(
       "xnQsjsdp",
-      "f7ffb6c004b236239387ad91cb729a74c1e77cb13adfc0cbfe03c73418d28c0b",
+      "0865f832e9eff8ac8416c9074e4fe81d82b2f78105b16bc6675b9cd2e3f7dfad",
     );
     params.append("zc_gad", "");
     params.append(
       "xmIwtLD",
-      "f1bf89877bb4f869e7a83c4c2a590303921e0786b879cb5c209a4995d86f4181287878d06b7e5465b22c5ca523125edc",
+      "ca6104fc687d6c4afcb27e6c4f9bdef93a18aec2baa19548cd8ce05901d0a0de7d20fe8f7958b27d61877d5aaa686212",
     );
-    params.append("actionType", "TGVhZHM=");
+    params.append("actionType", "Q29udGFjdHM=");
     params.append("returnURL", "null");
 
-    // The new Zoho form uses "Last Name" for the entire Name field
+    // Mapping fields exactly to the new Contact form structure
     params.append("Last Name", name || "Unknown");
     params.append("Email", email);
     params.append("Phone", contact);
-    // The new Zoho form maps "Enquiry Type" to "Annual Revenue"
-    params.append("Annual Revenue", inquiryType || "Other");
+    
+    // "Title" field in Zoho maps to "Enquiry type"
+    params.append("Title", inquiryType || "Other");
+    
+    // "Department" field in Zoho maps to "Destination"
+    params.append("Department", destination || "");
+    
+    // Description field
+    params.append("Description", queryText);
 
-    // Always tag these leads as coming from Web Research
-    params.append("Lead Source", "Web Research");
-    params.append("Company", companyName || "Website Visitor");
-
-    // The new form doesn't have a Destination field, so we'll append it to the description
-    const fullDescription = destination
-      ? `Destination: ${destination}\n\n${queryText}`
-      : queryText;
-    params.append("Description", fullDescription);
+    // Lead Source
+    params.append("Lead Source", "Web Mail");
 
     try {
-      await fetch("https://crm.zoho.in/crm/WebToLeadForm", {
+      await fetch("https://crm.zoho.in/crm/WebToContactForm", {
         method: "POST",
         mode: "no-cors",
         headers: {
@@ -744,7 +744,7 @@ export default function ContactPage() {
         {/* Zoho WebForm Analytics Tracking */}
         <Script
           id="wf_anal"
-          src="https://crm.zohopublic.in/crm/WebFormAnalyticsServeServlet?rid=4f24d483208c6ff1e29418fdf679a98a9a8ba77e88a80be0f92231cf1bb7501536f9dc7e540c496a488af0820c16bb81gid2b74b1891513d3811013f00d50485f47feb420207d64d35ae1ecf3873ce2ef7bgidb930670def52b5e56d1d6e0e23e8e6a8bab66f5acb6b8699647a831b4dbef47bgidde0954cbe0f55f2140416d115537da6fb496f32fb2b4f50de012d84d96e9e6c1&tw=6f8adc5afefd809076b8846796a67adc323fdbd8951651cf19624cc395b13b84"
+          src="https://crm.zohopublic.in/crm/WebFormAnalyticsServeServlet?rid=96636f19fa7ecbc63f027b5875f83d42cb3a75dccd47c0e5997b62a35199611246c3f71d5bbbaa68759623d4921d9c87gidc9aaca359c78dae18407c8cf8a90d1d03850e65ac051a8df824faeba3dec71e4gid83f2cf39cb25cf21e1c694cc07bf7dac8e721e5a2b6fa61a205ea2ba302f2c65gid3368a1db3324eeaca476cda3147a5c65631c914e88886a2b091db018537f3cd5&tw=f0519c6f7805541fe733c64c62da50ec3cf82316b857ddcc3c4ed309fd1377db"
           strategy="lazyOnload"
         />
       </main>
