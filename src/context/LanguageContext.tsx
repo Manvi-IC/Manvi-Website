@@ -5,6 +5,14 @@ import { createContext, useContext, useState, ReactNode } from "react";
 export type Language = "en" | "hi" | "pa" | "fr" | "es";
 
 export interface Translations {
+  hero_slide1_tagline: string;
+  hero_slide1_highlight: string;
+  hero_slide2_tagline: string;
+  hero_slide2_highlight: string;
+  hero_slide3_tagline: string;
+  hero_slide3_highlight: string;
+  hero_slide4_tagline: string;
+  hero_slide4_highlight: string;
   footer_pickup_availability: string;
   footer_campaign: string;
   footer_business_campaign: string;
@@ -362,6 +370,14 @@ export interface Translations {
 
 const translations: Record<Language, Translations> = {
   en: {
+    hero_slide1_tagline: "Your trusted courier,",
+    hero_slide1_highlight: "across every mile.",
+    hero_slide2_tagline: "Distance not Divide,",
+    hero_slide2_highlight: "with Manvi.",
+    hero_slide3_tagline: "Miles don't matter",
+    hero_slide3_highlight: "at Manvi.",
+    hero_slide4_tagline: "Shipping love,",
+    hero_slide4_highlight: "packed in a box.",
     footer_pickup_availability: "Pickup Availability",
     footer_campaign: "Campaign",
     footer_business_campaign: "Business Campaign",
@@ -779,6 +795,15 @@ const translations: Record<Language, Translations> = {
   },
 
   hi: {
+    hero_slide1_tagline: "आपका भरोसेमंद कूरियर,",
+    hero_slide1_highlight: "हर मील पर।",
+    hero_slide2_tagline: "दूरी कोई बाधा नहीं,",
+    hero_slide2_highlight: "मानवी के साथ।",
+    hero_slide3_tagline: "मीलों का कोई मतलब नहीं",
+    hero_slide3_highlight: "मानवी पर।",
+    hero_slide4_tagline: "प्यार भेजना,",
+    hero_slide4_highlight: "एक डिब्बे में बंद।",
+
     footer_pickup_availability: "पिकअप उपलब्धता",
     footer_campaign: "अभियान",
     footer_business_campaign: "व्यावसायिक अभियान",
@@ -1193,6 +1218,14 @@ const translations: Record<Language, Translations> = {
   },
 
   pa: {
+    hero_slide1_tagline: "ਤੁਹਾਡਾ ਭਰੋਸੇਯੋਗ ਕੂਰੀਅਰ,",
+    hero_slide1_highlight: "ਹਰ ਮੀਲ ਵਿੱਚ।",
+    hero_slide2_tagline: "ਦੂਰੀ ਕੋਈ ਰੁਕਾਵਟ ਨਹੀਂ,",
+    hero_slide2_highlight: "ਮਾਨਵੀ ਨਾਲ।",
+    hero_slide3_tagline: "ਮੀਲਾਂ ਦਾ ਕੋਈ ਮਤਲਬ ਨਹੀਂ",
+    hero_slide3_highlight: "ਮਾਨਵੀ 'ਤੇ।",
+    hero_slide4_tagline: "ਪਿਆਰ ਭੇਜਣਾ,",
+    hero_slide4_highlight: "ਇੱਕ ਡੱਬੇ ਵਿੱਚ ਬੰਦ।",
     footer_pickup_availability: "ਪਿਕਅੱਪ ਉਪਲਬਧਤਾ",
     footer_campaign: "ਮੁਹਿੰਮ",
     footer_business_campaign: "ਵਪਾਰਕ ਮੁਹਿੰਮ",
@@ -1608,6 +1641,14 @@ const translations: Record<Language, Translations> = {
   },
 
   fr: {
+    hero_slide1_tagline: "Votre coursier de confiance,",
+    hero_slide1_highlight: "à chaque kilomètre.",
+    hero_slide2_tagline: "La distance ne divise pas,",
+    hero_slide2_highlight: "avec Manvi.",
+    hero_slide3_tagline: "Les kilomètres n'ont pas d'importance",
+    hero_slide3_highlight: "chez Manvi.",
+    hero_slide4_tagline: "Envoyer l'amour,",
+    hero_slide4_highlight: "emballé dans une boîte.",
     footer_pickup_availability: "Disponibilité du ramassage",
     footer_campaign: "Campagne",
     footer_business_campaign: "Campagne commerciale",
@@ -2029,6 +2070,14 @@ const translations: Record<Language, Translations> = {
   },
 
   es: {
+    hero_slide1_tagline: "Su mensajero de confianza,",
+    hero_slide1_highlight: "en cada milla.",
+    hero_slide2_tagline: "La distancia no divide,",
+    hero_slide2_highlight: "con Manvi.",
+    hero_slide3_tagline: "Las millas no importan",
+    hero_slide3_highlight: "en Manvi.",
+    hero_slide4_tagline: "Enviando amor,",
+    hero_slide4_highlight: "empaquetado en una caja.",
     footer_pickup_availability: "Disponibilidad de recogida",
     footer_campaign: "Campaña",
     footer_business_campaign: "Campaña comercial",
@@ -2455,7 +2504,7 @@ interface LanguageContextType {
 
 const LanguageContext = createContext<LanguageContextType>({
   language: "en",
-  setLanguage: () => { },
+  setLanguage: () => {},
   t: translations.en,
 });
 
