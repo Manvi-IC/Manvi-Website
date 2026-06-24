@@ -1,4 +1,4 @@
-// app/careers/page.tsx (FIXED)
+// app/career/page.tsx (FIXED — now fully translated across en/hi/pa/fr/es)
 "use client";
 
 import React, { useEffect, useState } from "react";
@@ -7,6 +7,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ApplyModal from "./ApplyModal";
 import SpeculativeApplyModal from "./SpeculativeApplyModal";
+import { useLanguage, Language } from "@/context/LanguageContext";
 
 const geist = Geist({
   variable: "--font-geist-sans",
@@ -41,72 +42,368 @@ interface StepItem {
   description: string;
 }
 
-const STATS: StatItem[] = [
-  { value: "1M+", label: "International shipments delivered" },
-  { value: "100K+", label: "Happy customers worldwide" },
-  { value: "99.97%", label: "Delivery success rate" },
-  { value: "5", label: "Global carrier partners" },
-];
+interface CareerTranslations {
+  eyebrow: string;
+  headingPrefix: string;
+  headingHighlight: string;
+  subtitle: string;
+  viewRoles: string;
+  emailCv: string;
+  statsHeading: string;
+  stat1Label: string;
+  stat2Label: string;
+  stat3Label: string;
+  stat4Label: string;
+  valuesEyebrow: string;
+  valuesHeading: string;
+  valuesSubtitle: string;
+  value1Title: string;
+  value1Desc: string;
+  value2Title: string;
+  value2Desc: string;
+  value3Title: string;
+  value3Desc: string;
+  value4Title: string;
+  value4Desc: string;
+  rolesEyebrow: string;
+  rolesHeading: string;
+  rolesSubtitle: string;
+  loadingText: string;
+  noJobsText: string;
+  applyBtn: string;
+  hireEyebrow: string;
+  hireHeading: string;
+  hireSubtitle: string;
+  step1Title: string;
+  step1Desc: string;
+  step2Title: string;
+  step2Desc: string;
+  step3Title: string;
+  step3Desc: string;
+  step4Title: string;
+  step4Desc: string;
+  ctaHeading: string;
+  ctaSubtitle: string;
+  ctaBtn: string;
+}
 
-const VALUES: ValueItem[] = [
-  {
-    icon: "🎯",
-    title: "Precision First",
-    description:
+const careerTranslations: Record<Language, CareerTranslations> = {
+  en: {
+    eyebrow: "Careers at Manvi",
+    headingPrefix: "Help Us Bridge ",
+    headingHighlight: "Distances.",
+    subtitle:
+      "Behind every parcel is a family waiting on the other side of the world. Join the team that gets it there — across the USA, UK, Canada, Europe and Australia.",
+    viewRoles: "View Open Roles",
+    emailCv: "Email Your CV",
+    statsHeading: "A growing network.",
+    stat1Label: "International shipments delivered",
+    stat2Label: "Happy customers worldwide",
+    stat3Label: "Delivery success rate",
+    stat4Label: "Global carrier partners",
+    valuesEyebrow: "Why Manvi",
+    valuesHeading: "Work That Actually Moves.",
+    valuesSubtitle:
+      "We're a logistics company built on precision and care. Here's what it feels like on the inside.",
+    value1Title: "Precision First",
+    value1Desc:
       "Every shipment is someone's trust. We sweat the details so nothing gets lost in transit.",
-  },
-  {
-    icon: "🌍",
-    title: "Global Exposure",
-    description:
+    value2Title: "Global Exposure",
+    value2Desc:
       "Work across borders, carriers and time zones with partners like Aramex, Courier Please, DHL, DPD, FedEx and UPS.",
-  },
-  {
-    icon: "🤝",
-    title: "People First",
-    description:
+    value3Title: "People First",
+    value3Desc:
       "Customers and colleagues alike. We're small enough to know your name and back your ideas.",
-  },
-  {
-    icon: "🚀",
-    title: "Real Ownership",
-    description:
+    value4Title: "Real Ownership",
+    value4Desc:
       "A fast-growing company where what you build ships — and you see the impact quickly.",
-  },
-];
-
-const STEPS: StepItem[] = [
-  {
-    number: "01",
-    title: "Apply",
-    description: "Send your CV for a role — or speculatively if none fits yet.",
-  },
-  {
-    number: "02",
-    title: "Screening Call",
-    description:
+    rolesEyebrow: "Open positions",
+    rolesHeading: "Find Your Place In The Network.",
+    rolesSubtitle:
+      "All roles are based at our Dwarka, New Delhi office unless noted. Tap a role to see the details and apply.",
+    loadingText: "Loading available positions...",
+    noJobsText: "No open positions at the moment. Check back soon!",
+    applyBtn: "Apply for this role →",
+    hireEyebrow: "How we hire",
+    hireHeading: "A Clear Route To Joining Us.",
+    hireSubtitle:
+      "No black holes. Four simple steps, and we keep you posted at each one.",
+    step1Title: "Apply",
+    step1Desc: "Send your CV for a role — or speculatively if none fits yet.",
+    step2Title: "Screening Call",
+    step2Desc:
       "A short chat to understand your experience and what you're after.",
+    step3Title: "Interview",
+    step3Desc: "Meet the team you'd work with and dig into the role.",
+    step4Title: "Offer & Onboarding",
+    step4Desc: "We make it official and get you set up to ship from day one.",
+    ctaHeading: "Don't See Your Role?",
+    ctaSubtitle:
+      "We're always looking for sharp people who care about getting things where they need to be. Tell us how you'd help.",
+    ctaBtn: "Send Your CV Anyway",
   },
-  {
-    number: "03",
-    title: "Interview",
-    description: "Meet the team you'd work with and dig into the role.",
+  hi: {
+    eyebrow: "मानवी में करियर",
+    headingPrefix: "दूरियां मिटाने में ",
+    headingHighlight: "हमारी मदद करें।",
+    subtitle:
+      "हर पार्सल के पीछे दुनिया के दूसरे छोर पर इंतज़ार करता एक परिवार होता है। उस टीम से जुड़ें जो इसे वहां तक पहुंचाती है — USA, UK, कनाडा, यूरोप और ऑस्ट्रेलिया में।",
+    viewRoles: "खुली नौकरियां देखें",
+    emailCv: "अपना सीवी ईमेल करें",
+    statsHeading: "एक बढ़ता नेटवर्क।",
+    stat1Label: "अंतर्राष्ट्रीय शिपमेंट डिलीवर किए गए",
+    stat2Label: "दुनिया भर में खुश ग्राहक",
+    stat3Label: "डिलीवरी सफलता दर",
+    stat4Label: "वैश्विक वाहक साझेदार",
+    valuesEyebrow: "मानवी क्यों",
+    valuesHeading: "ऐसा काम जो वास्तव में मायने रखता है।",
+    valuesSubtitle:
+      "हम सटीकता और देखभाल पर बनी एक लॉजिस्टिक्स कंपनी हैं। यहां बताया गया है कि अंदर से यह कैसा महसूस होता है।",
+    value1Title: "सटीकता पहले",
+    value1Desc:
+      "हर शिपमेंट किसी का भरोसा है। हम विवरणों का ध्यान रखते हैं ताकि पारगमन में कुछ भी न खोए।",
+    value2Title: "वैश्विक अनुभव",
+    value2Desc:
+      "Aramex, Courier Please, DHL, DPD, FedEx और UPS जैसे साझेदारों के साथ सीमाओं, वाहकों और समय क्षेत्रों में काम करें।",
+    value3Title: "लोग पहले",
+    value3Desc:
+      "ग्राहक और सहकर्मी दोनों। हम इतने छोटे हैं कि आपका नाम जानते हैं और आपके विचारों का समर्थन करते हैं।",
+    value4Title: "वास्तविक स्वामित्व",
+    value4Desc:
+      "एक तेज़ी से बढ़ती कंपनी जहां आप जो बनाते हैं वह शिप होता है — और आप जल्दी प्रभाव देखते हैं।",
+    rolesEyebrow: "खुली स्थितियां",
+    rolesHeading: "नेटवर्क में अपनी जगह खोजें।",
+    rolesSubtitle:
+      "जब तक नोट न किया जाए, सभी भूमिकाएं हमारे द्वारका, नई दिल्ली कार्यालय में आधारित हैं। विवरण देखने और आवेदन करने के लिए किसी भूमिका पर टैप करें।",
+    loadingText: "उपलब्ध पदों को लोड किया जा रहा है...",
+    noJobsText: "इस समय कोई खुली स्थिति नहीं है। जल्द ही फिर से देखें!",
+    applyBtn: "इस भूमिका के लिए आवेदन करें →",
+    hireEyebrow: "हम कैसे नियुक्त करते हैं",
+    hireHeading: "हमसे जुड़ने का एक स्पष्ट रास्ता।",
+    hireSubtitle:
+      "कोई ब्लैक होल नहीं। चार सरल चरण, और हम हर एक पर आपको सूचित रखते हैं।",
+    step1Title: "आवेदन करें",
+    step1Desc:
+      "किसी भूमिका के लिए अपना सीवी भेजें — या यदि अभी कोई फिट नहीं है तो अनुमानित रूप से।",
+    step2Title: "स्क्रीनिंग कॉल",
+    step2Desc:
+      "आपके अनुभव और आप क्या चाहते हैं, यह समझने के लिए एक छोटी बातचीत।",
+    step3Title: "इंटरव्यू",
+    step3Desc:
+      "उस टीम से मिलें जिसके साथ आप काम करेंगे और भूमिका के बारे में गहराई से जानें।",
+    step4Title: "ऑफर और ऑनबोर्डिंग",
+    step4Desc:
+      "हम इसे आधिकारिक बनाते हैं और आपको पहले दिन से शिप करने के लिए तैयार करते हैं।",
+    ctaHeading: "अपनी भूमिका नहीं देख रहे?",
+    ctaSubtitle:
+      "हम हमेशा ऐसे तेज़ लोगों की तलाश में रहते हैं जो चीजों को वहां पहुंचाने की परवाह करते हैं जहां उन्हें जाने की जरूरत है। हमें बताएं कि आप कैसे मदद करेंगे।",
+    ctaBtn: "फिर भी अपना सीवी भेजें",
   },
-  {
-    number: "04",
-    title: "Offer & Onboarding",
-    description: "We make it official and get you set up to ship from day one.",
+  pa: {
+    eyebrow: "ਮਾਨਵੀ ਵਿੱਚ ਕੈਰੀਅਰ",
+    headingPrefix: "ਦੂਰੀਆਂ ਮਿਟਾਉਣ ਵਿੱਚ ",
+    headingHighlight: "ਸਾਡੀ ਮਦਦ ਕਰੋ।",
+    subtitle:
+      "ਹਰ ਪਾਰਸਲ ਦੇ ਪਿੱਛੇ ਦੁਨੀਆ ਦੇ ਦੂਜੇ ਸਿਰੇ 'ਤੇ ਇੰਤਜ਼ਾਰ ਕਰ ਰਿਹਾ ਇੱਕ ਪਰਿਵਾਰ ਹੁੰਦਾ ਹੈ। ਉਸ ਟੀਮ ਨਾਲ ਜੁੜੋ ਜੋ ਇਸਨੂੰ ਉੱਥੇ ਪਹੁੰਚਾਉਂਦੀ ਹੈ — USA, UK, ਕੈਨੇਡਾ, ਯੂਰਪ ਅਤੇ ਆਸਟ੍ਰੇਲੀਆ ਵਿੱਚ।",
+    viewRoles: "ਖੁੱਲ੍ਹੀਆਂ ਨੌਕਰੀਆਂ ਦੇਖੋ",
+    emailCv: "ਆਪਣਾ ਸੀਵੀ ਈਮੇਲ ਕਰੋ",
+    statsHeading: "ਇੱਕ ਵਧ ਰਿਹਾ ਨੈੱਟਵਰਕ।",
+    stat1Label: "ਅੰਤਰਰਾਸ਼ਟਰੀ ਸ਼ਿਪਮੈਂਟ ਡਿਲੀਵਰ ਕੀਤੇ ਗਏ",
+    stat2Label: "ਦੁਨੀਆ ਭਰ ਵਿੱਚ ਖੁਸ਼ ਗਾਹਕ",
+    stat3Label: "ਡਿਲੀਵਰੀ ਸਫਲਤਾ ਦਰ",
+    stat4Label: "ਗਲੋਬਲ ਕੈਰੀਅਰ ਸਾਂਝੇਦਾਰ",
+    valuesEyebrow: "ਮਾਨਵੀ ਕਿਉਂ",
+    valuesHeading: "ਕੰਮ ਜੋ ਅਸਲ ਵਿੱਚ ਅੱਗੇ ਲੈ ਜਾਂਦਾ ਹੈ।",
+    valuesSubtitle:
+      "ਅਸੀਂ ਸ਼ੁੱਧਤਾ ਅਤੇ ਦੇਖਭਾਲ 'ਤੇ ਬਣੀ ਇੱਕ ਲੌਜਿਸਟਿਕਸ ਕੰਪਨੀ ਹਾਂ। ਇੱਥੇ ਦੱਸਿਆ ਗਿਆ ਹੈ ਕਿ ਇਹ ਅੰਦਰੋਂ ਕਿਵੇਂ ਮਹਿਸੂਸ ਹੁੰਦਾ ਹੈ।",
+    value1Title: "ਸ਼ੁੱਧਤਾ ਪਹਿਲਾਂ",
+    value1Desc:
+      "ਹਰ ਸ਼ਿਪਮੈਂਟ ਕਿਸੇ ਦਾ ਭਰੋਸਾ ਹੈ। ਅਸੀਂ ਵੇਰਵਿਆਂ ਦਾ ਧਿਆਨ ਰੱਖਦੇ ਹਾਂ ਤਾਂ ਜੋ ਆਵਾਜਾਈ ਵਿੱਚ ਕੁਝ ਵੀ ਨਾ ਗੁਆਚੇ।",
+    value2Title: "ਗਲੋਬਲ ਐਕਸਪੋਜ਼ਰ",
+    value2Desc:
+      "Aramex, Courier Please, DHL, DPD, FedEx ਅਤੇ UPS ਵਰਗੇ ਸਾਂਝੇਦਾਰਾਂ ਨਾਲ ਸਰਹੱਦਾਂ, ਕੈਰੀਅਰਾਂ ਅਤੇ ਸਮਾਂ ਖੇਤਰਾਂ ਵਿੱਚ ਕੰਮ ਕਰੋ।",
+    value3Title: "ਲੋਕ ਪਹਿਲਾਂ",
+    value3Desc:
+      "ਗਾਹਕ ਅਤੇ ਸਹਿਯੋਗੀ ਦੋਵੇਂ। ਅਸੀਂ ਇੰਨੇ ਛੋਟੇ ਹਾਂ ਕਿ ਤੁਹਾਡਾ ਨਾਮ ਜਾਣਦੇ ਹਾਂ ਅਤੇ ਤੁਹਾਡੇ ਵਿਚਾਰਾਂ ਦਾ ਸਮਰਥਨ ਕਰਦੇ ਹਾਂ।",
+    value4Title: "ਅਸਲ ਮਾਲਕੀ",
+    value4Desc:
+      "ਇੱਕ ਤੇਜ਼ੀ ਨਾਲ ਵਧ ਰਹੀ ਕੰਪਨੀ ਜਿੱਥੇ ਜੋ ਤੁਸੀਂ ਬਣਾਉਂਦੇ ਹੋ ਉਹ ਸ਼ਿਪ ਹੁੰਦਾ ਹੈ — ਅਤੇ ਤੁਸੀਂ ਜਲਦੀ ਪ੍ਰਭਾਵ ਦੇਖਦੇ ਹੋ।",
+    rolesEyebrow: "ਖੁੱਲ੍ਹੀਆਂ ਅਸਾਮੀਆਂ",
+    rolesHeading: "ਨੈੱਟਵਰਕ ਵਿੱਚ ਆਪਣੀ ਜਗ੍ਹਾ ਲੱਭੋ।",
+    rolesSubtitle:
+      "ਜਦੋਂ ਤੱਕ ਨੋਟ ਨਾ ਕੀਤਾ ਜਾਵੇ, ਸਾਰੀਆਂ ਭੂਮਿਕਾਵਾਂ ਸਾਡੇ ਦਵਾਰਕਾ, ਨਵੀਂ ਦਿੱਲੀ ਦਫ਼ਤਰ ਵਿੱਚ ਸਥਿਤ ਹਨ। ਵੇਰਵੇ ਦੇਖਣ ਅਤੇ ਅਪਲਾਈ ਕਰਨ ਲਈ ਕਿਸੇ ਭੂਮਿਕਾ 'ਤੇ ਟੈਪ ਕਰੋ।",
+    loadingText: "ਉਪਲਬਧ ਅਸਾਮੀਆਂ ਲੋਡ ਹੋ ਰਹੀਆਂ ਹਨ...",
+    noJobsText: "ਇਸ ਸਮੇਂ ਕੋਈ ਖੁੱਲ੍ਹੀ ਅਸਾਮੀ ਨਹੀਂ ਹੈ। ਛੇਤੀ ਹੀ ਦੁਬਾਰਾ ਦੇਖੋ!",
+    applyBtn: "ਇਸ ਭੂਮਿਕਾ ਲਈ ਅਪਲਾਈ ਕਰੋ →",
+    hireEyebrow: "ਅਸੀਂ ਕਿਵੇਂ ਨਿਯੁਕਤ ਕਰਦੇ ਹਾਂ",
+    hireHeading: "ਸਾਡੇ ਨਾਲ ਜੁੜਨ ਦਾ ਇੱਕ ਸਪਸ਼ਟ ਰਾਹ।",
+    hireSubtitle:
+      "ਕੋਈ ਬਲੈਕ ਹੋਲ ਨਹੀਂ। ਚਾਰ ਸਧਾਰਨ ਕਦਮ, ਅਤੇ ਅਸੀਂ ਹਰ ਇੱਕ 'ਤੇ ਤੁਹਾਨੂੰ ਸੂਚਿਤ ਰੱਖਦੇ ਹਾਂ।",
+    step1Title: "ਅਪਲਾਈ ਕਰੋ",
+    step1Desc:
+      "ਕਿਸੇ ਭੂਮਿਕਾ ਲਈ ਆਪਣਾ ਸੀਵੀ ਭੇਜੋ — ਜਾਂ ਜੇ ਹੁਣੇ ਕੋਈ ਫਿੱਟ ਨਹੀਂ ਹੈ ਤਾਂ ਅੰਦਾਜ਼ਨ ਤੌਰ 'ਤੇ।",
+    step2Title: "ਸਕ੍ਰੀਨਿੰਗ ਕਾਲ",
+    step2Desc:
+      "ਤੁਹਾਡੇ ਤਜਰਬੇ ਅਤੇ ਤੁਸੀਂ ਕੀ ਚਾਹੁੰਦੇ ਹੋ, ਇਹ ਸਮਝਣ ਲਈ ਇੱਕ ਛੋਟੀ ਗੱਲਬਾਤ।",
+    step3Title: "ਇੰਟਰਵਿਊ",
+    step3Desc:
+      "ਉਸ ਟੀਮ ਨੂੰ ਮਿਲੋ ਜਿਸ ਨਾਲ ਤੁਸੀਂ ਕੰਮ ਕਰੋਗੇ ਅਤੇ ਭੂਮਿਕਾ ਬਾਰੇ ਡੂੰਘਾਈ ਨਾਲ ਜਾਣੋ।",
+    step4Title: "ਆਫ਼ਰ ਅਤੇ ਆਨਬੋਰਡਿੰਗ",
+    step4Desc:
+      "ਅਸੀਂ ਇਸਨੂੰ ਅਧਿਕਾਰਤ ਬਣਾਉਂਦੇ ਹਾਂ ਅਤੇ ਤੁਹਾਨੂੰ ਪਹਿਲੇ ਦਿਨ ਤੋਂ ਸ਼ਿਪ ਕਰਨ ਲਈ ਤਿਆਰ ਕਰਦੇ ਹਾਂ।",
+    ctaHeading: "ਆਪਣੀ ਭੂਮਿਕਾ ਨਹੀਂ ਦੇਖ ਰਹੇ?",
+    ctaSubtitle:
+      "ਅਸੀਂ ਹਮੇਸ਼ਾ ਤੇਜ਼ ਲੋਕਾਂ ਦੀ ਭਾਲ ਵਿੱਚ ਰਹਿੰਦੇ ਹਾਂ ਜੋ ਚੀਜ਼ਾਂ ਨੂੰ ਉੱਥੇ ਪਹੁੰਚਾਉਣ ਦੀ ਪਰਵਾਹ ਕਰਦੇ ਹਨ ਜਿੱਥੇ ਉਹਨਾਂ ਨੂੰ ਜਾਣ ਦੀ ਲੋੜ ਹੈ। ਸਾਨੂੰ ਦੱਸੋ ਕਿ ਤੁਸੀਂ ਕਿਵੇਂ ਮਦਦ ਕਰੋਗੇ।",
+    ctaBtn: "ਫਿਰ ਵੀ ਆਪਣਾ ਸੀਵੀ ਭੇਜੋ",
   },
-];
+  fr: {
+    eyebrow: "Carrières chez Manvi",
+    headingPrefix: "Aidez-nous à réduire les ",
+    headingHighlight: "distances.",
+    subtitle:
+      "Derrière chaque colis se trouve une famille qui attend de l'autre côté du monde. Rejoignez l'équipe qui le fait arriver — aux États-Unis, au Royaume-Uni, au Canada, en Europe et en Australie.",
+    viewRoles: "Voir les postes ouverts",
+    emailCv: "Envoyer votre CV",
+    statsHeading: "Un réseau en pleine croissance.",
+    stat1Label: "Envois internationaux livrés",
+    stat2Label: "Clients satisfaits dans le monde",
+    stat3Label: "Taux de réussite des livraisons",
+    stat4Label: "Partenaires transporteurs mondiaux",
+    valuesEyebrow: "Pourquoi Manvi",
+    valuesHeading: "Un travail qui a vraiment du sens.",
+    valuesSubtitle:
+      "Nous sommes une entreprise de logistique fondée sur la précision et le soin. Voici ce que cela représente de l'intérieur.",
+    value1Title: "La précision avant tout",
+    value1Desc:
+      "Chaque envoi est une marque de confiance. Nous soignons les détails pour que rien ne se perde en transit.",
+    value2Title: "Exposition mondiale",
+    value2Desc:
+      "Travaillez à travers les frontières, les transporteurs et les fuseaux horaires avec des partenaires comme Aramex, Courier Please, DHL, DPD, FedEx et UPS.",
+    value3Title: "Les gens avant tout",
+    value3Desc:
+      "Clients et collègues. Nous sommes assez petits pour connaître votre nom et soutenir vos idées.",
+    value4Title: "Une vraie responsabilisation",
+    value4Desc:
+      "Une entreprise en pleine croissance où ce que vous construisez est expédié — et où vous voyez l'impact rapidement.",
+    rolesEyebrow: "Postes ouverts",
+    rolesHeading: "Trouvez votre place dans le réseau.",
+    rolesSubtitle:
+      "Tous les postes sont basés à notre bureau de Dwarka, New Delhi, sauf indication contraire. Cliquez sur un poste pour voir les détails et postuler.",
+    loadingText: "Chargement des postes disponibles...",
+    noJobsText: "Aucun poste ouvert pour le moment. Revenez bientôt !",
+    applyBtn: "Postuler à ce poste →",
+    hireEyebrow: "Comment nous recrutons",
+    hireHeading: "Un parcours clair pour nous rejoindre.",
+    hireSubtitle:
+      "Pas de zones d'ombre. Quatre étapes simples, et nous vous tenons informé à chacune d'elles.",
+    step1Title: "Postuler",
+    step1Desc:
+      "Envoyez votre CV pour un poste — ou spontanément si aucun ne correspond encore.",
+    step2Title: "Appel de présélection",
+    step2Desc:
+      "Une courte conversation pour comprendre votre expérience et ce que vous recherchez.",
+    step3Title: "Entretien",
+    step3Desc:
+      "Rencontrez l'équipe avec laquelle vous travailleriez et approfondissez le poste.",
+    step4Title: "Offre et intégration",
+    step4Desc:
+      "Nous officialisons le poste et vous préparons à être opérationnel dès le premier jour.",
+    ctaHeading: "Vous ne voyez pas votre poste ?",
+    ctaSubtitle:
+      "Nous sommes toujours à la recherche de personnes talentueuses qui se soucient de faire arriver les choses où elles doivent aller. Dites-nous comment vous pourriez aider.",
+    ctaBtn: "Envoyez votre CV quand même",
+  },
+  es: {
+    eyebrow: "Carreras en Manvi",
+    headingPrefix: "Ayúdenos a acortar las ",
+    headingHighlight: "distancias.",
+    subtitle:
+      "Detrás de cada paquete hay una familia esperando del otro lado del mundo. Únase al equipo que lo hace llegar — a través de EE. UU., Reino Unido, Canadá, Europa y Australia.",
+    viewRoles: "Ver puestos disponibles",
+    emailCv: "Enviar su CV",
+    statsHeading: "Una red en crecimiento.",
+    stat1Label: "Envíos internacionales entregados",
+    stat2Label: "Clientes satisfechos en todo el mundo",
+    stat3Label: "Tasa de éxito de entregas",
+    stat4Label: "Socios transportistas globales",
+    valuesEyebrow: "Por qué Manvi",
+    valuesHeading: "Un trabajo que realmente importa.",
+    valuesSubtitle:
+      "Somos una empresa de logística construida sobre la precisión y el cuidado. Así es como se siente por dentro.",
+    value1Title: "La precisión primero",
+    value1Desc:
+      "Cada envío es la confianza de alguien. Cuidamos los detalles para que nada se pierda en el camino.",
+    value2Title: "Exposición global",
+    value2Desc:
+      "Trabaje a través de fronteras, transportistas y zonas horarias con socios como Aramex, Courier Please, DHL, DPD, FedEx y UPS.",
+    value3Title: "Las personas primero",
+    value3Desc:
+      "Clientes y colegas por igual. Somos lo suficientemente pequeños para saber su nombre y respaldar sus ideas.",
+    value4Title: "Propiedad real",
+    value4Desc:
+      "Una empresa de rápido crecimiento donde lo que usted construye se envía — y ve el impacto rápidamente.",
+    rolesEyebrow: "Puestos disponibles",
+    rolesHeading: "Encuentre su lugar en la red.",
+    rolesSubtitle:
+      "Todos los puestos se basan en nuestra oficina de Dwarka, Nueva Delhi, salvo que se indique lo contrario. Toque un puesto para ver los detalles y postularse.",
+    loadingText: "Cargando puestos disponibles...",
+    noJobsText:
+      "No hay puestos disponibles por el momento. ¡Vuelva a consultar pronto!",
+    applyBtn: "Postularse a este puesto →",
+    hireEyebrow: "Cómo contratamos",
+    hireHeading: "Una ruta clara para unirse a nosotros.",
+    hireSubtitle:
+      "Sin agujeros negros. Cuatro pasos sencillos, y le mantenemos informado en cada uno.",
+    step1Title: "Postularse",
+    step1Desc:
+      "Envíe su CV para un puesto — o espontáneamente si ninguno se ajusta todavía.",
+    step2Title: "Llamada de selección",
+    step2Desc: "Una breve charla para entender su experiencia y lo que busca.",
+    step3Title: "Entrevista",
+    step3Desc:
+      "Conozca al equipo con el que trabajaría y profundice en el puesto.",
+    step4Title: "Oferta e incorporación",
+    step4Desc:
+      "Lo hacemos oficial y lo preparamos para empezar a trabajar desde el primer día.",
+    ctaHeading: "¿No ve su puesto?",
+    ctaSubtitle:
+      "Siempre estamos buscando personas capaces a las que les importe que las cosas lleguen a donde deben llegar. Cuéntenos cómo podría ayudar.",
+    ctaBtn: "Enviar su CV de todos modos",
+  },
+};
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
 export default function CareerPage(): React.ReactElement {
+  const { language } = useLanguage();
+  const t = careerTranslations[language] || careerTranslations.en;
+
   const [roles, setRoles] = useState<RoleItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedJob, setSelectedJob] = useState<RoleItem | null>(null);
   const [showApplyModal, setShowApplyModal] = useState(false);
   const [showSpeculativeModal, setShowSpeculativeModal] = useState(false);
+
+  const STATS: StatItem[] = [
+    { value: "1M+", label: t.stat1Label },
+    { value: "100K+", label: t.stat2Label },
+    { value: "99.97%", label: t.stat3Label },
+    { value: "5", label: t.stat4Label },
+  ];
+
+  const VALUES: ValueItem[] = [
+    { icon: "🎯", title: t.value1Title, description: t.value1Desc },
+    { icon: "🌍", title: t.value2Title, description: t.value2Desc },
+    { icon: "🤝", title: t.value3Title, description: t.value3Desc },
+    { icon: "🚀", title: t.value4Title, description: t.value4Desc },
+  ];
+
+  const STEPS: StepItem[] = [
+    { number: "01", title: t.step1Title, description: t.step1Desc },
+    { number: "02", title: t.step2Title, description: t.step2Desc },
+    { number: "03", title: t.step3Title, description: t.step3Desc },
+    { number: "04", title: t.step4Title, description: t.step4Desc },
+  ];
 
   useEffect(() => {
     const fetchJobs = async () => {
@@ -380,7 +677,6 @@ export default function CareerPage(): React.ReactElement {
         .stat-item .label {
           color: #c4cfd7;
           font-size: 0.95rem;
-          
         }
 
         @media (max-width: 860px) {
@@ -700,29 +996,26 @@ export default function CareerPage(): React.ReactElement {
                   <span className="line"></span>
                   <span className="plane">✈</span>
                 </div>
-                <span className="eyebrow">Careers at Manvi</span>
+                <span className="eyebrow">{t.eyebrow}</span>
                 <h1>
-                  Help Us Bridge <span className="highlight">Distances.</span>
+                  {t.headingPrefix}
+                  <span className="highlight">{t.headingHighlight}</span>
                 </h1>
-                <p className="subtitle">
-                  Behind every parcel is a family waiting on the other side of
-                  the world. Join the team that gets it there — across the USA,
-                  UK, Canada, Europe and Australia.
-                </p>
+                <p className="subtitle">{t.subtitle}</p>
                 <div className="hero-buttons">
                   <a href="#openings" className="btn btn-primary">
-                    View Open Roles
+                    {t.viewRoles}
                   </a>
                   <button
                     onClick={handleSpeculativeApply}
                     className="btn btn-ghost"
                   >
-                    Email Your CV
+                    {t.emailCv}
                   </button>
                 </div>
               </div>
               <aside className="hero-stats">
-                <h3>A growing network.</h3>
+                <h3>{t.statsHeading}</h3>
                 {STATS.map((stat, index) => (
                   <div key={index} className="stat-item">
                     <span className="value">{stat.value}</span>
@@ -743,12 +1036,9 @@ export default function CareerPage(): React.ReactElement {
                 <span className="line"></span>
                 <span className="plane">✈</span>
               </div>
-              <span className="eyebrow">Why Manvi</span>
-              <h2>Work That Actually Moves.</h2>
-              <p>
-                We're a logistics company built on precision and care. Here's
-                what it feels like on the inside.
-              </p>
+              <span className="eyebrow">{t.valuesEyebrow}</span>
+              <h2>{t.valuesHeading}</h2>
+              <p>{t.valuesSubtitle}</p>
             </div>
             <div className="values-grid">
               {VALUES.map((value, index) => (
@@ -772,21 +1062,16 @@ export default function CareerPage(): React.ReactElement {
                 <span className="plane">✈</span>
               </div>
               <span className="eyebrow" style={{ color: "var(--accent)" }}>
-                Open positions
+                {t.rolesEyebrow}
               </span>
-              <h2>Find Your Place In The Network.</h2>
-              <p>
-                All roles are based at our Dwarka, New Delhi office unless
-                noted. Tap a role to see the details and apply.
-              </p>
+              <h2>{t.rolesHeading}</h2>
+              <p>{t.rolesSubtitle}</p>
             </div>
 
             {loading ? (
-              <div className="loading-jobs">Loading available positions...</div>
+              <div className="loading-jobs">{t.loadingText}</div>
             ) : roles.length === 0 ? (
-              <div className="no-jobs">
-                No open positions at the moment. Check back soon!
-              </div>
+              <div className="no-jobs">{t.noJobsText}</div>
             ) : (
               roles.map((role) => (
                 <details key={role._id} className="role-accordion reveal">
@@ -809,7 +1094,7 @@ export default function CareerPage(): React.ReactElement {
                       onClick={() => handleApply(role)}
                       className="apply-btn"
                     >
-                      Apply for this role →
+                      {t.applyBtn}
                     </button>
                   </div>
                 </details>
@@ -827,12 +1112,9 @@ export default function CareerPage(): React.ReactElement {
                 <span className="line"></span>
                 <span className="plane">✈</span>
               </div>
-              <span className="eyebrow">How we hire</span>
-              <h2>A Clear Route To Joining Us.</h2>
-              <p>
-                No black holes. Four simple steps, and we keep you posted at
-                each one.
-              </p>
+              <span className="eyebrow">{t.hireEyebrow}</span>
+              <h2>{t.hireHeading}</h2>
+              <p>{t.hireSubtitle}</p>
             </div>
             <div className="steps-grid">
               {STEPS.map((step, index) => (
@@ -850,16 +1132,13 @@ export default function CareerPage(): React.ReactElement {
         <section className="section" style={{ paddingTop: 0 }}>
           <div className="wrap">
             <div className="cta-band reveal">
-              <h2>Don't See Your Role?</h2>
-              <p>
-                We're always looking for sharp people who care about getting
-                things where they need to be. Tell us how you'd help.
-              </p>
+              <h2>{t.ctaHeading}</h2>
+              <p>{t.ctaSubtitle}</p>
               <button
                 onClick={handleSpeculativeApply}
                 className="btn btn-primary"
               >
-                Send Your CV Anyway
+                {t.ctaBtn}
               </button>
             </div>
           </div>
