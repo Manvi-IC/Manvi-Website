@@ -572,7 +572,7 @@ const translations: Record<Language, Translations> = {
     claim_tab1_d3_num: "03",
     claim_tab1_d3_title: "Third-Party Dependency",
     claim_tab1_d3_desc:
-      'As an international logistics provider, Manvi International\'s claim resolution is strictly contingent upon the official investigation reports and confirmation from our global courier partners, including but not limited to <strong class="font-extrabold text-[#1c1f2e]">Aramex, Courier Please, DHL, DPD, FedEx and UPS',
+      'As an international logistics provider, Manvi International\'s claim resolution is strictly contingent upon the official investigation reports and confirmation from our global courier partners, including but not limited to <strong class="font-extrabold text-[#1c1f2e]">Aramex, Courier Please, DHL, DPD, FedEx and UPS</strong>',
     claim_tab2_title: "Return To Origin (RTO) Shipments",
     claim_tab2_subtext:
       "Returned shipments for non-delivery, incorrect addresses, or refusal qualify for refunds.",
@@ -581,7 +581,7 @@ const translations: Record<Language, Translations> = {
     claim_tab2_d1_num: "01",
     claim_tab2_d1_title: "Processing Timeline",
     claim_tab2_d1_desc:
-      'Refunds for RTO shipments will be initiated within <strong class="font-extrabold text-[#1c1f2e]">2 to 3 working days',
+      'Refunds for RTO shipments will be initiated within <strong class="font-extrabold text-[#1c1f2e]">2 to 3 working days</strong>',
     claim_tab2_d2_num: "02",
     claim_tab2_d2_title: "Verification Requirement",
     claim_tab2_d2_desc:
@@ -987,7 +987,7 @@ const translations: Record<Language, Translations> = {
     claim_tab1_d3_num: "03",
     claim_tab1_d3_title: "तृतीय-पक्ष निर्भरता",
     claim_tab1_d3_desc:
-      'एक अंतर्राष्ट्रीय लॉजिस्टिक्स प्रदाता के रूप में, मानवी इंटरनेशनल का दावा समाधान हमारे वैश्विक कूरियर साझेदारों की आधिकारिक जांच रिपोर्ट पर निर्भर है, जिसमें <strong class="font-extrabold text-[#1c1f2e]">DHL, FedEx और UPS शामिल हैं।',
+      'एक अंतर्राष्ट्रीय लॉजिस्टिक्स प्रदाता के रूप में, मानवी इंटरनेशनल का दावा समाधान हमारे वैश्विक कूरियर साझेदारों की आधिकारिक जांच रिपोर्ट पर निर्भर है, जिसमें <strong class="font-extrabold text-[#1c1f2e]">DHL, FedEx और UPS शामिल हैं।</strong>',
     claim_tab2_title: "मूल स्थान पर वापसी (RTO) शिपमेंट",
     claim_tab2_subtext:
       "गैर-डिलीवरी, गलत पते या इनकार के लिए वापस किए गए शिपमेंट धनवापसी के योग्य हैं।",
@@ -996,7 +996,7 @@ const translations: Record<Language, Translations> = {
     claim_tab2_d1_num: "01",
     claim_tab2_d1_title: "प्रोसेसिंग समयसीमा",
     claim_tab2_d1_desc:
-      'RTO शिपमेंट के लिए धनवापसी <strong class="font-extrabold text-[#1c1f2e]">2 से 3 कार्यदिवसों के भीतर शुरू की जाएगी।',
+      'RTO शिपमेंट के लिए धनवापसी <strong class="font-extrabold text-[#1c1f2e]">2 से 3 कार्यदिवसों के भीतर शुरू की जाएगी।</strong>',
     claim_tab2_d2_num: "02",
     claim_tab2_d2_title: "सत्यापन आवश्यकता",
     claim_tab2_d2_desc:
@@ -1402,7 +1402,7 @@ const translations: Record<Language, Translations> = {
     claim_tab1_d3_num: "03",
     claim_tab1_d3_title: "ਤੀਜੀ-ਧਿਰ ਨਿਰਭਰਤਾ",
     claim_tab1_d3_desc:
-      'ਇੱਕ ਅੰਤਰਰਾਸ਼ਟਰੀ ਲੌਜਿਸਟਿਕਸ ਪ੍ਰਦਾਤਾ ਵਜੋਂ, ਮਾਨਵੀ ਇੰਟਰਨੈਸ਼ਨਲ ਦਾ ਦਾਅਵਾ ਹੱਲ ਸਾਡੇ ਵਿਸ਼ਵ ਕੂਰੀਅਰ ਸਾਂਝੇਦਾਰਾਂ ਤੋਂ ਅਧਿਕਾਰਤ ਜਾਂਚ ਰਿਪੋਰਟਾਂ \'ਤੇ ਨਿਰਭਰ ਕਰਦਾ ਹੈ, ਜਿਸ ਵਿੱਚ <strong class="font-extrabold text-[#1c1f2e]">DHL, FedEx ਅਤੇ UPS ਸ਼ਾਮਲ ਹਨ।',
+      'ਇੱਕ ਅੰਤਰਰਾਸ਼ਟਰੀ ਲੌਜਿਸਟਿਕਸ ਪ੍ਰਦਾਤਾ ਵਜੋਂ, ਮਾਨਵੀ ਇੰਟਰਨੈਸ਼ਨਲ ਦਾ ਦਾਅਵਾ ਹੱਲ ਸਾਡੇ ਵਿਸ਼ਵ ਕੂਰੀਅਰ ਸਾਂਝੇਦਾਰਾਂ ਤੋਂ ਅਧਿਕਾਰਤ ਜਾਂਚ ਰਿਪੋਰਟਾਂ \'ਤੇ ਨਿਰਭਰ ਕਰਦਾ ਹੈ, ਜਿਸ ਵਿੱਚ <strong class="font-extrabold text-[#1c1f2e]">DHL, FedEx ਅਤੇ UPS ਸ਼ਾਮਲ ਹਨ।</strong>',
     claim_tab2_title: "ਮੂਲ ਸਥਾਨ ਵਾਪਸੀ (RTO) ਸ਼ਿਪਮੈਂਟ",
     claim_tab2_subtext:
       "ਗੈਰ-ਡਿਲੀਵਰੀ, ਗਲਤ ਪਤੇ ਜਾਂ ਇਨਕਾਰ ਲਈ ਵਾਪਸ ਕੀਤੇ ਸ਼ਿਪਮੈਂਟ ਵਾਪਸੀ ਦੇ ਯੋਗ ਹਨ।",
@@ -1411,7 +1411,7 @@ const translations: Record<Language, Translations> = {
     claim_tab2_d1_num: "01",
     claim_tab2_d1_title: "ਪ੍ਰਕਿਰਿਆ ਸਮਾਂ-ਸੀਮਾ",
     claim_tab2_d1_desc:
-      'RTO ਸ਼ਿਪਮੈਂਟਾਂ ਲਈ ਵਾਪਸੀ <strong class="font-extrabold text-[#1c1f2e]">2 ਤੋਂ 3 ਕਾਰੋਬਾਰੀ ਦਿਨਾਂ ਵਿੱਚ ਸ਼ੁਰੂ ਕੀਤੀ ਜਾਵੇਗੀ।',
+      'RTO ਸ਼ਿਪਮੈਂਟਾਂ ਲਈ ਵਾਪਸੀ <strong class="font-extrabold text-[#1c1f2e]">2 ਤੋਂ 3 ਕਾਰੋਬਾਰੀ ਦਿਨਾਂ ਵਿੱਚ ਸ਼ੁਰੂ ਕੀਤੀ ਜਾਵੇਗੀ।</strong>',
     claim_tab2_d2_num: "02",
     claim_tab2_d2_title: "ਤਸਦੀਕ ਲੋੜ",
     claim_tab2_d2_desc:
@@ -1822,7 +1822,7 @@ const translations: Record<Language, Translations> = {
     claim_tab1_d3_num: "03",
     claim_tab1_d3_title: "Dépendance tierce",
     claim_tab1_d3_desc:
-      'En tant que prestataire logistique international, la résolution des réclamations de Manvi International dépend des rapports d\'enquête de nos partenaires, notamment <strong class="font-extrabold text-[#1c1f2e]">DHL, FedEx et UPS.',
+      'En tant que prestataire logistique international, la résolution des réclamations de Manvi International dépend des rapports d\'enquête de nos partenaires, notamment <strong class="font-extrabold text-[#1c1f2e]">DHL, FedEx et UPS.</strong>',
     claim_tab2_title: "Retour à l'origine (RTO)",
     claim_tab2_subtext:
       "Les envois retournés pour non-livraison, adresse incorrecte ou refus sont éligibles au remboursement.",
@@ -1831,7 +1831,7 @@ const translations: Record<Language, Translations> = {
     claim_tab2_d1_num: "01",
     claim_tab2_d1_title: "Délai de traitement",
     claim_tab2_d1_desc:
-      'Les remboursements pour les envois RTO seront initiés dans <strong class="font-extrabold text-[#1c1f2e]">2 à 3 jours ouvrables.',
+      'Les remboursements pour les envois RTO seront initiés dans <strong class="font-extrabold text-[#1c1f2e]">2 à 3 jours ouvrables.</strong>',
     claim_tab2_d2_num: "02",
     claim_tab2_d2_title: "Exigence de vérification",
     claim_tab2_d2_desc:
@@ -2241,7 +2241,7 @@ const translations: Record<Language, Translations> = {
     claim_tab1_d3_num: "03",
     claim_tab1_d3_title: "Dependencia de terceros",
     claim_tab1_d3_desc:
-      'Como proveedor logístico internacional, la resolución de reclamaciones de Manvi International depende de los informes de investigación de nuestros socios, incluyendo <strong class="font-extrabold text-[#1c1f2e]">DHL, FedEx y UPS.',
+      'Como proveedor logístico internacional, la resolución de reclamaciones de Manvi International depende de los informes de investigación de nuestros socios, incluyendo <strong class="font-extrabold text-[#1c1f2e]">DHL, FedEx y UPS.</strong>',
     claim_tab2_title: "Envíos retornados al origen (RTO)",
     claim_tab2_subtext:
       "Los envíos devueltos por no entrega, dirección incorrecta o rechazo califican para reembolso.",
@@ -2250,7 +2250,7 @@ const translations: Record<Language, Translations> = {
     claim_tab2_d1_num: "01",
     claim_tab2_d1_title: "Plazo de procesamiento",
     claim_tab2_d1_desc:
-      'Los reembolsos para envíos RTO se iniciarán en <strong class="font-extrabold text-[#1c1f2e]">2 a 3 días hábiles.',
+      'Los reembolsos para envíos RTO se iniciarán en <strong class="font-extrabold text-[#1c1f2e]">2 a 3 días hábiles.</strong>',
     claim_tab2_d2_num: "02",
     claim_tab2_d2_title: "Requisito de verificación",
     claim_tab2_d2_desc:

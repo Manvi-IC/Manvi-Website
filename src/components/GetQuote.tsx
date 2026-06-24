@@ -1,6 +1,6 @@
 // app/get-quote/page.tsx
 "use client";
-import { useState, FormEvent } from "react";
+import { useState, useEffect, FormEvent } from "react";
 import { useLanguage } from "@/context/LanguageContext";
 import {
   ArrowUpRight,
@@ -144,6 +144,26 @@ const NETWORK_COLORS: Record<string, string> = {
   FED: "bg-blue-100 text-blue-700",
 };
 
+// Currency config
+const SUPPORTED_CURRENCIES = [
+  "INR",
+  "CAD",
+  "AUD",
+  "USD",
+  "GBP",
+  "EUR",
+] as const;
+type SupportedCurrency = (typeof SUPPORTED_CURRENCIES)[number];
+
+const CURRENCY_SYMBOLS: Record<SupportedCurrency, string> = {
+  INR: "₹",
+  CAD: "CA$",
+  AUD: "A$",
+  USD: "US$",
+  GBP: "£",
+  EUR: "€",
+};
+
 interface Quote {
   service: string;
   network: string;
@@ -184,6 +204,7 @@ function ApplyModal({
   breadth,
   height,
   destObj,
+  convertPrice,
 }: {
   open: boolean;
   onClose: () => void;
@@ -198,6 +219,7 @@ function ApplyModal({
   breadth: string;
   height: string;
   destObj: (typeof DESTINATIONS)[0] | undefined;
+  convertPrice: (inrAmount: number) => string;
 }) {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
@@ -332,7 +354,7 @@ function ApplyModal({
                 </div>
                 <div className="text-right shrink-0">
                   <p className="text-xl font-extrabold text-[#f27a1a]">
-                    ₹{fmtPrice(quote.totalPrice)}
+                    {convertPrice(quote.totalPrice)}
                   </p>
                   <p className="text-[10px] text-gray-400">
                     {result.chargeableWt} kg chargeable
@@ -431,11 +453,13 @@ function ServiceCard({
   selected,
   onSelect,
   t,
+  convertPrice,
 }: {
   quote: Quote;
   selected: boolean;
   onSelect: (val: string) => void;
   t: any;
+  convertPrice: (inrAmount: number) => string;
 }) {
   const networkColor =
     NETWORK_COLORS[quote.network] ?? "bg-gray-100 text-gray-700";
@@ -507,7 +531,7 @@ function ServiceCard({
 
         <div className="text-right shrink-0">
           <p className="text-2xl font-extrabold text-[#f27a1a]">
-            ₹{fmtPrice(quote.totalPrice)}
+            {convertPrice(quote.totalPrice)}
           </p>
           <p className="text-[10px] text-gray-400 mt-0.5">{t.form_gst_inc}</p>
         </div>
@@ -532,6 +556,32 @@ export default function GetQuote() {
   const [selectedService, setSelectedService] = useState<string | null>(null);
   const [openFaq, setOpenFaq] = useState<string | null>("01");
   const [applyModalOpen, setApplyModalOpen] = useState(false);
+
+  // ── Currency converter state ──────────────────────────────────────────────
+  const [currency, setCurrency] = useState<SupportedCurrency>("INR");
+  const [rates, setRates] = useState<Record<string, number>>({ INR: 1 });
+  const [ratesLoading, setRatesLoading] = useState(false);
+
+  useEffect(() => {
+    if (currency === "INR") return;
+    setRatesLoading(true);
+    fetch("https://api.exchangerate-api.com/v4/latest/INR")
+      .then((r) => r.json())
+      .then((d) => setRates(d.rates ?? {}))
+      .catch(() => {})
+      .finally(() => setRatesLoading(false));
+  }, [currency]);
+
+  // ── Price conversion helper ───────────────────────────────────────────────
+  function convertPrice(inrAmount: number): string {
+    if (currency === "INR") return `₹${fmtPrice(inrAmount)}`;
+    const converted = inrAmount * (rates[currency] ?? 1);
+    const sym = CURRENCY_SYMBOLS[currency];
+    return `${sym}${converted.toLocaleString("en-IN", {
+      maximumFractionDigits: 2,
+      minimumFractionDigits: 2,
+    })}`;
+  }
 
   const destObj = DESTINATIONS.find((d) => d.value === destination);
   const requiresZip = destObj?.requiresZip ?? false;
@@ -623,6 +673,7 @@ export default function GetQuote() {
         breadth={breadth}
         height={height}
         destObj={destObj}
+        convertPrice={convertPrice}
       />
 
       {/* Banner Section */}
@@ -647,7 +698,8 @@ export default function GetQuote() {
       </section>
 
       <main className="flex-grow max-w-425 w-full mx-auto px-6 py-12">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        {/* ── Two-column grid — items-stretch makes both panels equal height ── */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
           {/* LEFT: Quote form */}
           <div className="lg:col-span-5 bg-[#eef0f5] rounded-4xl p-8 lg:p-10 shadow-sm border border-gray-200/50 flex flex-col">
             <div className="flex flex-col gap-5">
@@ -814,10 +866,10 @@ export default function GetQuote() {
             </form>
           </div>
 
-          {/* RIGHT: Results */}
-          <div className="lg:col-span-7 flex flex-col gap-6">
+          {/* RIGHT: Results — h-full ensures it matches left panel height */}
+          <div className="lg:col-span-7 flex flex-col gap-6 h-full">
             {!result && !loading && (
-              <div className="bg-[#eef0f5] rounded-4xl p-8 lg:p-14 flex flex-col items-center justify-center text-center gap-4 min-h-80 shadow-sm border border-gray-200/50">
+              <div className="bg-[#eef0f5] rounded-4xl p-8 lg:p-14 flex flex-col items-center justify-center text-center gap-4 flex-1 shadow-sm border border-gray-200/50">
                 <PackageCheck size={56} className="text-gray-300" />
                 <div>
                   <p className="text-[#1c1f2e] font-bold text-lg">
@@ -831,7 +883,7 @@ export default function GetQuote() {
             )}
 
             {loading && (
-              <div className="bg-[#eef0f5] rounded-4xl p-8 lg:p-14 flex flex-col items-center justify-center gap-4 min-h-80 shadow-sm border border-gray-200/50">
+              <div className="bg-[#eef0f5] rounded-4xl p-8 lg:p-14 flex flex-col items-center justify-center gap-4 flex-1 shadow-sm border border-gray-200/50">
                 <Loader2 size={44} className="text-[#f27a1a] animate-spin" />
                 <p className="text-gray-600 text-sm font-medium">
                   {t.quote_loading_msg}
@@ -882,6 +934,36 @@ export default function GetQuote() {
                   </div>
                 </div>
 
+                {/* ── Currency Converter ─────────────────────────────────────── */}
+                <div className="flex items-center justify-between bg-white border border-gray-200 rounded-2xl px-5 py-3 shadow-sm gap-3 flex-wrap">
+                  <div className="flex items-center gap-2">
+                    <span className="text-[11px] font-bold text-gray-400 uppercase tracking-wider whitespace-nowrap">
+                      Show prices in
+                    </span>
+                    {ratesLoading && (
+                      <Loader2
+                        size={13}
+                        className="animate-spin text-[#f27a1a]"
+                      />
+                    )}
+                  </div>
+                  <div className="flex gap-2 flex-wrap justify-end">
+                    {SUPPORTED_CURRENCIES.map((c) => (
+                      <button
+                        key={c}
+                        onClick={() => setCurrency(c)}
+                        className={`text-[11px] font-bold px-3 py-1.5 rounded-full transition-all ${
+                          currency === c
+                            ? "bg-[#f27a1a] text-white"
+                            : "bg-gray-100 text-gray-600 hover:bg-orange-50 hover:text-[#f27a1a]"
+                        }`}
+                      >
+                        {c}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
                 {/* Service Cards */}
                 <div className="flex flex-col gap-3">
                   {result.quotes.map((quote) => {
@@ -893,6 +975,7 @@ export default function GetQuote() {
                         selected={selectedService === key}
                         onSelect={setSelectedService}
                         t={t}
+                        convertPrice={convertPrice}
                       />
                     );
                   })}
@@ -909,7 +992,7 @@ export default function GetQuote() {
                         {selectedQuote.service}
                       </p>
                       <p className="text-[#f27a1a] font-extrabold text-lg mt-0.5">
-                        ₹{fmtPrice(selectedQuote.totalPrice)}
+                        {convertPrice(selectedQuote.totalPrice)}
                       </p>
                     </div>
                     <button
