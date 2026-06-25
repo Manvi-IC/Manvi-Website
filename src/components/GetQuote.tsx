@@ -647,9 +647,9 @@ export default function GetQuote() {
       </section>
 
       <main className="flex-grow max-w-425 w-full mx-auto px-6 py-12">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
           {/* LEFT: Quote form */}
-          <div className="lg:col-span-5 bg-[#eef0f5] rounded-4xl p-8 lg:p-10 shadow-sm border border-gray-200/50 flex flex-col">
+          <div className="lg:col-span-5 bg-[#eef0f5] rounded-4xl p-8 lg:p-10 shadow-sm border border-gray-200/50 flex flex-col h-full">
             <div className="flex flex-col gap-5">
               <div className="border border-orange-300/80 text-[#f27a1a] bg-orange-50/50 rounded-full px-4 py-1 text-[11px] font-extrabold w-fit tracking-wide">
                 {t.quote_instant_est}
@@ -815,9 +815,9 @@ export default function GetQuote() {
           </div>
 
           {/* RIGHT: Results */}
-          <div className="lg:col-span-7 flex flex-col gap-6">
+          <div className="lg:col-span-7 flex flex-col gap-6 h-full">
             {!result && !loading && (
-              <div className="bg-[#eef0f5] rounded-4xl p-8 lg:p-14 flex flex-col items-center justify-center text-center gap-4 min-h-80 shadow-sm border border-gray-200/50">
+              <div className="bg-[#eef0f5] rounded-4xl p-8 lg:p-14 flex flex-col items-center justify-center text-center gap-4 h-full min-h-80 shadow-sm border border-gray-200/50">
                 <PackageCheck size={56} className="text-gray-300" />
                 <div>
                   <p className="text-[#1c1f2e] font-bold text-lg">
@@ -831,7 +831,7 @@ export default function GetQuote() {
             )}
 
             {loading && (
-              <div className="bg-[#eef0f5] rounded-4xl p-8 lg:p-14 flex flex-col items-center justify-center gap-4 min-h-80 shadow-sm border border-gray-200/50">
+              <div className="bg-[#eef0f5] rounded-4xl p-8 lg:p-14 flex flex-col items-center justify-center gap-4 h-full min-h-80 shadow-sm border border-gray-200/50">
                 <Loader2 size={44} className="text-[#f27a1a] animate-spin" />
                 <p className="text-gray-600 text-sm font-medium">
                   {t.quote_loading_msg}
