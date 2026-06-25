@@ -10,7 +10,7 @@ export async function GET(request: Request) {
 
   try {
     const res = await fetch(`http://api.manvicourier.com/api/gettracking/${awb}`, {
-        cache: 'no-store'
+      cache: 'no-store'
     });
     const data = await res.json();
     console.log(`[API Proxy] Response for AWB ${awb}:`, JSON.stringify(data, null, 2));
