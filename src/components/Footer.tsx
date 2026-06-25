@@ -169,12 +169,12 @@ export default function Footer() {
 
               {/* Right Column */}
               <div className="flex flex-col gap-3">
-                <Link
+                {/* <Link
                   href="/pickup-availability"
                   className="hover:text-white transition-colors"
                 >
                   {t.footer_pickup_availability}
-                </Link>
+                </Link> */}
                 <Link
                   href="/campaign"
                   className="hover:text-white transition-colors font-bold"

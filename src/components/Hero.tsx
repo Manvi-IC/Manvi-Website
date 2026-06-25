@@ -607,7 +607,7 @@ export default function Hero() {
       <section className="max-w-425 w-full mx-auto px-4 sm:px-6 py-6 font-sans">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
           {/* ── LEFT: Orange Form Card ── */}
-          <div className="bg-[#f27a1a] rounded-[28px] p-6 sm:p-8 lg:p-10 flex flex-col gap-6 shadow-xl">
+          <div className="bg-[#f27a1a] rounded-[28px] p-5 sm:p-8 lg:p-10 flex flex-col gap-6 shadow-xl">
             <div className="flex flex-col gap-4">
               <h1 className="text-[28px] sm:text-[36px] md:text-[42px] font-extrabold text-white leading-[1.1] tracking-tight uppercase">
                 {t.hero_headline}
@@ -695,7 +695,7 @@ export default function Hero() {
                 <span className="text-white/80 text-[11px] font-semibold tracking-wide uppercase pl-1">
                   {t.form_vol_wt_dim}
                 </span>
-                <div className="grid grid-cols-3 gap-2">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                   {[
                     { val: length, setter: setLength, label: t.form_length },
                     { val: breadth, setter: setBreadth, label: t.form_breadth },
