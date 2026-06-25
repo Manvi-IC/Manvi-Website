@@ -257,7 +257,7 @@ export default function Footer() {
 
         {/* Bottom Bar */}
         <div className="border-t border-white/20 pt-6 flex flex-col sm:flex-row items-center justify-center gap-8 text-[13px] text-white/80">
-          <span>&copy; 2024</span>
+          <span>&copy; 2026</span>
           <span className="font-semibold">Manvi International Courier</span>
           <span>{t.footer_rights}</span>
         </div>

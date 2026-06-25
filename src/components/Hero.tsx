@@ -21,27 +21,28 @@ import Link from "next/link";
 import Image from "next/image";
 import { useLanguage } from "@/context/LanguageContext";
 
-/* ── Carousel Slides ─────────────────────────────────────────────────────── */
-const SLIDES = [
+/* ── Carousel Slides Configuration ── */
+// Get slide data based on language
+const getSlides = (t: any) => [
   {
     src: "/hero-right.jpg",
-    tagline: "Your trusted courier,",
-    highlight: "across every mile.",
+    tagline: t.hero_slide1_tagline || "Your trusted courier,",
+    highlight: t.hero_slide1_highlight || "across every mile.",
   },
   {
     src: "/hero-right-2.jpeg",
-    tagline: "Distance not Divide,",
-    highlight: "with Manvi.",
+    tagline: t.hero_slide2_tagline || "Distance not Divide,",
+    highlight: t.hero_slide2_highlight || "with Manvi.",
   },
   {
     src: "/hero-right-3.jpeg",
-    tagline: "Miles don't matter",
-    highlight: "at Manvi.",
+    tagline: t.hero_slide3_tagline || "Miles don't matter",
+    highlight: t.hero_slide3_highlight || "at Manvi.",
   },
   {
     src: "/hero-right-4.jpeg",
-    tagline: "Shipping love,",
-    highlight: "packed in a box.",
+    tagline: t.hero_slide4_tagline || "Shipping love,",
+    highlight: t.hero_slide4_highlight || "packed in a box.",
   },
 ];
 
@@ -281,11 +282,7 @@ function QuotesModal({
               {zoningCountry && ` — ${zoningCountry}`}
             </p>
             <p className="text-zinc-400 text-[12px] mt-0.5">
-              {quotes.length} service{quotes.length !== 1 ? "s" : ""} found ·
-              Chargeable:{" "}
-              <span className="text-[#e77419] font-semibold">
-                {quotes[0]?.chargeableWt} kg
-              </span>
+              {quotes.length} {t.form_services_found_text}
             </p>
           </div>
           <button
@@ -457,9 +454,7 @@ function QuotesModal({
         </div>
 
         <div className="px-5 py-3 border-t border-white/10 text-center">
-          <p className="text-[11px] text-zinc-500">
-            Final rates may vary · Call +91 70 70 50 60 70 to confirm
-          </p>
+          <p className="text-[11px] text-zinc-500">{t.form_final_rates_msg}</p>
         </div>
       </div>
     </div>
@@ -469,6 +464,9 @@ function QuotesModal({
 /* ── Hero ─────────────────────────────────────────────────────────────────── */
 export default function Hero() {
   const { t } = useLanguage();
+
+  // Get translated slides
+  const SLIDES = getSlides(t);
 
   /* Form state */
   const [destination, setDestination] = useState("");
@@ -522,11 +520,11 @@ export default function Hero() {
 
   const next = useCallback(
     () => goTo((current + 1) % SLIDES.length, "next"),
-    [current, goTo],
+    [current, goTo, SLIDES.length],
   );
   const prev = useCallback(
     () => goTo((current - 1 + SLIDES.length) % SLIDES.length, "prev"),
-    [current, goTo],
+    [current, goTo, SLIDES.length],
   );
 
   useEffect(() => {
@@ -534,6 +532,11 @@ export default function Hero() {
     const id = setInterval(next, 4500);
     return () => clearInterval(id);
   }, [next, paused]);
+
+  // Reset carousel when language changes
+  useEffect(() => {
+    setCurrent(0);
+  }, [t]);
 
   /* Quote fetch */
   const handleSubmit = async (e: React.FormEvent) => {
@@ -746,7 +749,7 @@ export default function Hero() {
             {/* Slides */}
             {SLIDES.map((s, i) => (
               <div
-                key={s.src}
+                key={i}
                 className={`absolute inset-0 transition-opacity duration-500 ${
                   i === current ? "opacity-100 z-10" : "opacity-0 z-0"
                 }`}
@@ -786,14 +789,18 @@ export default function Hero() {
                 style={{ animation: "fadeSlideUp 0.55s ease both" }}
               >
                 <p className="text-[28px] sm:text-[34px] md:text-[38px] font-extrabold text-white leading-[1.15] tracking-tight drop-shadow-lg">
-                  {slide.tagline.split("\n").map((line, i) => (
-                    <span key={i}>
-                      {line}
-                      <br />
+                  {SLIDES[current].tagline
+                    .split("\n")
+                    .map((line: string, i: number) => (
+                      <span key={i}>
+                        {line}
+                        <br />
+                      </span>
+                    ))}
+                  {SLIDES[current].highlight && (
+                    <span className="text-[#f27a1a]">
+                      {SLIDES[current].highlight}
                     </span>
-                  ))}
-                  {slide.highlight && (
-                    <span className="text-[#f27a1a]">{slide.highlight}</span>
                   )}
                 </p>
               </div>
