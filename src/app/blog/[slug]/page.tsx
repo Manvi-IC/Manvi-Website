@@ -603,6 +603,14 @@ export default function BlogPostPage({ params }: PageProps) {
           padding-left: 24px;
         }
 
+        ul.article-list {
+          list-style-type: disc;
+        }
+
+        ol.article-list {
+          list-style-type: decimal;
+        }
+
         .article-list-item {
           margin-bottom: 12px;
         }
