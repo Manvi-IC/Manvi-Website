@@ -9,7 +9,8 @@ import {
   Settings,
   Briefcase,
   FileText,
-  MessageSquareQuote, // ← new icon for Quote Enquiries
+  MessageSquareQuote,
+  MapPinned, // ← new icon for Quote Enquiries
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -137,6 +138,11 @@ export default function AdminLayout({
             "/admin/settings",
             <Settings size={20} />,
             "Profile Settings",
+          )}
+          {navLink(
+            "/admin/service-areas",
+            <MapPinned size={20} />,
+            "Pickup & Dropoff Areas",
           )}
         </nav>
         <div className="p-4 border-t border-slate-800">
