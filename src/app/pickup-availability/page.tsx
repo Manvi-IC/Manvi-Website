@@ -3,26 +3,46 @@
 import { useState } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import Link from "next/link";
-
-import { checkZipcodeAction } from "../zipcode/actions";
 import { useLanguage, Language } from "@/context/LanguageContext";
 import {
   MapPin,
   ArrowUpRight,
   CheckCircle2,
   AlertTriangle,
+  Truck,
+  Package,
+  Clock,
+  CalendarDays,
+  Loader2,
 } from "lucide-react";
 
-interface ZipItem {
-  zip: string;
-  days: string;
-  highlighted?: boolean;
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+
+interface ServiceArea {
+  _id: string;
+  city: string;
+  state: string;
+  country: string;
+  pickupAvailable: boolean;
+  dropoffAvailable: boolean;
+  pickupDays: string;
+  dropoffDays: string;
+  pickupTimeSlot: string;
+  dropoffTimeSlot: string;
+  notes: string;
 }
 
 interface CityGroup {
   city: string;
-  items: ZipItem[];
+  state: string;
+  pickupAvailable: boolean;
+  dropoffAvailable: boolean;
+  pickupDays: string;
+  dropoffDays: string;
+  pickupTimeSlot: string;
+  dropoffTimeSlot: string;
+  notes: string;
+  highlighted?: boolean;
 }
 
 const localTranslations: Record<
@@ -39,90 +59,107 @@ const localTranslations: Record<
     need_assistance: string;
     assistance_subtitle: string;
     contact_btn: string;
-    business_days: string;
+    pickup: string;
+    dropoff: string;
+    available: string;
+    not_available: string;
   }
 > = {
   en: {
     banner_title: "Pickup Availability",
     card_title: "Check pickup\navailability in your destination",
     card_subtitle:
-      "Enter your international zip code or indian pin code below to instantly check if we pickup from your location.",
-    input_placeholder: "Enter ZIP Code (Intl) / PIN Code (India)",
+      "Enter your city or state below to instantly check if we offer pickup or dropoff from your location.",
+    input_placeholder: "Enter city or state name…",
     btn_check: "Check Availability",
-    success_msg: "Great news! We pickup from your area",
+    success_msg: "Great news! We service your area",
     fail_msg: "We're Not There Yet",
     fail_submsg: "But Don't Worry... We're Expanding Soon!",
-    need_assistance: "Need Assistance With\nYour ZIP Code?",
+    need_assistance: "Need Assistance With\nYour Location?",
     assistance_subtitle:
-      "Not Sure About Your ZIP/PIN Code? Enter Your City Name Instead.",
+      "Not sure about your city or area? Contact our support team and we'll help you out.",
     contact_btn: "Contact Support",
-    business_days: "Business Days",
+    pickup: "Pickup",
+    dropoff: "Dropoff",
+    available: "Available",
+    not_available: "Not Available",
   },
   hi: {
     banner_title: "पिकअप उपलब्धता",
     card_title: "अपने गंतव्य में पिकअप\nउपलब्धता की जांच करें",
     card_subtitle:
-      "यह जांचने के लिए कि क्या हम आपके स्थान से पिकअप करते हैं, अपना शहर या पिनकोड दर्ज करें।",
-    input_placeholder: "शहर या पिनकोड दर्ज करें",
+      "यह जांचने के लिए कि क्या हम आपके स्थान से पिकअप करते हैं, अपना शहर या राज्य दर्ज करें।",
+    input_placeholder: "शहर या राज्य दर्ज करें…",
     btn_check: "उपलब्धता जांचें",
-    success_msg: "खुशखबरी! हम आपके क्षेत्र से पिकअप करते हैं",
+    success_msg: "खुशखबरी! हम आपके क्षेत्र में सेवा देते हैं",
     fail_msg: "हम अभी वहाँ नहीं हैं",
     fail_submsg: "चिंता न करें... हम जल्द ही विस्तार कर रहे हैं!",
-    need_assistance: "अपने पिनकोड के साथ\nसहायता चाहिए?",
+    need_assistance: "अपने स्थान के साथ\nसहायता चाहिए?",
     assistance_subtitle:
-      "पिनकोड के बारे में निश्चित नहीं हैं? अपना शहर का नाम दर्ज करें।",
+      "अपने शहर के बारे में निश्चित नहीं हैं? हमारी सहायता टीम से संपर्क करें।",
     contact_btn: "सहायता टीम से संपर्क करें",
-    business_days: "कार्य दिवस",
+    pickup: "पिकअप",
+    dropoff: "ड्रॉपऑफ",
+    available: "उपलब्ध",
+    not_available: "उपलब्ध नहीं",
   },
   pa: {
     banner_title: "ਪਿਕਅੱਪ ਉਪਲਬਧਤਾ",
     card_title: "ਆਪਣੇ ਟਿਕਾਣੇ 'ਤੇ ਪਿਕਅੱਪ\nਉਪਲਬਧਤਾ ਦੀ ਜਾਂਚ ਕਰੋ",
     card_subtitle:
-      "ਇਹ ਦੇਖਣ ਲਈ ਕਿ ਕੀ ਅਸੀਂ ਤੁਹਾਡੇ ਸਥਾਨ ਤੋਂ ਪਿਕਅੱਪ ਕਰਦੇ ਹਾਂ, ਆਪਣਾ ਸ਼ਹਿਰ ਜਾਂ ਪਿੰਨ ਕੋਡ ਦਰਜ ਕਰੋ।",
-    input_placeholder: "ਸ਼ਹਿਰ ਜਾਂ ਪਿੰਨ ਕੋਡ ਦਰਜ ਕਰੋ",
+      "ਇਹ ਦੇਖਣ ਲਈ ਕਿ ਕੀ ਅਸੀਂ ਤੁਹਾਡੇ ਸਥਾਨ ਤੋਂ ਪਿਕਅੱਪ ਕਰਦੇ ਹਾਂ, ਆਪਣਾ ਸ਼ਹਿਰ ਜਾਂ ਰਾਜ ਦਰਜ ਕਰੋ।",
+    input_placeholder: "ਸ਼ਹਿਰ ਜਾਂ ਰਾਜ ਦਰਜ ਕਰੋ…",
     btn_check: "ਉਪਲਬਧਤਾ ਦੀ ਜਾਂਚ ਕਰੋ",
-    success_msg: "ਖੁਸ਼ਖਬਰੀ! ਅਸੀਂ ਤੁਹਾਡੇ ਖੇਤਰ ਤੋਂ ਪਿਕਅੱਪ ਕਰਦੇ ਹਾਂ",
+    success_msg: "ਖੁਸ਼ਖਬਰੀ! ਅਸੀਂ ਤੁਹਾਡੇ ਖੇਤਰ ਵਿੱਚ ਸੇਵਾ ਕਰਦੇ ਹਾਂ",
     fail_msg: "ਅਸੀਂ ਅਜੇ ਉੱਥੇ ਨਹੀਂ ਪਹੁੰਚੇ",
     fail_submsg: "ਚਿੰਤਾ ਨਾ ਕਰੋ... ਅਸੀਂ ਜਲਦੀ ਹੀ ਵਿਸਤਾਰ ਕਰ ਰਹੇ ਹਾਂ!",
-    need_assistance: "ਆਪਣੇ ਪਿੰਨ ਕੋਡ ਬਾਰੇ\nਮਦਦ ਚਾਹੀਦੀ ਹੈ?",
+    need_assistance: "ਆਪਣੇ ਸਥਾਨ ਬਾਰੇ\nਮਦਦ ਚਾਹੀਦੀ ਹੈ?",
     assistance_subtitle:
-      "ਪਿੰਨ ਕੋਡ ਬਾਰੇ ਪੱਕਾ ਪਤਾ ਨਹੀਂ? ਆਪਣਾ ਸ਼ਹਿਰ ਦਾ ਨਾਮ ਦਰਜ ਕਰੋ।",
+      "ਆਪਣੇ ਸ਼ਹਿਰ ਬਾਰੇ ਪੱਕਾ ਪਤਾ ਨਹੀਂ? ਸਾਡੀ ਟੀਮ ਨਾਲ ਸੰਪਰਕ ਕਰੋ।",
     contact_btn: "ਸੰਪਰਕ ਸਹਾਇਤਾ",
-    business_days: "ਕਾਰੋਬਾਰੀ ਦਿਨ",
+    pickup: "ਪਿਕਅੱਪ",
+    dropoff: "ਡ੍ਰੌਪਆਫ਼",
+    available: "ਉਪਲਬਧ",
+    not_available: "ਉਪਲਬਧ ਨਹੀਂ",
   },
   fr: {
     banner_title: "Disponibilité d'enlèvement",
     card_title:
       "Vérifier la disponibilité\nd'enlèvement dans votre destination",
     card_subtitle:
-      "Entrez votre ville ou code postal ci-dessous pour vérifier si nous effectuons des enlèvements chez vous.",
-    input_placeholder: "Entrez la ville ou le code postal",
+      "Entrez votre ville ou votre état pour vérifier si nous effectuons des enlèvements chez vous.",
+    input_placeholder: "Entrez la ville ou l'état…",
     btn_check: "Vérifier la disponibilité",
-    success_msg:
-      "Bonne nouvelle ! Nous effectuons des enlèvements dans votre zone",
+    success_msg: "Bonne nouvelle ! Nous desservons votre zone",
     fail_msg: "Nous n'y sommes pas encore",
     fail_submsg: "Ne vous inquiétez pas... nous nous développons bientôt !",
-    need_assistance: "Besoin d'aide avec\nvotre code postal ?",
+    need_assistance: "Besoin d'aide avec\nvotre localisation ?",
     assistance_subtitle:
-      "Pas sûr de votre code postal ? Entrez le nom de votre ville.",
+      "Pas sûr de votre ville ? Contactez notre équipe support.",
     contact_btn: "Contacter le support",
-    business_days: "Jours ouvrables",
+    pickup: "Enlèvement",
+    dropoff: "Dépôt",
+    available: "Disponible",
+    not_available: "Non disponible",
   },
   es: {
     banner_title: "Disponibilidad de recogida",
     card_title: "Verificar disponibilidad de\nrecogida en su destino",
     card_subtitle:
-      "Ingrese su ciudad o código postal a continuación para verificar si realizamos recogidas en su ubicación.",
-    input_placeholder: "Ingrese ciudad o código postal",
+      "Ingrese su ciudad o estado para verificar si realizamos recogidas en su ubicación.",
+    input_placeholder: "Ingrese ciudad o estado…",
     btn_check: "Verificar disponibilidad",
-    success_msg: "¡Buenas noticias! Realizamos recogidas en su área",
+    success_msg: "¡Buenas noticias! Prestamos servicio en su área",
     fail_msg: "Aún no estamos allí",
     fail_submsg: "Pero no se preocupe... ¡nos expandiremos pronto!",
-    need_assistance: "¿Necesita ayuda con su\ncódigo postal?",
+    need_assistance: "¿Necesita ayuda con\nsu ubicación?",
     assistance_subtitle:
-      "¿No está seguro de su código postal? Ingrese el nombre de su ciudad.",
+      "¿No está seguro de su ciudad? Contacte a nuestro equipo de soporte.",
     contact_btn: "Contactar a soporte",
-    business_days: "Días hábiles",
+    pickup: "Recogida",
+    dropoff: "Entrega",
+    available: "Disponible",
+    not_available: "No disponible",
   },
 };
 
@@ -131,95 +168,47 @@ export default function PickupAvailabilityPage() {
   const lang: Language = language || "en";
   const t = localTranslations[lang] || localTranslations.en;
 
-  const initialCities: CityGroup[] = [
-    {
-      city: "New York, NY",
-      items: [
-        { zip: "10001", days: `6-9 ${t.business_days}` },
-        { zip: "10002", days: `6-9 ${t.business_days}` },
-        { zip: "10003", days: `6-9 ${t.business_days}` },
-        { zip: "10004", days: `6-9 ${t.business_days}` },
-      ],
-    },
-    {
-      city: "Los Angeles, CA",
-      items: [
-        { zip: "90001", days: `7-11 ${t.business_days}` },
-        { zip: "90002", days: `7-11 ${t.business_days}` },
-        { zip: "90003", days: `6-10 ${t.business_days}` },
-        { zip: "90004", days: `7-11 ${t.business_days}` },
-      ],
-    },
-  ];
-
   const [query, setQuery] = useState("");
-  const [status, setStatus] = useState<"idle" | "success" | "fail">("idle");
-  const [cities, setCities] = useState<CityGroup[]>(initialCities);
-
-  // Detailed success state variables
-  const [matchedCountry, setMatchedCountry] = useState("");
-  const [matchedPostcode, setMatchedPostcode] = useState("");
-  const [matchedDeliveryTime, setMatchedDeliveryTime] = useState("");
-  const [matchedIsRemote, setMatchedIsRemote] = useState(false);
-  const [matchedDetails, setMatchedDetails] = useState("");
-  const [matchedNotes, setMatchedNotes] = useState("");
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "fail">(
+    "idle",
+  );
+  const [cities, setCities] = useState<CityGroup[]>([]);
 
   const handleCheck = async (e: React.FormEvent) => {
     e.preventDefault();
     const cleanQuery = query.trim();
+    if (!cleanQuery) return;
 
-    if (!cleanQuery) {
-      setStatus("idle");
-      setCities(initialCities);
-      return;
-    }
-
+    setStatus("loading");
     try {
-      const result = await checkZipcodeAction(cleanQuery);
+      const res = await fetch(
+        `${API_URL}/service-areas/search?q=${encodeURIComponent(cleanQuery)}`,
+      );
+      const data = await res.json();
 
-      if (result.status === "success") {
+      if (data.success && data.data.length > 0) {
+        setCities(
+          data.data.map((area: ServiceArea) => ({
+            city: area.city,
+            state: area.state,
+            pickupAvailable: area.pickupAvailable,
+            dropoffAvailable: area.dropoffAvailable,
+            pickupDays: area.pickupDays,
+            dropoffDays: area.dropoffDays,
+            pickupTimeSlot: area.pickupTimeSlot,
+            dropoffTimeSlot: area.dropoffTimeSlot,
+            notes: area.notes,
+            highlighted: true,
+          })),
+        );
         setStatus("success");
-        setMatchedCountry(result.country || "");
-        setMatchedPostcode(result.postcode || cleanQuery.toUpperCase());
-        setMatchedDeliveryTime(result.deliveryTime || "Serviceable");
-        setMatchedIsRemote(!!result.isRemote);
-        setMatchedDetails(result.details || "");
-        setMatchedNotes(result.notes || "");
-
-        if (result.matches && result.matches.length > 0) {
-          setCities([
-            {
-              city: `Matches for "${cleanQuery}"`,
-              items: result.matches.map((m) => ({
-                zip: m.zip,
-                days: m.days,
-                highlighted: true,
-              })),
-            },
-          ]);
-        } else {
-          setCities([
-            {
-              city: result.country || "Search Match",
-              items: [
-                {
-                  zip: result.postcode || cleanQuery.toUpperCase(),
-                  days: result.deliveryTime || "Serviceable",
-                  highlighted: true,
-                },
-              ],
-            },
-            ...initialCities,
-          ]);
-        }
       } else {
+        setCities([]);
         setStatus("fail");
-        setCities(initialCities);
       }
-    } catch (err) {
-      console.error("Error validating zipcode:", err);
+    } catch {
+      setCities([]);
       setStatus("fail");
-      setCities(initialCities);
     }
   };
 
@@ -265,8 +254,12 @@ export default function PickupAvailabilityPage() {
                 />
                 <button
                   type="submit"
-                  className="bg-[#f27a1a] hover:bg-orange-600 text-white font-bold text-[14px] py-4 rounded-xl transition-all active:scale-98 cursor-pointer flex items-center justify-center gap-2"
+                  disabled={status === "loading"}
+                  className="bg-[#f27a1a] hover:bg-orange-600 disabled:opacity-70 text-white font-bold text-[14px] py-4 rounded-xl transition-all active:scale-98 cursor-pointer flex items-center justify-center gap-2"
                 >
+                  {status === "loading" && (
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                  )}
                   {t.btn_check}
                 </button>
               </form>
@@ -277,41 +270,6 @@ export default function PickupAvailabilityPage() {
                   <div className="flex items-center gap-2 text-[#059669] font-extrabold text-[14px]">
                     <CheckCircle2 className="w-5 h-5 shrink-0" />
                     <span>{t.success_msg}</span>
-                  </div>
-
-                  <div className="text-[13px] text-gray-600 font-semibold pl-7 flex flex-col gap-1.5 border-t border-emerald-100/50 pt-2.5">
-                    <div>
-                      <span className="text-gray-400">Country:</span>{" "}
-                      {matchedCountry}
-                    </div>
-                    {matchedPostcode && (
-                      <div>
-                        <span className="text-gray-400">Postcode/Area:</span>{" "}
-                        {matchedPostcode}
-                      </div>
-                    )}
-                    {matchedDeliveryTime && (
-                      <div>
-                        <span className="text-gray-400">Pickup Time:</span>{" "}
-                        {matchedDeliveryTime}
-                      </div>
-                    )}
-                    <div>
-                      <span className="text-gray-400">Zone Type:</span>{" "}
-                      {matchedIsRemote
-                        ? "Remote Area (Surcharges may apply)"
-                        : "Standard Zone"}
-                    </div>
-                    {matchedDetails && (
-                      <div className="text-xs text-gray-500 italic mt-1 font-medium">
-                        {matchedDetails}
-                      </div>
-                    )}
-                    {matchedNotes && (
-                      <div className="text-xs text-gray-500 bg-emerald-50/50 p-2.5 rounded-lg mt-1 font-medium leading-relaxed">
-                        {matchedNotes}
-                      </div>
-                    )}
                   </div>
                 </div>
               )}
@@ -349,6 +307,16 @@ export default function PickupAvailabilityPage() {
 
           {/* Right Column List */}
           <div className="lg:col-span-7 flex flex-col gap-8">
+            {/* Idle placeholder */}
+            {status === "idle" && (
+              <div className="flex flex-col items-center justify-center h-52 text-gray-300 gap-3">
+                <MapPin className="w-10 h-10" />
+                <p className="text-[14px] font-semibold text-gray-400 text-center">
+                  Enter a city or state to check availability
+                </p>
+              </div>
+            )}
+
             {cities.map((group, gIdx) => (
               <div key={gIdx} className="flex flex-col gap-4">
                 {/* City Heading Row */}
@@ -356,33 +324,118 @@ export default function PickupAvailabilityPage() {
                   <div className="w-9 h-9 rounded-full bg-orange-100 flex items-center justify-center shrink-0">
                     <MapPin className="w-4 h-4 text-[#f27a1a]" />
                   </div>
-                  <h3 className="text-[20px] md:text-[22px] font-extrabold text-[#1c1f2e]">
-                    {group.city}
-                  </h3>
+                  <div>
+                    <h3 className="text-[20px] md:text-[22px] font-extrabold text-[#1c1f2e] leading-tight">
+                      {group.city}
+                    </h3>
+                    {group.state && (
+                      <p className="text-[13px] text-gray-400 font-medium leading-none mt-0.5">
+                        {group.state}
+                      </p>
+                    )}
+                  </div>
                 </div>
 
                 {/* List Items */}
                 <div className="flex flex-col gap-3.5">
-                  {group.items.map((item, iIdx) => (
-                    <div
-                      key={iIdx}
-                      className={`flex justify-between items-center px-6 py-4.5 rounded-2xl border transition-all ${
-                        item.highlighted
-                          ? "bg-[#fff7ed] border-[#fed7aa] shadow-sm"
-                          : "bg-white border-gray-100 shadow-sm"
-                      }`}
-                    >
-                      <div className="flex items-center gap-3">
-                        <div className="w-2 h-2 rounded-full bg-[#f27a1a] shrink-0" />
+                  {/* Pickup Row */}
+                  <div
+                    className={`flex justify-between items-center px-6 py-4.5 rounded-2xl border transition-all ${
+                      group.highlighted
+                        ? "bg-[#fff7ed] border-[#fed7aa] shadow-sm"
+                        : "bg-white border-gray-100 shadow-sm"
+                    }`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="w-2 h-2 rounded-full bg-[#f27a1a] shrink-0" />
+                      <div className="flex items-center gap-2">
+                        <Truck className="w-4 h-4 text-blue-500" />
                         <span className="text-[15px] font-extrabold text-[#1c1f2e]">
-                          {item.zip}
+                          {t.pickup}
                         </span>
                       </div>
-                      <span className="text-[13.5px] text-gray-400 font-bold">
-                        {item.days}
-                      </span>
                     </div>
-                  ))}
+                    <div className="flex flex-col items-end gap-1">
+                      {group.pickupAvailable ? (
+                        <>
+                          <span className="text-[12px] font-bold text-emerald-600 bg-emerald-50 border border-emerald-200 px-2.5 py-0.5 rounded-full">
+                            ✓ {t.available}
+                          </span>
+                          <div className="flex items-center gap-3 mt-0.5">
+                            {group.pickupDays && (
+                              <span className="flex items-center gap-1 text-[12px] text-gray-400 font-semibold">
+                                <CalendarDays className="w-3 h-3" />
+                                {group.pickupDays}
+                              </span>
+                            )}
+                            {group.pickupTimeSlot && (
+                              <span className="flex items-center gap-1 text-[12px] text-gray-400 font-semibold">
+                                <Clock className="w-3 h-3" />
+                                {group.pickupTimeSlot}
+                              </span>
+                            )}
+                          </div>
+                        </>
+                      ) : (
+                        <span className="text-[13.5px] text-gray-400 font-bold">
+                          {t.not_available}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Dropoff Row */}
+                  <div
+                    className={`flex justify-between items-center px-6 py-4.5 rounded-2xl border transition-all ${
+                      group.highlighted
+                        ? "bg-[#fff7ed] border-[#fed7aa] shadow-sm"
+                        : "bg-white border-gray-100 shadow-sm"
+                    }`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="w-2 h-2 rounded-full bg-[#f27a1a] shrink-0" />
+                      <div className="flex items-center gap-2">
+                        <Package className="w-4 h-4 text-purple-500" />
+                        <span className="text-[15px] font-extrabold text-[#1c1f2e]">
+                          {t.dropoff}
+                        </span>
+                      </div>
+                    </div>
+                    <div className="flex flex-col items-end gap-1">
+                      {group.dropoffAvailable ? (
+                        <>
+                          <span className="text-[12px] font-bold text-emerald-600 bg-emerald-50 border border-emerald-200 px-2.5 py-0.5 rounded-full">
+                            ✓ {t.available}
+                          </span>
+                          <div className="flex items-center gap-3 mt-0.5">
+                            {group.dropoffDays && (
+                              <span className="flex items-center gap-1 text-[12px] text-gray-400 font-semibold">
+                                <CalendarDays className="w-3 h-3" />
+                                {group.dropoffDays}
+                              </span>
+                            )}
+                            {group.dropoffTimeSlot && (
+                              <span className="flex items-center gap-1 text-[12px] text-gray-400 font-semibold">
+                                <Clock className="w-3 h-3" />
+                                {group.dropoffTimeSlot}
+                              </span>
+                            )}
+                          </div>
+                        </>
+                      ) : (
+                        <span className="text-[13.5px] text-gray-400 font-bold">
+                          {t.not_available}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Notes — only if present */}
+                  {group.notes && (
+                    <div className="bg-amber-50 border border-amber-100 rounded-2xl px-6 py-3.5 text-[12px] text-amber-700 font-semibold leading-relaxed">
+                      {group.notes}
+                    </div>
+                  )}
                 </div>
               </div>
             ))}
