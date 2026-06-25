@@ -204,20 +204,41 @@ export default function TrackPage() {
   const [trackingNumber, setTrackingNumber] = useState("");
   const [hasSearched, setHasSearched] = useState(false);
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [trackingData, setTrackingData] = useState<any>(null);
 
-  const handleTrack = (e: React.FormEvent) => {
+  const handleTrack = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!trackingNumber.trim()) {
       setError(t.err_empty);
       return;
     }
     setError("");
-    setHasSearched(true);
+    setLoading(true);
+    try {
+      const res = await fetch(`/api/track?awb=${trackingNumber}`);
+      const data = await res.json();
+      console.log("[Track Page] API Response:", data);
+      
+      if (data.Status && data.Data) {
+        setTrackingData(data.Data);
+        setHasSearched(true);
+      } else {
+        console.error("[Track Page] API returned error or no data:", data);
+        setError(data.Data?.ErrorMessage || "Tracking details not found");
+      }
+    } catch (err: any) {
+      console.error("[Track Page] Fetch error:", err);
+      setError("An error occurred while fetching tracking details.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleReset = () => {
     setTrackingNumber("");
     setHasSearched(false);
+    setTrackingData(null);
   };
 
   return (
@@ -270,9 +291,10 @@ export default function TrackPage() {
                 </div>
                 <button
                   type="submit"
-                  className="bg-[#f27a1a] hover:bg-orange-600 text-white font-bold text-[14px] py-4 rounded-xl transition-all active:scale-98 cursor-pointer mt-4 flex items-center justify-center gap-2"
+                  disabled={loading}
+                  className="bg-[#f27a1a] hover:bg-orange-600 text-white font-bold text-[14px] py-4 rounded-xl transition-all active:scale-98 cursor-pointer mt-4 flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
                 >
-                  {t.btn_track}
+                  {loading ? "Tracking..." : t.btn_track}
                 </button>
               </form>
             </div>
@@ -312,12 +334,12 @@ export default function TrackPage() {
                       {t.lbl_tracking_num}
                     </span>
                     <span className="text-[18px] sm:text-[20px] font-extrabold text-[#1c1f2e]">
-                      {trackingNumber || "TRK45678901"}
+                      {trackingData?.Awbno || trackingNumber}
                     </span>
                   </div>
                 </div>
-                <span className="border-2 border-[#f27a1a] text-[#f27a1a] bg-orange-50/50 font-bold text-[12px] px-4 py-1.5 rounded-full w-fit">
-                  {t.lbl_status_ready}
+                <span className="border-2 border-[#f27a1a] text-[#f27a1a] bg-orange-50/50 font-bold text-[12px] px-4 py-1.5 rounded-full w-fit max-w-[200px] truncate">
+                  {trackingData?.Events?.[0]?.EventDescription || "Status Unknown"}
                 </span>
               </div>
 
@@ -325,16 +347,15 @@ export default function TrackPage() {
               <div className="bg-white/60 rounded-2xl p-6 border border-white/50 grid grid-cols-1 sm:grid-cols-2 gap-6 relative">
                 <div>
                   <h3 className="text-[17px] font-extrabold text-[#1c1f2e] flex items-center gap-2">
-                    {t.loc_delhi} <span className="text-gray-400">→</span>{" "}
-                    Ontario, Canada
+                    {trackingData?.Destination || "Unknown"}
                   </h3>
                   <span className="text-[11.5px] text-gray-400 font-bold block mt-1">
-                    {t.lbl_carrier_awb}
+                    AWB No. #{trackingData?.Awbno || "--"}
                   </span>
                 </div>
                 <div className="text-right hidden sm:block">
                   <span className="text-[11.5px] text-gray-400 font-bold block">
-                    15 Feb 2026
+                    {trackingData?.Shipdate ? new Date(trackingData.Shipdate).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : "--"}
                   </span>
                 </div>
                 <div className="sm:col-span-2 grid grid-cols-2 gap-4 pt-4 border-t border-gray-200/50 mt-2">
@@ -343,15 +364,15 @@ export default function TrackPage() {
                       {t.lbl_shipment_created}
                     </span>
                     <span className="text-[13px] font-bold text-[#1c1f2e]">
-                      15 Feb 2026
+                      {trackingData?.Shipdate ? new Date(trackingData.Shipdate).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : "--"}
                     </span>
                   </div>
                   <div>
                     <span className="text-[10px] text-gray-400 font-bold block uppercase tracking-wider">
-                      {t.lbl_current_location}
+                      Consignee
                     </span>
-                    <span className="text-[13px] font-bold text-[#1c1f2e]">
-                      {t.loc_delhi}
+                    <span className="text-[13px] font-bold text-[#1c1f2e] break-words">
+                      {trackingData?.Consignee || "--"}
                     </span>
                   </div>
                 </div>
@@ -365,120 +386,39 @@ export default function TrackPage() {
 
                 {/* Vertical Timeline */}
                 <div className="flex flex-col relative pl-6 border-l-2 border-gray-100 gap-8 mt-2 ml-3">
-                  {/* Item 1 */}
-                  <div className="relative">
-                    {/* Active timeline bar */}
-                    <div className="absolute -left-[31px] top-[24px] bottom-[-40px] w-0.5 bg-[#f27a1a]" />
-                    <div className="absolute -left-[37px] top-1 w-5 h-5 rounded-full bg-white border-[3px] border-[#f27a1a] flex items-center justify-center">
-                      <div className="w-1.5 h-1.5 rounded-full bg-[#f27a1a]" />
+                  {trackingData?.Events?.length > 0 ? (
+                    trackingData.Events.map((event: any, index: number) => {
+                      const isLast = index === trackingData.Events.length - 1;
+                      return (
+                        <div className="relative" key={index}>
+                          {/* Active timeline bar */}
+                          {!isLast && (
+                            <div className="absolute -left-[31px] top-[24px] bottom-[-40px] w-0.5 bg-[#f27a1a]" />
+                          )}
+                          <div className="absolute -left-[37px] top-1 w-5 h-5 rounded-full bg-white border-[3px] border-[#f27a1a] flex items-center justify-center">
+                            <div className="w-1.5 h-1.5 rounded-full bg-[#f27a1a]" />
+                          </div>
+                          <div className="flex justify-between items-start gap-4">
+                            <div>
+                              <h4 className="text-[14px] font-extrabold text-[#1c1f2e]">
+                                {event.EventDescription || event.EventCode}
+                              </h4>
+                              <span className="text-[12px] text-gray-400 font-semibold block mt-0.5">
+                                {event.EventDate ? new Date(event.EventDate).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : "--"}, {event.Location || "--"}
+                              </span>
+                            </div>
+                            <span className="text-[12px] text-gray-400 font-semibold shrink-0 text-right">
+                              {event.EventTime || "--"}
+                            </span>
+                          </div>
+                        </div>
+                      );
+                    })
+                  ) : (
+                    <div className="text-sm text-gray-500 font-medium">
+                      No events found for this shipment.
                     </div>
-                    <div className="flex justify-between items-start gap-4">
-                      <div>
-                        <h4 className="text-[14px] font-extrabold text-[#1c1f2e]">
-                          {t.status_confirmed}
-                        </h4>
-                        <span className="text-[12px] text-gray-400 font-semibold block mt-0.5">
-                          15 Feb 26, {t.loc_noida}
-                        </span>
-                      </div>
-                      <span className="text-[12px] text-gray-400 font-semibold">
-                        05:56 Pm
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Item 2 */}
-                  <div className="relative">
-                    {/* Active timeline bar end */}
-                    <div className="absolute -left-[37px] top-1 w-5 h-5 rounded-full bg-white border-[3px] border-[#f27a1a] flex items-center justify-center">
-                      <div className="w-1.5 h-1.5 rounded-full bg-[#f27a1a]" />
-                    </div>
-                    <div className="flex justify-between items-start gap-4">
-                      <div>
-                        <h4 className="text-[14px] font-extrabold text-[#1c1f2e]">
-                          {t.status_ready}
-                        </h4>
-                        <span className="text-[12px] text-gray-400 font-semibold block mt-0.5">
-                          15 Feb 26, {t.loc_noida}
-                        </span>
-                      </div>
-                      <span className="text-[12px] text-gray-400 font-semibold">
-                        05:56 Pm
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Item 3 */}
-                  <div className="relative">
-                    <div className="absolute -left-[37px] top-1 w-5 h-5 rounded-full bg-white border-[3px] border-gray-200 flex items-center justify-center" />
-                    <div className="flex justify-between items-start gap-4">
-                      <div>
-                        <h4 className="text-[14px] font-extrabold text-gray-400">
-                          {t.status_shipped}
-                        </h4>
-                        <span className="text-[12px] text-gray-300 font-semibold block mt-0.5">
-                          --
-                        </span>
-                      </div>
-                      <span className="text-[12px] text-gray-300 font-semibold">
-                        --
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Item 4 */}
-                  <div className="relative">
-                    <div className="absolute -left-[37px] top-1 w-5 h-5 rounded-full bg-white border-[3px] border-gray-200 flex items-center justify-center" />
-                    <div className="flex justify-between items-start gap-4">
-                      <div>
-                        <h4 className="text-[14px] font-extrabold text-gray-400">
-                          {t.status_transit}
-                        </h4>
-                        <span className="text-[12px] text-gray-300 font-semibold block mt-0.5">
-                          --
-                        </span>
-                      </div>
-                      <span className="text-[12px] text-gray-300 font-semibold">
-                        --
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Item 5 */}
-                  <div className="relative">
-                    <div className="absolute -left-[37px] top-1 w-5 h-5 rounded-full bg-white border-[3px] border-gray-200 flex items-center justify-center" />
-                    <div className="flex justify-between items-start gap-4">
-                      <div>
-                        <h4 className="text-[14px] font-extrabold text-gray-400">
-                          {t.status_delivery}
-                        </h4>
-                        <span className="text-[12px] text-gray-300 font-semibold block mt-0.5">
-                          --
-                        </span>
-                      </div>
-                      <span className="text-[12px] text-gray-300 font-semibold">
-                        --
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Item 6 */}
-                  <div className="relative">
-                    <div className="absolute -left-[37px] top-1 w-5 h-5 rounded-full bg-white border-[3px] border-gray-200 flex items-center justify-center" />
-                    <div className="flex justify-between items-start gap-4">
-                      <div>
-                        <h4 className="text-[14px] font-extrabold text-gray-400">
-                          {t.status_delivered}
-                        </h4>
-                        <span className="text-[12px] text-gray-300 font-semibold block mt-0.5">
-                          --
-                        </span>
-                      </div>
-                      <span className="text-[12px] text-gray-300 font-semibold">
-                        --
-                      </span>
-                    </div>
-                  </div>
+                  )}
                 </div>
               </div>
 
@@ -496,7 +436,11 @@ export default function TrackPage() {
               {/* Styled Satellite Map container */}
               <div className="w-full aspect-[4/3] rounded-4xl overflow-hidden bg-slate-200 relative border border-gray-200 shadow-sm min-h-75">
                 <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d112061.64417734135!2d77.10896253457031!3d28.613939100000003!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390cfd5b347eb62d%3A0xa1f13f1737e90c88!2sNew%20Delhi%2C%20Delhi%2C%20India!5e0!3m2!1sen!2sus!4v1700000000000!5m2!1sen!2sus"
+                  src={`https://maps.google.com/maps?width=100%25&height=100%25&hl=en&q=${encodeURIComponent(
+                    trackingData?.Events?.find((e: any) => e.Location && e.Location.trim() !== "")?.Location || 
+                    trackingData?.Destination || 
+                    "New Delhi, India"
+                  )}&t=&z=13&ie=UTF8&iwloc=&output=embed`}
                   width="100%"
                   height="100%"
                   style={{ border: 0 }}
