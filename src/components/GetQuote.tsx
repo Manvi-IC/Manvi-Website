@@ -701,7 +701,7 @@ export default function GetQuote() {
         {/* ── Two-column grid — items-stretch makes both panels equal height ── */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
           {/* LEFT: Quote form */}
-          <div className="lg:col-span-5 bg-[#eef0f5] rounded-4xl p-8 lg:p-10 shadow-sm border border-gray-200/50 flex flex-col">
+          <div className="lg:col-span-5 bg-[#eef0f5] rounded-4xl p-8 lg:p-10 shadow-sm border border-gray-200/50 flex flex-col h-full">
             <div className="flex flex-col gap-5">
               <div className="border border-orange-300/80 text-[#f27a1a] bg-orange-50/50 rounded-full px-4 py-1 text-[11px] font-extrabold w-fit tracking-wide">
                 {t.quote_instant_est}
