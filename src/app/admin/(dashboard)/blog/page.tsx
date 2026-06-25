@@ -116,6 +116,7 @@ interface BlogPost {
   featured: boolean;
   publishedDate: string;
   bannerImage?: string;
+  previewImage?: string;
   author: {
     name: string;
     avatarInitials: string;
@@ -153,6 +154,7 @@ export default function BlogManagementPage() {
   const [authorName, setAuthorName] = useState("Manvi Logistics Team");
   const [authorInitials, setAuthorInitials] = useState("ML");
   const [bannerImage, setBannerImage] = useState("");
+  const [previewImage, setPreviewImage] = useState("");
   const [contentBlocks, setContentBlocks] = useState<BlogBlock[]>([]);
 
   useEffect(() => {
@@ -194,6 +196,7 @@ export default function BlogManagementPage() {
     setAuthorName("Manvi Logistics Team");
     setAuthorInitials("ML");
     setBannerImage("");
+    setPreviewImage("");
     setContentBlocks([
       { type: "paragraph", text: "", layout: "none" }
     ]);
@@ -214,6 +217,7 @@ export default function BlogManagementPage() {
     setAuthorName(blog.author?.name || "Manvi Logistics Team");
     setAuthorInitials(blog.author?.avatarInitials || "ML");
     setBannerImage(blog.bannerImage || "");
+    setPreviewImage(blog.previewImage || "");
     setContentBlocks(blog.content || []);
     setIsFormOpen(true);
   };
@@ -314,6 +318,7 @@ export default function BlogManagementPage() {
       featured,
       publishedDate,
       bannerImage,
+      previewImage,
       author: {
         name: authorName,
         avatarInitials: authorInitials
@@ -481,10 +486,11 @@ export default function BlogManagementPage() {
               <input
                 type="text"
                 required
-                className="mt-1 w-full border border-gray-300 rounded-lg p-2.5 focus:border-[#e77419] focus:outline-none"
+                maxLength={3}
+                className="mt-1 w-full border border-gray-300 rounded-lg p-2.5 focus:border-[#e77419] focus:outline-none uppercase"
                 placeholder="e.g. ML"
                 value={authorInitials}
-                onChange={(e) => setAuthorInitials(e.target.value)}
+                onChange={(e) => setAuthorInitials(e.target.value.replace(/[^A-Za-z]/g, '').toUpperCase())}
               />
             </div>
             <div>
@@ -521,6 +527,18 @@ export default function BlogManagementPage() {
             />
             <p className="mt-1.5 text-xs text-slate-500 font-medium">
               Accepted dimensions: <strong className="text-slate-700">1200 x 440 pixels</strong> (Landscape ratio).
+            </p>
+          </div>
+
+          <div>
+            <ImageUploadField
+              value={previewImage}
+              onChange={setPreviewImage}
+              placeholder="e.g. /preview.jpg or upload an image file"
+              label="Preview Image (Optional)"
+            />
+            <p className="mt-1.5 text-xs text-slate-500 font-medium">
+              Accepted dimensions: <strong className="text-slate-700">16:9 ratio</strong> (Landscape ratio). Used as thumbnail on blog page.
             </p>
           </div>
 
