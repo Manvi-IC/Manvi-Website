@@ -22,11 +22,16 @@ export interface BlogPost {
   tag: string;
   title: string;
   description: string;
+  metaTitle?: string;
+  metaDescription?: string;
   readTime: string;
   thumbClass: string;
   featured?: boolean;
   publishedDate: string;
   bannerImage?: string;
+  bannerImageAlt?: string;
+  mobileBannerImage?: string;
+  mobileBannerImageAlt?: string;
   previewImage?: string;
   author: {
     name: string;
