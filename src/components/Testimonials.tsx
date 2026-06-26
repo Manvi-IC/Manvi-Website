@@ -26,7 +26,7 @@ export default function Testimonials() {
     centerPadding: "20px",
     responsive: [
       {
-        breakpoint: 1024,
+        breakpoint: 1299,
         settings: {
           slidesToShow: 1,
           slidesToScroll: 1,
@@ -175,7 +175,7 @@ export default function Testimonials() {
               transform: scale(1.05);
             }
 
-            @media (max-width: 1024px) {
+            @media (max-width: 1299px) {
               .testimonial-carousel-container::before,
               .testimonial-carousel-container::after {
                 display: none !important;
