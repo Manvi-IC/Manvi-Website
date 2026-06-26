@@ -1,7 +1,7 @@
 // app/admin/blog/page.tsx
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   Plus,
   Pencil,
@@ -20,7 +20,11 @@ import {
   Image,
   Layers,
   GripVertical,
-  Table
+  Table,
+  Link as LinkIcon,
+  Bold,
+  Italic,
+  Link2Off
 } from "lucide-react";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
@@ -88,6 +92,470 @@ function ImageUploadField({ value, onChange, placeholder = "Image URL", label }:
   );
 }
 
+function MarkdownEditor({ value, onChange, placeholder, rows = 3 }: { value: string, onChange: (val: string) => void, placeholder?: string, rows?: number }) {
+  const editorRef = useRef<HTMLDivElement>(null);
+  const [showLinkInput, setShowLinkInput] = useState(false);
+  const [linkUrl, setLinkUrl] = useState("");
+  const [savedRange, setSavedRange] = useState<Range | null>(null);
+
+  // Link Hover Popover States
+  const [activeLinkEl, setActiveLinkEl] = useState<HTMLAnchorElement | null>(null);
+  const [isEditingPopoverLink, setIsEditingPopoverLink] = useState(false);
+  const [popoverLinkUrlInput, setPopoverLinkUrlInput] = useState("");
+  const [popoverPosition, setPopoverPosition] = useState({ top: 0, left: 0 });
+  const popoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Keep track of the last value to prevent infinite render loops
+  const lastValueRef = useRef(value);
+
+  // Helper to convert Markdown to HTML
+  const markdownToHtml = (md: string): string => {
+    if (!md) return "";
+    let html = md;
+    
+    // Escape HTML characters
+    html = html
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;");
+
+    // Bold-Italic: ***text***
+    html = html.replace(/\*\*\*(.*?)\*\*\*/g, "<strong><em>$1</em></strong>");
+    
+    // Bold: **text**
+    html = html.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
+    
+    // Italic: *text*
+    html = html.replace(/\*(.*?)\*/g, "<em>$1</em>");
+    
+    // Link: [text](url)
+    html = html.replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer" style="color:#2563eb;text-decoration:underline;">$1</a>');
+
+    // Convert newlines to <br>
+    html = html.replace(/\n/g, "<br>");
+    
+    return html;
+  };
+
+  // Helper to convert HTML back to Markdown
+  const htmlToMarkdown = (html: string): string => {
+    if (!html) return "";
+    
+    let doc: Document;
+    try {
+      doc = new DOMParser().parseFromString(html, "text/html");
+    } catch (e) {
+      return html;
+    }
+    
+    const body = doc.body;
+
+    function processNode(node: Node): string {
+      if (node.nodeType === Node.TEXT_NODE) {
+        return node.textContent || "";
+      }
+      
+      if (node.nodeType === Node.ELEMENT_NODE) {
+        const el = node as HTMLElement;
+        const tagName = el.tagName.toLowerCase();
+        
+        let childrenVal = "";
+        for (let i = 0; i < el.childNodes.length; i++) {
+          childrenVal += processNode(el.childNodes[i]);
+        }
+        
+        switch (tagName) {
+          case "strong":
+          case "b":
+            return childrenVal.trim() ? `**${childrenVal}**` : "";
+          case "em":
+          case "i":
+            return childrenVal.trim() ? `*${childrenVal}*` : "";
+          case "a":
+            const href = el.getAttribute("href") || "";
+            return childrenVal.trim() ? `[${childrenVal}](${href})` : "";
+          case "br":
+            return "\n";
+          case "p":
+          case "div":
+            return childrenVal ? `${childrenVal}\n` : "";
+          default:
+            return childrenVal;
+        }
+      }
+      return "";
+    }
+
+    let markdown = "";
+    for (let i = 0; i < body.childNodes.length; i++) {
+      markdown += processNode(body.childNodes[i]);
+    }
+    
+    return markdown.replace(/\u00A0/g, " ").replace(/\r/g, "").replace(/\n{3,}/g, "\n\n");
+  };
+
+  // Sync state changes from outside
+  useEffect(() => {
+    if (editorRef.current) {
+      const currentMarkdown = htmlToMarkdown(editorRef.current.innerHTML);
+      if (value !== currentMarkdown) {
+        editorRef.current.innerHTML = markdownToHtml(value);
+        lastValueRef.current = value;
+        // Style all links blue+underline after content loads
+        editorRef.current.querySelectorAll("a").forEach((a) => {
+          (a as HTMLElement).style.color = "#2563eb";
+          (a as HTMLElement).style.textDecoration = "underline";
+        });
+      }
+    }
+  }, [value]);
+
+  const handleInput = () => {
+    if (editorRef.current) {
+      const html = editorRef.current.innerHTML;
+      const markdown = htmlToMarkdown(html);
+      lastValueRef.current = markdown;
+      onChange(markdown);
+    }
+  };
+
+  const saveSelection = () => {
+    const sel = window.getSelection();
+    if (sel && sel.rangeCount > 0) {
+      setSavedRange(sel.getRangeAt(0));
+    }
+  };
+
+  const restoreSelection = () => {
+    const sel = window.getSelection();
+    if (sel && savedRange) {
+      sel.removeAllRanges();
+      sel.addRange(savedRange);
+    }
+  };
+
+  const executeCommand = (command: string, val: string = "") => {
+    if (editorRef.current) {
+      editorRef.current.focus();
+    }
+    
+    const sel = window.getSelection();
+    const hasSelection = sel && !sel.isCollapsed;
+    
+    document.execCommand(command, false, val);
+    
+    if (hasSelection && sel && sel.rangeCount > 0) {
+      sel.collapseToEnd();
+      
+      const range = sel.getRangeAt(0);
+      const node = range.startContainer;
+      const parentEl = node.parentElement;
+      
+      if (parentEl && ["STRONG", "B", "EM", "I", "A"].includes(parentEl.tagName)) {
+        // Find the outermost formatting element
+        let outermostEl = parentEl;
+        while (
+          outermostEl.parentNode && 
+          outermostEl.parentNode.nodeType === Node.ELEMENT_NODE &&
+          (outermostEl.parentNode as HTMLElement).tagName !== "DIV" &&
+          ["STRONG", "B", "EM", "I", "A"].includes((outermostEl.parentNode as HTMLElement).tagName)
+        ) {
+          outermostEl = outermostEl.parentNode as HTMLElement;
+        }
+
+        // Create a space node outside (use non-breaking space to prevent empty node collapse)
+        const spaceNode = document.createTextNode("\u00A0");
+        
+        // Insert after the outermost formatting element
+        if (outermostEl.nextSibling) {
+          outermostEl.parentNode?.insertBefore(spaceNode, outermostEl.nextSibling);
+        } else {
+          outermostEl.parentNode?.appendChild(spaceNode);
+        }
+        
+        // Move caret inside the space node
+        const newRange = document.createRange();
+        newRange.setStart(spaceNode, 1);
+        newRange.setEnd(spaceNode, 1);
+        sel.removeAllRanges();
+        sel.addRange(newRange);
+      }
+    }
+    
+    handleInput();
+  };
+
+  const styleAllLinks = () => {
+    if (editorRef.current) {
+      editorRef.current.querySelectorAll("a").forEach((a) => {
+        (a as HTMLElement).style.color = "#2563eb";
+        (a as HTMLElement).style.textDecoration = "underline";
+      });
+    }
+  };
+
+  const addLink = () => {
+    if (!linkUrl) return;
+    restoreSelection();
+    executeCommand("createLink", linkUrl);
+    styleAllLinks();
+    setShowLinkInput(false);
+    setLinkUrl("");
+  };
+
+  // Popover handlers
+  const handleMouseOver = (e: React.MouseEvent) => {
+    const target = e.target as HTMLElement;
+    const anchor = target.closest("a");
+    if (anchor && editorRef.current) {
+      if (popoverTimeoutRef.current) {
+        clearTimeout(popoverTimeoutRef.current);
+        popoverTimeoutRef.current = null;
+      }
+      setActiveLinkEl(anchor);
+      setPopoverLinkUrlInput(anchor.getAttribute("href") || "");
+      
+      const rect = anchor.getBoundingClientRect();
+      const editorRect = editorRef.current.getBoundingClientRect();
+      setPopoverPosition({
+        top: rect.top - editorRect.top - 46,
+        left: rect.left - editorRect.left + (rect.width / 2) - 110,
+      });
+    }
+  };
+
+  const handleMouseLeave = () => {
+    popoverTimeoutRef.current = setTimeout(() => {
+      if (!isEditingPopoverLink) {
+        setActiveLinkEl(null);
+      }
+    }, 300);
+  };
+
+  const handlePopoverMouseEnter = () => {
+    if (popoverTimeoutRef.current) {
+      clearTimeout(popoverTimeoutRef.current);
+      popoverTimeoutRef.current = null;
+    }
+  };
+
+  const handlePopoverMouseLeave = () => {
+    if (!isEditingPopoverLink) {
+      setActiveLinkEl(null);
+    }
+  };
+
+  const savePopoverLink = () => {
+    if (activeLinkEl) {
+      activeLinkEl.setAttribute("href", popoverLinkUrlInput);
+      setIsEditingPopoverLink(false);
+      setActiveLinkEl(null);
+      handleInput();
+    }
+  };
+
+  const removePopoverLink = () => {
+    if (activeLinkEl) {
+      activeLinkEl.replaceWith(...activeLinkEl.childNodes);
+      setActiveLinkEl(null);
+      handleInput();
+    }
+  };
+
+  return (
+    <div className="flex flex-col relative w-full">
+      <style jsx>{`
+        .rich-text-editor:empty::before {
+          content: attr(data-placeholder);
+          color: #94a3b8;
+          cursor: text;
+        }
+        .rich-text-editor a {
+          color: #2563eb !important;
+          text-decoration: underline !important;
+          cursor: pointer;
+        }
+        .rich-text-editor strong {
+          font-weight: bold;
+        }
+        .rich-text-editor em {
+          font-style: italic;
+        }
+      `}</style>
+
+      {/* Popover on Link Hover */}
+      {activeLinkEl && (
+        <div 
+          className="absolute z-50 bg-white border border-gray-200 rounded-lg shadow-lg p-2.5 flex items-center gap-2 text-xs"
+          style={{ 
+            top: `${popoverPosition.top}px`, 
+            left: `${popoverPosition.left}px`,
+            minWidth: "220px" 
+          }}
+          onMouseEnter={handlePopoverMouseEnter}
+          onMouseLeave={handlePopoverMouseLeave}
+        >
+          {isEditingPopoverLink ? (
+            <div className="flex items-center gap-1.5 w-full">
+              <input 
+                type="text" 
+                className="border border-gray-300 rounded px-1.5 py-0.5 text-xs focus:outline-none focus:border-[#e77419] flex-1"
+                value={popoverLinkUrlInput}
+                onChange={(e) => setPopoverLinkUrlInput(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault();
+                    savePopoverLink();
+                  }
+                }}
+                autoFocus
+              />
+              <button 
+                type="button" 
+                className="bg-[#e77419] hover:bg-[#db660c] text-white px-2 py-0.5 rounded font-bold transition-colors"
+                onClick={savePopoverLink}
+              >
+                Save
+              </button>
+              <button 
+                type="button" 
+                className="text-slate-500 hover:text-slate-700 px-1 py-0.5 rounded"
+                onClick={() => setIsEditingPopoverLink(false)}
+              >
+                Cancel
+              </button>
+            </div>
+          ) : (
+            <>
+              <a 
+                href={activeLinkEl.href} 
+                target="_blank" 
+                rel="noreferrer"
+                className="text-blue-600 hover:underline font-medium truncate max-w-[130px]"
+              >
+                {activeLinkEl.getAttribute("href")}
+              </a>
+              <div className="flex items-center gap-1 border-l pl-2 border-gray-200 shrink-0">
+                <button 
+                  type="button" 
+                  className="text-slate-600 hover:text-[#e77419] transition-colors px-1"
+                  onClick={() => {
+                    setPopoverLinkUrlInput(activeLinkEl.getAttribute("href") || "");
+                    setIsEditingPopoverLink(true);
+                  }}
+                >
+                  Edit
+                </button>
+                <button 
+                  type="button" 
+                  className="text-red-500 hover:text-red-700 px-1"
+                  onClick={removePopoverLink}
+                >
+                  Unlink
+                </button>
+              </div>
+            </>
+          )}
+        </div>
+      )}
+
+      {/* Toolbar */}
+      <div className="flex items-center gap-1 mb-0 bg-slate-100 p-1.5 rounded-t-lg border border-gray-300 border-b-0 w-full overflow-x-auto select-none">
+        <button 
+          type="button" 
+          onMouseDown={(e) => {
+            e.preventDefault();
+            executeCommand("bold");
+          }} 
+          className="p-1 hover:bg-slate-200 rounded text-xs text-slate-700 transition-colors shrink-0 flex items-center justify-center w-6 h-6 font-bold" 
+          title="Bold"
+        >
+          <Bold size={14}/>
+        </button>
+        <button 
+          type="button" 
+          onMouseDown={(e) => {
+            e.preventDefault();
+            executeCommand("italic");
+          }} 
+          className="p-1 hover:bg-slate-200 rounded text-xs text-slate-700 transition-colors shrink-0 flex items-center justify-center w-6 h-6 italic" 
+          title="Italic"
+        >
+          <Italic size={14}/>
+        </button>
+        <button 
+          type="button" 
+          onMouseDown={(e) => {
+            e.preventDefault();
+            saveSelection();
+            setShowLinkInput(!showLinkInput);
+          }} 
+          className="px-2 py-1 hover:bg-slate-200 rounded text-xs font-medium text-slate-700 transition-colors flex items-center gap-1 shrink-0 h-6" 
+          title="Link"
+        >
+          <LinkIcon size={12}/> Link
+        </button>
+        <button 
+          type="button" 
+          onMouseDown={(e) => {
+            e.preventDefault();
+            executeCommand("unlink");
+          }} 
+          className="px-2 py-1 hover:bg-slate-200 rounded text-xs font-medium text-red-500 hover:text-red-700 transition-colors shrink-0 h-6" 
+          title="Remove Link"
+        >
+          <Link2Off size={12}/> Unlink
+        </button>
+        
+        {showLinkInput && (
+          <div className="flex items-center gap-1 ml-2 pl-2 border-l border-slate-300 animate-in fade-in zoom-in-95 duration-200">
+            <input 
+              type="text" 
+              placeholder="https://" 
+              className="px-2 py-0.5 text-xs border rounded w-32 md:w-48 focus:outline-none focus:border-[#e77419] h-6"
+              value={linkUrl}
+              onChange={(e) => setLinkUrl(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  e.preventDefault();
+                  addLink();
+                }
+              }}
+              autoFocus
+            />
+            <button 
+              type="button" 
+              className="px-2 py-0.5 bg-[#e77419] hover:bg-[#db660c] transition-colors text-white rounded text-xs font-bold shrink-0 h-6"
+              onClick={addLink}
+            >
+              Add
+            </button>
+            <button 
+              type="button" 
+              className="px-2 py-0.5 text-slate-500 hover:text-slate-700 rounded text-xs shrink-0 h-6"
+              onClick={() => { setShowLinkInput(false); setLinkUrl(""); }}
+            >
+              Cancel
+            </button>
+          </div>
+        )}
+      </div>
+
+      {/* Editor Body */}
+      <div
+        ref={editorRef}
+        contentEditable
+        onInput={handleInput}
+        onMouseOver={handleMouseOver}
+        onMouseLeave={handleMouseLeave}
+        className="rich-text-editor w-full border border-gray-300 rounded-b-lg rounded-tr-lg p-2.5 focus:border-[#e77419] focus:outline-none text-sm bg-white overflow-y-auto"
+        style={{ minHeight: `${rows * 28}px`, maxHeight: "350px" }}
+        data-placeholder={placeholder}
+      />
+    </div>
+  );
+}
+
 interface BlogBlock {
   type: "paragraph" | "subheading" | "list" | "callout" | "image" | "heading" | "divider" | "slideshow" | "table";
   text?: string;
@@ -111,12 +579,18 @@ interface BlogPost {
   tag: string;
   title: string;
   description: string;
+  metaTitle?: string;
+  metaDescription?: string;
   readTime: string;
   thumbClass: string;
   featured: boolean;
   publishedDate: string;
   bannerImage?: string;
+  bannerImageAlt?: string;
+  mobileBannerImage?: string;
+  mobileBannerImageAlt?: string;
   previewImage?: string;
+  previewImageAlt?: string;
   author: {
     name: string;
     avatarInitials: string;
@@ -144,6 +618,8 @@ export default function BlogManagementPage() {
   // Form State
   const [title, setTitle] = useState("");
   const [slug, setSlug] = useState("");
+  const [metaTitle, setMetaTitle] = useState("");
+  const [metaDescription, setMetaDescription] = useState("");
   const [category, setCategory] = useState("guides");
   const [tag, setTag] = useState("");
   const [icon, setIcon] = useState("📝");
@@ -154,7 +630,12 @@ export default function BlogManagementPage() {
   const [authorName, setAuthorName] = useState("Manvi Logistics Team");
   const [authorInitials, setAuthorInitials] = useState("ML");
   const [bannerImage, setBannerImage] = useState("");
+  const [bannerImageAlt, setBannerImageAlt] = useState("");
+  const [mobileBannerImage, setMobileBannerImage] = useState("");
+  const [mobileBannerImageAlt, setMobileBannerImageAlt] = useState("");
   const [previewImage, setPreviewImage] = useState("");
+  const [previewImageAlt, setPreviewImageAlt] = useState("");
+  const [activeBannerTab, setActiveBannerTab] = useState<"desktop" | "mobile">("desktop");
   const [contentBlocks, setContentBlocks] = useState<BlogBlock[]>([]);
 
   useEffect(() => {
@@ -185,6 +666,8 @@ export default function BlogManagementPage() {
   const handleOpenNewForm = () => {
     setEditingBlog(null);
     setTitle("");
+    setMetaTitle("");
+    setMetaDescription("");
     setSlug("");
     setCategory("guides");
     setTag("Shipping Guides");
@@ -196,7 +679,12 @@ export default function BlogManagementPage() {
     setAuthorName("Manvi Logistics Team");
     setAuthorInitials("ML");
     setBannerImage("");
+    setBannerImageAlt("");
+    setMobileBannerImage("");
+    setMobileBannerImageAlt("");
     setPreviewImage("");
+    setPreviewImageAlt("");
+    setActiveBannerTab("desktop");
     setContentBlocks([
       { type: "paragraph", text: "", layout: "none" }
     ]);
@@ -206,6 +694,8 @@ export default function BlogManagementPage() {
   const handleOpenEditForm = (blog: BlogPost) => {
     setEditingBlog(blog);
     setTitle(blog.title);
+    setMetaTitle(blog.metaTitle || "");
+    setMetaDescription(blog.metaDescription || "");
     setSlug(blog.slug);
     setCategory(blog.category);
     setTag(blog.tag);
@@ -217,7 +707,12 @@ export default function BlogManagementPage() {
     setAuthorName(blog.author?.name || "Manvi Logistics Team");
     setAuthorInitials(blog.author?.avatarInitials || "ML");
     setBannerImage(blog.bannerImage || "");
+    setBannerImageAlt(blog.bannerImageAlt || "");
+    setMobileBannerImage(blog.mobileBannerImage || "");
+    setMobileBannerImageAlt(blog.mobileBannerImageAlt || "");
     setPreviewImage(blog.previewImage || "");
+    setPreviewImageAlt(blog.previewImageAlt || "");
+    setActiveBannerTab("desktop");
     setContentBlocks(blog.content || []);
     setIsFormOpen(true);
   };
@@ -308,6 +803,8 @@ export default function BlogManagementPage() {
 
     const blogData: BlogPost = {
       title,
+      metaTitle,
+      metaDescription,
       slug: slug || title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, ""),
       category,
       tag,
@@ -318,7 +815,11 @@ export default function BlogManagementPage() {
       featured,
       publishedDate,
       bannerImage,
+      bannerImageAlt,
+      mobileBannerImage,
+      mobileBannerImageAlt,
       previewImage,
+      previewImageAlt,
       author: {
         name: authorName,
         avatarInitials: authorInitials
@@ -518,16 +1019,93 @@ export default function BlogManagementPage() {
             />
           </div>
 
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Meta Title (SEO)</label>
+              <input
+                type="text"
+                className="mt-1 w-full border border-gray-300 rounded-lg p-2.5 focus:border-[#e77419] focus:outline-none"
+                placeholder="e.g. Best Sourcing from India | Manvi Logistics"
+                value={metaTitle}
+                onChange={(e) => setMetaTitle(e.target.value)}
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Meta Description (SEO)</label>
+              <input
+                type="text"
+                className="mt-1 w-full border border-gray-300 rounded-lg p-2.5 focus:border-[#e77419] focus:outline-none"
+                placeholder="e.g. Learn how to source directly from India..."
+                value={metaDescription}
+                onChange={(e) => setMetaDescription(e.target.value)}
+              />
+            </div>
+          </div>
+
           <div>
-            <ImageUploadField
-              value={bannerImage}
-              onChange={setBannerImage}
-              placeholder="e.g. /customs-banner.jpg or upload an image file"
-              label="Banner Image (Optional)"
-            />
-            <p className="mt-1.5 text-xs text-slate-500 font-medium">
-              Accepted dimensions: <strong className="text-slate-700">1200 x 440 pixels</strong> (Landscape ratio).
-            </p>
+            <div className="flex items-center justify-between mb-2">
+              <label className="block text-sm font-medium text-gray-700">Banner Image (Optional)</label>
+              <div className="flex bg-gray-100 rounded-lg p-1">
+                <button
+                  type="button"
+                  onClick={() => setActiveBannerTab("desktop")}
+                  className={`px-3 py-1 text-xs font-semibold rounded-md transition-colors ${
+                    activeBannerTab === "desktop" ? "bg-white shadow-sm text-gray-800" : "text-gray-500 hover:text-gray-700"
+                  }`}
+                >
+                  Desktop
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setActiveBannerTab("mobile")}
+                  className={`px-3 py-1 text-xs font-semibold rounded-md transition-colors ${
+                    activeBannerTab === "mobile" ? "bg-white shadow-sm text-gray-800" : "text-gray-500 hover:text-gray-700"
+                  }`}
+                >
+                  Mobile
+                </button>
+              </div>
+            </div>
+
+            {activeBannerTab === "desktop" ? (
+              <div className="animate-in fade-in zoom-in-95 duration-200">
+                <ImageUploadField
+                  value={bannerImage}
+                  onChange={setBannerImage}
+                  placeholder="e.g. /customs-banner.jpg or upload an image file"
+                  label=""
+                />
+                <input
+                  type="text"
+                  className="mt-2 w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:border-[#e77419] focus:outline-none"
+                  placeholder="Desktop Banner Alt Text"
+                  value={bannerImageAlt}
+                  onChange={(e) => setBannerImageAlt(e.target.value)}
+                />
+                <p className="mt-1.5 text-xs text-slate-500 font-medium">
+                  Accepted dimensions: <strong className="text-slate-700">1200 x 440 pixels</strong> (Landscape ratio).
+                </p>
+              </div>
+            ) : (
+              <div className="animate-in fade-in zoom-in-95 duration-200">
+                <ImageUploadField
+                  value={mobileBannerImage}
+                  onChange={setMobileBannerImage}
+                  placeholder="Upload mobile banner image"
+                  label=""
+                />
+                <input
+                  type="text"
+                  className="mt-2 w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:border-[#e77419] focus:outline-none"
+                  placeholder="Mobile Banner Alt Text"
+                  value={mobileBannerImageAlt}
+                  onChange={(e) => setMobileBannerImageAlt(e.target.value)}
+                />
+                <p className="mt-1.5 text-xs text-slate-500 font-medium">
+                  Accepted dimensions: <strong className="text-slate-700">800 x 600 pixels</strong> (4:3 ratio). Used on phones.
+                </p>
+              </div>
+            )}
           </div>
 
           <div>
@@ -536,6 +1114,13 @@ export default function BlogManagementPage() {
               onChange={setPreviewImage}
               placeholder="e.g. /preview.jpg or upload an image file"
               label="Preview Image (Optional)"
+            />
+            <input
+              type="text"
+              className="mt-2 w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:border-[#e77419] focus:outline-none"
+              placeholder="Preview Image Alt Text"
+              value={previewImageAlt}
+              onChange={(e) => setPreviewImageAlt(e.target.value)}
             />
             <p className="mt-1.5 text-xs text-slate-500 font-medium">
               Accepted dimensions: <strong className="text-slate-700">16:9 ratio</strong> (Landscape ratio). Used as thumbnail on blog page.
@@ -740,12 +1325,11 @@ export default function BlogManagementPage() {
                           {/* Render custom fields based on block type */}
                           {block.type === "paragraph" && (
                             <div className="space-y-3">
-                              <textarea
+                              <MarkdownEditor
                                 rows={3}
-                                className="w-full border rounded-lg p-2.5 focus:border-[#e77419] focus:outline-none text-sm"
                                 placeholder="Write paragraph text here..."
                                 value={block.text || ""}
-                                onChange={(e) => updateBlockField(idx, "text", e.target.value)}
+                                onChange={(val) => updateBlockField(idx, "text", val)}
                               />
                               <div className="bg-slate-50 p-3 rounded-lg border border-dashed space-y-3">
                                 <div className="text-xs font-semibold text-gray-500">Inline Image (Optional)</div>
@@ -1016,12 +1600,11 @@ export default function BlogManagementPage() {
 
                           {block.type === "callout" && (
                             <div className="space-y-3">
-                              <textarea
+                              <MarkdownEditor
                                 rows={2}
-                                className="w-full border border-amber-200 bg-amber-50 text-amber-900 rounded-lg p-2.5 focus:border-[#e77419] focus:outline-none text-sm font-medium"
                                 placeholder="Write tip/callout text..."
                                 value={block.text || ""}
-                                onChange={(e) => updateBlockField(idx, "text", e.target.value)}
+                                onChange={(val) => updateBlockField(idx, "text", val)}
                               />
                               <div className="grid grid-cols-1 md:grid-cols-2 gap-3 bg-amber-50/50 p-3 rounded-lg border border-amber-100">
                                 <div>
@@ -1070,12 +1653,11 @@ export default function BlogManagementPage() {
                                   Numbered
                                 </label>
                               </div>
-                              <textarea
+                              <MarkdownEditor
                                 rows={3}
-                                className="w-full border rounded-lg p-2.5 focus:border-[#e77419] focus:outline-none text-sm"
                                 placeholder="Write each list item on a new line..."
                                 value={block.items?.join("\n") || ""}
-                                onChange={(e) => updateBlockField(idx, "items", e.target.value.split("\n"))}
+                                onChange={(val) => updateBlockField(idx, "items", val.split("\n"))}
                               />
                             </div>
                           )}
