@@ -701,7 +701,7 @@ export default function GetQuote() {
         {/* ── Two-column grid — items-stretch makes both panels equal height ── */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
           {/* LEFT: Quote form */}
-          <div className="lg:col-span-5 bg-[#eef0f5] rounded-4xl p-8 lg:p-10 shadow-sm border border-gray-200/50 flex flex-col h-full">
+          <div className="lg:col-span-5 bg-[#eef0f5] rounded-4xl p-6 sm:p-8 lg:p-10 shadow-sm border border-gray-200/50 flex flex-col h-full">
             <div className="flex flex-col gap-5">
               <div className="border border-orange-300/80 text-[#f27a1a] bg-orange-50/50 rounded-full px-4 py-1 text-[11px] font-extrabold w-fit tracking-wide">
                 {t.quote_instant_est}
@@ -801,7 +801,7 @@ export default function GetQuote() {
                 <span className="text-[11px] text-gray-500 font-semibold tracking-wide uppercase">
                   {t.form_vol_wt_dim}
                 </span>
-                <div className="grid grid-cols-3 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                   {(
                     [
                       { val: length, setter: setLength, label: t.form_length },
@@ -869,7 +869,7 @@ export default function GetQuote() {
           {/* RIGHT: Results — h-full ensures it matches left panel height */}
           <div className="lg:col-span-7 flex flex-col gap-6 h-full">
             {!result && !loading && (
-              <div className="bg-[#eef0f5] rounded-4xl p-8 lg:p-14 flex flex-col items-center justify-center text-center gap-4 flex-1 shadow-sm border border-gray-200/50">
+              <div className="bg-[#eef0f5] rounded-4xl p-6 sm:p-8 lg:p-14 flex flex-col items-center justify-center text-center gap-4 flex-1 shadow-sm border border-gray-200/50">
                 <PackageCheck size={56} className="text-gray-300" />
                 <div>
                   <p className="text-[#1c1f2e] font-bold text-lg">
@@ -883,7 +883,7 @@ export default function GetQuote() {
             )}
 
             {loading && (
-              <div className="bg-[#eef0f5] rounded-4xl p-8 lg:p-14 flex flex-col items-center justify-center gap-4 flex-1 shadow-sm border border-gray-200/50">
+              <div className="bg-[#eef0f5] rounded-4xl p-6 sm:p-8 lg:p-14 flex flex-col items-center justify-center gap-4 flex-1 shadow-sm border border-gray-200/50">
                 <Loader2 size={44} className="text-[#f27a1a] animate-spin" />
                 <p className="text-gray-600 text-sm font-medium">
                   {t.quote_loading_msg}
@@ -1013,7 +1013,7 @@ export default function GetQuote() {
         </div>
 
         {/* HOW CALCULATED */}
-        <div className="bg-[#eef0f5] rounded-4xl p-8 lg:p-12 shadow-sm border border-gray-200/50 mt-12">
+        <div className="bg-[#eef0f5] rounded-4xl p-6 sm:p-8 lg:p-12 shadow-sm border border-gray-200/50 mt-12">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="md:col-span-3 mb-2">
               <h2 className="text-[28px] md:text-[34px] font-extrabold text-[#1c1f2e] leading-tight tracking-tight">
@@ -1055,7 +1055,7 @@ export default function GetQuote() {
         </div>
 
         {/* FAQ */}
-        <div className="bg-[#eef0f5] rounded-4xl p-8 sm:p-10 lg:p-14 shadow-sm border border-gray-200/50 flex flex-col items-center gap-8 mt-12">
+        <div className="bg-[#eef0f5] rounded-4xl p-6 sm:p-10 lg:p-14 shadow-sm border border-gray-200/50 flex flex-col items-center gap-8 mt-12">
           <div className="flex flex-col items-center gap-3 text-center">
             <div className="border border-orange-300/80 text-[#f27a1a] bg-orange-50/50 rounded-full px-4 py-1 text-[11px] font-extrabold tracking-wide">
               {t.quote_faq_badge}

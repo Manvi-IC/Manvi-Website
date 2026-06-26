@@ -27,7 +27,7 @@ export default function Contact() {
       id="contact"
       className="max-w-425 w-full mx-auto px-6 mt-6 mb-20 font-sans"
     >
-      <div className="bg-[#eef0f5] rounded-4xl px-10 md:px-16 lg:px-20 pt-14 md:pt-20 pb-0 overflow-hidden shadow-sm border border-gray-100">
+      <div className="bg-[#eef0f5] rounded-4xl px-6 sm:px-10 md:px-16 lg:px-20 pt-14 md:pt-20 pb-0 overflow-hidden shadow-sm border border-gray-100">
         {/* Top Content Row */}
         <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_1fr_1fr] gap-8 lg:gap-12 items-start mb-12">
           {/* Left: Badge + Title + Description */}

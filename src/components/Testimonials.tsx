@@ -22,7 +22,7 @@ export default function Testimonials() {
     responsive: [
       {
         breakpoint: 1024,
-        settings: { slidesToShow: 2, centerPadding: "10px" },
+        settings: { slidesToShow: 1, centerPadding: "100px" },
       },
       {
         breakpoint: 768,
@@ -77,8 +77,11 @@ export default function Testimonials() {
           <div className="testimonial-carousel-container testimonial-carousel-light w-full">
             <Slider {...sliderSettings}>
               {displayTestimonials.map((testimonial, i) => (
-                <div key={i} className="px-2 md:px-3">
-                  <div className="testimonial-slide flex flex-col gap-0 px-5 py-5 sm:px-8 sm:py-8 rounded-2xl bg-white shadow-sm border border-black/5 mx-auto min-h-[250px] sm:min-h-[200px]">
+                <div
+                  key={i}
+                  className="testimonial-slide flex p-4 sm:p-6 items-center justify-center"
+                >
+                  <div className="flex flex-col gap-0 px-5 py-6 sm:px-8 sm:py-8 rounded-2xl bg-white shadow-sm border border-black/5 mx-auto w-full md:max-w-xl min-h-[250px] sm:min-h-[200px]">
                     <span className="text-[32px] md:text-[40px] text-[#e77419] font-serif leading-none select-none">
                       &#x201C;&#x201C;
                     </span>
@@ -142,40 +145,18 @@ export default function Testimonials() {
             }
             .testimonial-slide {
               transition: all 0.5s ease;
-              opacity: 0.4;
-              transform: scale(0.85);
+              opacity: 0.5;
+              transform: scale(0.9);
             }
             .slick-center .testimonial-slide {
               opacity: 1;
               transform: scale(1.05);
-            }
-            .slick-track {
-              display: flex !important;
-              align-items: center;
-            }
-            .slick-list {
-              padding-top: 2rem !important;
-              padding-bottom: 2rem !important;
-            }
-            .slick-slide {
-              height: auto;
             }
 
             @media (max-width: 768px) {
               .testimonial-carousel-container::before,
               .testimonial-carousel-container::after {
                 width: 5%;
-              }
-              .slick-center .testimonial-slide {
-                transform: scale(1);
-              }
-              .testimonial-slide {
-                transform: scale(0.9);
-                opacity: 0.5;
-              }
-              .slick-list {
-                padding-top: 1rem !important;
-                padding-bottom: 1rem !important;
               }
             }
           `}</style>

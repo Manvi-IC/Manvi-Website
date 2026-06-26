@@ -27,6 +27,7 @@ export interface BlogPost {
   featured?: boolean;
   publishedDate: string;
   bannerImage?: string;
+  previewImage?: string;
   author: {
     name: string;
     avatarInitials: string;

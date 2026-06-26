@@ -263,6 +263,13 @@ export default function BlogPage(): React.ReactElement {
         .blog-thumb.thumb-featured {
           background: linear-gradient(135deg, #6a3a0a, #b5701b);
         }
+        .blog-thumb .thumb-image {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          position: absolute;
+          inset: 0;
+        }
 
         .blog-tag {
           display: inline-block;
@@ -614,7 +621,11 @@ export default function BlogPage(): React.ReactElement {
             aria-label="Read featured article"
           >
             <div className={`blog-thumb ${featuredPost.thumbClass}`}>
-              <span className="icon">{featuredPost.icon}</span>
+              {featuredPost.previewImage ? (
+                <img src={featuredPost.previewImage} alt={featuredPost.title} className="thumb-image" />
+              ) : (
+                <span className="icon">{featuredPost.icon}</span>
+              )}
             </div>
             <div className="featured-content">
               <span className="blog-tag">{featuredPost.tag}</span>
@@ -645,7 +656,11 @@ export default function BlogPage(): React.ReactElement {
                 className="blog-post reveal"
               >
                 <div className={`blog-thumb ${post.thumbClass}`}>
-                  <span className="icon">{post.icon}</span>
+                  {post.previewImage ? (
+                    <img src={post.previewImage} alt={post.title} className="thumb-image" />
+                  ) : (
+                    <span className="icon">{post.icon}</span>
+                  )}
                 </div>
                 <div className="post-content">
                   <span className="blog-tag">{post.tag}</span>
@@ -664,14 +679,16 @@ export default function BlogPage(): React.ReactElement {
             ))}
           </div>
 
-          <div className="blog-pagination">
-            <a href="#" className="active">
-              1
-            </a>
-            <a href="#">2</a>
-            <a href="#">3</a>
-            <a href="#">Next →</a>
-          </div>
+          {filteredPosts.length > 6 && (
+            <div className="blog-pagination">
+              <a href="#" className="active">
+                1
+              </a>
+              <a href="#">2</a>
+              <a href="#">3</a>
+              <a href="#">Next →</a>
+            </div>
+          )}
         </div>
       </section>
 
