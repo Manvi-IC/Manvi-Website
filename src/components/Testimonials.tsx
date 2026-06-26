@@ -9,50 +9,37 @@ import ScrollReveal from "./ScrollReveal";
 export default function Testimonials() {
   const { t } = useLanguage();
   const [mounted, setMounted] = useState(false);
+  const [slidesCount, setSlidesCount] = useState(3);
 
   useEffect(() => {
     setMounted(true);
+    
+    // Explicitly handle window resize to bypass react-slick's buggy internal responsive array
+    const handleResize = () => {
+      if (window.innerWidth <= 1299) {
+        setSlidesCount(1);
+      } else {
+        setSlidesCount(3);
+      }
+    };
+    
+    // Run once on mount
+    handleResize();
+    
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   const sliderSettings = {
     infinite: true,
     speed: 500,
-    slidesToShow: 3,
+    slidesToShow: slidesCount,
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 1500,
     arrows: false,
-    centerMode: true,
-    centerPadding: "20px",
-    responsive: [
-      {
-        breakpoint: 1299,
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1,
-          centerMode: false,
-          centerPadding: "0px",
-        },
-      },
-      {
-        breakpoint: 768,
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1,
-          centerMode: false,
-          centerPadding: "0px",
-        },
-      },
-      {
-        breakpoint: 480,
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1,
-          centerMode: false,
-          centerPadding: "0px",
-        },
-      },
-    ],
+    centerMode: slidesCount > 1,
+    centerPadding: slidesCount > 1 ? "20px" : "0px",
   };
 
   const testimonialsList = [
