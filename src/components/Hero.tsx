@@ -17,6 +17,8 @@ import {
   TrendingDown,
   Clock,
 } from "lucide-react";
+
+
 import Link from "next/link";
 import Image from "next/image";
 import { useLanguage } from "@/context/LanguageContext";
@@ -253,18 +255,7 @@ function QuotesModal({
     }
   }, [selectedService]);
 
-  const scroll = (direction: "left" | "right") => {
-    if (scrollContainerRef.current) {
-      const scrollAmount = 320;
-      const newScrollLeft =
-        scrollContainerRef.current.scrollLeft +
-        (direction === "left" ? -scrollAmount : scrollAmount);
-      scrollContainerRef.current.scrollTo({
-        left: newScrollLeft,
-        behavior: "smooth",
-      });
-    }
-  };
+
 
   return (
     <div
@@ -274,7 +265,7 @@ function QuotesModal({
         if (e.target === e.currentTarget) onClose();
       }}
     >
-      <div className="bg-[#0D1527] rounded-2xl w-full max-w-7xl max-h-[95vh] h-[85vh] flex flex-col shadow-2xl border border-white/10">
+      <div className="bg-[#0D1527] rounded-2xl w-full max-w-lg max-h-[80vh] flex flex-col shadow-2xl border border-white/10">
         <div className="flex items-start justify-between gap-3 p-5 border-b border-white/10">
           <div>
             <p className="text-white font-bold text-base">
@@ -335,26 +326,13 @@ function QuotesModal({
               </button>
             </div>
           </div>
-          <div className="flex gap-1">
-            <button
-              onClick={() => scroll("left")}
-              className="p-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-zinc-400 hover:text-white transition-all"
-            >
-              <ChevronLeft size={16} />
-            </button>
-            <button
-              onClick={() => scroll("right")}
-              className="p-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-zinc-400 hover:text-white transition-all"
-            >
-              <ChevronRight size={16} />
-            </button>
-          </div>
+
         </div>
 
-        {/* Horizontal Scrollable Container */}
+        {/* Vertical Scrollable Container */}
         <div
           ref={scrollContainerRef}
-          className="flex-1 overflow-x-auto overflow-y-hidden p-4 gap-4 flex scrollbar-thin scrollbar-thumb-zinc-600 scrollbar-track-transparent"
+          className="flex-1 overflow-y-auto overflow-x-hidden p-4 flex flex-col gap-3"
           style={{
             scrollbarWidth: "thin",
             scrollbarColor: "#3f3f46 transparent",
@@ -381,7 +359,7 @@ function QuotesModal({
                 key={key}
                 data-service-key={key}
                 onClick={() => onSelect(key)}
-                className={`relative rounded-xl border-2 p-4 cursor-pointer transition-all min-w-[280px] max-w-[320px] flex-shrink-0 ${
+                className={`relative rounded-xl border-2 p-4 cursor-pointer transition-all w-full ${
                   isSelected
                     ? "border-[#e77419] bg-[#e77419]/10"
                     : "border-zinc-700 bg-zinc-800/60 hover:border-zinc-500"
