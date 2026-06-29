@@ -86,6 +86,8 @@ export default function BlogPage(): React.ReactElement {
 
   return (
     <div className={`blog-wrapper ${geistSans.variable}`}>
+      <title>Manvi Logistics Blog | Shipping & Customs Guides</title>
+      <meta name="description" content="Practical guides to international shipping, customs and sourcing — plus stories from the families and businesses we connect across the world." />
       <Header />
 
       <style jsx>{`

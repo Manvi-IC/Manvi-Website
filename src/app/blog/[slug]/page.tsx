@@ -24,6 +24,7 @@ interface PageProps {
 }
 
 import { RefreshCw } from "lucide-react";
+import ReactMarkdown from "react-markdown";
 
 function SlideshowBlock({ block }: { block: BlogBlock }) {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -291,7 +292,9 @@ export default function BlogPostPage({ params }: PageProps) {
                 {block.caption && <span className="article-image-caption">{block.caption}</span>}
               </div>
               <div className="split-text-wrapper">
-                <p className="article-paragraph">{block.text}</p>
+                <ReactMarkdown components={{ p: ({node, ...props}) => <p className="article-paragraph" {...props} /> }}>
+                  {block.text || ""}
+                </ReactMarkdown>
               </div>
             </div>
           );
@@ -306,7 +309,9 @@ export default function BlogPostPage({ params }: PageProps) {
                   {block.caption && <span className="article-image-caption">{block.caption}</span>}
                 </div>
               )}
-              <p className="article-paragraph">{block.text}</p>
+              <ReactMarkdown components={{ p: ({node, ...props}) => <p className="article-paragraph" {...props} /> }}>
+                {block.text || ""}
+              </ReactMarkdown>
               {!isTop && (
                 <div className="article-image-container" style={{ margin: "12px 0" }}>
                   <img src={block.src} alt={block.alt || "Paragraph image"} className="article-image" />
@@ -317,9 +322,12 @@ export default function BlogPostPage({ params }: PageProps) {
           );
         }
         return (
-          <p key={index} className="article-paragraph">
-            {block.text}
-          </p>
+          <ReactMarkdown 
+            key={index} 
+            components={{ p: ({node, ...props}) => <p className="article-paragraph" {...props} /> }}
+          >
+            {block.text || ""}
+          </ReactMarkdown>
         );
       case "subheading":
         return (
@@ -365,7 +373,7 @@ export default function BlogPostPage({ params }: PageProps) {
           <ListTag key={index} className="article-list">
             {block.items?.map((item, itemIdx) => (
               <li key={itemIdx} className="article-list-item">
-                {item}
+                <ReactMarkdown components={{ p: ({ children }) => <>{children}</> }}>{item || ""}</ReactMarkdown>
               </li>
             ))}
           </ListTag>
@@ -373,7 +381,7 @@ export default function BlogPostPage({ params }: PageProps) {
       case "callout":
         return (
           <div key={index} className="article-callout">
-            <p>{block.text}</p>
+            <ReactMarkdown components={{ p: ({ children }) => <>{children}</> }}>{block.text || ""}</ReactMarkdown>
           </div>
         );
       case "image":
@@ -397,6 +405,8 @@ export default function BlogPostPage({ params }: PageProps) {
 
   return (
     <div className={`blog-post-wrapper ${geistSans.variable}`}>
+      <title>{displayPost.metaTitle || `${displayPost.title} - Manvi Logistics`}</title>
+      <meta name="description" content={displayPost.metaDescription || displayPost.description} />
       <Header />
 
       <style jsx global>{`
@@ -588,6 +598,23 @@ export default function BlogPostPage({ params }: PageProps) {
 
         .article-paragraph {
           margin-bottom: 24px;
+          white-space: pre-wrap;
+        }
+
+        .article-content strong, .article-content b {
+          font-weight: 700;
+        }
+
+        .article-paragraph a, .article-list-item a, .article-callout a {
+          color: var(--accent-deep);
+          text-decoration: underline;
+          text-underline-offset: 4px;
+          transition: all 0.2s;
+        }
+        
+        .article-paragraph a:hover, .article-list-item a:hover, .article-callout a:hover {
+          color: var(--accent);
+          text-decoration-color: var(--accent);
         }
 
         .article-subheading {
@@ -627,6 +654,7 @@ export default function BlogPostPage({ params }: PageProps) {
 
         .article-callout p {
           margin: 0;
+          white-space: pre-wrap;
         }
 
         .article-image-container {
@@ -1091,6 +1119,13 @@ export default function BlogPostPage({ params }: PageProps) {
           .post-cover-visual {
             height: 240px;
           }
+          .post-banner-image-container {
+            height: auto;
+            aspect-ratio: 4 / 3;
+          }
+          .post-banner-image {
+            height: 100%;
+          }
         }
       `}</style>
 
@@ -1149,9 +1184,27 @@ export default function BlogPostPage({ params }: PageProps) {
             </div>
           </header>
 
-          {displayPost.bannerImage ? (
+          {displayPost.bannerImage || displayPost.mobileBannerImage ? (
             <div className="post-banner-image-container">
-              <img src={displayPost.bannerImage} alt={displayPost.title} className="post-banner-image" />
+              <picture>
+                {displayPost.mobileBannerImage && (
+                  <source
+                    media="(max-width: 600px)"
+                    srcSet={displayPost.mobileBannerImage}
+                  />
+                )}
+                {displayPost.bannerImage && (
+                  <source
+                    media="(min-width: 601px)"
+                    srcSet={displayPost.bannerImage}
+                  />
+                )}
+                <img
+                  src={displayPost.bannerImage || displayPost.mobileBannerImage}
+                  alt={displayPost.bannerImageAlt || displayPost.mobileBannerImageAlt || displayPost.title}
+                  className="post-banner-image"
+                />
+              </picture>
             </div>
           ) : (
             <div className={`post-cover-visual ${displayPost.thumbClass}`}>

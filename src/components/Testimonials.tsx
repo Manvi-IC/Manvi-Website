@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -8,31 +8,38 @@ import ScrollReveal from "./ScrollReveal";
 
 export default function Testimonials() {
   const { t } = useLanguage();
+  const [mounted, setMounted] = useState(false);
+  const [slidesCount, setSlidesCount] = useState(3);
+
+  useEffect(() => {
+    setMounted(true);
+    
+    // Explicitly handle window resize to bypass react-slick's buggy internal responsive array
+    const handleResize = () => {
+      if (window.innerWidth <= 1299) {
+        setSlidesCount(1);
+      } else {
+        setSlidesCount(3);
+      }
+    };
+    
+    // Run once on mount
+    handleResize();
+    
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const sliderSettings = {
     infinite: true,
     speed: 500,
-    slidesToShow: 3,
+    slidesToShow: slidesCount,
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 1500,
     arrows: false,
-    centerMode: true,
-    centerPadding: "20px",
-    responsive: [
-      {
-        breakpoint: 1024,
-        settings: { slidesToShow: 1, centerPadding: "100px" },
-      },
-      {
-        breakpoint: 768,
-        settings: { slidesToShow: 1, centerPadding: "30px" },
-      },
-      {
-        breakpoint: 480,
-        settings: { slidesToShow: 1, centerPadding: "10px" },
-      },
-    ],
+    centerMode: slidesCount > 1,
+    centerPadding: slidesCount > 1 ? "20px" : "0px",
   };
 
   const testimonialsList = [
@@ -74,40 +81,42 @@ export default function Testimonials() {
             </h2>
           </div>
 
-          <div className="testimonial-carousel-container testimonial-carousel-light w-full">
-            <Slider {...sliderSettings}>
-              {displayTestimonials.map((testimonial, i) => (
-                <div
-                  key={i}
-                  className="testimonial-slide flex p-4 sm:p-6 items-center justify-center"
-                >
-                  <div className="flex flex-col gap-0 px-5 py-6 sm:px-8 sm:py-8 rounded-2xl bg-white shadow-sm border border-black/5 mx-auto w-full md:max-w-xl min-h-[250px] sm:min-h-[200px]">
-                    <span className="text-[32px] md:text-[40px] text-[#e77419] font-serif leading-none select-none">
-                      &#x201C;&#x201C;
-                    </span>
-                    <p className="text-[14px] sm:text-[15px] text-[#666] leading-relaxed italic mb-4">
-                      {t[testimonial.textKey as keyof typeof t]}
-                    </p>
-                    <div className="flex items-center gap-4 mt-auto">
-                      <div
-                        className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-[14px] shrink-0"
-                        style={{ background: "#e77419" }}
-                      >
-                        {testimonial.name[0]}
-                      </div>
-                      <div className="flex flex-col">
-                        <p className="text-[14px] font-bold text-[#0a111e]">
-                          {testimonial.name}
-                        </p>
-                        <p className="text-[12px] text-[#666]">
-                          {testimonial.location}
-                        </p>
+          <div className="testimonial-carousel-container testimonial-carousel-light w-full min-h-[300px]">
+            {mounted ? (
+              <Slider {...sliderSettings}>
+                {displayTestimonials.map((testimonial, i) => (
+                  <div
+                    key={i}
+                    className="testimonial-slide flex p-4 sm:p-6 items-center justify-center"
+                  >
+                    <div className="flex flex-col gap-0 px-5 py-6 sm:px-8 sm:py-8 rounded-2xl bg-white shadow-sm border border-black/5 mx-auto w-full md:max-w-xl min-h-[250px] sm:min-h-[200px]">
+                      <span className="text-[32px] md:text-[40px] text-[#e77419] font-serif leading-none select-none">
+                        &#x201C;&#x201C;
+                      </span>
+                      <p className="text-[14px] sm:text-[15px] text-[#666] leading-relaxed italic mb-4">
+                        {t[testimonial.textKey as keyof typeof t]}
+                      </p>
+                      <div className="flex items-center gap-4 mt-auto">
+                        <div
+                          className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-[14px] shrink-0"
+                          style={{ background: "#e77419" }}
+                        >
+                          {testimonial.name[0]}
+                        </div>
+                        <div className="flex flex-col">
+                          <p className="text-[14px] font-bold text-[#0a111e]">
+                            {testimonial.name}
+                          </p>
+                          <p className="text-[12px] text-[#666]">
+                            {testimonial.location}
+                          </p>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              ))}
-            </Slider>
+                ))}
+              </Slider>
+            ) : null}
           </div>
 
           <style jsx global>{`
@@ -153,10 +162,15 @@ export default function Testimonials() {
               transform: scale(1.05);
             }
 
-            @media (max-width: 768px) {
+            @media (max-width: 1299px) {
               .testimonial-carousel-container::before,
               .testimonial-carousel-container::after {
-                width: 5%;
+                display: none !important;
+              }
+              .testimonial-slide {
+                opacity: 1 !important;
+                transform: scale(1) !important;
+                padding: 10px;
               }
             }
           `}</style>
