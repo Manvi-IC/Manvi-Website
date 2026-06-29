@@ -813,7 +813,6 @@ export default function BlogPostPage({ params }: PageProps) {
         /* Banner styling */
         .post-banner-image-container {
           width: 100%;
-          height: 440px;
           border-radius: 20px;
           overflow: hidden;
           margin-bottom: 40px;
@@ -821,8 +820,8 @@ export default function BlogPostPage({ params }: PageProps) {
         }
         .post-banner-image {
           width: 100%;
-          height: 100%;
-          object-fit: cover;
+          height: auto;
+          display: block;
         }
 
         /* Slideshow styling */
@@ -1120,11 +1119,11 @@ export default function BlogPostPage({ params }: PageProps) {
             height: 240px;
           }
           .post-banner-image-container {
-            height: auto;
-            aspect-ratio: 4 / 3;
+            border-radius: 12px;
           }
           .post-banner-image {
-            height: 100%;
+            width: 100%;
+            height: auto;
           }
         }
       `}</style>
