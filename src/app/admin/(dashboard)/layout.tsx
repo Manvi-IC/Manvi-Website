@@ -10,7 +10,8 @@ import {
   Briefcase,
   FileText,
   MessageSquareQuote,
-  MapPinned, // ← new icon for Quote Enquiries
+  MapPinned,
+  Mail,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -134,6 +135,7 @@ export default function AdminLayout({
             "Site Settings",
           )}
           {navLink("/admin/blog", <FileText size={20} />, "Blogs")}
+          {navLink("/admin/newsletter", <Mail size={20} />, "Newsletter")}
           {navLink(
             "/admin/settings",
             <Settings size={20} />,

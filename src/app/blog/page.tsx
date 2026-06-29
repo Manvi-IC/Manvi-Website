@@ -72,11 +72,29 @@ export default function BlogPage(): React.ReactElement {
     return () => observer.disconnect();
   }, [blogs, featuredPost]);
 
-  const handleSubscribe = (e: React.FormEvent<HTMLFormElement>): void => {
+  const [subscribing, setSubscribing] = useState<boolean>(false);
+
+  const handleSubscribe = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
-    if (email.trim()) {
-      setNewsletterMessage("Thanks! You're on the list. ✈");
-      setEmail("");
+    if (!email.trim()) return;
+    setSubscribing(true);
+    try {
+      const res = await fetch(`${API_URL}/api/subscribe`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: email.trim() }),
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        setNewsletterMessage("Thanks! You're on the list. ✈");
+        setEmail("");
+      } else {
+        setNewsletterMessage(data.error || "Something went wrong. Please try again.");
+      }
+    } catch {
+      setNewsletterMessage("Network error. Please try again.");
+    } finally {
+      setSubscribing(false);
       setTimeout(() => setNewsletterMessage(""), 5000);
     }
   };
@@ -716,7 +734,9 @@ export default function BlogPage(): React.ReactElement {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
-              <button type="submit">Subscribe</button>
+              <button type="submit" disabled={subscribing}>
+                {subscribing ? "Subscribing…" : "Subscribe"}
+              </button>
             </form>
             <div className="newsletter-message">{newsletterMessage}</div>
           </div>
