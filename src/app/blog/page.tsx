@@ -271,6 +271,7 @@ export default function BlogPage(): React.ReactElement {
           object-fit: cover;
           position: absolute;
           inset: 0;
+          display: block;
         }
 
         .blog-tag {
@@ -306,7 +307,8 @@ export default function BlogPage(): React.ReactElement {
           box-shadow: 0 18px 40px -24px rgba(15, 30, 46, 0.5);
         }
         .blog-featured .blog-thumb {
-          min-height: 320px;
+          aspect-ratio: 16 / 9;
+          min-height: unset;
         }
         .blog-featured .blog-thumb .icon {
           font-size: 4rem;
@@ -337,7 +339,8 @@ export default function BlogPage(): React.ReactElement {
             grid-template-columns: 1fr;
           }
           .blog-featured .blog-thumb {
-            min-height: 200px;
+            aspect-ratio: 16 / 9;
+            min-height: unset;
           }
           .blog-featured .featured-content {
             padding: 8px 16px 18px;
@@ -369,7 +372,8 @@ export default function BlogPage(): React.ReactElement {
           box-shadow: 0 18px 40px -24px rgba(15, 30, 46, 0.5);
         }
         .blog-post .blog-thumb {
-          height: 160px;
+          aspect-ratio: 16 / 9;
+          height: auto;
         }
         .blog-post .blog-thumb .icon {
           font-size: 2.4rem;
