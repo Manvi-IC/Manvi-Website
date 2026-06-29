@@ -381,7 +381,7 @@ const translations: Record<Language, Translations> = {
     footer_pickup_availability: "Pickup Availability",
     footer_campaign: "Campaign",
     footer_business_campaign: "Business Campaign",
-    footer_blog: "Blog",
+    footer_blog: "Blogs",
     footer_career: "Career",
     b2b_hero_badge: "Bulk Sourcing For Indian Businesses",
     b2b_hero_title_line1: "Source From India.",
