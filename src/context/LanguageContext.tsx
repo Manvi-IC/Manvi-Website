@@ -5,6 +5,42 @@ import { createContext, useContext, useState, ReactNode } from "react";
 export type Language = "en" | "hi" | "pa" | "fr" | "es";
 
 export interface Translations {
+  // Shipping Restrictions
+  restriction_view_details: string;
+  restriction_blocked: string;
+  restriction_warning: string;
+  restriction_allowed: string;
+  restriction_medicine: string;
+  restriction_herbal_medicine: string;
+  restriction_liquid_medicine: string;
+  restriction_ghee: string;
+  restriction_oil: string;
+  restriction_pickle: string;
+  restriction_silver: string;
+  restriction_supplements: string;
+  restriction_memory_cards: string;
+  restriction_homemade_sweets: string;
+  restriction_cosmetics: string;
+  restriction_branded_eatables: string;
+  restriction_spices: string;
+  restriction_electronics: string;
+  restriction_wooden_items: string;
+  restriction_sim_cards: string;
+  restriction_turban_items: string;
+  restriction_accessories: string;
+  restriction_phone_accessories: string;
+  restriction_dhl_note: string;
+  restriction_ups_note: string;
+  restriction_fedex_note: string;
+  restriction_fedex_special_note: string;
+  restriction_fedex_special_blocked: string;
+  restriction_fedex_special_allowed: string;
+  restriction_self_note: string;
+  restriction_self_blocked: string;
+  restriction_self_uk: string;
+  restriction_self_usa: string;
+  restriction_self_allowed: string;
+  restriction_blocked_everywhere: string;
   hero_slide1_tagline: string;
   hero_slide1_highlight: string;
   hero_slide2_tagline: string;
@@ -370,6 +406,52 @@ export interface Translations {
 
 const translations: Record<Language, Translations> = {
   en: {
+    restriction_view_details: "View shipping restrictions",
+    restriction_blocked: "Blocked",
+    restriction_warning: "Warning - restrictions apply",
+    restriction_allowed: "Allowed",
+    restriction_medicine: "Medicine",
+    restriction_herbal_medicine: "Herbal medicine",
+    restriction_liquid_medicine: "Liquid medicine",
+    restriction_ghee: "Ghee",
+    restriction_oil: "Oil",
+    restriction_pickle: "Pickle",
+    restriction_silver: "Silver",
+    restriction_supplements: "Supplements",
+    restriction_memory_cards: "Memory cards",
+    restriction_homemade_sweets: "Homemade sweets/masala — up to 30% mix only",
+    restriction_cosmetics: "Cosmetics — garment-mixed only",
+    restriction_branded_eatables: "Branded eatables — garment-mixed only",
+    restriction_spices: "Spices — garment-mixed only",
+    restriction_electronics: "Electronics — Non-DG certificate needed",
+    restriction_wooden_items: "Wooden items — fumigation declaration needed",
+    restriction_sim_cards: "SIM cards",
+    restriction_turban_items: "Turban items",
+    restriction_accessories: "Bike/car & barber accessories",
+    restriction_phone_accessories: "Phone accessories",
+    restriction_dhl_note:
+      "Note: Australia/NZ routes stricter than US/Canada on several items",
+    restriction_ups_note:
+      "Note: Australia/NZ routes block cosmetics & branded eatables entirely",
+    restriction_fedex_note: "Standard (USA/Canada) restrictions apply",
+    restriction_fedex_special_note:
+      "Special (MED/SPCL lane) — accepts medicine but blocks almost everything else",
+    restriction_fedex_special_blocked:
+      "No SIM, no turban items, no accessories, no food",
+    restriction_fedex_special_allowed:
+      "Medicine, herbal medicine, liquid medicine, tablets, powders, supplements",
+    restriction_self_note:
+      "Widest allowance — UK most open, USA route is tighter",
+    restriction_self_blocked:
+      "Chyawanprash, nail polish, watch, speakers, phone, laptop (blocked everywhere)",
+    restriction_self_uk:
+      "UK — also allows liquid medicine, powder/tablet dawai, stone, multani mitti",
+    restriction_self_usa:
+      "USA — blocks medicine, ghee, oil, pickle, memory cards, mehandi, hair colour",
+    restriction_self_allowed:
+      "Homemade food, cosmetics, branded eatables, electronics, wooden items — generally OK",
+    restriction_blocked_everywhere:
+      "Blocked everywhere: Chyawanprash, nail polish, watch, speakers, phone, laptop",
     hero_slide1_tagline: "Your trusted courier,",
     hero_slide1_highlight: "across every mile.",
     hero_slide2_tagline: "Distance not Divide,",
@@ -795,6 +877,51 @@ const translations: Record<Language, Translations> = {
   },
 
   hi: {
+    restriction_view_details: "शिपिंग प्रतिबंध देखें",
+    restriction_blocked: "प्रतिबंधित",
+    restriction_warning: "चेतावनी - प्रतिबंध लागू",
+    restriction_allowed: "अनुमत",
+    restriction_medicine: "दवा",
+    restriction_herbal_medicine: "हर्बल दवा",
+    restriction_liquid_medicine: "तरल दवा",
+    restriction_ghee: "घी",
+    restriction_oil: "तेल",
+    restriction_pickle: "अचार",
+    restriction_silver: "चांदी",
+    restriction_supplements: "सप्लीमेंट्स",
+    restriction_memory_cards: "मेमोरी कार्ड",
+    restriction_homemade_sweets: "घर का बना मिठाई/मसाला — केवल 30% मिश्रण",
+    restriction_cosmetics: "कॉस्मेटिक्स — केवल गारमेंट-मिक्स्ड",
+    restriction_branded_eatables: "ब्रांडेड खाद्य — केवल गारमेंट-मिक्स्ड",
+    restriction_spices: "मसाले — केवल गारमेंट-मिक्स्ड",
+    restriction_electronics: "इलेक्ट्रॉनिक्स — नॉन-डीजी प्रमाणपत्र आवश्यक",
+    restriction_wooden_items: "लकड़ी की वस्तुएं — फ्यूमिगेशन घोषणा आवश्यक",
+    restriction_sim_cards: "सिम कार्ड",
+    restriction_turban_items: "पगड़ी आइटम",
+    restriction_accessories: "बाइक/कार और बार्बर एक्सेसरीज़",
+    restriction_phone_accessories: "फोन एक्सेसरीज़",
+    restriction_dhl_note:
+      "नोट: ऑस्ट्रेलिया/न्यूज़ीलैंड मार्ग यूएस/कनाडा से अधिक सख्त हैं",
+    restriction_ups_note:
+      "नोट: ऑस्ट्रेलिया/न्यूज़ीलैंड मार्ग कॉस्मेटिक्स और ब्रांडेड खाद्य को पूरी तरह से प्रतिबंधित करते हैं",
+    restriction_fedex_note: "मानक (यूएसए/कनाडा) प्रतिबंध लागू",
+    restriction_fedex_special_note:
+      "विशेष (MED/SPCL लेन) — दवा स्वीकार करता है लेकिन बाकी सब कुछ प्रतिबंधित करता है",
+    restriction_fedex_special_blocked: "सिम, पगड़ी, एक्सेसरीज़, भोजन नहीं",
+    restriction_fedex_special_allowed:
+      "दवा, हर्बल दवा, तरल दवा, गोलियाँ, पाउडर, सप्लीमेंट्स",
+    restriction_self_note:
+      "सबसे व्यापक अनुमति — यूके सबसे खुला, यूएसए मार्ग सख्त",
+    restriction_self_blocked:
+      "च्यवनप्राश, नेल पॉलिश, घड़ी, स्पीकर, फोन, लैपटॉप (सभी जगह प्रतिबंधित)",
+    restriction_self_uk:
+      "यूके — तरल दवा, पाउडर/टैबलेट दवाई, पत्थर, मुल्तानी मिट्टी भी अनुमत",
+    restriction_self_usa:
+      "यूएसए — दवा, घी, तेल, अचार, मेमोरी कार्ड, मेहंदी, हेयर कलर प्रतिबंधित",
+    restriction_self_allowed:
+      "घर का बना भोजन, कॉस्मेटिक्स, ब्रांडेड खाद्य, इलेक्ट्रॉनिक्स, लकड़ी — आम तौर पर ठीक",
+    restriction_blocked_everywhere:
+      "सभी जगह प्रतिबंधित: च्यवनप्राश, नेल पॉलिश, घड़ी, स्पीकर, फोन, लैपटॉप",
     hero_slide1_tagline: "आपका भरोसेमंद कूरियर,",
     hero_slide1_highlight: "हर मील पर।",
     hero_slide2_tagline: "दूरी कोई बाधा नहीं,",
@@ -1218,6 +1345,51 @@ const translations: Record<Language, Translations> = {
   },
 
   pa: {
+    restriction_view_details: "ਸ਼ਿਪਿੰਗ ਪਾਬੰਦੀਆਂ ਵੇਖੋ",
+    restriction_blocked: "ਪਾਬੰਦੀਸ਼ੁਦਾ",
+    restriction_warning: "ਚੇਤਾਵਨੀ - ਪਾਬੰਦੀਆਂ ਲਾਗੂ",
+    restriction_allowed: "ਆਗਿਆ ਪ੍ਰਾਪਤ",
+    restriction_medicine: "ਦਵਾਈ",
+    restriction_herbal_medicine: "ਹਰਬਲ ਦਵਾਈ",
+    restriction_liquid_medicine: "ਤਰਲ ਦਵਾਈ",
+    restriction_ghee: "ਘਿਓ",
+    restriction_oil: "ਤੇਲ",
+    restriction_pickle: "ਅਚਾਰ",
+    restriction_silver: "ਚਾਂਦੀ",
+    restriction_supplements: "ਸਪਲੀਮੈਂਟਸ",
+    restriction_memory_cards: "ਮੈਮੋਰੀ ਕਾਰਡ",
+    restriction_homemade_sweets: "ਘਰੇਲੂ ਮਿਠਾਈ/ਮਸਾਲਾ — ਸਿਰਫ 30% ਮਿਕਸ",
+    restriction_cosmetics: "ਕਾਸਮੈਟਿਕਸ — ਸਿਰਫ ਗਾਰਮੈਂਟ-ਮਿਕਸਡ",
+    restriction_branded_eatables: "ਬ੍ਰਾਂਡਡ ਖਾਣੇ — ਸਿਰਫ ਗਾਰਮੈਂਟ-ਮਿਕਸਡ",
+    restriction_spices: "ਮਸਾਲੇ — ਸਿਰਫ ਗਾਰਮੈਂਟ-ਮਿਕਸਡ",
+    restriction_electronics: "ਇਲੈਕਟ੍ਰੋਨਿਕਸ — ਨੌਨ-ਡੀਜੀ ਸਰਟੀਫਿਕੇਟ ਲੋੜੀਂਦਾ",
+    restriction_wooden_items: "ਲੱਕੜ ਦੀਆਂ ਚੀਜ਼ਾਂ — ਫਿਊਮੀਗੇਸ਼ਨ ਘੋਸ਼ਣਾ ਲੋੜੀਂਦੀ",
+    restriction_sim_cards: "ਸਿਮ ਕਾਰਡ",
+    restriction_turban_items: "ਪਗੜੀ ਆਈਟਮਾਂ",
+    restriction_accessories: "ਬਾਈਕ/ਕਾਰ ਅਤੇ ਬਾਰਬਰ ਐਕਸੈਸਰੀਜ਼",
+    restriction_phone_accessories: "ਫੋਨ ਐਕਸੈਸਰੀਜ਼",
+    restriction_dhl_note:
+      "ਨੋਟ: ਆਸਟ੍ਰੇਲੀਆ/ਨਿਊਜ਼ੀਲੈਂਡ ਰੂਟ ਯੂਐਸ/ਕੈਨੇਡਾ ਨਾਲੋਂ ਸਖਤ ਹਨ",
+    restriction_ups_note:
+      "ਨੋਟ: ਆਸਟ੍ਰੇਲੀਆ/ਨਿਊਜ਼ੀਲੈਂਡ ਰੂਟ ਕਾਸਮੈਟਿਕਸ ਅਤੇ ਬ੍ਰਾਂਡਡ ਖਾਣੇ ਨੂੰ ਪੂਰੀ ਤਰ੍ਹਾਂ ਬਲੌਕ ਕਰਦੇ ਹਨ",
+    restriction_fedex_note: "ਸਟੈਂਡਰਡ (ਯੂਐਸਏ/ਕੈਨੇਡਾ) ਪਾਬੰਦੀਆਂ ਲਾਗੂ",
+    restriction_fedex_special_note:
+      "ਵਿਸ਼ੇਸ਼ (MED/SPCL ਲੇਨ) — ਦਵਾਈ ਸਵੀਕਾਰ ਕਰਦਾ ਹੈ ਪਰ ਬਾਕੀ ਸਭ ਕੁਝ ਬਲੌਕ ਕਰਦਾ ਹੈ",
+    restriction_fedex_special_blocked: "ਕੋਈ ਸਿਮ, ਪਗੜੀ, ਐਕਸੈਸਰੀਜ਼, ਭੋਜਨ ਨਹੀਂ",
+    restriction_fedex_special_allowed:
+      "ਦਵਾਈ, ਹਰਬਲ ਦਵਾਈ, ਤਰਲ ਦਵਾਈ, ਗੋਲੀਆਂ, ਪਾਊਡਰ, ਸਪਲੀਮੈਂਟਸ",
+    restriction_self_note:
+      "ਸਭ ਤੋਂ ਵਿਆਪਕ ਇਜਾਜ਼ਤ — ਯੂਕੇ ਸਭ ਤੋਂ ਖੁੱਲ੍ਹਾ, ਯੂਐਸਏ ਰੂਟ ਸਖਤ",
+    restriction_self_blocked:
+      "ਚਯਵਨਪ੍ਰਾਸ਼, ਨੇਲ ਪਾਲਿਸ਼, ਘੜੀ, ਸਪੀਕਰ, ਫੋਨ, ਲੈਪਟਾਪ (ਸਾਰੀਆਂ ਥਾਵਾਂ 'ਤੇ ਬਲੌਕ)",
+    restriction_self_uk:
+      "ਯੂਕੇ — ਤਰਲ ਦਵਾਈ, ਪਾਊਡਰ/ਟੈਬਲੈੱਟ ਦਵਾਈ, ਪੱਥਰ, ਮੁਲਤਾਨੀ ਮਿੱਟੀ ਵੀ ਆਗਿਆ",
+    restriction_self_usa:
+      "ਯੂਐਸਏ — ਦਵਾਈ, ਘਿਓ, ਤੇਲ, ਅਚਾਰ, ਮੈਮੋਰੀ ਕਾਰਡ, ਮਹਿੰਦੀ, ਹੇਅਰ ਕਲਰ ਬਲੌਕ",
+    restriction_self_allowed:
+      "ਘਰੇਲੂ ਭੋਜਨ, ਕਾਸਮੈਟਿਕਸ, ਬ੍ਰਾਂਡਡ ਖਾਣੇ, ਇਲੈਕਟ੍ਰੋਨਿਕਸ, ਲੱਕੜ — ਆਮ ਤੌਰ 'ਤੇ ਠੀਕ",
+    restriction_blocked_everywhere:
+      "ਸਾਰੀਆਂ ਥਾਵਾਂ 'ਤੇ ਬਲੌਕ: ਚਯਵਨਪ੍ਰਾਸ਼, ਨੇਲ ਪਾਲਿਸ਼, ਘੜੀ, ਸਪੀਕਰ, ਫੋਨ, ਲੈਪਟਾਪ",
     hero_slide1_tagline: "ਤੁਹਾਡਾ ਭਰੋਸੇਯੋਗ ਕੂਰੀਅਰ,",
     hero_slide1_highlight: "ਹਰ ਮੀਲ ਵਿੱਚ।",
     hero_slide2_tagline: "ਦੂਰੀ ਕੋਈ ਰੁਕਾਵਟ ਨਹੀਂ,",
@@ -1641,6 +1813,57 @@ const translations: Record<Language, Translations> = {
   },
 
   fr: {
+    restriction_view_details: "Voir les restrictions d'expédition",
+    restriction_blocked: "Bloqué",
+    restriction_warning: "Avertissement - restrictions applicables",
+    restriction_allowed: "Autorisé",
+    restriction_medicine: "Médicaments",
+    restriction_herbal_medicine: "Médicaments à base de plantes",
+    restriction_liquid_medicine: "Médicaments liquides",
+    restriction_ghee: "Ghee",
+    restriction_oil: "Huile",
+    restriction_pickle: "Pickle",
+    restriction_silver: "Argent",
+    restriction_supplements: "Compléments alimentaires",
+    restriction_memory_cards: "Cartes mémoire",
+    restriction_homemade_sweets:
+      "Bonbons/masala faits maison — 30% de mélange maximum",
+    restriction_cosmetics:
+      "Cosmétiques — mélangés avec des vêtements uniquement",
+    restriction_branded_eatables:
+      "Aliments de marque — mélangés avec des vêtements uniquement",
+    restriction_spices: "Épices — mélangés avec des vêtements uniquement",
+    restriction_electronics: "Électronique — certificat Non-DG requis",
+    restriction_wooden_items:
+      "Articles en bois — déclaration de fumigation requise",
+    restriction_sim_cards: "Cartes SIM",
+    restriction_turban_items: "Articles de turban",
+    restriction_accessories: "Accessoires moto/voiture et barbier",
+    restriction_phone_accessories: "Accessoires téléphone",
+    restriction_dhl_note:
+      "Remarque: les routes Australie/NZ sont plus strictes que les États-Unis/Canada",
+    restriction_ups_note:
+      "Remarque: les routes Australie/NZ bloquent complètement les cosmétiques et aliments de marque",
+    restriction_fedex_note:
+      "Restrictions standard (États-Unis/Canada) applicables",
+    restriction_fedex_special_note:
+      "Spécial (voie MED/SPCL) — accepte les médicaments mais bloque presque tout",
+    restriction_fedex_special_blocked:
+      "Pas de SIM, turban, accessoires, nourriture",
+    restriction_fedex_special_allowed:
+      "Médicaments, plantes médicinales, médicaments liquides, comprimés, poudres, compléments",
+    restriction_self_note:
+      "Autorisation la plus large — Royaume-Uni le plus ouvert, route USA plus stricte",
+    restriction_self_blocked:
+      "Chyawanprash, vernis à ongles, montre, enceintes, téléphone, ordinateur portable (bloqué partout)",
+    restriction_self_uk:
+      "Royaume-Uni — permet également médicaments liquides, médicaments en poudre/comprimés, pierre, multani mitti",
+    restriction_self_usa:
+      "USA — bloque médicaments, ghee, huile, pickle, cartes mémoire, mehandi, teinture capillaire",
+    restriction_self_allowed:
+      "Nourriture maison, cosmétiques, aliments de marque, électronique, bois — généralement OK",
+    restriction_blocked_everywhere:
+      "Bloqué partout: Chyawanprash, vernis à ongles, montre, enceintes, téléphone, ordinateur portable",
     hero_slide1_tagline: "Votre coursier de confiance,",
     hero_slide1_highlight: "à chaque kilomètre.",
     hero_slide2_tagline: "La distance ne divise pas,",
@@ -2070,6 +2293,54 @@ const translations: Record<Language, Translations> = {
   },
 
   es: {
+    restriction_view_details: "Ver restricciones de envío",
+    restriction_blocked: "Bloqueado",
+    restriction_warning: "Advertencia - restricciones aplican",
+    restriction_allowed: "Permitido",
+    restriction_medicine: "Medicamentos",
+    restriction_herbal_medicine: "Medicamentos herbales",
+    restriction_liquid_medicine: "Medicamentos líquidos",
+    restriction_ghee: "Ghee",
+    restriction_oil: "Aceite",
+    restriction_pickle: "Encurtidos",
+    restriction_silver: "Plata",
+    restriction_supplements: "Suplementos",
+    restriction_memory_cards: "Tarjetas de memoria",
+    restriction_homemade_sweets: "Dulces/masala caseros — solo 30% de mezcla",
+    restriction_cosmetics: "Cosméticos — solo mezclados con prendas",
+    restriction_branded_eatables:
+      "Alimentos de marca — solo mezclados con prendas",
+    restriction_spices: "Especias — solo mezcladas con prendas",
+    restriction_electronics: "Electrónicos — certificado Non-DG requerido",
+    restriction_wooden_items:
+      "Artículos de madera — declaración de fumigación requerida",
+    restriction_sim_cards: "Tarjetas SIM",
+    restriction_turban_items: "Artículos de turbante",
+    restriction_accessories: "Accesorios de moto/coche y barbería",
+    restriction_phone_accessories: "Accesorios de teléfono",
+    restriction_dhl_note:
+      "Nota: rutas Australia/NZ más estrictas que EE.UU./Canadá",
+    restriction_ups_note:
+      "Nota: rutas Australia/NZ bloquean cosméticos y alimentos de marca completamente",
+    restriction_fedex_note: "Restricciones estándar (EE.UU./Canadá) aplican",
+    restriction_fedex_special_note:
+      "Especial (carril MED/SPCL) — acepta medicamentos pero bloquea casi todo",
+    restriction_fedex_special_blocked:
+      "No hay SIM, turbante, accesorios, comida",
+    restriction_fedex_special_allowed:
+      "Medicamentos, herbales, medicamentos líquidos, tabletas, polvos, suplementos",
+    restriction_self_note:
+      "Permiso más amplio — Reino Unido más abierto, ruta EE.UU. más estricta",
+    restriction_self_blocked:
+      "Chyawanprash, esmalte de uñas, reloj, altavoces, teléfono, portátil (bloqueado en todas partes)",
+    restriction_self_uk:
+      "Reino Unido — también permite medicamentos líquidos, medicamentos en polvo/comprimidos, piedra, multani mitti",
+    restriction_self_usa:
+      "EE.UU. — bloquea medicamentos, ghee, aceite, encurtidos, tarjetas de memoria, mehandi, tinte para el cabello",
+    restriction_self_allowed:
+      "Comida casera, cosméticos, alimentos de marca, electrónicos, madera — generalmente OK",
+    restriction_blocked_everywhere:
+      "Bloqueado en todas partes: Chyawanprash, esmalte de uñas, reloj, altavoces, teléfono, portátil",
     hero_slide1_tagline: "Su mensajero de confianza,",
     hero_slide1_highlight: "en cada milla.",
     hero_slide2_tagline: "La distancia no divide,",
