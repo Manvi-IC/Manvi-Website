@@ -1,6 +1,6 @@
 // app/components/Hero.tsx
 "use client";
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useRef, useMemo } from "react";
 import {
   ArrowUpRight,
   Users,
@@ -17,7 +17,6 @@ import {
   TrendingDown,
   Clock,
 } from "lucide-react";
-
 
 import Link from "next/link";
 import Image from "next/image";
@@ -202,6 +201,7 @@ function QuotesModal({
   const { t } = useLanguage();
   const [filter, setFilter] = useState<FilterType>("all");
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const [isManualSelection, setIsManualSelection] = useState(false);
 
   // Parse TAT string to extract days for sorting
   const getTATDays = (tat: string): number => {
@@ -209,16 +209,24 @@ function QuotesModal({
     return match ? parseInt(match[0]) : 999;
   };
 
-  // Sort and filter quotes
-  const getFilteredAndSortedQuotes = (): Quote[] => {
-    let filtered = [...quotes];
+  // Sort and filter quotes based on TAT only (no DHL priority)
+  // Memoized on [quotes, filter] so the array reference only changes when
+  // the underlying data actually changes — this is what stops the
+  // auto-select effect below from re-firing (and overriding a manual click)
+  // on every render.
+  const displayedQuotes = useMemo<Quote[]>(() => {
+    const filtered = [...quotes];
 
     switch (filter) {
       case "cheapest":
         filtered.sort((a, b) => a.totalPrice - b.totalPrice);
         break;
       case "fastest":
-        filtered.sort((a, b) => getTATDays(a.tat) - getTATDays(b.tat));
+        filtered.sort((a, b) => {
+          const daysA = getTATDays(a.tat);
+          const daysB = getTATDays(b.tat);
+          return daysA - daysB;
+        });
         break;
       default:
         // Keep original order
@@ -226,18 +234,26 @@ function QuotesModal({
     }
 
     return filtered;
-  };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [quotes, filter]);
 
-  const displayedQuotes = getFilteredAndSortedQuotes();
-
-  // Automatically select first quote when filter changes
+  // Automatically select the first quote ONLY when the filter (or the quote
+  // set) changes — never when the user manually picked a card. Previously
+  // this effect depended on `displayedQuotes`, which was a brand-new array
+  // reference every render, so it kept firing after a manual click and
+  // immediately overwrote the selection back to the first card.
   useEffect(() => {
+    if (isManualSelection) {
+      setIsManualSelection(false);
+      return;
+    }
     if (displayedQuotes.length > 0) {
       const firstQuote = displayedQuotes[0];
       const key = `${firstQuote.service}__${firstQuote.rateType}`;
       onSelect(key);
     }
-  }, [filter, displayedQuotes, onSelect]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filter, quotes]);
 
   // Scroll to selected card when it changes
   useEffect(() => {
@@ -255,7 +271,23 @@ function QuotesModal({
     }
   }, [selectedService]);
 
+  const scroll = (direction: "left" | "right") => {
+    if (scrollContainerRef.current) {
+      const scrollAmount = 340;
+      const newScrollLeft =
+        scrollContainerRef.current.scrollLeft +
+        (direction === "left" ? -scrollAmount : scrollAmount);
+      scrollContainerRef.current.scrollTo({
+        left: newScrollLeft,
+        behavior: "smooth",
+      });
+    }
+  };
 
+  const handleServiceSelect = (key: string) => {
+    setIsManualSelection(true);
+    onSelect(key);
+  };
 
   return (
     <div
@@ -265,7 +297,7 @@ function QuotesModal({
         if (e.target === e.currentTarget) onClose();
       }}
     >
-      <div className="bg-[#0D1527] rounded-2xl w-full max-w-lg max-h-[80vh] flex flex-col shadow-2xl border border-white/10">
+      <div className="bg-[#0D1527] rounded-2xl w-full max-w-7xl max-h-[90vh] h-[80vh] flex flex-col shadow-2xl border border-white/10">
         <div className="flex items-start justify-between gap-3 p-5 border-b border-white/10">
           <div>
             <p className="text-white font-bold text-base">
@@ -284,16 +316,19 @@ function QuotesModal({
           </button>
         </div>
 
-        {/* Filter Section */}
-        <div className="px-5 py-3 border-b border-white/10 flex items-center justify-between">
-          <div className="flex items-center gap-2">
+        {/* Filter Section with Scroll Controls */}
+        <div className="px-5 py-3 border-b border-white/10 flex items-center justify-between flex-wrap gap-2">
+          <div className="flex items-center gap-2 flex-wrap">
             <Filter size={14} className="text-zinc-400" />
             <span className="text-zinc-400 text-[11px] font-medium uppercase tracking-wider">
               Sort by:
             </span>
-            <div className="flex gap-1.5 ml-1">
+            <div className="flex gap-1.5 ml-1 flex-wrap">
               <button
-                onClick={() => setFilter("all")}
+                onClick={() => {
+                  setIsManualSelection(false);
+                  setFilter("all");
+                }}
                 className={`px-3 py-1.5 rounded-lg text-[11px] font-semibold transition-all ${
                   filter === "all"
                     ? "bg-[#e77419] text-white"
@@ -303,7 +338,10 @@ function QuotesModal({
                 Default
               </button>
               <button
-                onClick={() => setFilter("cheapest")}
+                onClick={() => {
+                  setIsManualSelection(false);
+                  setFilter("cheapest");
+                }}
                 className={`px-3 py-1.5 rounded-lg text-[11px] font-semibold transition-all flex items-center gap-1 ${
                   filter === "cheapest"
                     ? "bg-[#e77419] text-white"
@@ -314,7 +352,10 @@ function QuotesModal({
                 Most Affordable
               </button>
               <button
-                onClick={() => setFilter("fastest")}
+                onClick={() => {
+                  setIsManualSelection(false);
+                  setFilter("fastest");
+                }}
                 className={`px-3 py-1.5 rounded-lg text-[11px] font-semibold transition-all flex items-center gap-1 ${
                   filter === "fastest"
                     ? "bg-[#e77419] text-white"
@@ -326,13 +367,26 @@ function QuotesModal({
               </button>
             </div>
           </div>
-
+          <div className="flex gap-1">
+            <button
+              onClick={() => scroll("left")}
+              className="p-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-zinc-400 hover:text-white transition-all"
+            >
+              <ChevronLeft size={16} />
+            </button>
+            <button
+              onClick={() => scroll("right")}
+              className="p-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-zinc-400 hover:text-white transition-all"
+            >
+              <ChevronRight size={16} />
+            </button>
+          </div>
         </div>
 
-        {/* Vertical Scrollable Container */}
+        {/* Horizontal Scrollable Container */}
         <div
           ref={scrollContainerRef}
-          className="flex-1 overflow-y-auto overflow-x-hidden p-4 flex flex-col gap-3"
+          className="flex-1 overflow-x-auto overflow-y-hidden p-5 gap-5 flex scrollbar-thin scrollbar-thumb-zinc-600 scrollbar-track-transparent"
           style={{
             scrollbarWidth: "thin",
             scrollbarColor: "#3f3f46 transparent",
@@ -358,8 +412,8 @@ function QuotesModal({
               <div
                 key={key}
                 data-service-key={key}
-                onClick={() => onSelect(key)}
-                className={`relative rounded-xl border-2 p-4 cursor-pointer transition-all w-full ${
+                onClick={() => handleServiceSelect(key)}
+                className={`relative rounded-xl border-2 p-5 cursor-pointer transition-all min-w-[280px] max-w-[320px] flex-shrink-0 flex flex-col ${
                   isSelected
                     ? "border-[#e77419] bg-[#e77419]/10"
                     : "border-zinc-700 bg-zinc-800/60 hover:border-zinc-500"
@@ -375,7 +429,8 @@ function QuotesModal({
                     {badge}
                   </div>
                 )}
-                <div className="flex flex-col gap-3">
+
+                <div className="flex flex-col gap-3 h-full">
                   {/* Top row: Service badge, Zone, Rate Type */}
                   <div className="flex items-center gap-1.5 flex-wrap">
                     <span
@@ -405,14 +460,14 @@ function QuotesModal({
                   </div>
 
                   {/* Middle row: Network name */}
-                  <div>
+                  <div className="flex-1 flex">
                     <p className="text-[18px] font-semibold text-white leading-snug tracking-wide">
                       {networkLabel}
                     </p>
                   </div>
 
                   {/* Bottom row: TAT and Price */}
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center justify-between pt-2 border-t border-white/5">
                     <p className="text-[12px] text-zinc-400 font-medium">
                       {q.tat}
                     </p>
