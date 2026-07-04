@@ -721,6 +721,7 @@ export default function GetQuote() {
               {/* Destination */}
               <div className="relative">
                 <select
+                  aria-label={t.form_select_dest}
                   value={destination}
                   onChange={(e) => {
                     setDestination(e.target.value);
@@ -748,6 +749,11 @@ export default function GetQuote() {
               {requiresSubCountry && (
                 <div className="relative">
                   <select
+                    aria-label={
+                      destination === "EUROPE"
+                        ? t.form_select_euro
+                        : t.form_select_country
+                    }
                     value={zoningCountry}
                     onChange={(e) => {
                       setZoningCountry(e.target.value);
