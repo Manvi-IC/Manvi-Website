@@ -132,10 +132,11 @@ export default function SpeculativeApplyModal({ onClose, onSuccess }: Speculativ
           )}
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="speculative-fullName" className="block text-sm font-medium text-gray-700 mb-1">
               Full Name *
             </label>
             <input
+              id="speculative-fullName"
               type="text"
               name="fullName"
               value={formData.fullName}
@@ -146,10 +147,11 @@ export default function SpeculativeApplyModal({ onClose, onSuccess }: Speculativ
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="speculative-email" className="block text-sm font-medium text-gray-700 mb-1">
               Email Address *
             </label>
             <input
+              id="speculative-email"
               type="email"
               name="email"
               value={formData.email}
@@ -160,10 +162,11 @@ export default function SpeculativeApplyModal({ onClose, onSuccess }: Speculativ
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="speculative-phone" className="block text-sm font-medium text-gray-700 mb-1">
               Phone Number
             </label>
             <input
+              id="speculative-phone"
               type="tel"
               name="phone"
               value={formData.phone}
@@ -173,10 +176,12 @@ export default function SpeculativeApplyModal({ onClose, onSuccess }: Speculativ
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="speculative-experience" className="block text-sm font-medium text-gray-700 mb-1">
               Years of Experience *
             </label>
             <select
+              id="speculative-experience"
+              aria-label="Years of Experience"
               name="experience"
               value={formData.experience}
               onChange={handleChange}
@@ -193,10 +198,12 @@ export default function SpeculativeApplyModal({ onClose, onSuccess }: Speculativ
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="speculative-noticePeriod" className="block text-sm font-medium text-gray-700 mb-1">
               Notice Period *
             </label>
             <select
+              id="speculative-noticePeriod"
+              aria-label="Notice Period"
               name="noticePeriod"
               value={formData.noticePeriod}
               onChange={handleChange}
@@ -228,7 +235,7 @@ export default function SpeculativeApplyModal({ onClose, onSuccess }: Speculativ
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="speculative-resume" className="block text-sm font-medium text-gray-700 mb-1">
               Upload Resume (PDF/Word) *
             </label>
             <div
@@ -238,6 +245,8 @@ export default function SpeculativeApplyModal({ onClose, onSuccess }: Speculativ
               }`}
             >
               <input
+                id="speculative-resume"
+                aria-label="Upload Resume"
                 ref={fileInputRef}
                 type="file"
                 accept=".pdf,.doc,.docx"

@@ -125,6 +125,7 @@ export default function Header() {
                   className="flex items-center gap-1.5 hover:text-white transition-colors cursor-pointer focus:outline-none"
                   aria-expanded={isLangOpen}
                   aria-haspopup="listbox"
+                  aria-controls="language-dropdown-list"
                 >
                   <Globe className="h-3.5 w-3.5" />
                   <span>
@@ -140,7 +141,9 @@ export default function Header() {
                 {/* Dropdown — positioned below the entire sticky bar */}
                 {isLangOpen && (
                   <div
+                    id="language-dropdown-list"
                     role="listbox"
+                    aria-labelledby="language-selector"
                     className="absolute right-0 top-full mt-2 w-44 bg-[#0f1a2e] border border-white/10 rounded-2xl shadow-2xl overflow-hidden z-[200] animate-in fade-in duration-150"
                   >
                     <button
@@ -290,8 +293,10 @@ export default function Header() {
             </div>
 
             {/* Mobile Menu Toggle */}
-            <div
-              className="md:hidden w-10 h-10 bg-[#f27a1a] rounded-xl flex items-center justify-center cursor-pointer hover:bg-orange-600 transition-colors"
+            <button
+              aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
+              aria-expanded={isMobileMenuOpen}
+              className="md:hidden w-10 h-10 bg-[#f27a1a] rounded-xl flex items-center justify-center cursor-pointer hover:bg-orange-600 transition-colors focus:outline-none"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             >
               {isMobileMenuOpen ? (
@@ -309,7 +314,7 @@ export default function Header() {
                   <rect x="12" y="12" width="4" height="4" rx="1" />
                 </svg>
               )}
-            </div>
+            </button>
           </div>
         </header>
       </div>

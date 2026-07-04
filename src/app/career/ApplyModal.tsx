@@ -124,6 +124,7 @@ export default function ApplyModal({ job, onClose, onSuccess }: ApplyModalProps)
           </div>
           <button
             onClick={onClose}
+            aria-label="Close application form"
             className="p-1 hover:bg-gray-100 rounded-lg transition-colors"
           >
             <X size={20} />
@@ -139,10 +140,11 @@ export default function ApplyModal({ job, onClose, onSuccess }: ApplyModalProps)
           )}
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="apply-fullName" className="block text-sm font-medium text-gray-700 mb-1">
               Full Name *
             </label>
             <input
+              id="apply-fullName"
               type="text"
               name="fullName"
               value={formData.fullName}
@@ -153,10 +155,11 @@ export default function ApplyModal({ job, onClose, onSuccess }: ApplyModalProps)
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="apply-email" className="block text-sm font-medium text-gray-700 mb-1">
               Email Address *
             </label>
             <input
+              id="apply-email"
               type="email"
               name="email"
               value={formData.email}
@@ -167,10 +170,11 @@ export default function ApplyModal({ job, onClose, onSuccess }: ApplyModalProps)
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="apply-phone" className="block text-sm font-medium text-gray-700 mb-1">
               Phone Number
             </label>
             <input
+              id="apply-phone"
               type="tel"
               name="phone"
               value={formData.phone}
@@ -180,10 +184,12 @@ export default function ApplyModal({ job, onClose, onSuccess }: ApplyModalProps)
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="apply-experience" className="block text-sm font-medium text-gray-700 mb-1">
               Years of Experience *
             </label>
             <select
+              id="apply-experience"
+              aria-label="Years of Experience"
               name="experience"
               value={formData.experience}
               onChange={handleChange}
@@ -200,10 +206,12 @@ export default function ApplyModal({ job, onClose, onSuccess }: ApplyModalProps)
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="apply-noticePeriod" className="block text-sm font-medium text-gray-700 mb-1">
               Notice Period *
             </label>
             <select
+              id="apply-noticePeriod"
+              aria-label="Notice Period"
               name="noticePeriod"
               value={formData.noticePeriod}
               onChange={handleChange}
@@ -221,16 +229,26 @@ export default function ApplyModal({ job, onClose, onSuccess }: ApplyModalProps)
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="apply-resume" className="block text-sm font-medium text-gray-700 mb-1">
               Upload Resume (PDF/Word) *
             </label>
             <div
+              role="button"
+              tabIndex={0}
               onClick={() => fileInputRef.current?.click()}
-              className={`border-2 border-dashed rounded-lg p-6 text-center cursor-pointer hover:border-[#e77419] transition-colors ${
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  fileInputRef.current?.click();
+                }
+              }}
+              className={`border-2 border-dashed rounded-lg p-6 text-center cursor-pointer hover:border-[#e77419] transition-colors focus:outline-none focus:ring-2 focus:ring-[#e77419] ${
                 resume ? "border-green-400 bg-green-50" : "border-gray-300 hover:bg-gray-50"
               }`}
             >
               <input
+                id="apply-resume"
+                aria-label="Upload Resume"
                 ref={fileInputRef}
                 type="file"
                 accept=".pdf,.doc,.docx"

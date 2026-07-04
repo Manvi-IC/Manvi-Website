@@ -924,8 +924,10 @@ export default function BlogManagementPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div>
-              <label className="block text-sm font-medium text-gray-700">Category</label>
+              <label htmlFor="admin-blog-category" className="block text-sm font-medium text-gray-700">Category</label>
               <select
+                id="admin-blog-category"
+                aria-label="Category"
                 className="mt-1 w-full border border-gray-300 rounded-lg p-2.5 focus:border-[#e77419] focus:outline-none bg-white"
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
@@ -1347,8 +1349,9 @@ export default function BlogManagementPage() {
                                   )}
                                   <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                                     <div>
-                                      <label className="block text-[10px] font-semibold text-gray-500 uppercase">Alt description</label>
+                                      <label htmlFor={`alt-${idx}`} className="block text-[10px] font-semibold text-gray-500 uppercase">Alt description</label>
                                       <input
+                                        id={`alt-${idx}`}
                                         type="text"
                                         className="border rounded p-2 text-xs w-full focus:outline-none focus:border-[#e77419] mt-1"
                                         placeholder="Alt description"
@@ -1357,8 +1360,10 @@ export default function BlogManagementPage() {
                                       />
                                     </div>
                                     <div>
-                                      <label className="block text-[10px] font-semibold text-gray-500 uppercase">Alignment Layout</label>
+                                      <label htmlFor={`layout-${idx}`} className="block text-[10px] font-semibold text-gray-500 uppercase">Alignment Layout</label>
                                       <select
+                                        id={`layout-${idx}`}
+                                        aria-label="Alignment Layout"
                                         className="border rounded p-2 text-xs w-full focus:outline-none bg-white font-medium focus:border-[#e77419] mt-1"
                                         value={block.layout || "none"}
                                         onChange={(e) => updateBlockField(idx, "layout", e.target.value)}
@@ -1408,6 +1413,7 @@ export default function BlogManagementPage() {
                               </div>
                               <div>
                                 <select
+                                  aria-label="Heading style"
                                   className="w-full border border-gray-300 rounded-lg p-2.5 focus:border-[#e77419] focus:outline-none bg-white text-sm"
                                   value={block.style || "h2"}
                                   onChange={(e) => updateBlockField(idx, "style", e.target.value)}

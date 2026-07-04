@@ -1,0 +1,6 @@
+# Target modern browsers that support ES modules (saves bundle size and eliminates legacy JS polyfills)
+defaults
+supports es6-module
+not ie 11
+not ie_mob 11
+not op_mini all

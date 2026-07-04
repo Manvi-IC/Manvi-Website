@@ -5,12 +5,24 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 const nextConfig: NextConfig = {
   experimental: {
     cpus: 1,
-  },
-  images: {
-    unoptimized: true,
+    optimizeCss: true,
   },
   typescript: {
     ignoreBuildErrors: true,
+  },
+  async redirects() {
+    return [
+      {
+        source: '/track.aspx',
+        destination: '/track',
+        permanent: true,
+      },
+      {
+        source: '/trackaspx',
+        destination: '/track',
+        permanent: true,
+      },
+    ];
   },
   async rewrites() {
     return [

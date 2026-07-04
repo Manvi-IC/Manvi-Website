@@ -7,13 +7,7 @@ import { notFound } from "next/navigation";
 import { getPostBySlug, getRelatedPosts, type BlogPost, type BlogBlock } from "../data";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { Geist } from "next/font/google";
 import { useLanguage } from "@/context/LanguageContext";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
@@ -260,7 +254,7 @@ export default function BlogPostPage({ params }: PageProps) {
 
   if (loading && !post) {
     return (
-      <div className={`blog-post-wrapper ${geistSans.variable}`} style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
+      <div className="blog-post-wrapper" style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
         <Header />
         <div style={{ flex: 1, display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", gap: "12px", minHeight: "60vh" }}>
           <RefreshCw className="animate-spin" style={{ color: "#f27a1a", width: "40px", height: "40px" }} />
@@ -404,7 +398,7 @@ export default function BlogPostPage({ params }: PageProps) {
   };
 
   return (
-    <div className={`blog-post-wrapper ${geistSans.variable}`}>
+    <div className="blog-post-wrapper">
       <title>{displayPost.metaTitle || `${displayPost.title} - Manvi Logistics`}</title>
       <meta name="description" content={displayPost.metaDescription || displayPost.description} />
       <Header />
@@ -1138,6 +1132,7 @@ export default function BlogPostPage({ params }: PageProps) {
           <div className="top-left-translation-bar">
             <span className="translate-icon">🌐</span>
             <select
+              aria-label="Translate to language"
               value={activeTransLang}
               onChange={(e) => handleLangSelect(e.target.value)}
               className="translation-select-minimal"

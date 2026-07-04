@@ -2,17 +2,11 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Geist } from "next/font/google";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ApplyModal from "./ApplyModal";
 import SpeculativeApplyModal from "./SpeculativeApplyModal";
 import { useLanguage, Language } from "@/context/LanguageContext";
-
-const geist = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
 
 interface StatItem {
   label: string;
@@ -449,7 +443,7 @@ export default function CareerPage(): React.ReactElement {
   };
 
   return (
-    <div className={`career-wrapper ${geist.variable}`}>
+    <div className="career-wrapper">
       <Header />
 
       {showApplyModal && selectedJob && (
@@ -489,10 +483,10 @@ export default function CareerPage(): React.ReactElement {
           --accent-deep: #db660c;
           --accent-soft: #fed7aa;
           --display:
-            ${geist.style.fontFamily}, -apple-system, BlinkMacSystemFont,
+            var(--font-geist-sans), -apple-system, BlinkMacSystemFont,
             "Segoe UI", "Roboto", sans-serif;
           --body:
-            ${geist.style.fontFamily}, -apple-system, BlinkMacSystemFont,
+            var(--font-geist-sans), -apple-system, BlinkMacSystemFont,
             "Segoe UI", "Roboto", sans-serif;
           --radius: 16px;
 

@@ -452,8 +452,10 @@ export default function ApplicationsPage() {
 
                   {/* Status Update */}
                   <div className="mt-4 pt-4 border-t border-gray-200 flex items-center gap-4 flex-wrap">
-                    <span className="text-sm font-medium text-gray-700">Update Status:</span>
+                    <label htmlFor={`status-${app._id}`} className="text-sm font-medium text-gray-700">Update Status:</label>
                     <select
+                      id={`status-${app._id}`}
+                      aria-label="Update application status"
                       value={app.status}
                       onChange={(e) => updateStatus(app._id, e.target.value)}
                       disabled={updating === app._id}
