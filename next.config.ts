@@ -6,9 +6,6 @@ const nextConfig: NextConfig = {
   experimental: {
     cpus: 1,
   },
-  images: {
-    unoptimized: true,
-  },
   typescript: {
     ignoreBuildErrors: true,
   },
