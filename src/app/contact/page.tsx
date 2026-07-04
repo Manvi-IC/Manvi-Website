@@ -691,6 +691,7 @@ export default function ContactPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               <div className="relative">
                 <select
+                  aria-label={t.select_inquiry_type}
                   required
                   value={inquiryType}
                   onChange={(e) => setInquiryType(e.target.value)}
