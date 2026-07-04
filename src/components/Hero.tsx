@@ -1,6 +1,6 @@
 // app/components/Hero.tsx
 "use client";
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useRef, useMemo } from "react";
 import {
   ArrowUpRight,
   Users,
@@ -16,8 +16,8 @@ import {
   Filter,
   TrendingDown,
   Clock,
+  Info,
 } from "lucide-react";
-
 
 import Link from "next/link";
 import Image from "next/image";
@@ -170,6 +170,103 @@ const NETWORK_COLORS: Record<string, string> = {
   FED: "bg-blue-100 text-blue-700",
 };
 
+// Shipping restrictions for each network
+const getShippingRestrictions = (network: string, t: any) => {
+  const restrictions: Record<
+    string,
+    { blocked: string[]; warning: string[]; allowed: string[]; note?: string }
+  > = {
+    DHL: {
+      blocked: [
+        t.restriction_medicine,
+        t.restriction_herbal_medicine,
+        t.restriction_liquid_medicine,
+        t.restriction_ghee,
+        t.restriction_oil,
+        t.restriction_pickle,
+        t.restriction_silver,
+        t.restriction_supplements,
+        t.restriction_memory_cards,
+      ],
+      warning: [
+        t.restriction_homemade_sweets,
+        t.restriction_cosmetics,
+        t.restriction_branded_eatables,
+        t.restriction_spices,
+        t.restriction_electronics,
+        t.restriction_wooden_items,
+      ],
+      allowed: [
+        t.restriction_sim_cards,
+        t.restriction_turban_items,
+        t.restriction_accessories,
+        t.restriction_phone_accessories,
+      ],
+      note: t.restriction_dhl_note,
+    },
+    UPS: {
+      blocked: [
+        t.restriction_medicine,
+        t.restriction_herbal_medicine,
+        t.restriction_liquid_medicine,
+        t.restriction_ghee,
+        t.restriction_oil,
+        t.restriction_pickle,
+        t.restriction_silver,
+        t.restriction_supplements,
+        t.restriction_memory_cards,
+      ],
+      warning: [
+        t.restriction_homemade_sweets,
+        t.restriction_cosmetics,
+        t.restriction_branded_eatables,
+        t.restriction_spices,
+        t.restriction_electronics,
+      ],
+      allowed: [
+        t.restriction_sim_cards,
+        t.restriction_turban_items,
+        t.restriction_accessories,
+        t.restriction_phone_accessories,
+      ],
+      note: t.restriction_ups_note,
+    },
+    FED: {
+      blocked: [
+        t.restriction_medicine,
+        t.restriction_ghee,
+        t.restriction_oil,
+        t.restriction_pickle,
+        t.restriction_silver,
+        t.restriction_supplements,
+        t.restriction_memory_cards,
+      ],
+      warning: [
+        t.restriction_homemade_sweets,
+        t.restriction_cosmetics,
+        t.restriction_branded_eatables,
+        t.restriction_spices,
+        t.restriction_electronics,
+      ],
+      allowed: [
+        t.restriction_sim_cards,
+        t.restriction_turban_items,
+        t.restriction_accessories,
+        t.restriction_phone_accessories,
+      ],
+      note: t.restriction_fedex_note,
+    },
+    SELF: {
+      blocked: [t.restriction_self_blocked],
+      warning: [t.restriction_self_uk, t.restriction_self_usa],
+      allowed: [t.restriction_self_allowed],
+      note: t.restriction_self_note,
+    },
+  };
+
+  return restrictions[network] || { blocked: [], warning: [], allowed: [] };
+};
+
 interface Quote {
   service: string;
   network: string;
@@ -202,6 +299,10 @@ function QuotesModal({
   const { t } = useLanguage();
   const [filter, setFilter] = useState<FilterType>("all");
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const [isManualSelection, setIsManualSelection] = useState(false);
+  const [expandedRestrictions, setExpandedRestrictions] = useState<
+    string | null
+  >(null);
 
   // Parse TAT string to extract days for sorting
   const getTATDays = (tat: string): number => {
@@ -209,16 +310,24 @@ function QuotesModal({
     return match ? parseInt(match[0]) : 999;
   };
 
-  // Sort and filter quotes
-  const getFilteredAndSortedQuotes = (): Quote[] => {
-    let filtered = [...quotes];
+  // Sort and filter quotes based on TAT only (no DHL priority)
+  // Memoized on [quotes, filter] so the array reference only changes when
+  // the underlying data actually changes — this is what stops the
+  // auto-select effect below from re-firing (and overriding a manual click)
+  // on every render.
+  const displayedQuotes = useMemo<Quote[]>(() => {
+    const filtered = [...quotes];
 
     switch (filter) {
       case "cheapest":
         filtered.sort((a, b) => a.totalPrice - b.totalPrice);
         break;
       case "fastest":
-        filtered.sort((a, b) => getTATDays(a.tat) - getTATDays(b.tat));
+        filtered.sort((a, b) => {
+          const daysA = getTATDays(a.tat);
+          const daysB = getTATDays(b.tat);
+          return daysA - daysB;
+        });
         break;
       default:
         // Keep original order
@@ -226,18 +335,26 @@ function QuotesModal({
     }
 
     return filtered;
-  };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [quotes, filter]);
 
-  const displayedQuotes = getFilteredAndSortedQuotes();
-
-  // Automatically select first quote when filter changes
+  // Automatically select the first quote ONLY when the filter (or the quote
+  // set) changes — never when the user manually picked a card. Previously
+  // this effect depended on `displayedQuotes`, which was a brand-new array
+  // reference every render, so it kept firing after a manual click and
+  // immediately overwrote the selection back to the first card.
   useEffect(() => {
+    if (isManualSelection) {
+      setIsManualSelection(false);
+      return;
+    }
     if (displayedQuotes.length > 0) {
       const firstQuote = displayedQuotes[0];
       const key = `${firstQuote.service}__${firstQuote.rateType}`;
       onSelect(key);
     }
-  }, [filter, displayedQuotes, onSelect]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filter, quotes]);
 
   // Scroll to selected card when it changes
   useEffect(() => {
@@ -255,24 +372,51 @@ function QuotesModal({
     }
   }, [selectedService]);
 
+  const scroll = (direction: "left" | "right") => {
+    if (scrollContainerRef.current) {
+      const scrollAmount = 340;
+      const newScrollLeft =
+        scrollContainerRef.current.scrollLeft +
+        (direction === "left" ? -scrollAmount : scrollAmount);
+      scrollContainerRef.current.scrollTo({
+        left: newScrollLeft,
+        behavior: "smooth",
+      });
+    }
+  };
 
+  const handleServiceSelect = (key: string) => {
+    setIsManualSelection(true);
+    onSelect(key);
+  };
+
+  const toggleRestrictions = (key: string) => {
+    setExpandedRestrictions(expandedRestrictions === key ? null : key);
+  };
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4"
+      className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4"
       style={{ background: "rgba(0,0,0,0.65)" }}
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose();
       }}
     >
-      <div className="bg-[#0D1527] rounded-2xl w-full max-w-lg max-h-[80vh] flex flex-col shadow-2xl border border-white/10">
-        <div className="flex items-start justify-between gap-3 p-5 border-b border-white/10">
-          <div>
-            <p className="text-white font-bold text-base">
+      {/*
+        Responsive modal shell: max-h instead of a fixed h so it never
+        forces itself taller than the viewport (important on mobile where
+        80vh could still overflow once keyboard/browser chrome is factored
+        in), with a sane min-height so it doesn't look collapsed when
+        there's only 1-2 quotes.
+      */}
+      <div className="bg-[#0D1527] rounded-2xl w-full max-w-7xl max-h-[95vh] sm:max-h-[90vh] min-h-[380px] flex flex-col shadow-2xl border border-white/10">
+        <div className="flex items-start justify-between gap-3 p-4 sm:p-5 border-b border-white/10 shrink-0">
+          <div className="min-w-0">
+            <p className="text-white font-bold text-sm sm:text-base truncate">
               {destLabel}
               {zoningCountry && ` — ${zoningCountry}`}
             </p>
-            <p className="text-zinc-400 text-[12px] mt-0.5">
+            <p className="text-zinc-400 text-[11px] sm:text-[12px] mt-0.5">
               {quotes.length} {t.form_services_found_text}
             </p>
           </div>
@@ -284,17 +428,20 @@ function QuotesModal({
           </button>
         </div>
 
-        {/* Filter Section */}
-        <div className="px-5 py-3 border-b border-white/10 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Filter size={14} className="text-zinc-400" />
-            <span className="text-zinc-400 text-[11px] font-medium uppercase tracking-wider">
+        {/* Filter Section with Scroll Controls */}
+        <div className="px-4 sm:px-5 py-3 border-b border-white/10 flex items-center justify-between flex-wrap gap-2 shrink-0">
+          <div className="flex items-center gap-2 flex-wrap">
+            <Filter size={14} className="text-zinc-400 shrink-0" />
+            <span className="text-zinc-400 text-[10px] sm:text-[11px] font-medium uppercase tracking-wider">
               Sort by:
             </span>
-            <div className="flex gap-1.5 ml-1">
+            <div className="flex gap-1.5 ml-1 flex-wrap">
               <button
-                onClick={() => setFilter("all")}
-                className={`px-3 py-1.5 rounded-lg text-[11px] font-semibold transition-all ${
+                onClick={() => {
+                  setIsManualSelection(false);
+                  setFilter("all");
+                }}
+                className={`px-2.5 sm:px-3 py-1.5 rounded-lg text-[10px] sm:text-[11px] font-semibold transition-all ${
                   filter === "all"
                     ? "bg-[#e77419] text-white"
                     : "bg-white/10 text-zinc-400 hover:bg-white/20 hover:text-white"
@@ -303,19 +450,26 @@ function QuotesModal({
                 Default
               </button>
               <button
-                onClick={() => setFilter("cheapest")}
-                className={`px-3 py-1.5 rounded-lg text-[11px] font-semibold transition-all flex items-center gap-1 ${
+                onClick={() => {
+                  setIsManualSelection(false);
+                  setFilter("cheapest");
+                }}
+                className={`px-2.5 sm:px-3 py-1.5 rounded-lg text-[10px] sm:text-[11px] font-semibold transition-all flex items-center gap-1 ${
                   filter === "cheapest"
                     ? "bg-[#e77419] text-white"
                     : "bg-white/10 text-zinc-400 hover:bg-white/20 hover:text-white"
                 }`}
               >
                 <TrendingDown size={12} />
-                Most Affordable
+                <span className="hidden xs:inline">Most Affordable</span>
+                <span className="xs:hidden">Cheapest</span>
               </button>
               <button
-                onClick={() => setFilter("fastest")}
-                className={`px-3 py-1.5 rounded-lg text-[11px] font-semibold transition-all flex items-center gap-1 ${
+                onClick={() => {
+                  setIsManualSelection(false);
+                  setFilter("fastest");
+                }}
+                className={`px-2.5 sm:px-3 py-1.5 rounded-lg text-[10px] sm:text-[11px] font-semibold transition-all flex items-center gap-1 ${
                   filter === "fastest"
                     ? "bg-[#e77419] text-white"
                     : "bg-white/10 text-zinc-400 hover:bg-white/20 hover:text-white"
@@ -326,13 +480,35 @@ function QuotesModal({
               </button>
             </div>
           </div>
-
+          <div className="flex gap-1">
+            <button
+              onClick={() => scroll("left")}
+              className="p-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-zinc-400 hover:text-white transition-all"
+            >
+              <ChevronLeft size={16} />
+            </button>
+            <button
+              onClick={() => scroll("right")}
+              className="p-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-zinc-400 hover:text-white transition-all"
+            >
+              <ChevronRight size={16} />
+            </button>
+          </div>
         </div>
 
-        {/* Vertical Scrollable Container */}
+        {/*
+          Horizontal Scrollable Container
+          - overflow-y-auto (not hidden) so a card taller than the visible
+            area (e.g. restrictions expanded) can be scrolled into view
+            instead of getting clipped.
+          - items-start stops flex's default align-items:stretch from
+            forcing every card to match the container's full height.
+          - min-h-0 lets this flex child actually shrink/scroll rather than
+            pushing the modal's height out to fit its content.
+        */}
         <div
           ref={scrollContainerRef}
-          className="flex-1 overflow-y-auto overflow-x-hidden p-4 flex flex-col gap-3"
+          className="flex-1 min-h-0 overflow-x-auto overflow-y-auto p-3 sm:p-5 gap-3 sm:gap-5 flex items-start scrollbar-thin scrollbar-thumb-zinc-600 scrollbar-track-transparent"
           style={{
             scrollbarWidth: "thin",
             scrollbarColor: "#3f3f46 transparent",
@@ -345,6 +521,8 @@ function QuotesModal({
               NETWORK_COLORS[q.network] ?? "bg-gray-100 text-gray-700";
             const networkLabel = NETWORK_LABELS[q.network] ?? q.network;
             const dutyPaid = q.network === "SELF";
+            const restrictions = getShippingRestrictions(q.network, t);
+            const isExpanded = expandedRestrictions === key;
 
             // Determine if this quote has a badge
             let badge = "";
@@ -358,24 +536,39 @@ function QuotesModal({
               <div
                 key={key}
                 data-service-key={key}
-                onClick={() => onSelect(key)}
-                className={`relative rounded-xl border-2 p-4 cursor-pointer transition-all w-full ${
+                onClick={() => handleServiceSelect(key)}
+                /*
+    Outer card: no padding, no overflow-y-auto here. Overflow must
+    stay "visible" so the absolutely-positioned "Selected"/badge
+    pills (offset -top-2.5, i.e. poking above the box) aren't
+    clipped — setting overflow-y on this element forces overflow-x
+    to auto too, which was slicing the pills off at the corners.
+    Responsive width still fills most of the viewport on small
+    screens and settles into a fixed range on larger ones.
+  */
+                className={`relative rounded-xl border-2 cursor-pointer transition-all min-w-[82vw] xs:min-w-[300px] sm:min-w-[300px] max-w-[340px] flex-shrink-0 flex flex-col max-h-full ${
                   isSelected
                     ? "border-[#e77419] bg-[#e77419]/10"
                     : "border-zinc-700 bg-zinc-800/60 hover:border-zinc-500"
                 }`}
               >
                 {isSelected && (
-                  <div className="absolute -top-2.5 left-3 bg-[#e77419] text-white text-[9px] font-bold px-2 py-0.5 rounded-full">
+                  <div className="absolute -top-2.5 left-3 z-10 bg-[#e77419] text-white text-[9px] font-bold px-2 py-0.5 rounded-full shadow-sm">
                     {t.form_selected}
                   </div>
                 )}
                 {badge && (
-                  <div className="absolute -top-2.5 right-3 bg-emerald-500 text-white text-[9px] font-bold px-2 py-0.5 rounded-full">
+                  <div className="absolute -top-2.5 right-3 z-10 bg-emerald-500 text-white text-[9px] font-bold px-2 py-0.5 rounded-full shadow-sm">
                     {badge}
                   </div>
                 )}
-                <div className="flex flex-col gap-3">
+
+                {/*
+    Inner wrapper: padding + overflow-y-auto now live here instead of
+    on the outer card, so the card can still scroll internally when
+    restrictions expand, without clipping the badges above it.
+  */}
+                <div className="flex flex-col gap-3 h-full p-4 sm:p-5 overflow-y-auto rounded-xl">
                   {/* Top row: Service badge, Zone, Rate Type */}
                   <div className="flex items-center gap-1.5 flex-wrap">
                     <span
@@ -405,22 +598,99 @@ function QuotesModal({
                   </div>
 
                   {/* Middle row: Network name */}
-                  <div>
-                    <p className="text-[18px] font-semibold text-white leading-snug tracking-wide">
+                  <div className="flex">
+                    <p className="text-[18px] sm:text-[20px] font-semibold text-white leading-snug tracking-wide">
                       {networkLabel}
                     </p>
                   </div>
 
+                  {/* ── Shipping Restrictions (fills the blank space below the network name) ── */}
+                  <div className="flex-1 border-t border-white/10 pt-2">
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        toggleRestrictions(key);
+                      }}
+                      className="flex items-center gap-2 text-[11px] sm:text-[12px] text-zinc-400 hover:text-white transition-colors font-medium group w-full"
+                    >
+                      <Info
+                        size={15}
+                        className="text-zinc-500 group-hover:text-white transition-colors shrink-0"
+                      />
+                      <span className="truncate">
+                        {t.restriction_view_details}
+                      </span>
+                      <ChevronDown
+                        size={15}
+                        className={`ml-auto shrink-0 transition-transform duration-300 ${
+                          isExpanded ? "rotate-180" : ""
+                        }`}
+                      />
+                    </button>
+
+                    {isExpanded && (
+                      <div className="mt-3 space-y-2.5 text-[10.5px] sm:text-[11px] bg-white/5 rounded-lg p-3 sm:p-3.5 border border-white/10">
+                        {restrictions.blocked.length > 0 && (
+                          <div>
+                            <p className="text-rose-400 font-semibold flex items-center gap-2 text-[11px] sm:text-[12px]">
+                              <span>❌</span> {t.restriction_blocked}:
+                            </p>
+                            <ul className="text-zinc-300 ml-6 sm:ml-7 list-disc space-y-0.5 mt-1">
+                              {restrictions.blocked.map((item, i) => (
+                                <li key={i} className="leading-relaxed">
+                                  {item}
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
+                        {restrictions.warning.length > 0 && (
+                          <div>
+                            <p className="text-amber-400 font-semibold flex items-center gap-2 text-[11px] sm:text-[12px]">
+                              <span>⚠️</span> {t.restriction_warning}:
+                            </p>
+                            <ul className="text-zinc-300 ml-6 sm:ml-7 list-disc space-y-0.5 mt-1">
+                              {restrictions.warning.map((item, i) => (
+                                <li key={i} className="leading-relaxed">
+                                  {item}
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
+                        {restrictions.allowed.length > 0 && (
+                          <div>
+                            <p className="text-emerald-400 font-semibold flex items-center gap-2 text-[11px] sm:text-[12px]">
+                              <span>✅</span> {t.restriction_allowed}:
+                            </p>
+                            <ul className="text-zinc-300 ml-6 sm:ml-7 list-disc space-y-0.5 mt-1">
+                              {restrictions.allowed.map((item, i) => (
+                                <li key={i} className="leading-relaxed">
+                                  {item}
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
+                        {restrictions.note && (
+                          <p className="text-zinc-400 italic mt-2 text-[10px] sm:text-[10.5px] border-t border-white/5 pt-2">
+                            {restrictions.note}
+                          </p>
+                        )}
+                      </div>
+                    )}
+                  </div>
+
                   {/* Bottom row: TAT and Price */}
-                  <div className="flex items-center justify-between">
-                    <p className="text-[12px] text-zinc-400 font-medium">
+                  <div className="flex items-center justify-between pt-2 border-t border-white/5">
+                    <p className="text-[11px] sm:text-[12px] text-zinc-400 font-medium">
                       {q.tat}
                     </p>
                     <div className="text-right">
-                      <p className="text-[22px] font-extrabold text-[#e77419] leading-none tracking-tight">
+                      <p className="text-[20px] sm:text-[22px] font-extrabold text-[#e77419] leading-none tracking-tight">
                         ₹{Math.round(q.totalPrice).toLocaleString("en-IN")}
                       </p>
-                      <p className="text-[10px] text-zinc-500 mt-0.5 font-medium tracking-wide uppercase">
+                      <p className="text-[9px] sm:text-[10px] text-zinc-500 mt-0.5 font-medium tracking-wide uppercase">
                         {t.form_gst_inc}
                       </p>
                     </div>
@@ -431,8 +701,10 @@ function QuotesModal({
           })}
         </div>
 
-        <div className="px-5 py-3 border-t border-white/10 text-center">
-          <p className="text-[11px] text-zinc-500">{t.form_final_rates_msg}</p>
+        <div className="px-4 sm:px-5 py-3 border-t border-white/10 text-center shrink-0">
+          <p className="text-[10px] sm:text-[11px] text-zinc-500">
+            {t.form_final_rates_msg}
+          </p>
         </div>
       </div>
     </div>

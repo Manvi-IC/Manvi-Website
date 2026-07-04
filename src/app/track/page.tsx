@@ -219,7 +219,7 @@ export default function TrackPage() {
       const res = await fetch(`/api/track?awb=${trackingNumber}`);
       const data = await res.json();
       console.log("[Track Page] API Response:", data);
-      
+
       if (data.Status && data.Data) {
         setTrackingData(data.Data);
         setHasSearched(true);
@@ -339,7 +339,8 @@ export default function TrackPage() {
                   </div>
                 </div>
                 <span className="border-2 border-[#f27a1a] text-[#f27a1a] bg-orange-50/50 font-bold text-[12px] px-4 py-1.5 rounded-full w-fit max-w-[200px] truncate">
-                  {trackingData?.Events?.[0]?.EventDescription || "Status Unknown"}
+                  {trackingData?.Events?.[0]?.EventDescription ||
+                    "Status Unknown"}
                 </span>
               </div>
 
@@ -354,17 +355,35 @@ export default function TrackPage() {
                   </span>
                 </div>
                 <div className="text-right hidden sm:block">
-                  <span className="text-[11.5px] text-gray-400 font-bold block">
-                    {trackingData?.Shipdate ? new Date(trackingData.Shipdate).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : "--"}
-                  </span>
-                </div>
-                <div className="sm:col-span-2 grid grid-cols-2 gap-4 pt-4 border-t border-gray-200/50 mt-2">
                   <div>
                     <span className="text-[10px] text-gray-400 font-bold block uppercase tracking-wider">
-                      {t.lbl_shipment_created}
+                      Booking Date
                     </span>
                     <span className="text-[13px] font-bold text-[#1c1f2e]">
-                      {trackingData?.Shipdate ? new Date(trackingData.Shipdate).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : "--"}
+                      {trackingData?.Shipdate
+                        ? new Date(trackingData.Shipdate).toLocaleDateString(
+                            "en-GB",
+                            { day: "2-digit", month: "short", year: "numeric" },
+                          )
+                        : "--"}
+                    </span>
+                  </div>
+                </div>
+                <div className="sm:col-span-2 grid grid-cols-2 sm:grid-cols-3 gap-4 pt-4 border-t border-gray-200/50 mt-2">
+                  <div>
+                    <span className="text-[10px] text-gray-400 font-bold block uppercase tracking-wider">
+                      Forwarding No.
+                    </span>
+                    <span className="text-[13px] font-bold text-[#1c1f2e]">
+                      {trackingData?.ForwardingNo || "--"}
+                    </span>
+                  </div>
+                  <div>
+                    <span className="text-[10px] text-gray-400 font-bold block uppercase tracking-wider">
+                      Forwarder
+                    </span>
+                    <span className="text-[13px] font-bold text-[#1c1f2e]">
+                      {trackingData?.Forwarder || "--"}
                     </span>
                   </div>
                   <div>
@@ -404,7 +423,16 @@ export default function TrackPage() {
                                 {event.EventDescription || event.EventCode}
                               </h4>
                               <span className="text-[12px] text-gray-400 font-semibold block mt-0.5">
-                                {event.EventDate ? new Date(event.EventDate).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : "--"}, {event.Location || "--"}
+                                {event.EventDate
+                                  ? new Date(
+                                      event.EventDate,
+                                    ).toLocaleDateString("en-GB", {
+                                      day: "2-digit",
+                                      month: "short",
+                                      year: "numeric",
+                                    })
+                                  : "--"}
+                                , {event.Location || "--"}
                               </span>
                             </div>
                             <span className="text-[12px] text-gray-400 font-semibold shrink-0 text-right">
@@ -437,9 +465,11 @@ export default function TrackPage() {
               <div className="w-full aspect-[4/3] rounded-4xl overflow-hidden bg-slate-200 relative border border-gray-200 shadow-sm min-h-75">
                 <iframe
                   src={`https://maps.google.com/maps?width=100%25&height=100%25&hl=en&q=${encodeURIComponent(
-                    trackingData?.Events?.find((e: any) => e.Location && e.Location.trim() !== "")?.Location || 
-                    trackingData?.Destination || 
-                    "New Delhi, India"
+                    trackingData?.Events?.find(
+                      (e: any) => e.Location && e.Location.trim() !== "",
+                    )?.Location ||
+                      trackingData?.Destination ||
+                      "New Delhi, India",
                   )}&t=&z=13&ie=UTF8&iwloc=&output=embed`}
                   width="100%"
                   height="100%"

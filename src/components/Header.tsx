@@ -11,11 +11,11 @@ const LANGUAGES: {
   native: string;
   flag: string;
 }[] = [
-    { code: "hi", label: "Hindi", native: "हिंदी", flag: "🇮🇳" },
-    { code: "pa", label: "Punjabi", native: "ਪੰਜਾਬੀ", flag: "🇮🇳" },
-    { code: "fr", label: "French", native: "Français", flag: "🇫🇷" },
-    { code: "es", label: "Spanish", native: "Español", flag: "🇪🇸" },
-  ];
+  { code: "hi", label: "Hindi", native: "हिंदी", flag: "🇮🇳" },
+  { code: "pa", label: "Punjabi", native: "ਪੰਜਾਬੀ", flag: "🇮🇳" },
+  { code: "fr", label: "French", native: "Français", flag: "🇫🇷" },
+  { code: "es", label: "Spanish", native: "Español", flag: "🇪🇸" },
+];
 
 export default function Header() {
   const pathname = usePathname();
@@ -36,7 +36,7 @@ export default function Header() {
         }
         return res.json();
       })
-      .then(data => {
+      .then((data) => {
         if (data.success && data.data) {
           if (data.data.marqueeText !== undefined) {
             setMarqueeText(data.data.marqueeText);
@@ -91,20 +91,22 @@ export default function Header() {
 
             {/* Marquee offer strip */}
             <div className="flex flex-1 w-full mx-0 md:mx-6 overflow-hidden relative pt-1 md:pt-0">
-              {showMarquee && marqueeText && (() => {
-                const Marquee = "marquee" as any;
-                return (
-                  <Marquee
-                    behavior="scroll"
-                    direction="left"
-                    scrollamount="3"
-                    className="text-[12.5px] md:text-[14.5px] font-medium md:font-extrabold tracking-wide whitespace-pre"
-                    style={{ color: "#f27a1a" }}
-                  >
-                    {marqueeText}
-                  </Marquee>
-                ) as any;
-              })()}
+              {showMarquee &&
+                marqueeText &&
+                (() => {
+                  const Marquee = "marquee" as any;
+                  return (
+                    <Marquee
+                      behavior="scroll"
+                      direction="left"
+                      scrollamount="3"
+                      className="text-[12.5px] md:text-[14.5px] font-medium md:font-extrabold tracking-wide whitespace-pre"
+                      style={{ color: "#f27a1a" }}
+                    >
+                      {marqueeText}
+                    </Marquee>
+                  ) as any;
+                })()}
             </div>
 
             <div className="hidden sm:flex items-center gap-6 overflow-visible">
@@ -145,10 +147,11 @@ export default function Header() {
                       role="option"
                       aria-selected={language === "en"}
                       onClick={() => handleSelectLang("en")}
-                      className={`w-full flex items-center gap-3 px-4 py-2.5 text-[12px] font-semibold transition-colors ${language === "en"
-                        ? "bg-[#f27a1a] text-white"
-                        : "text-zinc-300 hover:bg-white/5 hover:text-white"
-                        }`}
+                      className={`w-full flex items-center gap-3 px-4 py-2.5 text-[12px] font-semibold transition-colors ${
+                        language === "en"
+                          ? "bg-[#f27a1a] text-white"
+                          : "text-zinc-300 hover:bg-white/5 hover:text-white"
+                      }`}
                     >
                       <span className="text-base">🌐</span>
                       <span className="flex flex-col items-start leading-none gap-0.5">
@@ -162,10 +165,11 @@ export default function Header() {
                         role="option"
                         aria-selected={language === lang.code}
                         onClick={() => handleSelectLang(lang.code)}
-                        className={`w-full flex items-center gap-3 px-4 py-2.5 text-[12px] font-semibold transition-colors ${language === lang.code
-                          ? "bg-[#f27a1a] text-white"
-                          : "text-zinc-300 hover:bg-white/5 hover:text-white"
-                          }`}
+                        className={`w-full flex items-center gap-3 px-4 py-2.5 text-[12px] font-semibold transition-colors ${
+                          language === lang.code
+                            ? "bg-[#f27a1a] text-white"
+                            : "text-zinc-300 hover:bg-white/5 hover:text-white"
+                        }`}
                       >
                         <span className="text-base">{lang.flag}</span>
                         <span className="flex flex-col items-start leading-none gap-0.5">
@@ -249,6 +253,12 @@ export default function Header() {
                 >
                   {t.nav_contact}
                 </Link>
+                <Link
+                  href="/blog"
+                  className={`transition-colors ${pathname?.startsWith("/blog") ? "text-[#f27a1a]" : "hover:text-[#f27a1a]"}`}
+                >
+                  {t.footer_blog}
+                </Link>
                 {/* Customer Login */}
                 <a
                   href="https://portal.manvicourier.com"
@@ -260,15 +270,14 @@ export default function Header() {
                 </a>
               </nav>
 
-
-
               {/* Track Now — orange pill pushed to far right */}
               <Link
                 href="/track"
-                className={`ml-2 px-5 py-2 rounded-full text-[13px] font-bold transition-colors whitespace-nowrap ${pathname?.startsWith("/track")
-                  ? "bg-orange-600 text-white"
-                  : "bg-[#f27a1a] text-white hover:bg-orange-600"
-                  }`}
+                className={`ml-2 px-5 py-2 rounded-full text-[13px] font-bold transition-colors whitespace-nowrap ${
+                  pathname?.startsWith("/track")
+                    ? "bg-orange-600 text-white"
+                    : "bg-[#f27a1a] text-white hover:bg-orange-600"
+                }`}
               >
                 {t.nav_track}
               </Link>
@@ -340,6 +349,7 @@ export default function Header() {
             >
               {t.nav_quote}
             </Link>
+
             <Link
               href="/zipcode"
               onClick={() => setIsMobileMenuOpen(false)}
@@ -353,6 +363,13 @@ export default function Header() {
               className={`pb-2 border-b border-gray-100 ${pathname?.startsWith("/contact") ? "text-[#f27a1a]" : ""}`}
             >
               {t.nav_contact}
+            </Link>
+            <Link
+              href="/blog"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className={`pb-2 border-b border-gray-100 ${pathname?.startsWith("/blog") ? "text-[#f27a1a]" : ""}`}
+            >
+              {t.footer_blog}
             </Link>
           </nav>
 
