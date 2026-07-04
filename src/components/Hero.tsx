@@ -871,6 +871,7 @@ export default function Hero() {
               {/* Destination */}
               <div className="relative">
                 <select
+                  aria-label={t.form_select_dest}
                   value={destination}
                   onChange={(e) => {
                     setDestination(e.target.value);
@@ -896,6 +897,11 @@ export default function Hero() {
               {requiresSubCountry && (
                 <div className="relative">
                   <select
+                    aria-label={
+                      destination === "EUROPE"
+                        ? t.form_select_euro
+                        : t.form_select_country
+                    }
                     value={zoningCountry}
                     onChange={(e) => {
                       setZoningCountry(e.target.value);
@@ -923,6 +929,7 @@ export default function Hero() {
 
               {requiresZip && (
                 <input
+                  aria-label={`${t.form_zipcode} (required for ${destObj?.label})`}
                   type="text"
                   placeholder={`${t.form_zipcode} (required for ${destObj?.label})`}
                   value={zipcode}
@@ -932,6 +939,7 @@ export default function Hero() {
               )}
 
               <input
+                aria-label={t.form_actual_wt || "Actual Weight"}
                 type="number"
                 placeholder={t.form_actual_wt}
                 value={actualWt}
@@ -952,6 +960,7 @@ export default function Hero() {
                     { val: height, setter: setHeight, label: t.form_height },
                   ].map(({ val, setter, label }) => (
                     <input
+                      aria-label={label}
                       key={label}
                       type="number"
                       placeholder={label}
