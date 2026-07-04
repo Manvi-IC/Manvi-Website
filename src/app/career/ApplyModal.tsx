@@ -139,10 +139,11 @@ export default function ApplyModal({ job, onClose, onSuccess }: ApplyModalProps)
           )}
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="apply-fullName" className="block text-sm font-medium text-gray-700 mb-1">
               Full Name *
             </label>
             <input
+              id="apply-fullName"
               type="text"
               name="fullName"
               value={formData.fullName}
@@ -153,10 +154,11 @@ export default function ApplyModal({ job, onClose, onSuccess }: ApplyModalProps)
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="apply-email" className="block text-sm font-medium text-gray-700 mb-1">
               Email Address *
             </label>
             <input
+              id="apply-email"
               type="email"
               name="email"
               value={formData.email}
@@ -167,10 +169,11 @@ export default function ApplyModal({ job, onClose, onSuccess }: ApplyModalProps)
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="apply-phone" className="block text-sm font-medium text-gray-700 mb-1">
               Phone Number
             </label>
             <input
+              id="apply-phone"
               type="tel"
               name="phone"
               value={formData.phone}
@@ -180,10 +183,12 @@ export default function ApplyModal({ job, onClose, onSuccess }: ApplyModalProps)
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="apply-experience" className="block text-sm font-medium text-gray-700 mb-1">
               Years of Experience *
             </label>
             <select
+              id="apply-experience"
+              aria-label="Years of Experience"
               name="experience"
               value={formData.experience}
               onChange={handleChange}
@@ -200,10 +205,12 @@ export default function ApplyModal({ job, onClose, onSuccess }: ApplyModalProps)
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="apply-noticePeriod" className="block text-sm font-medium text-gray-700 mb-1">
               Notice Period *
             </label>
             <select
+              id="apply-noticePeriod"
+              aria-label="Notice Period"
               name="noticePeriod"
               value={formData.noticePeriod}
               onChange={handleChange}
@@ -221,7 +228,7 @@ export default function ApplyModal({ job, onClose, onSuccess }: ApplyModalProps)
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="apply-resume" className="block text-sm font-medium text-gray-700 mb-1">
               Upload Resume (PDF/Word) *
             </label>
             <div
@@ -231,6 +238,8 @@ export default function ApplyModal({ job, onClose, onSuccess }: ApplyModalProps)
               }`}
             >
               <input
+                id="apply-resume"
+                aria-label="Upload Resume"
                 ref={fileInputRef}
                 type="file"
                 accept=".pdf,.doc,.docx"
