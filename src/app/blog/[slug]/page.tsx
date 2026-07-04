@@ -1138,6 +1138,7 @@ export default function BlogPostPage({ params }: PageProps) {
           <div className="top-left-translation-bar">
             <span className="translate-icon">🌐</span>
             <select
+              aria-label="Translate to language"
               value={activeTransLang}
               onChange={(e) => handleLangSelect(e.target.value)}
               className="translation-select-minimal"
