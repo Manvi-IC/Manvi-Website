@@ -4,14 +4,8 @@
 export const dynamic = "force-dynamic";
 
 import React, { useState, useEffect } from "react";
-import { Geist } from "next/font/google";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
 
 import {
   type BlogPost,
@@ -103,7 +97,7 @@ export default function BlogPage(): React.ReactElement {
     filter === "all" ? blogs : blogs.filter((post) => post.category === filter);
 
   return (
-    <div className={`blog-wrapper ${geistSans.variable}`}>
+    <div className="blog-wrapper">
       <title>Manvi Logistics Blog | Shipping & Customs Guides</title>
       <meta name="description" content="Practical guides to international shipping, customs and sourcing — plus stories from the families and businesses we connect across the world." />
       <Header />
