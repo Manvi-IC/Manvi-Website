@@ -783,6 +783,7 @@ export default function GetQuote() {
               {/* Zipcode */}
               {requiresZip && (
                 <input
+                  aria-label={`${t.form_zipcode} (required for ${destObj?.label})`}
                   type="text"
                   placeholder={`${t.form_zipcode} (required for ${destObj?.label})`}
                   value={zipcode}
@@ -793,6 +794,7 @@ export default function GetQuote() {
 
               {/* Actual weight */}
               <input
+                aria-label={t.form_actual_wt || "Actual Weight"}
                 type="number"
                 placeholder={t.form_actual_wt}
                 value={actualWt}
@@ -820,6 +822,7 @@ export default function GetQuote() {
                     ] as const
                   ).map(({ val, setter, label }) => (
                     <input
+                      aria-label={label}
                       key={label}
                       type="number"
                       placeholder={label}
