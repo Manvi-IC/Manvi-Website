@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@types/react-slick": "^0.23.13",
+    "critters": "^0.0.23",
     "exceljs": "^4.4.0",
     "file-saver": "^2.0.5",
     "lucide-react": "^1.16.0",
