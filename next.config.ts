@@ -12,6 +12,20 @@ const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
+  async redirects() {
+    return [
+      {
+        source: '/track.aspx',
+        destination: '/track',
+        permanent: true,
+      },
+      {
+        source: '/trackaspx',
+        destination: '/track',
+        permanent: true,
+      },
+    ];
+  },
   async rewrites() {
     return [
       {
