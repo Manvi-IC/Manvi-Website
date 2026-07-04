@@ -5,6 +5,7 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 const nextConfig: NextConfig = {
   experimental: {
     cpus: 1,
+    optimizeCss: true,
   },
   typescript: {
     ignoreBuildErrors: true,
