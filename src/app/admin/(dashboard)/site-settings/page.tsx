@@ -122,12 +122,13 @@ export default function SiteSettingsPage() {
             <h2 className="text-lg font-medium text-gray-900 mb-4 border-b pb-2">Top Marquee Strip</h2>
             <div className="grid grid-cols-1 gap-y-6">
               <div className="sm:col-span-2 mb-4">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label id="marquee-switch-label" className="block text-sm font-medium text-gray-700 mb-2">
                   Show Marquee
                 </label>
                 <div className="flex items-center">
                   <button
                     type="button"
+                    aria-labelledby="marquee-switch-label"
                     onClick={() => setFormData(prev => ({ ...prev, showMarquee: !prev.showMarquee }))}
                     className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-[#e77419] focus:ring-offset-2 ${
                       formData.showMarquee ? 'bg-[#e77419]' : 'bg-gray-200'
@@ -169,12 +170,13 @@ export default function SiteSettingsPage() {
             <h2 className="text-lg font-medium text-gray-900 mb-4 border-b pb-2">Limited-Time Offer</h2>
             <div className="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-2">
               <div className="sm:col-span-2">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label id="offer-switch-label" className="block text-sm font-medium text-gray-700 mb-2">
                   Show Offer Box
                 </label>
                 <div className="flex items-center">
                   <button
                     type="button"
+                    aria-labelledby="offer-switch-label"
                     onClick={() => setFormData(prev => ({ ...prev, showOffer: !prev.showOffer }))}
                     className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-[#e77419] focus:ring-offset-2 ${
                       formData.showOffer ? 'bg-[#e77419]' : 'bg-gray-200'
