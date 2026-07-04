@@ -259,6 +259,12 @@ export default function Header() {
                 >
                   {t.footer_blog}
                 </Link>
+                <Link
+                  href="/career"
+                  className={`transition-colors ${pathname?.startsWith("/career") ? "text-[#f27a1a]" : "hover:text-[#f27a1a]"}`}
+                >
+                  {t.footer_career}
+                </Link>
                 {/* Customer Login */}
                 <a
                   href="https://portal.manvicourier.com"
@@ -370,6 +376,13 @@ export default function Header() {
               className={`pb-2 border-b border-gray-100 ${pathname?.startsWith("/blog") ? "text-[#f27a1a]" : ""}`}
             >
               {t.footer_blog}
+            </Link>
+            <Link
+              href="/career"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className={`pb-2 border-b border-gray-100 ${pathname?.startsWith("/career") ? "text-[#f27a1a]" : ""}`}
+            >
+              {t.footer_career}
             </Link>
           </nav>
 
