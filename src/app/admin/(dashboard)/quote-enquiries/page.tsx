@@ -522,6 +522,7 @@ export default function QuoteEnquiriesPage() {
         </div>
         <div className="relative">
           <select
+            aria-label="Filter by status"
             value={filter}
             onChange={(e) => setFilter(e.target.value)}
             className="bg-white border border-gray-200 rounded-xl pl-4 pr-8 py-2.5 text-sm font-medium focus:outline-none appearance-none"
