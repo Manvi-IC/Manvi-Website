@@ -401,10 +401,12 @@ export default function ZipcodePage() {
                 </div>
 
                 <div className="flex flex-col gap-1.5 relative">
-                  <label className="text-[12px] font-extrabold text-[#1c1f2e] uppercase tracking-wider pl-0.5">
+                  <label htmlFor="zipcode-input" className="text-[12px] font-extrabold text-[#1c1f2e] uppercase tracking-wider pl-0.5">
                     {zipcodeLabel}
                   </label>
                   <input
+                    id="zipcode-input"
+                    aria-label={zipcodeLabel}
                     type="text"
                     placeholder={zipcodePlaceholder}
                     value={zipcode}
