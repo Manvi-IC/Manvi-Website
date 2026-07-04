@@ -124,6 +124,7 @@ export default function ApplyModal({ job, onClose, onSuccess }: ApplyModalProps)
           </div>
           <button
             onClick={onClose}
+            aria-label="Close application form"
             className="p-1 hover:bg-gray-100 rounded-lg transition-colors"
           >
             <X size={20} />
@@ -232,8 +233,16 @@ export default function ApplyModal({ job, onClose, onSuccess }: ApplyModalProps)
               Upload Resume (PDF/Word) *
             </label>
             <div
+              role="button"
+              tabIndex={0}
               onClick={() => fileInputRef.current?.click()}
-              className={`border-2 border-dashed rounded-lg p-6 text-center cursor-pointer hover:border-[#e77419] transition-colors ${
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  fileInputRef.current?.click();
+                }
+              }}
+              className={`border-2 border-dashed rounded-lg p-6 text-center cursor-pointer hover:border-[#e77419] transition-colors focus:outline-none focus:ring-2 focus:ring-[#e77419] ${
                 resume ? "border-green-400 bg-green-50" : "border-gray-300 hover:bg-gray-50"
               }`}
             >
