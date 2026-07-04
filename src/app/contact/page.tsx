@@ -654,6 +654,7 @@ export default function ContactPage() {
             {/* Input Row 1 */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
               <input
+                aria-label={t.name_placeholder || "Full Name"}
                 type="text"
                 placeholder={t.name_placeholder}
                 required
@@ -670,6 +671,7 @@ export default function ContactPage() {
               /> */}
 
               <input
+                aria-label={t.contact_placeholder || "Contact Number"}
                 type="text"
                 placeholder={t.contact_placeholder}
                 required
@@ -678,6 +680,7 @@ export default function ContactPage() {
                 className="bg-white text-[#333] text-[14px] font-medium rounded-xl px-5 py-4 focus:outline-none placeholder:text-gray-400 border border-gray-150 shadow-sm"
               />
               <input
+                aria-label={t.email_placeholder || "Email Address"}
                 type="email"
                 placeholder={t.email_placeholder}
                 required
@@ -714,6 +717,7 @@ export default function ContactPage() {
                 </div>
               </div>
               <input
+                aria-label={t.destination_placeholder || "Destination"}
                 type="text"
                 placeholder={t.destination_placeholder}
                 value={destination}
@@ -724,6 +728,7 @@ export default function ContactPage() {
 
             {/* Input Row 3 */}
             <textarea
+              aria-label={t.query_placeholder || "Message"}
               placeholder={t.query_placeholder}
               rows={6}
               value={queryText}
