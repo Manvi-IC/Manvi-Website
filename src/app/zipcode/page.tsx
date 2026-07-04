@@ -328,10 +328,12 @@ export default function ZipcodePage() {
 
               <form onSubmit={handleCheck} className="flex flex-col gap-4">
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-[12px] font-extrabold text-[#1c1f2e] uppercase tracking-wider pl-0.5">
+                  <label htmlFor="country-select" className="text-[12px] font-extrabold text-[#1c1f2e] uppercase tracking-wider pl-0.5">
                     Country <span className="text-red-500">*</span>
                   </label>
                   <select
+                    id="country-select"
+                    aria-label="Country"
                     required
                     value={country}
                     onChange={(e) => {
@@ -354,10 +356,12 @@ export default function ZipcodePage() {
 
                 {country === "INTERNATIONAL" && (
                   <div className="flex flex-col gap-1.5 transition-all duration-300">
-                    <label className="text-[12px] font-extrabold text-[#1c1f2e] uppercase tracking-wider pl-0.5">
+                    <label htmlFor="subcountry-select" className="text-[12px] font-extrabold text-[#1c1f2e] uppercase tracking-wider pl-0.5">
                       Destination Country <span className="text-red-500">*</span>
                     </label>
                     <select
+                      id="subcountry-select"
+                      aria-label="Destination Country"
                       required
                       value={subCountry}
                       onChange={(e) => setSubCountry(e.target.value)}
@@ -376,10 +380,12 @@ export default function ZipcodePage() {
                 )}
 
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-[12px] font-extrabold text-[#1c1f2e] uppercase tracking-wider pl-0.5">
+                  <label htmlFor="service-select" className="text-[12px] font-extrabold text-[#1c1f2e] uppercase tracking-wider pl-0.5">
                     Service <span className="text-red-500">*</span>
                   </label>
                   <select
+                    id="service-select"
+                    aria-label="Service"
                     required
                     value={service}
                     onChange={(e) => setService(e.target.value)}
