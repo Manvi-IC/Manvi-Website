@@ -991,7 +991,7 @@ function QuotesModal({
                 onClick={onApplyNow}
                 className="shrink-0 bg-[#e77419] hover:bg-orange-600 text-white font-extrabold text-sm py-3.5 px-7 rounded-xl transition-all active:scale-98 flex items-center gap-2 shadow-md shadow-orange-900/30 w-full sm:w-auto justify-center"
               >
-                Apply Now <ArrowUpRight size={16} strokeWidth={2.5} />
+                Enquire Now <ArrowUpRight size={16} strokeWidth={2.5} />
               </button>
             </div>
           </div>

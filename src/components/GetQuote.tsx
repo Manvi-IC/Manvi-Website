@@ -1008,7 +1008,7 @@ export default function GetQuote() {
                       onClick={() => setApplyModalOpen(true)}
                       className="shrink-0 bg-[#f27a1a] hover:bg-orange-600 text-white font-extrabold text-sm py-3.5 px-7 rounded-xl transition-all active:scale-98 flex items-center gap-2 shadow-md shadow-orange-200"
                     >
-                      Apply Now <ArrowUpRight size={16} strokeWidth={2.5} />
+                      Enquire Now <ArrowUpRight size={16} strokeWidth={2.5} />
                     </button>
                   </div>
                 )}
