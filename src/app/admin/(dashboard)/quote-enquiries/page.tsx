@@ -2,6 +2,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import * as XLSX from "xlsx";
 import {
   Search,
   RefreshCw,
@@ -19,6 +20,7 @@ import {
   Eye,
   X,
   StickyNote,
+  Download,
 } from "lucide-react";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
@@ -355,6 +357,7 @@ export default function QuoteEnquiriesPage() {
   const [search, setSearch] = useState("");
   const [selected, setSelected] = useState<Enquiry | null>(null);
   const [deleting, setDeleting] = useState<string | null>(null);
+  const [exporting, setExporting] = useState(false);
 
   const fetchAll = async () => {
     setLoading(true);
@@ -427,6 +430,57 @@ export default function QuoteEnquiriesPage() {
     return matchStatus && matchSearch;
   });
 
+  // ─── Excel Export ───────────────────────────────────────────────────────
+  const handleExportExcel = () => {
+    if (filtered.length === 0) return;
+    setExporting(true);
+    try {
+      const rows = filtered.map((e) => ({
+        Name: e.name,
+        Phone: e.phone,
+        Email: e.email,
+        Destination: e.destination,
+        "Zoning Country": e.zoningCountry,
+        Zipcode: e.zipcode,
+        "Actual Wt (kg)": e.actualWt,
+        "Vol Wt (kg)": e.volWt,
+        "Chargeable Wt (kg)": e.chargeableWt,
+        "Length (cm)": e.length,
+        "Breadth (cm)": e.breadth,
+        "Height (cm)": e.height,
+        Service: e.service,
+        Network: e.network,
+        Zone: e.zone,
+        "Rate Type": e.rateType === "S" ? "Slab" : "Per KG",
+        "Total Price (₹)": Math.round(e.totalPrice),
+        TAT: e.tat,
+        Status: STATUS_CONFIG[e.status].label,
+        Notes: e.notes || "",
+        "Created At": fmtDate(e.createdAt),
+      }));
+
+      const worksheet = XLSX.utils.json_to_sheet(rows);
+
+      // Auto-size columns roughly based on header/content length
+      const colWidths = Object.keys(rows[0]).map((key) => {
+        const maxLen = Math.max(
+          key.length,
+          ...rows.map((r) => String((r as any)[key] ?? "").length),
+        );
+        return { wch: Math.min(Math.max(maxLen + 2, 10), 40) };
+      });
+      worksheet["!cols"] = colWidths;
+
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, "Quote Enquiries");
+
+      const dateStr = new Date().toISOString().slice(0, 10);
+      XLSX.writeFile(workbook, `quote-enquiries-${dateStr}.xlsx`);
+    } finally {
+      setExporting(false);
+    }
+  };
+
   return (
     <div className="flex flex-col gap-6">
       {selected && (
@@ -448,13 +502,28 @@ export default function QuoteEnquiriesPage() {
             Leads submitted from the Get a Quote page
           </p>
         </div>
-        <button
-          onClick={fetchAll}
-          className="flex items-center gap-2 text-sm font-semibold text-gray-600 hover:text-[#f27a1a] transition-colors"
-        >
-          <RefreshCw size={15} className={loading ? "animate-spin" : ""} />
-          Refresh
-        </button>
+        <div className="flex items-center gap-4">
+          <button
+            onClick={handleExportExcel}
+            disabled={exporting || filtered.length === 0}
+            title="Download the currently filtered list as an Excel file"
+            className="flex items-center gap-2 text-sm font-semibold text-white bg-[#0D1527] hover:bg-[#1c1f2e] disabled:opacity-50 disabled:cursor-not-allowed transition-colors px-4 py-2 rounded-xl"
+          >
+            {exporting ? (
+              <Loader2 size={15} className="animate-spin" />
+            ) : (
+              <Download size={15} />
+            )}
+            Export to Excel
+          </button>
+          <button
+            onClick={fetchAll}
+            className="flex items-center gap-2 text-sm font-semibold text-gray-600 hover:text-[#f27a1a] transition-colors"
+          >
+            <RefreshCw size={15} className={loading ? "animate-spin" : ""} />
+            Refresh
+          </button>
+        </div>
       </div>
 
       {/* Stats */}
