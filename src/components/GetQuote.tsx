@@ -269,6 +269,10 @@ function ApplyModal({
       const data = await res.json();
       if (!data.success) throw new Error(data.message || "Submission failed");
       setSubmitted(true);
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({
+        event: "form_enquiry_success",
+      });
     } catch (err: any) {
       setError(err.message);
     } finally {
