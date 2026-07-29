@@ -269,6 +269,10 @@ function ApplyModal({
       const data = await res.json();
       if (!data.success) throw new Error(data.message || "Submission failed");
       setSubmitted(true);
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({
+        event: "form_enquiry_success",
+      });
     } catch (err: any) {
       setError(err.message);
     } finally {
@@ -1008,7 +1012,7 @@ export default function GetQuote() {
                       onClick={() => setApplyModalOpen(true)}
                       className="shrink-0 bg-[#f27a1a] hover:bg-orange-600 text-white font-extrabold text-sm py-3.5 px-7 rounded-xl transition-all active:scale-98 flex items-center gap-2 shadow-md shadow-orange-200"
                     >
-                      Apply Now <ArrowUpRight size={16} strokeWidth={2.5} />
+                      Enquire Now <ArrowUpRight size={16} strokeWidth={2.5} />
                     </button>
                   </div>
                 )}

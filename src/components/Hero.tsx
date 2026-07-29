@@ -17,11 +17,19 @@ import {
   TrendingDown,
   Clock,
   Info,
+  Loader2,
+  Send,
+  User,
+  Phone,
+  Mail,
 } from "lucide-react";
 
 import Link from "next/link";
 import Image from "next/image";
 import { useLanguage } from "@/context/LanguageContext";
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+const DB_NAME = process.env.NEXT_PUBLIC_X_DATABASE || "manvi";
 
 /* ── Carousel Slides Configuration ── */
 // Get slide data based on language
@@ -280,6 +288,266 @@ interface Quote {
 
 type FilterType = "all" | "cheapest" | "fastest";
 
+/* ── Apply Now Modal ──────────────────────────────────────────────────────── */
+function ApplyModal({
+  open,
+  onClose,
+  quote,
+  destination,
+  destLabel,
+  zoningCountry,
+  zipcode,
+  actualWt,
+  volWt,
+  length,
+  breadth,
+  height,
+  chargeableWt,
+}: {
+  open: boolean;
+  onClose: () => void;
+  quote: Quote | null;
+  destination: string;
+  destLabel: string;
+  zoningCountry: string;
+  zipcode: string;
+  actualWt: string;
+  volWt: string | null;
+  length: string;
+  breadth: string;
+  height: string;
+  chargeableWt: number;
+}) {
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState("");
+
+  if (!open || !quote) return null;
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+    if (!name.trim() || !phone.trim() || !email.trim()) {
+      setError("All fields are required.");
+      return;
+    }
+    setSubmitting(true);
+    try {
+      const res = await fetch(`${API_URL}/quote-enquiries`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-database": DB_NAME,
+        },
+        body: JSON.stringify({
+          name: name.trim(),
+          phone: phone.trim(),
+          email: email.trim(),
+          destination,
+          zoningCountry,
+          zipcode,
+          actualWt: parseFloat(actualWt) || 0,
+          volWt: parseFloat(volWt ?? "0") || 0,
+          chargeableWt,
+          length: parseFloat(length) || 0,
+          breadth: parseFloat(breadth) || 0,
+          height: parseFloat(height) || 0,
+          service: quote.service,
+          network: quote.network,
+          zone: quote.zone,
+          rateType: quote.rateType,
+          totalPrice: quote.totalPrice,
+          tat: quote.tat,
+        }),
+      });
+      const data = await res.json();
+      if (!data.success) throw new Error(data.message || "Submission failed");
+      setSubmitted(true);
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({
+        event: "form_enquiry_success",
+      });
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const handleClose = () => {
+    setName("");
+    setPhone("");
+    setEmail("");
+    setError("");
+    setSubmitted(false);
+    onClose();
+  };
+
+  return (
+    <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
+      {/* Backdrop */}
+      <div
+        className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+        onClick={handleClose}
+      />
+
+      {/* Modal */}
+      <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden">
+        {/* Header */}
+        <div className="bg-[#0D1527] px-6 py-5 flex items-start justify-between">
+          <div>
+            <p className="text-[#f27a1a] text-[11px] font-extrabold tracking-widest uppercase mb-1">
+              Confirm Your Interest
+            </p>
+            <h3 className="text-white font-extrabold text-lg leading-tight">
+              Apply Now
+            </h3>
+          </div>
+          <button
+            onClick={handleClose}
+            className="text-white/50 hover:text-white transition-colors mt-0.5"
+          >
+            <X size={20} />
+          </button>
+        </div>
+
+        {submitted ? (
+          <div className="px-6 py-12 flex flex-col items-center text-center gap-4">
+            <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center">
+              <CheckCircle2 size={32} className="text-green-600" />
+            </div>
+            <div>
+              <p className="font-extrabold text-[#1c1f2e] text-lg">
+                Enquiry Submitted!
+              </p>
+              <p className="text-gray-500 text-sm mt-1">
+                Our team will reach out to you shortly.
+              </p>
+            </div>
+            <button
+              onClick={handleClose}
+              className="mt-2 bg-[#f27a1a] hover:bg-orange-600 text-white font-bold text-sm py-3 px-8 rounded-xl transition-colors"
+            >
+              Done
+            </button>
+          </div>
+        ) : (
+          <>
+            {/* Selected Service Summary */}
+            <div className="bg-orange-50 border-b border-orange-100 px-6 py-4">
+              <p className="text-[10px] text-gray-400 uppercase tracking-wider font-bold mb-2">
+                Selected Service
+              </p>
+              <div className="flex items-center justify-between gap-4">
+                <div>
+                  <p className="text-sm font-bold text-[#1c1f2e]">
+                    {quote.service}
+                  </p>
+                  <p className="text-xs text-gray-500 mt-0.5">
+                    {destLabel}
+                    {zoningCountry && ` — ${zoningCountry}`}
+                    {zipcode && ` · ${zipcode}`}
+                  </p>
+                  <p className="text-xs text-gray-400 mt-0.5">{quote.tat}</p>
+                </div>
+                <div className="text-right shrink-0">
+                  <p className="text-xl font-extrabold text-[#f27a1a]">
+                    ₹{Math.round(quote.totalPrice).toLocaleString("en-IN")}
+                  </p>
+                  <p className="text-[10px] text-gray-400">
+                    {chargeableWt} kg chargeable
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Form */}
+            <form
+              onSubmit={handleSubmit}
+              className="px-6 py-5 flex flex-col gap-4"
+            >
+              <p className="text-sm text-gray-500 font-medium">
+                Fill in your details and our team will contact you to finalise
+                the shipment.
+              </p>
+
+              {/* Name */}
+              <div className="relative">
+                <User
+                  size={15}
+                  className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
+                />
+                <input
+                  type="text"
+                  placeholder="Full Name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  className="w-full bg-[#f8f9fa] text-[#333] text-sm font-medium rounded-xl pl-10 pr-4 py-3.5 focus:outline-none border border-gray-200 placeholder:text-gray-400 focus:border-orange-300 transition-colors"
+                />
+              </div>
+
+              {/* Phone */}
+              <div className="relative">
+                <Phone
+                  size={15}
+                  className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
+                />
+                <input
+                  type="tel"
+                  placeholder="Phone Number"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  className="w-full bg-[#f8f9fa] text-[#333] text-sm font-medium rounded-xl pl-10 pr-4 py-3.5 focus:outline-none border border-gray-200 placeholder:text-gray-400 focus:border-orange-300 transition-colors"
+                />
+              </div>
+
+              {/* Email */}
+              <div className="relative">
+                <Mail
+                  size={15}
+                  className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
+                />
+                <input
+                  type="email"
+                  placeholder="Email Address"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="w-full bg-[#f8f9fa] text-[#333] text-sm font-medium rounded-xl pl-10 pr-4 py-3.5 focus:outline-none border border-gray-200 placeholder:text-gray-400 focus:border-orange-300 transition-colors"
+                />
+              </div>
+
+              {error && (
+                <div className="bg-red-50 border border-red-200 text-red-600 rounded-xl px-4 py-3 text-xs font-semibold flex items-center gap-2">
+                  <span>⚠️</span> {error}
+                </div>
+              )}
+
+              <button
+                type="submit"
+                disabled={submitting}
+                className="bg-[#f27a1a] hover:bg-orange-600 disabled:opacity-60 text-white font-bold text-sm py-3.5 px-6 rounded-xl transition-all active:scale-98 flex items-center justify-center gap-2 mt-1"
+              >
+                {submitting ? (
+                  <>
+                    <Loader2 size={16} className="animate-spin" /> Submitting…
+                  </>
+                ) : (
+                  <>
+                    Submit Enquiry <Send size={15} strokeWidth={2.5} />
+                  </>
+                )}
+              </button>
+            </form>
+          </>
+        )}
+      </div>
+    </div>
+  );
+}
+
 /* ── Quotes Modal ─────────────────────────────────────────────────────────── */
 function QuotesModal({
   quotes,
@@ -288,6 +556,7 @@ function QuotesModal({
   selectedService,
   onSelect,
   onClose,
+  onApplyNow,
 }: {
   quotes: Quote[];
   destLabel: string;
@@ -295,6 +564,7 @@ function QuotesModal({
   selectedService: string | null;
   onSelect: (key: string) => void;
   onClose: () => void;
+  onApplyNow: () => void;
 }) {
   const { t } = useLanguage();
   const [filter, setFilter] = useState<FilterType>("all");
@@ -393,6 +663,10 @@ function QuotesModal({
   const toggleRestrictions = (key: string) => {
     setExpandedRestrictions(expandedRestrictions === key ? null : key);
   };
+
+  const selectedQuote =
+    quotes.find((q) => `${q.service}__${q.rateType}` === selectedService) ??
+    null;
 
   return (
     <div
@@ -701,6 +975,32 @@ function QuotesModal({
           })}
         </div>
 
+        {/* Apply Now — shown when a service is selected */}
+        {selectedService && selectedQuote && (
+          <div className="px-4 sm:px-5 pt-3 shrink-0">
+            <div className="bg-white/5 rounded-2xl border-2 border-[#e77419] p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div>
+                <p className="text-xs text-zinc-400 font-medium">
+                  Ready to ship with
+                </p>
+                <p className="text-sm font-extrabold text-white mt-0.5 leading-tight">
+                  {selectedQuote.service}
+                </p>
+                <p className="text-[#e77419] font-extrabold text-lg mt-0.5">
+                  ₹
+                  {Math.round(selectedQuote.totalPrice).toLocaleString("en-IN")}
+                </p>
+              </div>
+              <button
+                onClick={onApplyNow}
+                className="shrink-0 bg-[#e77419] hover:bg-orange-600 text-white font-extrabold text-sm py-3.5 px-7 rounded-xl transition-all active:scale-98 flex items-center gap-2 shadow-md shadow-orange-900/30 w-full sm:w-auto justify-center"
+              >
+                Enquire Now <ArrowUpRight size={16} strokeWidth={2.5} />
+              </button>
+            </div>
+          </div>
+        )}
+
         <div className="px-4 sm:px-5 py-3 border-t border-white/10 text-center shrink-0">
           <p className="text-[10px] sm:text-[11px] text-zinc-500">
             {t.form_final_rates_msg}
@@ -730,6 +1030,7 @@ export default function Hero() {
   const [selectedService, setSelectedService] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [applyModalOpen, setApplyModalOpen] = useState(false);
 
   /* Carousel state */
   const [current, setCurrent] = useState(0);
@@ -753,6 +1054,10 @@ export default function Hero() {
   const chargeableWt = volWt
     ? Math.ceil(Math.max(parseFloat(actualWt) || 0, parseFloat(volWt)))
     : Math.ceil(parseFloat(actualWt) || 0);
+
+  const selectedQuoteObj =
+    quotes.find((q) => `${q.service}__${q.rateType}` === selectedService) ??
+    null;
 
   /* Auto-advance */
   const goTo = useCallback(
@@ -807,9 +1112,6 @@ export default function Hero() {
     setQuotes([]);
     setSelectedService(null);
     try {
-      const API_URL =
-        process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
-      const DB_NAME = process.env.NEXT_PUBLIC_X_DATABASE || "manvi";
       const params = new URLSearchParams({ actualWt, country: destination });
       if (length) params.append("length", length);
       if (breadth) params.append("breadth", breadth);
@@ -851,8 +1153,25 @@ export default function Hero() {
           selectedService={selectedService}
           onSelect={setSelectedService}
           onClose={() => setShowModal(false)}
+          onApplyNow={() => setApplyModalOpen(true)}
         />
       )}
+
+      <ApplyModal
+        open={applyModalOpen}
+        onClose={() => setApplyModalOpen(false)}
+        quote={selectedQuoteObj}
+        destination={destination}
+        destLabel={destObj?.label ?? destination}
+        zoningCountry={zoningCountry}
+        zipcode={zipcode}
+        actualWt={actualWt}
+        volWt={volWt}
+        length={length}
+        breadth={breadth}
+        height={height}
+        chargeableWt={chargeableWt}
+      />
 
       <section className="max-w-425 w-full mx-auto px-4 sm:px-6 py-6 font-sans">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">

@@ -7,3 +7,11 @@ declare namespace JSX {
     };
   }
 }
+
+declare global {
+  interface Window {
+    dataLayer?: Array<Record<string, unknown>>;
+  }
+}
+
+export {};
