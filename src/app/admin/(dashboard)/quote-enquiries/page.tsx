@@ -576,7 +576,7 @@ export default function QuoteEnquiriesPage() {
 
       {/* Filters */}
       <div className="flex gap-3 flex-wrap items-center">
-        <div className="relative flex-1 min-w-[200px]">
+        <div className="relative flex-1 min-w-50">
           <Search
             size={14}
             className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
@@ -676,7 +676,7 @@ export default function QuoteEnquiriesPage() {
                           {e.chargeableWt} kg chargeable
                         </p>
                       </td>
-                      <td className="px-5 py-4 max-w-[180px]">
+                      <td className="px-5 py-4 max-w-45">
                         <p className="font-semibold text-[#1c1f2e] text-xs leading-snug">
                           {e.service}
                         </p>
