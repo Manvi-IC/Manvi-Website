@@ -215,16 +215,22 @@ export default function Footer() {
               {/* Phone - reduced gap */}
               <div className="flex items-center gap-3">
                 <Phone className="w-[16px] h-[16px] text-white shrink-0" />
-                <span className="text-[14px] text-white/85 font-medium">
+                <a
+                  href="tel:+917070506070"
+                  className="text-[14px] text-white/85 font-medium hover:text-white transition-colors"
+                >
                   +91 70 70 50 60 70
-                </span>
+                </a>
               </div>
               {/* Email - reduced gap */}
               <div className="flex items-center gap-3">
                 <Mail className="w-[16px] h-[16px] text-white shrink-0" />
-                <span className="text-[14px] text-white/85 font-medium">
+                <a
+                  href="mailto:info@manvicourier.com"
+                  className="text-[14px] text-white/85 font-medium hover:text-white transition-colors"
+                >
                   info@manvicourier.com
-                </span>
+                </a>
               </div>
               {/* Address - reduced gap */}
               <div className="flex items-start gap-3">
