@@ -867,11 +867,10 @@ function QuotesModal({
                   setIsManualSelection(false);
                   setFilter("all");
                 }}
-                className={`px-2.5 sm:px-3 py-1.5 rounded-lg text-[10px] sm:text-[11px] font-semibold transition-all ${
-                  filter === "all"
-                    ? "bg-[#e77419] text-white"
-                    : "bg-white/10 text-zinc-400 hover:bg-white/20 hover:text-white"
-                }`}
+                className={`px-2.5 sm:px-3 py-1.5 rounded-lg text-[10px] sm:text-[11px] font-semibold transition-all ${filter === "all"
+                  ? "bg-[#e77419] text-white"
+                  : "bg-white/10 text-zinc-400 hover:bg-white/20 hover:text-white"
+                  }`}
               >
                 Default
               </button>
@@ -880,11 +879,10 @@ function QuotesModal({
                   setIsManualSelection(false);
                   setFilter("cheapest");
                 }}
-                className={`px-2.5 sm:px-3 py-1.5 rounded-lg text-[10px] sm:text-[11px] font-semibold transition-all flex items-center gap-1 ${
-                  filter === "cheapest"
-                    ? "bg-[#e77419] text-white"
-                    : "bg-white/10 text-zinc-400 hover:bg-white/20 hover:text-white"
-                }`}
+                className={`px-2.5 sm:px-3 py-1.5 rounded-lg text-[10px] sm:text-[11px] font-semibold transition-all flex items-center gap-1 ${filter === "cheapest"
+                  ? "bg-[#e77419] text-white"
+                  : "bg-white/10 text-zinc-400 hover:bg-white/20 hover:text-white"
+                  }`}
               >
                 <TrendingDown size={12} />
                 <span className="hidden xs:inline">Most Affordable</span>
@@ -895,11 +893,10 @@ function QuotesModal({
                   setIsManualSelection(false);
                   setFilter("fastest");
                 }}
-                className={`px-2.5 sm:px-3 py-1.5 rounded-lg text-[10px] sm:text-[11px] font-semibold transition-all flex items-center gap-1 ${
-                  filter === "fastest"
-                    ? "bg-[#e77419] text-white"
-                    : "bg-white/10 text-zinc-400 hover:bg-white/20 hover:text-white"
-                }`}
+                className={`px-2.5 sm:px-3 py-1.5 rounded-lg text-[10px] sm:text-[11px] font-semibold transition-all flex items-center gap-1 ${filter === "fastest"
+                  ? "bg-[#e77419] text-white"
+                  : "bg-white/10 text-zinc-400 hover:bg-white/20 hover:text-white"
+                  }`}
               >
                 <Clock size={12} />
                 Fastest
@@ -952,11 +949,10 @@ function QuotesModal({
                 key={key}
                 data-service-key={key}
                 onClick={() => handleServiceSelect(key)}
-                className={`relative rounded-xl border-2 cursor-pointer transition-all min-w-[82vw] xs:min-w-[300px] sm:min-w-[300px] max-w-[340px] flex-shrink-0 flex flex-col max-h-full ${
-                  isSelected
-                    ? "border-[#e77419] bg-[#e77419]/10"
-                    : "border-zinc-700 bg-zinc-800/60 hover:border-zinc-500"
-                }`}
+                className={`relative rounded-xl border-2 cursor-pointer transition-all min-w-[82vw] xs:min-w-[300px] sm:min-w-[300px] max-w-[340px] flex-shrink-0 flex flex-col max-h-full ${isSelected
+                  ? "border-[#e77419] bg-[#e77419]/10"
+                  : "border-zinc-700 bg-zinc-800/60 hover:border-zinc-500"
+                  }`}
               >
                 {isSelected && (
                   <div className="absolute -top-2.5 left-3 z-10 bg-[#e77419] text-white text-[9px] font-bold px-2 py-0.5 rounded-full shadow-sm">
@@ -1023,9 +1019,8 @@ function QuotesModal({
                       </span>
                       <ChevronDown
                         size={15}
-                        className={`ml-auto shrink-0 transition-transform duration-300 ${
-                          isExpanded ? "rotate-180" : ""
-                        }`}
+                        className={`ml-auto shrink-0 transition-transform duration-300 ${isExpanded ? "rotate-180" : ""
+                          }`}
                       />
                     </button>
 
@@ -1172,9 +1167,9 @@ export default function CampaignPage() {
   const volWt =
     parseFloat(length) && parseFloat(breadth) && parseFloat(height)
       ? (
-          (parseFloat(length) * parseFloat(breadth) * parseFloat(height)) /
-          5000
-        ).toFixed(2)
+        (parseFloat(length) * parseFloat(breadth) * parseFloat(height)) /
+        5000
+      ).toFixed(2)
       : null;
   const chargeableWt = volWt
     ? Math.ceil(Math.max(parseFloat(actualWt) || 0, parseFloat(volWt)))
@@ -1221,7 +1216,7 @@ export default function CampaignPage() {
       } else {
         alert(
           data.message ||
-            "No services available for this destination/weight combination.",
+          "No services available for this destination/weight combination.",
         );
       }
     } catch (err: any) {
@@ -1285,7 +1280,7 @@ export default function CampaignPage() {
   }, []);
 
   return (
-    <main className="w-full font-sans bg-white flex flex-col pb-16">
+    <main className="w-full font-sans bg-[#faf5ea] flex flex-col pb-16">
       {/* Quotes + Apply modals for the Get Quote form below */}
       {showQuoteModal && quotes.length > 0 && (
         <QuotesModal
@@ -1318,74 +1313,58 @@ export default function CampaignPage() {
       {/* ── 1. HERO ── */}
       <section className="w-full max-w-[1400px] mx-auto px-4 sm:px-6 py-6">
         <div
-          className="relative w-full overflow-hidden"
-          style={{ minHeight: "485px", height: "auto", borderRadius: "20px" }}
+          className="relative w-full overflow-hidden rounded-[20px] bg-[#faf5ea] aspect-[398/485] sm:aspect-[1024/367]"
         >
+          {/* Desktop Banner (Textless Image Background) */}
           <Image
-            src="/hero-right.jpg"
+            src="/raksha-bandhan-banner-v2.jpg"
             alt="Manvi International Courier"
             fill
             sizes="100vw"
-            className="object-cover object-center"
+            className="hidden sm:block object-contain object-center"
             priority
           />
-          <div
-            className="absolute inset-0"
-            style={{ background: "rgba(0,0,0,0.4)" }}
+          {/* Mobile Banner (Textless Image Background) */}
+          <Image
+            src="/raksha-bandhan-banner-mobile-v2.jpg"
+            alt="Manvi International Courier Mobile"
+            fill
+            sizes="100vw"
+            className="block sm:hidden object-contain object-center"
+            priority
           />
-          <div
-            className="absolute inset-0"
-            style={{
-              background:
-                "linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.85) 80%)",
-            }}
-          />
-          <div className="relative z-10 h-full flex flex-col justify-between p-8 sm:p-12 lg:p-14">
-            <div className="flex flex-col gap-4 max-w-3xl">
-              <span
-                className="text-[12px] text-white/90 px-3.5 py-1.5 rounded-full flex items-center gap-1.5 w-fit font-medium tracking-wide"
-                style={{
-                  background: "rgba(10,17,30,0.5)",
-                  border: "1px solid rgba(255,255,255,0.25)",
-                }}
-              >
-                <span className="text-[14px]">🌍</span> {t.campaign_hero_badge}
+          <div className="absolute inset-0 z-10 flex flex-col justify-between p-4 sm:p-8 lg:p-10 pointer-events-none">
+            <div className="flex flex-col max-w-xl lg:max-w-2xl pt-20 sm:pt-20 md:pt-24 justify-center items-center">
+              {/* Top line: THIS RAKSHA BANDHAN */}
+              <span className="text-2xl sm:text-[18px] md:text-3xl font-black tracking-[0.14em] text-[#0a111e] uppercase font-sans leading-none">
+                THIS RAKSHA BANDHAN
               </span>
-              <h1 className="text-white font-extrabold leading-[1.15] tracking-tight text-[28px] sm:text-[36px] md:text-[44px] lg:text-[56px]">
-                {t.campaign_hero_title_line1}
-                <br />
-                {t.campaign_hero_title_line2}{" "}
-                <span className="text-[#e77419]">
-                  {t.campaign_hero_title_highlight1}
-                </span>
-                <br />
-                <span className="text-[#e77419]">
-                  {t.campaign_hero_title_highlight2}
-                </span>
+
+              {/* Middle line: Send love */}
+              <h1 className="text-7xl sm:text-[58px] md:text-5xl lg:text-9xl font-sans font-extrabold text-[#f96302] leading-[1.02] tracking-tight -ml-0.5 my-0">
+                Send love
               </h1>
-              <p className="text-[15px] text-white/80 max-w-2xl leading-relaxed font-normal">
-                {t.campaign_hero_subtext}
+
+              {/* Bottom line: Miles Don't Matter at Manvi */}
+              <p className="text-2xl sm:text-[19px] md:text-3xl font-medium text-[#1a1a1a] tracking-tight font-sans mt-0.5 sm:mt-1">
+                Miles Don't Matter at Manvi
               </p>
-            </div>
 
-            <div className="flex flex-col sm:flex-row sm:items-center gap-x-4 gap-y-2 mt-2">
-              <div className="flex items-center gap-2">
-                <Stars />
-                <span className="text-[13px] text-white/80 font-medium">
-                  {t.campaign_hero_trusted}
-                </span>
+              {/* Ornamental Flourish Divider Line */}
+              <div className="flex items-center gap-2 my-1.5 sm:my-2 w-fit max-w-[260px]">
+                <div className="h-[1.5px] w-20 bg-gradient-to-r from-transparent via-[#0a111e]/70 to-[#0a111e]" />
+                <svg className="w-5 h-5 text-[#0a111e]" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 2L14.2 9.8L22 12L14.2 14.2L12 22L9.8 14.2L2 12L9.8 9.8L12 2Z" />
+                </svg>
+                <div className="h-[1.5px] w-20 bg-gradient-to-l from-transparent via-[#0a111e]/70 to-[#0a111e]" />
               </div>
-              <br />
             </div>
-            <span className="text-[14px] font-bold text-[#e77419]">
-              {t.campaign_hero_shipments}
-            </span>
 
-            <div className="flex flex-col gap-4 mt-6">
-              <div className="flex flex-wrap gap-4">
+            <div className="flex flex-col gap-4 mt-auto pointer-events-auto">
+              <div className="flex flex-col md:flex-row gap-4 items-start md:items-center pb-6 md:pb-0">
                 <Link
                   href="/quote"
-                  className="flex items-center gap-2 font-bold text-[13px] md:text-[15px] px-5 py-2.5 md:px-7 md:py-3.5 rounded-full text-white no-underline transition-transform hover:scale-105"
+                  className="flex items-center gap-2 font-bold text-[13px] md:text-[15px] px-5 py-2.5 md:px-7 md:py-3.5 rounded-full text-white no-underline transition-transform hover:scale-105 shadow-md"
                   style={{
                     background: "#e77419",
                     border: "1px solid rgba(255,255,255,0.2)",
@@ -1398,7 +1377,7 @@ export default function CampaignPage() {
                   href="https://wa.me/917070506070"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-2 font-bold text-[13px] md:text-[15px] px-5 py-2.5 md:px-7 md:py-3.5 rounded-full no-underline transition-transform hover:scale-105"
+                  className="flex items-center gap-2 font-bold text-[13px] md:text-[15px] px-5 py-2.5 md:px-7 md:py-3.5 rounded-full no-underline transition-transform hover:scale-105 shadow-md"
                   style={{
                     background: "#23c961",
                     color: "#0a111e",
@@ -1595,9 +1574,8 @@ export default function CampaignPage() {
               <button
                 type="submit"
                 disabled={quoteLoading}
-                className={`bg-[#0D1527] hover:bg-slate-800 text-white font-bold text-[13px] py-3.5 px-8 rounded-xl transition-all active:scale-95 cursor-pointer flex items-center justify-center gap-1.5 disabled:opacity-70 ${
-                  actualWt || volWt ? "sm:w-auto" : "w-full"
-                }`}
+                className={`bg-[#0D1527] hover:bg-slate-800 text-white font-bold text-[13px] py-3.5 px-8 rounded-xl transition-all active:scale-95 cursor-pointer flex items-center justify-center gap-1.5 disabled:opacity-70 ${actualWt || volWt ? "sm:w-auto" : "w-full"
+                  }`}
               >
                 {quoteLoading ? t.form_calculating : t.hero_get_quote}{" "}
                 {!quoteLoading && (
@@ -1610,7 +1588,7 @@ export default function CampaignPage() {
       </section>
 
       {/* ── 2. TRUSTED DELIVERY PARTNERS ── */}
-      <section className="w-full bg-[#e5e6eb] py-8 mt-4">
+      <section className="w-full bg-[#f4ebe0] py-8 mt-4">
         <div className="w-full max-w-[1400px] mx-auto px-4 sm:px-6 flex flex-col md:flex-row justify-center md:justify-around items-center gap-6 md:gap-12">
           <div className="flex text-center md:text-left">
             <span className="text-xl sm:text-2xl font-extrabold text-[#e77419] leading-snug block">
@@ -1632,7 +1610,7 @@ export default function CampaignPage() {
 
       {/* ── 3. HOW IT WORKS ── */}
       <section className="w-full max-w-[1400px] mx-auto px-4 sm:px-6 py-10">
-        <div className="bg-[#F7F7F8] rounded-xl p-8 sm:p-14">
+        <div className="bg-[#f4ebe0] rounded-xl p-8 sm:p-14">
           <div className="mb-10">
             <span className="inline-block border border-[#e77419] text-[#e77419] px-5 py-1.5 bg-[#FF7F001F] rounded-full text-[12px] font-semibold tracking-wide mb-5">
               {t.campaign_how_it_works_badge}
@@ -1670,7 +1648,7 @@ export default function CampaignPage() {
 
       {/* ── 4. WHERE WE PICK UP AND DELIVER ── */}
       <section className="w-full max-w-[1400px] mx-auto px-4 sm:px-6 py-4">
-        <div className="bg-[#e5e6eb] rounded-xl p-8 sm:p-14">
+        <div className="bg-[#f4ebe0] rounded-xl p-8 sm:p-14">
           <div className="text-center mb-12">
             <span className="inline-block border bg-[#FF7F001F] border-[#e77419] text-[#e77419] px-5 py-1.5 rounded-full text-[12px] font-semibold tracking-wide mb-5">
               {t.campaign_where_badge}
@@ -1800,7 +1778,7 @@ export default function CampaignPage() {
 
       {/* ── 6. TESTIMONIALS ── */}
       <section className="w-full max-w-[1400px] mx-auto px-4">
-        <div className="bg-[#e5e6eb] rounded-xl p-8 sm:p-10">
+        <div className="bg-[#f4ebe0] rounded-xl p-8 sm:p-10">
           <div className="mb-10 text-center">
             <span className="inline-block border border-[#e77419] text-[#e77419] px-4 py-1.5 rounded-full text-[12px] font-bold mb-4">
               {t.campaign_testimonials_badge}
@@ -1883,18 +1861,18 @@ export default function CampaignPage() {
               left: 0;
               background: linear-gradient(
                 to right,
-                #e5e6eb,
-                rgba(229, 230, 235, 0.9),
-                rgba(229, 230, 235, 0)
+                #f4ebe0,
+                rgba(244, 235, 224, 0.9),
+                rgba(244, 235, 224, 0)
               );
             }
             .testimonial-carousel-light::after {
               right: 0;
               background: linear-gradient(
                 to left,
-                #e5e6eb,
-                rgba(229, 230, 235, 0.9),
-                rgba(229, 230, 235, 0)
+                #f4ebe0,
+                rgba(244, 235, 224, 0.9),
+                rgba(244, 235, 224, 0)
               );
             }
             .testimonial-slide {
@@ -1953,7 +1931,7 @@ export default function CampaignPage() {
         )}
 
         {/* FAQ */}
-        <div className="bg-[#e5e6eb] rounded-xl p-8 sm:p-14 max-w-[1400px] w-full mx-4 sm:mx-6">
+        <div className="bg-[#f4ebe0] rounded-xl p-8 sm:p-14 max-w-[1400px] w-full mx-4 sm:mx-6">
           <div className="text-center mb-12">
             <span className="inline-block border border-[#e77419] text-[#e77419] px-4 py-1.5 rounded-full text-[12px] font-bold mb-4">
               {t.faq_badge}
