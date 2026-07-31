@@ -1326,7 +1326,8 @@ export default function CampaignPage() {
             alt="Manvi International Courier"
             fill
             sizes="100vw"
-            className="hidden sm:block object-contain object-center"
+            quality={100}
+            className="hidden sm:block object-cover sm:object-contain object-center"
             priority
           />
           {/* Mobile Banner (Textless Image Background) */}
@@ -1335,6 +1336,7 @@ export default function CampaignPage() {
             alt="Manvi International Courier Mobile"
             fill
             sizes="100vw"
+            quality={100}
             className="block sm:hidden object-cover object-center"
             priority
           />
