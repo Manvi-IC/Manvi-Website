@@ -1329,12 +1329,12 @@ export default function CampaignPage() {
               className="object-contain object-bottom"
               priority
             />
-            <div className="absolute inset-0 z-10 flex flex-col items-center p-4 pt-4 pointer-events-none">
+            <div className="absolute inset-0 z-10 flex flex-col items-center p-4 pt-0 pointer-events-none">
               {/* Header Text Overlay */}
-              <div className="pt-2 flex w-full">
-                <img src="/logo-png.png" alt="" className="h-36" />
+              <div className="pt-4 flex w-full">
+                <img src="/logo-png.png" alt="" className="h-36 w-60" />
               </div>
-              <div className="flex flex-col items-center w-full text-center pt-2">
+              <div className="flex flex-col items-center w-full text-center pt-0 pb-8">
                 <span className="text-md font-black tracking-[0.14em] text-[#0a111e] uppercase font-sans">
                   THIS RAKSHA BANDHAN
                 </span>
@@ -1354,7 +1354,7 @@ export default function CampaignPage() {
               </div>
 
               {/* Rates Card + CTA Buttons on Mobile */}
-              <div className="flex flex-col items-center gap-2 pointer-events-auto mt-auto">
+              <div className="flex flex-col items-center gap-3 pointer-events-auto mt-auto">
                 {/* 📦 100g Rakhi Parcels — Flat Rates Card/Pill */}
                 <div className="w-full max-w-[340px] px-3 py-2 rounded-2xl bg-white/75 backdrop-blur-md border border-[#e77419]/30 shadow-md flex flex-col items-center text-center">
                   <span className="text-[11px] font-extrabold text-[#e77419] flex items-center gap-1.5 uppercase tracking-wide">
