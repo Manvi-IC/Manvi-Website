@@ -2122,7 +2122,23 @@ export default function CampaignPage() {
                         >
                           {t[f.linkKey as keyof typeof t]}
                         </Link>
-                        {t[f.afterLinkKey as keyof typeof t]}
+                        {f.aKey === "faq_a2" ? (
+                          <>
+                            {" or message us on "}
+                            <a
+                              href="https://wa.me/917070506070"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-[#23c961] font-bold underline ml-0.5"
+                              onClick={(e) => e.stopPropagation()}
+                            >
+                              WhatsApp
+                            </a>
+                            {" for an exact price, no hidden charges."}
+                          </>
+                        ) : (
+                          t[f.afterLinkKey as keyof typeof t]
+                        )}
                       </>
                     )}
                   </div>

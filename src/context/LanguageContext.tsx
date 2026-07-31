@@ -727,10 +727,10 @@ const translations: Record<Language, Translations> = {
       "We have our own network USA, Canada, UK, Europe, and Australia. Whether it's a big city or a quiet suburb, we'll get it there. Further, for locations other than these we offer branded services.",
     faq_q2: "How Much Does It Cost?",
     faq_a2:
-      "Parcel depends on destination, weight, and service type. Get a quote now.",
+      "Cost depends on destination, weight, and service type. Even a 100g parcel starts from ₹280 for UK. ",
     faq_q2_link: "Get a quick quote",
     faq_q2_after:
-      " or message us on WhatsApp for an exact price no hidden charges.",
+      " or message us on WhatsApp for an exact price, no hidden charges.",
     faq_q3: "How Long Does Delivery Take?",
     faq_a3:
       "Most shipments arrive within a few days to two weeks depending on destination and service level. We guarantee on-time delivery when you order within our confirmed service windows.",
