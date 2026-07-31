@@ -1332,7 +1332,7 @@ export default function CampaignPage() {
           />
           {/* Mobile Banner (Textless Image Background) */}
           <Image
-            src="/raksha-bandhan-banner-mobile-v2.jpg"
+            src="/raksha-bandhan-banner-mobile.jpg"
             alt="Manvi International Courier Mobile"
             fill
             sizes="100vw"
