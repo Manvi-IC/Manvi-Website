@@ -1336,17 +1336,17 @@ export default function CampaignPage() {
           <div className="absolute inset-0 z-10 flex flex-col justify-between p-4 sm:p-8 lg:p-10 pointer-events-none">
             <div className="flex flex-col max-w-xl lg:max-w-2xl pt-20 sm:pt-20 md:pt-24 justify-center items-center">
               {/* Top line: THIS RAKSHA BANDHAN */}
-              <span className="text-2xl sm:text-[18px] md:text-3xl font-black tracking-[0.14em] text-[#0a111e] uppercase font-sans leading-none">
+              <span className="text-lg sm:text-[18px] md:text-3xl font-black tracking-[0.14em] text-[#0a111e] uppercase font-sans leading-none">
                 THIS RAKSHA BANDHAN
               </span>
 
               {/* Middle line: Send love */}
-              <h1 className="text-7xl sm:text-[58px] md:text-5xl lg:text-9xl font-sans font-extrabold text-[#f96302] leading-[1.02] tracking-tight -ml-0.5 my-0">
+              <h1 className="text-5xl sm:text-[58px] md:text-5xl lg:text-9xl font-sans font-extrabold text-[#f96302] leading-[1.02] tracking-tight -ml-0.5 my-0">
                 Send love
               </h1>
 
               {/* Bottom line: Miles Don't Matter at Manvi */}
-              <p className="text-2xl sm:text-[19px] md:text-3xl font-medium text-[#1a1a1a] tracking-tight font-sans mt-0.5 sm:mt-1">
+              <p className="text-lg sm:text-[19px] md:text-3xl font-medium text-[#1a1a1a] tracking-tight font-sans mt-0.5 sm:mt-1">
                 Miles Don't Matter at Manvi
               </p>
 
