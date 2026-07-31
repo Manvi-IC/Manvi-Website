@@ -1136,6 +1136,25 @@ function QuotesModal({
 // ─── MAIN PAGE ────────────────────────────────────────────────────────────────
 export default function CampaignPage() {
   const { t } = useLanguage();
+  const [mounted, setMounted] = useState(false);
+  const [slidesCount, setSlidesCount] = useState<number>(3);
+
+  useEffect(() => {
+    setMounted(true);
+    const handleResize = () => {
+      if (window.innerWidth <= 768) {
+        setSlidesCount(1);
+      } else if (window.innerWidth <= 1024) {
+        setSlidesCount(2);
+      } else {
+        setSlidesCount(3);
+      }
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const [activeIndex, setActiveIndex] = useState<number>(0);
   const [offerDetails, setOfferDetails] = useState({
     title: "Limited-Time Offer",
@@ -1229,27 +1248,13 @@ export default function CampaignPage() {
   const sliderSettings = {
     infinite: true,
     speed: 500,
-    slidesToShow: 3,
+    slidesToShow: slidesCount,
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 1500,
     arrows: false,
-    centerMode: true,
-    centerPadding: "20px",
-    responsive: [
-      {
-        breakpoint: 1024,
-        settings: { slidesToShow: 2, centerPadding: "10px" },
-      },
-      {
-        breakpoint: 768,
-        settings: { slidesToShow: 1, centerPadding: "30px" },
-      },
-      {
-        breakpoint: 480,
-        settings: { slidesToShow: 1, centerPadding: "10px" },
-      },
-    ],
+    centerMode: slidesCount > 1,
+    centerPadding: slidesCount > 1 ? "20px" : "0px",
   };
 
   useEffect(() => {
@@ -1788,58 +1793,60 @@ export default function CampaignPage() {
             </h2>
           </div>
 
-          <div className="testimonial-carousel-container testimonial-carousel-light w-full">
-            <Slider {...sliderSettings}>
-              {[
-                {
-                  name: "Anjali M.",
-                  location: "Birmingham, UK",
-                  textKey: "campaign_testimonial1",
-                },
-                {
-                  name: "Raj P.",
-                  location: "London, UK",
-                  textKey: "campaign_testimonial2",
-                },
-                {
-                  name: "Simran K.",
-                  location: "Toronto, Canada",
-                  textKey: "campaign_testimonial3",
-                },
-                {
-                  name: "Hardeep S.",
-                  location: "Sydney, Australia",
-                  textKey: "campaign_testimonial4",
-                },
-              ].map((testimonial, i) => (
-                <div key={i} className="px-2 md:px-3">
-                  <div className="testimonial-slide flex flex-col gap-0 px-8 py-8 rounded-2xl bg-white shadow-sm border border-black/5 mx-auto min-h-[250px] sm:min-h-[200px]">
-                    <span className="text-[32px] md:text-[40px] text-[#e77419] font-serif leading-none select-none">
-                      &#x201C;&#x201C;
-                    </span>
-                    <p className="text-[14px] sm:text-[15px] text-[#666] leading-relaxed italic mb-4">
-                      {t[testimonial.textKey as keyof typeof t]}
-                    </p>
-                    <div className="flex items-center gap-4 mt-auto">
-                      <div
-                        className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-[14px] shrink-0"
-                        style={{ background: "#e77419" }}
-                      >
-                        {testimonial.name[0]}
-                      </div>
-                      <div className="flex flex-col">
-                        <p className="text-[14px] font-bold text-[#0a111e]">
-                          {testimonial.name}
-                        </p>
-                        <p className="text-[12px] text-[#666]">
-                          {testimonial.location}
-                        </p>
+          <div className="testimonial-carousel-container testimonial-carousel-light w-full min-h-[300px]">
+            {mounted ? (
+              <Slider key={slidesCount} {...sliderSettings}>
+                {[
+                  {
+                    name: "Anjali M.",
+                    location: "Birmingham, UK",
+                    textKey: "campaign_testimonial1",
+                  },
+                  {
+                    name: "Raj P.",
+                    location: "London, UK",
+                    textKey: "campaign_testimonial2",
+                  },
+                  {
+                    name: "Simran K.",
+                    location: "Toronto, Canada",
+                    textKey: "campaign_testimonial3",
+                  },
+                  {
+                    name: "Hardeep S.",
+                    location: "Sydney, Australia",
+                    textKey: "campaign_testimonial4",
+                  },
+                ].map((testimonial, i) => (
+                  <div key={i} className="px-2 md:px-3">
+                    <div className="testimonial-slide flex flex-col gap-0 px-8 py-8 rounded-2xl bg-white shadow-sm border border-black/5 mx-auto min-h-[250px] sm:min-h-[200px]">
+                      <span className="text-[32px] md:text-[40px] text-[#e77419] font-serif leading-none select-none">
+                        &#x201C;&#x201C;
+                      </span>
+                      <p className="text-[14px] sm:text-[15px] text-[#666] leading-relaxed italic mb-4">
+                        {t[testimonial.textKey as keyof typeof t]}
+                      </p>
+                      <div className="flex items-center gap-4 mt-auto">
+                        <div
+                          className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-[14px] shrink-0"
+                          style={{ background: "#e77419" }}
+                        >
+                          {testimonial.name[0]}
+                        </div>
+                        <div className="flex flex-col">
+                          <p className="text-[14px] font-bold text-[#0a111e]">
+                            {testimonial.name}
+                          </p>
+                          <p className="text-[12px] text-[#666]">
+                            {testimonial.location}
+                          </p>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              ))}
-            </Slider>
+                ))}
+              </Slider>
+            ) : null}
           </div>
 
           <style jsx global>{`
@@ -1899,14 +1906,12 @@ export default function CampaignPage() {
             @media (max-width: 768px) {
               .testimonial-carousel-container::before,
               .testimonial-carousel-container::after {
-                width: 5%;
+                display: none !important;
               }
-              .slick-center .testimonial-slide {
-                transform: scale(1);
-              }
+              .slick-center .testimonial-slide,
               .testimonial-slide {
-                transform: scale(0.9);
-                opacity: 0.5;
+                transform: scale(1) !important;
+                opacity: 1 !important;
               }
               .slick-list {
                 padding-top: 1rem !important;

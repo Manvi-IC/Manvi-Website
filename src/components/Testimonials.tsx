@@ -83,7 +83,7 @@ export default function Testimonials() {
 
           <div className="testimonial-carousel-container testimonial-carousel-light w-full min-h-[300px]">
             {mounted ? (
-              <Slider {...sliderSettings}>
+              <Slider key={slidesCount} {...sliderSettings}>
                 {displayTestimonials.map((testimonial, i) => (
                   <div
                     key={i}
