@@ -1318,7 +1318,7 @@ export default function CampaignPage() {
       {/* ── 1. HERO ── */}
       <section className="w-full max-w-[1400px] mx-auto px-4 sm:px-6 py-6">
         <div
-          className="relative w-full overflow-hidden rounded-[20px] bg-[#faf5ea] aspect-[398/485] sm:aspect-[1024/367]"
+          className="relative w-full overflow-hidden rounded-[20px] bg-[#faf5ea] aspect-[398/550] sm:aspect-[1024/400] min-h-[490px] sm:min-h-0"
         >
           {/* Desktop Banner (Textless Image Background) */}
           <Image
@@ -1335,61 +1335,91 @@ export default function CampaignPage() {
             alt="Manvi International Courier Mobile"
             fill
             sizes="100vw"
-            className="block sm:hidden object-contain object-center"
+            className="block sm:hidden object-cover object-center"
             priority
           />
-          <div className="absolute inset-0 z-10 flex flex-col justify-between p-4 sm:p-8 lg:p-10 pointer-events-none">
-            <div className="flex flex-col max-w-xl lg:max-w-2xl pt-20 sm:pt-20 md:pt-24 justify-center items-center">
+          <div className="absolute inset-0 z-10 flex flex-col justify-between p-4 sm:p-6 lg:p-8 pointer-events-none">
+            <div className="flex flex-col max-w-xl lg:max-w-2xl pt-16 sm:pt-14 md:pt-26 justify-center items-center mx-auto sm:mx-0">
               {/* Top line: THIS RAKSHA BANDHAN */}
-              <span className="text-lg sm:text-[18px] md:text-3xl font-black tracking-[0.14em] text-[#0a111e] uppercase font-sans leading-none">
+              <span className="text-md sm:text-[18px] md:text-2xl font-black tracking-[0.14em] text-[#0a111e] uppercase font-sans leading-none">
                 THIS RAKSHA BANDHAN
               </span>
 
               {/* Middle line: Send love */}
-              <h1 className="text-5xl sm:text-[58px] md:text-5xl lg:text-9xl font-sans font-extrabold text-[#f96302] leading-[1.02] tracking-tight -ml-0.5 my-0">
+              <h1 className="text-5xl sm:text-[58px] md:text-5xl lg:text-8xl font-sans font-extrabold text-[#f96302] leading-[1.02] tracking-tight -ml-0.5 sm:my-0">
                 Send love
               </h1>
 
               {/* Bottom line: Miles Don't Matter at Manvi */}
-              <p className="text-lg sm:text-[19px] md:text-3xl font-medium text-[#1a1a1a] tracking-tight font-sans mt-0.5 sm:mt-1">
+              <p className="text-md sm:text-[19px] md:text-2xl font-medium text-[#1a1a1a] tracking-tight font-sans">
                 Miles Don't Matter at Manvi
               </p>
 
               {/* Ornamental Flourish Divider Line */}
-              <div className="flex items-center gap-2 my-1.5 sm:my-2 w-fit max-w-[260px]">
-                <div className="h-[1.5px] w-20 bg-gradient-to-r from-transparent via-[#0a111e]/70 to-[#0a111e]" />
-                <svg className="w-5 h-5 text-[#0a111e]" viewBox="0 0 24 24" fill="currentColor">
+              <div className="flex items-center gap-2 my-1 sm:my-2 w-fit max-w-[260px]">
+                <div className="h-[1.5px] w-16 sm:w-20 bg-gradient-to-r from-transparent via-[#0a111e]/70 to-[#0a111e]" />
+                <svg className="w-3.5 h-3.5 sm:w-5 sm:h-5 text-[#0a111e]" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M12 2L14.2 9.8L22 12L14.2 14.2L12 22L9.8 14.2L2 12L9.8 9.8L12 2Z" />
                 </svg>
-                <div className="h-[1.5px] w-20 bg-gradient-to-l from-transparent via-[#0a111e]/70 to-[#0a111e]" />
+                <div className="h-[1.5px] w-16 sm:w-20 bg-gradient-to-l from-transparent via-[#0a111e]/70 to-[#0a111e]" />
+              </div>
+
+              {/* 📦 100g Rakhi Parcels — Flat Rates Card/Pill */}
+              <div className="mt-1.5 sm:mt-3 w-full max-w-[340px] sm:max-w-xl px-3 py-2 sm:px-4 sm:py-2.5 rounded-2xl bg-gray/10 backdrop-blur-md border border-[#e77419]/30 shadow-md flex flex-col items-center text-center pointer-events-auto">
+                <span className="text-[11px] sm:text-[13px] md:text-sm font-extrabold text-[#e77419] flex items-center gap-1.5 uppercase tracking-wide">
+                  <span>📦</span> 100g Rakhi Parcels — Flat Rates
+                </span>
+
+                {/* Responsive Layout: 2x2 Grid on Mobile, Single Line Flex on Desktop */}
+                <div className="grid grid-cols-2 gap-1.5 w-full mt-1.5 text-[11px] sm:text-[12px] md:text-xs font-bold text-[#0a111e] sm:flex sm:flex-wrap sm:items-center sm:justify-center sm:gap-x-3 sm:gap-y-1">
+                  <div className="bg-orange-50/90 border border-orange-200/80 px-2 py-1 sm:p-0 rounded-lg sm:rounded-none sm:bg-transparent sm:border-0 flex items-center justify-between sm:justify-start sm:gap-1">
+                    <span>🇬🇧 UK</span>
+                    <span className="text-[#e77419] font-black">₹280</span>
+                  </div>
+                  <span className="text-gray-300 hidden sm:inline">|</span>
+                  <div className="bg-orange-50/90 border border-orange-200/80 px-2 py-1 sm:p-0 rounded-lg sm:rounded-none sm:bg-transparent sm:border-0 flex items-center justify-between sm:justify-start sm:gap-1">
+                    <span>🇦🇺 Australia</span>
+                    <span className="text-[#e77419] font-black">₹405</span>
+                  </div>
+                  <span className="text-gray-300 hidden sm:inline">|</span>
+                  <div className="bg-orange-50/90 border border-orange-200/80 px-2 py-1 sm:p-0 rounded-lg sm:rounded-none sm:bg-transparent sm:border-0 flex items-center justify-between sm:justify-start sm:gap-1">
+                    <span>🇨🇦 Canada</span>
+                    <span className="text-[#e77419] font-black">₹445</span>
+                  </div>
+                  <span className="text-gray-300 hidden sm:inline">|</span>
+                  <div className="bg-orange-50/90 border border-orange-200/80 px-2 py-1 sm:p-0 rounded-lg sm:rounded-none sm:bg-transparent sm:border-0 flex items-center justify-between sm:justify-start sm:gap-1">
+                    <span>🇺🇸 USA</span>
+                    <span className="text-[#e77419] font-black">₹489</span>
+                  </div>
+                </div>
               </div>
             </div>
 
             <div className="flex flex-col gap-4 mt-auto pointer-events-auto">
-              <div className="flex flex-col md:flex-row gap-4 items-start md:items-center pb-6 md:pb-0">
+              <div className="flex flex-row flex-wrap gap-2.5 sm:gap-4 items-center justify-center sm:justify-start pb-2 md:pb-0">
                 <Link
                   href="/quote"
-                  className="flex items-center gap-2 font-bold text-[13px] md:text-[15px] px-5 py-2.5 md:px-7 md:py-3.5 rounded-full text-white no-underline transition-transform hover:scale-105 shadow-md"
+                  className="flex items-center justify-center gap-1.5 font-bold text-[12px] sm:text-[14px] md:text-[15px] px-4 py-2.5 sm:px-6 sm:py-3 md:px-7 md:py-3.5 rounded-full text-white no-underline transition-transform hover:scale-105 shadow-md flex-1 sm:flex-none max-w-[160px] sm:max-w-none text-center"
                   style={{
                     background: "#e77419",
                     border: "1px solid rgba(255,255,255,0.2)",
                   }}
                 >
                   {t.nav_quote}{" "}
-                  <ArrowUpRight className="w-4 h-4" strokeWidth={2.5} />
+                  <ArrowUpRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" strokeWidth={2.5} />
                 </Link>
                 <a
                   href="https://wa.me/917070506070"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-2 font-bold text-[13px] md:text-[15px] px-5 py-2.5 md:px-7 md:py-3.5 rounded-full no-underline transition-transform hover:scale-105 shadow-md"
+                  className="flex items-center justify-center gap-1.5 font-bold text-[12px] sm:text-[14px] md:text-[15px] px-4 py-2.5 sm:px-6 sm:py-3 md:px-7 md:py-3.5 rounded-full no-underline transition-transform hover:scale-105 shadow-md flex-1 sm:flex-none max-w-[160px] sm:max-w-none text-center"
                   style={{
                     background: "#23c961",
                     color: "#0a111e",
                   }}
                 >
                   <svg
-                    className="w-[18px] h-[18px]"
+                    className="w-4 h-4 sm:w-[18px] sm:h-[18px]"
                     viewBox="0 0 24 24"
                     fill="#0a111e"
                     aria-hidden
@@ -1589,6 +1619,104 @@ export default function CampaignPage() {
               </button>
             </div>
           </form>
+        </div>
+      </section>
+
+      {/* ── 1.75 RAKHI SPECIAL OFFER INFO BOX ── */}
+      <section className="w-full max-w-[1400px] mx-auto px-4 sm:px-6 py-4">
+        <div className="bg-gradient-to-br from-[#fff7ed] via-[#fffbf5] to-[#fff3e0] border-2 border-[#e77419]/30 rounded-[28px] p-6 sm:p-10 lg:p-12 shadow-md relative overflow-hidden">
+          {/* Decorative Blur Effect */}
+          <div className="absolute -top-12 -right-12 w-48 h-48 bg-[#e77419]/10 rounded-full blur-2xl pointer-events-none" />
+
+          <div className="relative z-10 flex flex-col gap-5 text-[#0a111e]">
+            {/* Top Badge */}
+            <div>
+              <span className="inline-flex items-center gap-2 border border-[#e77419] bg-[#e77419]/10 text-[#e77419] px-4 py-1.5 rounded-full text-xs sm:text-sm font-extrabold uppercase tracking-wide">
+                🎁 Special Rakhi Shipping Offer
+              </span>
+            </div>
+
+            {/* Paragraph 1 */}
+            <p className="text-[15px] sm:text-[17px] md:text-[18px] font-semibold text-[#0a111e] leading-relaxed">
+              This Rakhi don’t worry about collecting enough weight to ship abroad. With Manvi International, send just a Rakhi anywhere in the world. And don’t worry about higher charges or extra costs.
+            </p>
+
+            {/* Paragraph 2 */}
+            <p className="text-[14px] sm:text-[16px] text-[#444] leading-relaxed">
+              <strong className="text-[#e77419] font-bold">Weight less pay less!</strong> When your shipment contains less than hundred grams, you can avail special prices for international shipping. Because why pay more when you’re shipping less? Send Rakhis and shipments up to hundred grams with special rates, anywhere in the world. Larger shipments? Don’t worry, Manvi has got you! Ship with no limit with Manvi. Avail special discounts for bulk and business shipping.
+            </p>
+
+            {/* Paragraph 3 */}
+            <p className="text-[14px] sm:text-[16px] text-[#444] leading-relaxed italic border-l-4 border-[#e77419] pl-4 py-1.5 bg-orange-100/50 rounded-r-xl">
+              Manvi has got something for everyone. Because milestone matter at Manvi, but your smiles do.
+            </p>
+
+            {/* Clickable Actions */}
+            <div className="mt-3 pt-6 border-t border-[#e77419]/20 flex flex-col sm:flex-row flex-wrap items-start sm:items-center justify-between gap-5">
+              <div className="flex flex-col gap-2.5">
+                {/* WhatsApp or call us on 7070506070 */}
+                <div className="flex items-center flex-wrap gap-2 text-[14px] sm:text-[15px] font-semibold text-[#0a111e]">
+                  <span>To avail the offers,</span>
+                  <a
+                    href="https://wa.me/917070506070"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 text-[#23c961] font-bold hover:underline"
+                  >
+                    WhatsApp
+                  </a>
+                  <span>or call us on</span>
+                  <a
+                    href="tel:+917070506070"
+                    className="inline-flex items-center gap-1 text-[#e77419] font-extrabold hover:underline bg-orange-100/90 px-2.5 py-0.5 rounded-full border border-[#e77419]/30"
+                  >
+                    <Phone size={14} className="shrink-0" />
+                    7070506070
+                  </a>
+                </div>
+
+                {/* To get a quote, click here */}
+                <div className="flex items-center gap-1.5 text-[14px] sm:text-[15px] font-semibold text-[#0a111e]">
+                  <span>To get a quote,</span>
+                  <Link
+                    href="/quote"
+                    className="inline-flex items-center gap-1 text-[#e77419] font-bold underline hover:text-orange-700 transition-colors"
+                  >
+                    click here <ArrowUpRight size={15} strokeWidth={2.5} />
+                  </Link>
+                </div>
+
+                {/* For any queries, contact us */}
+                <div className="flex items-center gap-1.5 text-[14px] sm:text-[15px] font-semibold text-[#0a111e]">
+                  <span>For any queries,</span>
+                  <Link
+                    href="/contact"
+                    className="inline-flex items-center gap-1 text-[#e77419] font-bold underline hover:text-orange-700 transition-colors"
+                  >
+                    contact us <ArrowUpRight size={15} strokeWidth={2.5} />
+                  </Link>
+                </div>
+              </div>
+
+              {/* Quick Action CTA Buttons */}
+              <div className="flex flex-wrap gap-3 w-full sm:w-auto mt-1 sm:mt-0">
+                <a
+                  href="https://wa.me/917070506070"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center gap-2 text-xs sm:text-sm font-bold px-5 py-3 rounded-xl bg-[#23c961] text-[#0a111e] no-underline hover:scale-105 transition-transform shadow-sm flex-1 sm:flex-none"
+                >
+                  <Send size={15} /> WhatsApp Us
+                </a>
+                <Link
+                  href="/quote"
+                  className="flex items-center justify-center gap-2 text-xs sm:text-sm font-bold px-5 py-3 rounded-xl bg-[#e77419] text-white no-underline hover:scale-105 transition-transform shadow-sm flex-1 sm:flex-none"
+                >
+                  Get Quote <ArrowUpRight size={15} strokeWidth={2.5} />
+                </Link>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
