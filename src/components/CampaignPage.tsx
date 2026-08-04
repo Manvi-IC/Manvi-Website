@@ -867,11 +867,10 @@ function QuotesModal({
                   setIsManualSelection(false);
                   setFilter("all");
                 }}
-                className={`px-2.5 sm:px-3 py-1.5 rounded-lg text-[10px] sm:text-[11px] font-semibold transition-all ${
-                  filter === "all"
-                    ? "bg-[#e77419] text-white"
-                    : "bg-white/10 text-zinc-400 hover:bg-white/20 hover:text-white"
-                }`}
+                className={`px-2.5 sm:px-3 py-1.5 rounded-lg text-[10px] sm:text-[11px] font-semibold transition-all ${filter === "all"
+                  ? "bg-[#e77419] text-white"
+                  : "bg-white/10 text-zinc-400 hover:bg-white/20 hover:text-white"
+                  }`}
               >
                 Default
               </button>
@@ -880,11 +879,10 @@ function QuotesModal({
                   setIsManualSelection(false);
                   setFilter("cheapest");
                 }}
-                className={`px-2.5 sm:px-3 py-1.5 rounded-lg text-[10px] sm:text-[11px] font-semibold transition-all flex items-center gap-1 ${
-                  filter === "cheapest"
-                    ? "bg-[#e77419] text-white"
-                    : "bg-white/10 text-zinc-400 hover:bg-white/20 hover:text-white"
-                }`}
+                className={`px-2.5 sm:px-3 py-1.5 rounded-lg text-[10px] sm:text-[11px] font-semibold transition-all flex items-center gap-1 ${filter === "cheapest"
+                  ? "bg-[#e77419] text-white"
+                  : "bg-white/10 text-zinc-400 hover:bg-white/20 hover:text-white"
+                  }`}
               >
                 <TrendingDown size={12} />
                 <span className="hidden xs:inline">Most Affordable</span>
@@ -895,11 +893,10 @@ function QuotesModal({
                   setIsManualSelection(false);
                   setFilter("fastest");
                 }}
-                className={`px-2.5 sm:px-3 py-1.5 rounded-lg text-[10px] sm:text-[11px] font-semibold transition-all flex items-center gap-1 ${
-                  filter === "fastest"
-                    ? "bg-[#e77419] text-white"
-                    : "bg-white/10 text-zinc-400 hover:bg-white/20 hover:text-white"
-                }`}
+                className={`px-2.5 sm:px-3 py-1.5 rounded-lg text-[10px] sm:text-[11px] font-semibold transition-all flex items-center gap-1 ${filter === "fastest"
+                  ? "bg-[#e77419] text-white"
+                  : "bg-white/10 text-zinc-400 hover:bg-white/20 hover:text-white"
+                  }`}
               >
                 <Clock size={12} />
                 Fastest
@@ -952,11 +949,10 @@ function QuotesModal({
                 key={key}
                 data-service-key={key}
                 onClick={() => handleServiceSelect(key)}
-                className={`relative rounded-xl border-2 cursor-pointer transition-all min-w-[82vw] xs:min-w-[300px] sm:min-w-[300px] max-w-[340px] flex-shrink-0 flex flex-col max-h-full ${
-                  isSelected
-                    ? "border-[#e77419] bg-[#e77419]/10"
-                    : "border-zinc-700 bg-zinc-800/60 hover:border-zinc-500"
-                }`}
+                className={`relative rounded-xl border-2 cursor-pointer transition-all min-w-[82vw] xs:min-w-[300px] sm:min-w-[300px] max-w-[340px] flex-shrink-0 flex flex-col max-h-full ${isSelected
+                  ? "border-[#e77419] bg-[#e77419]/10"
+                  : "border-zinc-700 bg-zinc-800/60 hover:border-zinc-500"
+                  }`}
               >
                 {isSelected && (
                   <div className="absolute -top-2.5 left-3 z-10 bg-[#e77419] text-white text-[9px] font-bold px-2 py-0.5 rounded-full shadow-sm">
@@ -1023,9 +1019,8 @@ function QuotesModal({
                       </span>
                       <ChevronDown
                         size={15}
-                        className={`ml-auto shrink-0 transition-transform duration-300 ${
-                          isExpanded ? "rotate-180" : ""
-                        }`}
+                        className={`ml-auto shrink-0 transition-transform duration-300 ${isExpanded ? "rotate-180" : ""
+                          }`}
                       />
                     </button>
 
@@ -1141,6 +1136,25 @@ function QuotesModal({
 // ─── MAIN PAGE ────────────────────────────────────────────────────────────────
 export default function CampaignPage() {
   const { t } = useLanguage();
+  const [mounted, setMounted] = useState(false);
+  const [slidesCount, setSlidesCount] = useState<number>(3);
+
+  useEffect(() => {
+    setMounted(true);
+    const handleResize = () => {
+      if (window.innerWidth <= 768) {
+        setSlidesCount(1);
+      } else if (window.innerWidth <= 1024) {
+        setSlidesCount(2);
+      } else {
+        setSlidesCount(3);
+      }
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const [activeIndex, setActiveIndex] = useState<number>(0);
   const [offerDetails, setOfferDetails] = useState({
     title: "Limited-Time Offer",
@@ -1172,9 +1186,9 @@ export default function CampaignPage() {
   const volWt =
     parseFloat(length) && parseFloat(breadth) && parseFloat(height)
       ? (
-          (parseFloat(length) * parseFloat(breadth) * parseFloat(height)) /
-          5000
-        ).toFixed(2)
+        (parseFloat(length) * parseFloat(breadth) * parseFloat(height)) /
+        5000
+      ).toFixed(2)
       : null;
   const chargeableWt = volWt
     ? Math.ceil(Math.max(parseFloat(actualWt) || 0, parseFloat(volWt)))
@@ -1221,7 +1235,7 @@ export default function CampaignPage() {
       } else {
         alert(
           data.message ||
-            "No services available for this destination/weight combination.",
+          "No services available for this destination/weight combination.",
         );
       }
     } catch (err: any) {
@@ -1234,27 +1248,13 @@ export default function CampaignPage() {
   const sliderSettings = {
     infinite: true,
     speed: 500,
-    slidesToShow: 3,
+    slidesToShow: slidesCount,
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 1500,
     arrows: false,
-    centerMode: true,
-    centerPadding: "20px",
-    responsive: [
-      {
-        breakpoint: 1024,
-        settings: { slidesToShow: 2, centerPadding: "10px" },
-      },
-      {
-        breakpoint: 768,
-        settings: { slidesToShow: 1, centerPadding: "30px" },
-      },
-      {
-        breakpoint: 480,
-        settings: { slidesToShow: 1, centerPadding: "10px" },
-      },
-    ],
+    centerMode: slidesCount > 1,
+    centerPadding: slidesCount > 1 ? "20px" : "0px",
   };
 
   useEffect(() => {
@@ -1285,7 +1285,7 @@ export default function CampaignPage() {
   }, []);
 
   return (
-    <main className="w-full font-sans bg-white flex flex-col pb-16">
+    <main className="w-full font-sans bg-[#faf5ea] flex flex-col pb-16">
       {/* Quotes + Apply modals for the Get Quote form below */}
       {showQuoteModal && quotes.length > 0 && (
         <QuotesModal
@@ -1317,75 +1317,188 @@ export default function CampaignPage() {
 
       {/* ── 1. HERO ── */}
       <section className="w-full max-w-[1400px] mx-auto px-4 sm:px-6 py-6">
-        <div
-          className="relative w-full overflow-hidden"
-          style={{ minHeight: "485px", height: "auto", borderRadius: "20px" }}
-        >
+        {/* MOBILE HERO */}
+        <div className="block sm:hidden w-full">
+          <div className="relative w-full overflow-hidden rounded-[20px] bg-[#faf5ea] aspect-[398/540]">
+            <Image
+              src="/rakhi-phone-banner-02.jpg"
+              alt="Manvi International Courier Mobile"
+              fill
+              sizes="100vw"
+              quality={100}
+              className="object-contain object-bottom"
+              priority
+            />
+            <div className="absolute inset-0 z-10 flex flex-col items-center p-4 pt-0 pointer-events-none">
+              {/* Header Text Overlay */}
+              <div className="pt-4 flex w-full">
+                <img src="/logo-png.png" alt="" className="h-36 w-60" />
+              </div>
+              <div className="flex flex-col items-center w-full text-center pt-0 pb-8">
+                <span className="text-md font-black tracking-[0.14em] text-[#0a111e] uppercase font-sans">
+                  THIS RAKSHA BANDHAN
+                </span>
+                <h1 className="text-5xl font-sans font-extrabold text-[#f96302] leading-tight tracking-tight my-0.5">
+                  Send love
+                </h1>
+                <p className="text-md font-semibold text-[#1a1a1a] tracking-tight font-sans">
+                  Miles Don't Matter at Manvi
+                </p>
+                <div className="flex items-center gap-2 my-1.5 w-fit max-w-[200px]">
+                  <div className="h-[1.5px] w-12 bg-gradient-to-r from-transparent via-[#0a111e]/70 to-[#0a111e]" />
+                  <svg className="w-3 h-3 text-[#0a111e]" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2L14.2 9.8L22 12L14.2 14.2L12 22L9.8 14.2L2 12L9.8 9.8L12 2Z" />
+                  </svg>
+                  <div className="h-[1.5px] w-12 bg-gradient-to-l from-transparent via-[#0a111e]/70 to-[#0a111e]" />
+                </div>
+              </div>
+
+              {/* Rates Card + CTA Buttons on Mobile */}
+              <div className="flex flex-col items-center gap-3 pointer-events-auto mt-auto">
+                {/* 📦 100g Rakhi Parcels — Flat Rates Card/Pill */}
+                <div className="w-full max-w-[340px] px-3 py-2 rounded-2xl bg-white/75 backdrop-blur-md border border-[#e77419]/30 shadow-md flex flex-col items-center text-center">
+                  <span className="text-[11px] font-extrabold text-[#e77419] flex items-center gap-1.5 uppercase tracking-wide">
+                    <span>📦</span> 100g Rakhi Parcels — Flat Rates
+                  </span>
+                  <div className="grid grid-cols-2 gap-1.5 w-full mt-1 text-[11px] font-bold text-[#0a111e]">
+                    <div className="bg-orange-50/90 border border-orange-200/80 px-2 py-1 rounded-lg flex items-center justify-between">
+                      <span>🇬🇧 UK</span>
+                      <span className="text-[#e77419] font-black">₹280</span>
+                    </div>
+                    <div className="bg-orange-50/90 border border-orange-200/80 px-2 py-1 rounded-lg flex items-center justify-between">
+                      <span>🇦🇺 Australia</span>
+                      <span className="text-[#e77419] font-black">₹405</span>
+                    </div>
+                    <div className="bg-orange-50/90 border border-orange-200/80 px-2 py-1 rounded-lg flex items-center justify-between">
+                      <span>🇨🇦 Canada</span>
+                      <span className="text-[#e77419] font-black">₹445</span>
+                    </div>
+                    <div className="bg-orange-50/90 border border-orange-200/80 px-2 py-1 rounded-lg flex items-center justify-between">
+                      <span>🇺🇸 USA</span>
+                      <span className="text-[#e77419] font-black">₹489</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Action Buttons */}
+                <div className="flex flex-row gap-2 w-full items-center justify-center pb-2">
+                  <Link
+                    href="/quote"
+                    className="flex items-center justify-center gap-1 font-bold text-[12px] px-4 py-2.5 rounded-full text-white no-underline transition-transform hover:scale-105 shadow-md flex-1 text-center"
+                    style={{
+                      background: "#e77419",
+                      border: "1px solid rgba(255,255,255,0.2)",
+                    }}
+                  >
+                    {t.nav_quote}{" "}
+                    <ArrowUpRight className="w-3.5 h-3.5" strokeWidth={2.5} />
+                  </Link>
+                  <div>
+                    <a
+                      href="https://wa.me/917070506070"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-center gap-1 font-bold text-[12px] px-4 py-2.5 rounded-full no-underline transition-transform hover:scale-105 shadow-md flex-1 text-center"
+                      style={{
+                        background: "#23c961",
+                        color: "#0a111e",
+                      }}
+                    >
+                      <svg
+                        className="w-4 h-4"
+                        viewBox="0 0 24 24"
+                        fill="#0a111e"
+                        aria-hidden
+                      >
+                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.335-1.662c1.746.953 3.71 1.458 5.704 1.459h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+                      </svg>
+                      {t.contact_whatsapp}
+                    </a>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* DESKTOP HERO (Aspect 1024/400 with dynamic overlay text) */}
+        <div className="hidden sm:block relative w-full overflow-hidden rounded-[20px] bg-[#faf5ea] aspect-[1024/400]">
           <Image
-            src="/hero-right.jpg"
+            src="/rakhi-banner.jpg"
             alt="Manvi International Courier"
             fill
             sizes="100vw"
+            quality={100}
             className="object-cover object-center"
             priority
           />
-          <div
-            className="absolute inset-0"
-            style={{ background: "rgba(0,0,0,0.4)" }}
-          />
-          <div
-            className="absolute inset-0"
-            style={{
-              background:
-                "linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.85) 80%)",
-            }}
-          />
-          <div className="relative z-10 h-full flex flex-col justify-between p-8 sm:p-12 lg:p-14">
-            <div className="flex flex-col gap-4 max-w-3xl">
-              <span
-                className="text-[12px] text-white/90 px-3.5 py-1.5 rounded-full flex items-center gap-1.5 w-fit font-medium tracking-wide"
-                style={{
-                  background: "rgba(10,17,30,0.5)",
-                  border: "1px solid rgba(255,255,255,0.25)",
-                }}
-              >
-                <span className="text-[14px]">🌍</span> {t.campaign_hero_badge}
+
+          <div className="absolute inset-0 z-10 flex flex-col justify-between p-6 lg:pl-10 pointer-events-none">
+            <div className="p-0">
+              <img src="/logo-png.png" className="h-24 object-cover w-64" alt="" />
+            </div>
+            <div className="flex flex-col max-w-xl lg:max-w-2xl pt-14 sm:pt-0 justify-center items-center">
+
+              {/* Top line: THIS RAKSHA BANDHAN */}
+              <span className="text-[18px] md:text-2xl font-black tracking-[0.14em] text-[#0a111e] uppercase font-sans leading-none">
+                THIS RAKSHA BANDHAN
               </span>
-              <h1 className="text-white font-extrabold leading-[1.15] tracking-tight text-[28px] sm:text-[36px] md:text-[44px] lg:text-[56px]">
-                {t.campaign_hero_title_line1}
-                <br />
-                {t.campaign_hero_title_line2}{" "}
-                <span className="text-[#e77419]">
-                  {t.campaign_hero_title_highlight1}
-                </span>
-                <br />
-                <span className="text-[#e77419]">
-                  {t.campaign_hero_title_highlight2}
-                </span>
+
+              {/* Middle line: Send love */}
+              <h1 className="text-[58px] md:text-5xl lg:text-8xl font-sans font-extrabold text-[#f96302] leading-[1.02] tracking-tight -ml-0.5 my-0">
+                Send love
               </h1>
-              <p className="text-[15px] text-white/80 max-w-2xl leading-relaxed font-normal">
-                {t.campaign_hero_subtext}
+
+              {/* Bottom line: Miles Don't Matter at Manvi */}
+              <p className="text-[19px] md:text-2xl font-medium text-[#1a1a1a] tracking-tight font-sans">
+                Miles Don't Matter at Manvi
               </p>
-            </div>
 
-            <div className="flex flex-col sm:flex-row sm:items-center gap-x-4 gap-y-2 mt-2">
-              <div className="flex items-center gap-2">
-                <Stars />
-                <span className="text-[13px] text-white/80 font-medium">
-                  {t.campaign_hero_trusted}
-                </span>
+              {/* Ornamental Flourish Divider Line */}
+              <div className="flex items-center gap-2 my-2 w-fit max-w-[260px] ">
+                <div className="h-[1.5px] w-20 bg-gradient-to-r from-transparent via-[#0a111e]/70 to-[#0a111e]" />
+                <svg className="w-5 h-5 text-[#0a111e]" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 2L14.2 9.8L22 12L14.2 14.2L12 22L9.8 14.2L2 12L9.8 9.8L12 2Z" />
+                </svg>
+                <div className="h-[1.5px] w-20 bg-gradient-to-l from-transparent via-[#0a111e]/70 to-[#0a111e]" />
               </div>
-              <br />
-            </div>
-            <span className="text-[14px] font-bold text-[#e77419]">
-              {t.campaign_hero_shipments}
-            </span>
 
-            <div className="flex flex-col gap-4 mt-6">
-              <div className="flex flex-wrap gap-4">
+              {/* 📦 100g Rakhi Parcels — Flat Rates Card/Pill */}
+              <div className="mt-3 w-full max-w-xl px-4 py-2.5 rounded-2xl bg-gray/10 backdrop-blur-md border border-[#e77419]/30 shadow-md flex flex-col items-center text-center pointer-events-auto">
+                <span className="text-[13px] md:text-sm font-extrabold text-[#e77419] flex items-center gap-1.5 uppercase tracking-wide">
+                  <span>📦</span> 100g Rakhi Parcels — Flat Rates
+                </span>
+
+                <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 w-full mt-1.5 text-[12px] md:xs font-bold text-[#0a111e]">
+                  <div className="flex items-center gap-1">
+                    <span>🇬🇧 UK</span>
+                    <span className="text-[#e77419] font-black">₹280</span>
+                  </div>
+                  <span className="text-gray-300">|</span>
+                  <div className="flex items-center gap-1">
+                    <span>🇦🇺 Australia</span>
+                    <span className="text-[#e77419] font-black">₹405</span>
+                  </div>
+                  <span className="text-gray-300">|</span>
+                  <div className="flex items-center gap-1">
+                    <span>🇨🇦 Canada</span>
+                    <span className="text-[#e77419] font-black">₹445</span>
+                  </div>
+                  <span className="text-gray-300">|</span>
+                  <div className="flex items-center gap-1">
+                    <span>🇺🇸 USA</span>
+                    <span className="text-[#e77419] font-black">₹489</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-4 mt-auto pointer-events-auto">
+              <div className="flex flex-row flex-wrap gap-4 items-center justify-start">
                 <Link
                   href="/quote"
-                  className="flex items-center gap-2 font-bold text-[13px] md:text-[15px] px-5 py-2.5 md:px-7 md:py-3.5 rounded-full text-white no-underline transition-transform hover:scale-105"
+                  className="flex items-center justify-center gap-1.5 font-bold text-[14px] md:text-[15px] px-6 py-3 md:px-7 md:py-3.5 rounded-full text-white no-underline transition-transform hover:scale-105 shadow-md text-center"
                   style={{
                     background: "#e77419",
                     border: "1px solid rgba(255,255,255,0.2)",
@@ -1398,7 +1511,7 @@ export default function CampaignPage() {
                   href="https://wa.me/917070506070"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-2 font-bold text-[13px] md:text-[15px] px-5 py-2.5 md:px-7 md:py-3.5 rounded-full no-underline transition-transform hover:scale-105"
+                  className="flex items-center justify-center gap-1.5 font-bold text-[14px] md:text-[15px] px-6 py-3 md:px-7 md:py-3.5 rounded-full no-underline transition-transform hover:scale-105 shadow-md text-center"
                   style={{
                     background: "#23c961",
                     color: "#0a111e",
@@ -1595,9 +1708,8 @@ export default function CampaignPage() {
               <button
                 type="submit"
                 disabled={quoteLoading}
-                className={`bg-[#0D1527] hover:bg-slate-800 text-white font-bold text-[13px] py-3.5 px-8 rounded-xl transition-all active:scale-95 cursor-pointer flex items-center justify-center gap-1.5 disabled:opacity-70 ${
-                  actualWt || volWt ? "sm:w-auto" : "w-full"
-                }`}
+                className={`bg-[#0D1527] hover:bg-slate-800 text-white font-bold text-[13px] py-3.5 px-8 rounded-xl transition-all active:scale-95 cursor-pointer flex items-center justify-center gap-1.5 disabled:opacity-70 ${actualWt || volWt ? "sm:w-auto" : "w-full"
+                  }`}
               >
                 {quoteLoading ? t.form_calculating : t.hero_get_quote}{" "}
                 {!quoteLoading && (
@@ -1609,8 +1721,106 @@ export default function CampaignPage() {
         </div>
       </section>
 
+      {/* ── 1.75 RAKHI SPECIAL OFFER INFO BOX ── */}
+      <section className="w-full max-w-[1400px] mx-auto px-4 sm:px-6 py-4">
+        <div className="bg-gradient-to-br from-[#fff7ed] via-[#fffbf5] to-[#fff3e0] border-2 border-[#e77419]/30 rounded-[28px] p-6 sm:p-10 lg:p-12 shadow-md relative overflow-hidden">
+          {/* Decorative Blur Effect */}
+          <div className="absolute -top-12 -right-12 w-48 h-48 bg-[#e77419]/10 rounded-full blur-2xl pointer-events-none" />
+
+          <div className="relative z-10 flex flex-col gap-5 text-[#0a111e]">
+            {/* Top Badge */}
+            <div>
+              <span className="inline-flex items-center gap-2 border border-[#e77419] bg-[#e77419]/10 text-[#e77419] px-4 py-1.5 rounded-full text-xs sm:text-sm font-extrabold uppercase tracking-wide">
+                🎁 Special Rakhi Shipping Offer
+              </span>
+            </div>
+
+            {/* Paragraph 1 */}
+            <p className="text-[15px] sm:text-[17px] md:text-[18px] font-semibold text-[#0a111e] leading-relaxed">
+              This Rakhi don’t worry about collecting enough weight to ship abroad. With Manvi International, send just a Rakhi anywhere in the world. And don’t worry about higher charges or extra costs.
+            </p>
+
+            {/* Paragraph 2 */}
+            <p className="text-[14px] sm:text-[16px] text-[#444] leading-relaxed">
+              <strong className="text-[#e77419] font-bold">Weight less pay less!</strong> When your shipment contains less than hundred grams, you can avail special prices for international shipping. Because why pay more when you’re shipping less? Send Rakhis and shipments up to hundred grams with special rates, anywhere in the world. Larger shipments? Don’t worry, Manvi has got you! Ship with no limit with Manvi. Avail special discounts for bulk and business shipping.
+            </p>
+
+            {/* Paragraph 3 */}
+            <p className="text-[14px] sm:text-[16px] text-[#444] leading-relaxed italic border-l-4 border-[#e77419] pl-4 py-1.5 bg-orange-100/50 rounded-r-xl">
+              Manvi has got something for everyone. Because milestone matter at Manvi, but your smiles do.
+            </p>
+
+            {/* Clickable Actions */}
+            <div className="mt-3 pt-6 border-t border-[#e77419]/20 flex flex-col sm:flex-row flex-wrap items-start sm:items-center justify-between gap-5">
+              <div className="flex flex-col gap-2.5">
+                {/* WhatsApp or call us on 7070506070 */}
+                <div className="flex items-center flex-wrap gap-2 text-[14px] sm:text-[15px] font-semibold text-[#0a111e]">
+                  <span>To avail the offers,</span>
+                  <a
+                    href="https://wa.me/917070506070"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 text-[#23c961] font-bold hover:underline"
+                  >
+                    WhatsApp
+                  </a>
+                  <span>or call us on</span>
+                  <a
+                    href="tel:+917070506070"
+                    className="inline-flex items-center gap-1 text-[#e77419] font-extrabold hover:underline bg-orange-100/90 px-2.5 py-0.5 rounded-full border border-[#e77419]/30"
+                  >
+                    <Phone size={14} className="shrink-0" />
+                    7070506070
+                  </a>
+                </div>
+
+                {/* To get a quote, click here */}
+                <div className="flex items-center gap-1.5 text-[14px] sm:text-[15px] font-semibold text-[#0a111e]">
+                  <span>To get a quote,</span>
+                  <Link
+                    href="/quote"
+                    className="inline-flex items-center gap-1 text-[#e77419] font-bold underline hover:text-orange-700 transition-colors"
+                  >
+                    click here <ArrowUpRight size={15} strokeWidth={2.5} />
+                  </Link>
+                </div>
+
+                {/* For any queries, contact us */}
+                <div className="flex items-center gap-1.5 text-[14px] sm:text-[15px] font-semibold text-[#0a111e]">
+                  <span>For any queries,</span>
+                  <Link
+                    href="/contact"
+                    className="inline-flex items-center gap-1 text-[#e77419] font-bold underline hover:text-orange-700 transition-colors"
+                  >
+                    contact us <ArrowUpRight size={15} strokeWidth={2.5} />
+                  </Link>
+                </div>
+              </div>
+
+              {/* Quick Action CTA Buttons */}
+              <div className="flex flex-wrap gap-3 w-full sm:w-auto mt-1 sm:mt-0">
+                <a
+                  href="https://wa.me/917070506070"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center gap-2 text-xs sm:text-sm font-bold px-5 py-3 rounded-xl bg-[#23c961] text-[#0a111e] no-underline hover:scale-105 transition-transform shadow-sm flex-1 sm:flex-none"
+                >
+                  <Send size={15} /> WhatsApp Us
+                </a>
+                <Link
+                  href="/quote"
+                  className="flex items-center justify-center gap-2 text-xs sm:text-sm font-bold px-5 py-3 rounded-xl bg-[#e77419] text-white no-underline hover:scale-105 transition-transform shadow-sm flex-1 sm:flex-none"
+                >
+                  Get Quote <ArrowUpRight size={15} strokeWidth={2.5} />
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ── 2. TRUSTED DELIVERY PARTNERS ── */}
-      <section className="w-full bg-[#e5e6eb] py-8 mt-4">
+      <section className="w-full bg-[#f4ebe0] py-8 mt-4">
         <div className="w-full max-w-[1400px] mx-auto px-4 sm:px-6 flex flex-col md:flex-row justify-center md:justify-around items-center gap-6 md:gap-12">
           <div className="flex text-center md:text-left">
             <span className="text-xl sm:text-2xl font-extrabold text-[#e77419] leading-snug block">
@@ -1632,7 +1842,7 @@ export default function CampaignPage() {
 
       {/* ── 3. HOW IT WORKS ── */}
       <section className="w-full max-w-[1400px] mx-auto px-4 sm:px-6 py-10">
-        <div className="bg-[#F7F7F8] rounded-xl p-8 sm:p-14">
+        <div className="bg-[#f4ebe0] rounded-xl p-8 sm:p-14">
           <div className="mb-10">
             <span className="inline-block border border-[#e77419] text-[#e77419] px-5 py-1.5 bg-[#FF7F001F] rounded-full text-[12px] font-semibold tracking-wide mb-5">
               {t.campaign_how_it_works_badge}
@@ -1670,7 +1880,7 @@ export default function CampaignPage() {
 
       {/* ── 4. WHERE WE PICK UP AND DELIVER ── */}
       <section className="w-full max-w-[1400px] mx-auto px-4 sm:px-6 py-4">
-        <div className="bg-[#e5e6eb] rounded-xl p-8 sm:p-14">
+        <div className="bg-[#f4ebe0] rounded-xl p-8 sm:p-14">
           <div className="text-center mb-12">
             <span className="inline-block border bg-[#FF7F001F] border-[#e77419] text-[#e77419] px-5 py-1.5 rounded-full text-[12px] font-semibold tracking-wide mb-5">
               {t.campaign_where_badge}
@@ -1800,7 +2010,7 @@ export default function CampaignPage() {
 
       {/* ── 6. TESTIMONIALS ── */}
       <section className="w-full max-w-[1400px] mx-auto px-4">
-        <div className="bg-[#e5e6eb] rounded-xl p-8 sm:p-10">
+        <div className="bg-[#f4ebe0] rounded-xl p-8 sm:p-10">
           <div className="mb-10 text-center">
             <span className="inline-block border border-[#e77419] text-[#e77419] px-4 py-1.5 rounded-full text-[12px] font-bold mb-4">
               {t.campaign_testimonials_badge}
@@ -1810,58 +2020,60 @@ export default function CampaignPage() {
             </h2>
           </div>
 
-          <div className="testimonial-carousel-container testimonial-carousel-light w-full">
-            <Slider {...sliderSettings}>
-              {[
-                {
-                  name: "Anjali M.",
-                  location: "Birmingham, UK",
-                  textKey: "campaign_testimonial1",
-                },
-                {
-                  name: "Raj P.",
-                  location: "London, UK",
-                  textKey: "campaign_testimonial2",
-                },
-                {
-                  name: "Simran K.",
-                  location: "Toronto, Canada",
-                  textKey: "campaign_testimonial3",
-                },
-                {
-                  name: "Hardeep S.",
-                  location: "Sydney, Australia",
-                  textKey: "campaign_testimonial4",
-                },
-              ].map((testimonial, i) => (
-                <div key={i} className="px-2 md:px-3">
-                  <div className="testimonial-slide flex flex-col gap-0 px-8 py-8 rounded-2xl bg-white shadow-sm border border-black/5 mx-auto min-h-[250px] sm:min-h-[200px]">
-                    <span className="text-[32px] md:text-[40px] text-[#e77419] font-serif leading-none select-none">
-                      &#x201C;&#x201C;
-                    </span>
-                    <p className="text-[14px] sm:text-[15px] text-[#666] leading-relaxed italic mb-4">
-                      {t[testimonial.textKey as keyof typeof t]}
-                    </p>
-                    <div className="flex items-center gap-4 mt-auto">
-                      <div
-                        className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-[14px] shrink-0"
-                        style={{ background: "#e77419" }}
-                      >
-                        {testimonial.name[0]}
-                      </div>
-                      <div className="flex flex-col">
-                        <p className="text-[14px] font-bold text-[#0a111e]">
-                          {testimonial.name}
-                        </p>
-                        <p className="text-[12px] text-[#666]">
-                          {testimonial.location}
-                        </p>
+          <div className="testimonial-carousel-container testimonial-carousel-light w-full min-h-[300px]">
+            {mounted ? (
+              <Slider key={slidesCount} {...sliderSettings}>
+                {[
+                  {
+                    name: "Anjali M.",
+                    location: "Birmingham, UK",
+                    textKey: "campaign_testimonial1",
+                  },
+                  {
+                    name: "Raj P.",
+                    location: "London, UK",
+                    textKey: "campaign_testimonial2",
+                  },
+                  {
+                    name: "Simran K.",
+                    location: "Toronto, Canada",
+                    textKey: "campaign_testimonial3",
+                  },
+                  {
+                    name: "Hardeep S.",
+                    location: "Sydney, Australia",
+                    textKey: "campaign_testimonial4",
+                  },
+                ].map((testimonial, i) => (
+                  <div key={i} className="px-2 md:px-3">
+                    <div className="testimonial-slide flex flex-col gap-0 px-8 py-8 rounded-2xl bg-white shadow-sm border border-black/5 mx-auto min-h-[250px] sm:min-h-[200px]">
+                      <span className="text-[32px] md:text-[40px] text-[#e77419] font-serif leading-none select-none">
+                        &#x201C;&#x201C;
+                      </span>
+                      <p className="text-[14px] sm:text-[15px] text-[#666] leading-relaxed italic mb-4">
+                        {t[testimonial.textKey as keyof typeof t]}
+                      </p>
+                      <div className="flex items-center gap-4 mt-auto">
+                        <div
+                          className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-[14px] shrink-0"
+                          style={{ background: "#e77419" }}
+                        >
+                          {testimonial.name[0]}
+                        </div>
+                        <div className="flex flex-col">
+                          <p className="text-[14px] font-bold text-[#0a111e]">
+                            {testimonial.name}
+                          </p>
+                          <p className="text-[12px] text-[#666]">
+                            {testimonial.location}
+                          </p>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              ))}
-            </Slider>
+                ))}
+              </Slider>
+            ) : null}
           </div>
 
           <style jsx global>{`
@@ -1883,18 +2095,18 @@ export default function CampaignPage() {
               left: 0;
               background: linear-gradient(
                 to right,
-                #e5e6eb,
-                rgba(229, 230, 235, 0.9),
-                rgba(229, 230, 235, 0)
+                #f4ebe0,
+                rgba(244, 235, 224, 0.9),
+                rgba(244, 235, 224, 0)
               );
             }
             .testimonial-carousel-light::after {
               right: 0;
               background: linear-gradient(
                 to left,
-                #e5e6eb,
-                rgba(229, 230, 235, 0.9),
-                rgba(229, 230, 235, 0)
+                #f4ebe0,
+                rgba(244, 235, 224, 0.9),
+                rgba(244, 235, 224, 0)
               );
             }
             .testimonial-slide {
@@ -1921,14 +2133,12 @@ export default function CampaignPage() {
             @media (max-width: 768px) {
               .testimonial-carousel-container::before,
               .testimonial-carousel-container::after {
-                width: 5%;
+                display: none !important;
               }
-              .slick-center .testimonial-slide {
-                transform: scale(1);
-              }
+              .slick-center .testimonial-slide,
               .testimonial-slide {
-                transform: scale(0.9);
-                opacity: 0.5;
+                transform: scale(1) !important;
+                opacity: 1 !important;
               }
               .slick-list {
                 padding-top: 1rem !important;
@@ -1953,7 +2163,7 @@ export default function CampaignPage() {
         )}
 
         {/* FAQ */}
-        <div className="bg-[#e5e6eb] rounded-xl p-8 sm:p-14 max-w-[1400px] w-full mx-4 sm:mx-6">
+        <div className="bg-[#f4ebe0] rounded-xl p-8 sm:p-14 max-w-[1400px] w-full mx-4 sm:mx-6">
           <div className="text-center mb-12">
             <span className="inline-block border border-[#e77419] text-[#e77419] px-4 py-1.5 rounded-full text-[12px] font-bold mb-4">
               {t.faq_badge}
@@ -2011,7 +2221,23 @@ export default function CampaignPage() {
                         >
                           {t[f.linkKey as keyof typeof t]}
                         </Link>
-                        {t[f.afterLinkKey as keyof typeof t]}
+                        {f.aKey === "faq_a2" ? (
+                          <>
+                            {" or message us on "}
+                            <a
+                              href="https://wa.me/917070506070"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-[#23c961] font-bold underline ml-0.5"
+                              onClick={(e) => e.stopPropagation()}
+                            >
+                              WhatsApp
+                            </a>
+                            {" for an exact price, no hidden charges."}
+                          </>
+                        ) : (
+                          t[f.afterLinkKey as keyof typeof t]
+                        )}
                       </>
                     )}
                   </div>

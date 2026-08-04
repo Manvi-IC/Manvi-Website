@@ -10,7 +10,7 @@ export const metadata = {
 
 export default function Page() {
   return (
-    <div className="min-h-screen bg-[#f8f9fa] text-[#0f172a] font-sans flex flex-col antialiased">
+    <div className="min-h-screen bg-[#faf5ea] text-[#0f172a] font-sans flex flex-col antialiased">
       <Header />
       <CampaignPage />
       <Footer />
