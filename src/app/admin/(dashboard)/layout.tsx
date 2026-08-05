@@ -35,23 +35,46 @@ export default function AdminLayout({
         const [appRes, enquiryRes] = await Promise.all([
           fetch(`${API_URL}/admin/applications/stats`, {
             method: "GET",
-            headers: { "Content-Type": "application/json" },
+            headers: {
+              "Content-Type": "application/json",
+              // Add any auth headers if needed
+            },
             credentials: "include",
           }),
-          fetch(`${API_URL}/admin/quote-enquiries/stats`),
+          fetch(`${API_URL}/admin/quote-enquiries/stats`, {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            credentials: "include",
+          }),
         ]);
 
+        // Handle applications stats
         if (appRes.ok) {
           const data = await appRes.json();
-          if (data.success) setPendingCount(data.data.pending || 0);
+          if (data.success) {
+            setPendingCount(data.data.pending || 0);
+          }
+        } else {
+          console.warn(`Applications stats API returned ${appRes.status}`);
+          // Keep default value (0) if API fails
         }
 
+        // Handle enquiries stats
         if (enquiryRes.ok) {
           const data = await enquiryRes.json();
-          if (data.success) setNewEnquiryCount(data.data.new || 0);
+          if (data.success) {
+            setNewEnquiryCount(data.data.new || 0);
+          }
+        } else {
+          console.warn(`Enquiries stats API returned ${enquiryRes.status}`);
+          // Keep default value (0) if API fails
         }
       } catch (error) {
+        // Network error or server not running
         console.error("Failed to fetch counts:", error);
+        // Keep counts at 0 - don't show error to user
       } finally {
         setLoading(false);
       }
@@ -120,15 +143,12 @@ export default function AdminLayout({
             "Applications",
             pendingCount,
           )}
-
-          {/* ← NEW: Quote Enquiries link */}
           {navLink(
             "/admin/quote-enquiries",
             <MessageSquareQuote size={20} />,
             "Quote Enquiries",
             newEnquiryCount,
           )}
-
           {navLink(
             "/admin/site-settings",
             <Settings size={20} />,
