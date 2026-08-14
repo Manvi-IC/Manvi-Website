@@ -98,10 +98,7 @@ export default function PolicySidebar({
               </div>
             </div>
           </div>
-          <div className="flex items-center gap-2 shrink-0">
-            <span className="text-[11px] text-slate-300 bg-slate-800 px-2 py-0.5 rounded-full border border-slate-700 font-semibold">
-              {isMobileOpen ? "Hide" : "Jump"}
-            </span>
+          <div className="flex items-center shrink-0">
             <ChevronDown
               className={`w-5 h-5 text-[#f27a1a] transition-transform duration-200 ${isMobileOpen ? "rotate-180" : ""
                 }`}
