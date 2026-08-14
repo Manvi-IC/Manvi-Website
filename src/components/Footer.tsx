@@ -1,24 +1,39 @@
 // components/Footer.tsx
 "use client";
-import { Phone, Mail, MapPin } from "lucide-react";
+import { useState } from "react";
+import { Phone, Mail, MapPin, ChevronDown } from "lucide-react";
 import Link from "next/link";
 import { useLanguage } from "@/context/LanguageContext";
 
 export default function Footer() {
   const { t } = useLanguage();
 
+  // Accordion state for mobile view
+  const [openSections, setOpenSections] = useState<Record<string, boolean>>({
+    quick: true,
+    campaigns: true,
+    policies: true,
+  });
+
+  const toggleSection = (section: string) => {
+    setOpenSections((prev) => ({
+      ...prev,
+      [section]: !prev[section],
+    }));
+  };
+
   return (
-    <footer className="bg-[#f27a1a] text-white pt-16 pb-8 px-6 font-sans rounded-t-2xl">
-      <div className="max-w-425 mx-auto flex flex-col gap-10">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-10 lg:gap-16">
+    <footer className="bg-[#f27a1a] text-white pt-12 sm:pt-16 pb-8 px-4 sm:px-6 font-sans rounded-t-2xl sm:rounded-t-3xl shadow-inner">
+      <div className="max-w-[1650px] mx-auto flex flex-col gap-10 px-4 sm:px-8 lg:px-12">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-10 lg:gap-16">
           {/* Column 1: Brand */}
-          <div className="md:col-span-5 flex flex-col gap-4">
+          <div className="md:col-span-4 lg:col-span-3 flex flex-col gap-4">
             <div className="flex items-center gap-3">
               <img
                 src="/footer-logo.png"
                 alt="Logo"
                 style={{ width: "70.69px", height: "36px", opacity: 1 }}
-                className="object-contain"
+                className="object-contain shrink-0"
               />
               <div className="flex flex-col leading-none">
                 <span
@@ -47,25 +62,26 @@ export default function Footer() {
                 </span>
               </div>
             </div>
-            <p className="text-white/80 text-[13px] italic leading-relaxed max-w-sm">
+            <p className="text-white/90 text-[13.5px] italic leading-relaxed max-w-sm">
               {t.footer_tagline}
             </p>
-            <p className="text-white/70 text-[12px] leading-relaxed max-w-sm">
+            <p className="text-white/75 text-[12.5px] leading-relaxed max-w-sm">
               {t.footer_desc}
             </p>
 
             {/* Social Icons */}
-            <div className="flex items-center gap-4 mt-2">
-              <span className="text-white/80 text-[13px] font-semibold">
+            <div className="flex items-center gap-3 mt-2">
+              <span className="text-white/90 text-[13px] font-semibold">
                 {t.footer_social}
               </span>
-              <div className="flex gap-3">
+              <div className="flex items-center gap-2.5">
                 {/* Facebook */}
                 <a
                   href="https://www.facebook.com/p/Manvi-International-Courier-61575480958807/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-white hover:text-white/70 transition-colors"
+                  aria-label="Facebook"
+                  className="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 active:bg-white/30 flex items-center justify-center text-white transition-colors border border-white/15"
                 >
                   <svg
                     className="w-4 h-4"
@@ -80,7 +96,8 @@ export default function Footer() {
                   href="https://www.instagram.com/manviinternational/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-white hover:text-white/70 transition-colors"
+                  aria-label="Instagram"
+                  className="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 active:bg-white/30 flex items-center justify-center text-white transition-colors border border-white/15"
                 >
                   <svg
                     className="w-4 h-4"
@@ -97,7 +114,8 @@ export default function Footer() {
                 {/* Globe */}
                 <a
                   href="#"
-                  className="text-white hover:text-white/70 transition-colors"
+                  aria-label="Website"
+                  className="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 active:bg-white/30 flex items-center justify-center text-white transition-colors border border-white/15"
                 >
                   <svg
                     className="w-4 h-4"
@@ -115,138 +133,279 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Column 2: Quick Links */}
-          <div className="md:col-span-3 flex flex-col gap-5">
-            <div className="flex flex-col gap-3">
+          {/* Column 2: Quick Links & Policies */}
+          <div className="md:col-span-8 lg:col-span-6 flex flex-col gap-6">
+            <div className="hidden md:flex flex-col gap-3">
               <h3 className="text-[18px] font-extrabold text-white">
                 {t.footer_quick_links}
               </h3>
               <div className="w-full h-[1px] bg-white/30" />
             </div>
-            <div className="grid grid-cols-2 gap-x-4 text-[14px] text-white/85 font-medium">
-              {/* Left Column */}
-              <div className="flex flex-col gap-3">
-                <Link href="/" className="hover:text-white transition-colors">
+
+            {/* Desktop Grid Layout */}
+            <div className="hidden md:grid grid-cols-3 gap-x-4 gap-y-3 text-[14px] text-white/85 font-medium">
+              {/* Column 1: Main Pages */}
+              <div className="flex flex-col gap-2.5">
+                <span className="text-xs font-bold uppercase tracking-wider text-white/60 mb-0.5">
+                  Navigation
+                </span>
+                <Link href="/" className="hover:text-white transition-colors py-0.5">
                   {t.nav_home}
                 </Link>
-                <Link
-                  href="/about"
-                  className="hover:text-white transition-colors"
-                >
+                <Link href="/about" className="hover:text-white transition-colors py-0.5">
                   {t.nav_about}
                 </Link>
-                <Link
-                  href="/services"
-                  className="hover:text-white transition-colors"
-                >
+                <Link href="/services" className="hover:text-white transition-colors py-0.5">
                   {t.nav_services}
                 </Link>
-                <Link
-                  href="/track"
-                  className="hover:text-white transition-colors"
-                >
+                <Link href="/track" className="hover:text-white transition-colors py-0.5">
                   {t.nav_track_shipment}
                 </Link>
-                <Link
-                  href="/quote"
-                  className="hover:text-white transition-colors"
-                >
+                <Link href="/quote" className="hover:text-white transition-colors py-0.5">
                   {t.nav_quote}
                 </Link>
-                <Link
-                  href="/contact"
-                  className="hover:text-white transition-colors"
-                >
+                <Link href="/contact" className="hover:text-white transition-colors py-0.5">
                   {t.nav_contact}
                 </Link>
-                <Link
-                  href="/faq"
-                  className="hover:text-white transition-colors"
-                >
+                <Link href="/faq" className="hover:text-white transition-colors py-0.5">
                   {t.bc_faq}
                 </Link>
               </div>
 
-              {/* Right Column */}
-              <div className="flex flex-col gap-3">
-                {/* <Link
-                  href="/pickup-availability"
-                  className="hover:text-white transition-colors"
-                >
-                  {t.footer_pickup_availability}
-                </Link> */}
+              {/* Column 2: Campaigns & Career */}
+              <div className="flex flex-col gap-2.5">
+                <span className="text-xs font-bold uppercase tracking-wider text-white/60 mb-0.5">
+                  Explore
+                </span>
                 <Link
                   href="/campaign"
-                  className="hover:text-white transition-colors font-bold"
+                  className="hover:text-white transition-colors font-semibold py-0.5"
                 >
                   {t.footer_campaign}
                 </Link>
                 <Link
                   href="/business-campaign"
-                  className="hover:text-white transition-colors font-bold"
+                  className="hover:text-white transition-colors font-semibold py-0.5"
                 >
                   {t.footer_business_campaign}
                 </Link>
-                <Link
-                  href="/blog"
-                  className="hover:text-white transition-colors"
-                >
+                <Link href="/blog" className="hover:text-white transition-colors py-0.5">
                   {t.footer_blog}
                 </Link>
-                <Link
-                  href="/career"
-                  className="hover:text-white transition-colors"
-                >
+                <Link href="/career" className="hover:text-white transition-colors py-0.5">
                   {t.footer_career}
                 </Link>
+              </div>
+
+              {/* Column 3: Legal & Policies */}
+              <div className="flex flex-col gap-2.5">
+                <span className="text-xs font-bold uppercase tracking-wider text-white/60 mb-0.5">
+                  Legal & Policies
+                </span>
+                <Link
+                  href="/privacy-policy"
+                  className="hover:text-white transition-colors py-0.5"
+                >
+                  {t.footer_privacy_policy}
+                </Link>
+                <Link
+                  href="/refund-policy"
+                  className="hover:text-white transition-colors py-0.5"
+                >
+                  {t.footer_refund_policy}
+                </Link>
+                <Link
+                  href="/terms-and-conditions"
+                  className="hover:text-white transition-colors py-0.5"
+                >
+                  {t.footer_terms}
+                </Link>
+                <Link
+                  href="/shipping-policy"
+                  className="hover:text-white transition-colors py-0.5"
+                >
+                  {t.footer_shipping_policy}
+                </Link>
+                <Link
+                  href="/mandatory-policy"
+                  className="hover:text-white transition-colors py-0.5"
+                >
+                  {t.footer_mandatory_policy}
+                </Link>
+              </div>
+            </div>
+
+            {/* Mobile Accordion View (< md) */}
+            <div className="flex md:hidden flex-col gap-3">
+              {/* Section 1: Navigation */}
+              <div className="border border-white/20 rounded-xl bg-white/5 overflow-hidden">
+                <button
+                  type="button"
+                  onClick={() => toggleSection("quick")}
+                  className="w-full px-4 py-3 flex items-center justify-between font-extrabold text-[15px] text-white text-left focus:outline-none"
+                >
+                  <span>{t.footer_quick_links}</span>
+                  <ChevronDown
+                    className={`w-4 h-4 transition-transform duration-200 ${openSections.quick ? "rotate-180" : ""
+                      }`}
+                  />
+                </button>
+                {openSections.quick && (
+                  <div className="px-4 pb-4 pt-1 border-t border-white/10 grid grid-cols-2 gap-2 text-[13.5px] text-white/90">
+                    <Link href="/" className="py-1.5 hover:text-white transition-colors">
+                      {t.nav_home}
+                    </Link>
+                    <Link href="/about" className="py-1.5 hover:text-white transition-colors">
+                      {t.nav_about}
+                    </Link>
+                    <Link href="/services" className="py-1.5 hover:text-white transition-colors">
+                      {t.nav_services}
+                    </Link>
+                    <Link href="/track" className="py-1.5 hover:text-white transition-colors">
+                      {t.nav_track_shipment}
+                    </Link>
+                    <Link href="/quote" className="py-1.5 hover:text-white transition-colors">
+                      {t.nav_quote}
+                    </Link>
+                    <Link href="/contact" className="py-1.5 hover:text-white transition-colors">
+                      {t.nav_contact}
+                    </Link>
+                    <Link href="/faq" className="py-1.5 hover:text-white transition-colors col-span-2">
+                      {t.bc_faq}
+                    </Link>
+                  </div>
+                )}
+              </div>
+
+              {/* Section 2: Explore & Campaigns */}
+              <div className="border border-white/20 rounded-xl bg-white/5 overflow-hidden">
+                <button
+                  type="button"
+                  onClick={() => toggleSection("campaigns")}
+                  className="w-full px-4 py-3 flex items-center justify-between font-extrabold text-[15px] text-white text-left focus:outline-none"
+                >
+                  <span>Explore & Programs</span>
+                  <ChevronDown
+                    className={`w-4 h-4 transition-transform duration-200 ${openSections.campaigns ? "rotate-180" : ""
+                      }`}
+                  />
+                </button>
+                {openSections.campaigns && (
+                  <div className="px-4 pb-4 pt-1 border-t border-white/10 flex flex-col gap-1.5 text-[13.5px] text-white/90">
+                    <Link
+                      href="/campaign"
+                      className="py-1.5 hover:text-white transition-colors font-semibold"
+                    >
+                      {t.footer_campaign}
+                    </Link>
+                    <Link
+                      href="/business-campaign"
+                      className="py-1.5 hover:text-white transition-colors font-semibold"
+                    >
+                      {t.footer_business_campaign}
+                    </Link>
+                    <Link href="/blog" className="py-1.5 hover:text-white transition-colors">
+                      {t.footer_blog}
+                    </Link>
+                    <Link href="/career" className="py-1.5 hover:text-white transition-colors">
+                      {t.footer_career}
+                    </Link>
+                  </div>
+                )}
+              </div>
+
+              {/* Section 3: Legal & Policies */}
+              <div className="border border-white/20 rounded-xl bg-white/5 overflow-hidden">
+                <button
+                  type="button"
+                  onClick={() => toggleSection("policies")}
+                  className="w-full px-4 py-3 flex items-center justify-between font-extrabold text-[15px] text-white text-left focus:outline-none"
+                >
+                  <span>Legal & Policies</span>
+                  <ChevronDown
+                    className={`w-4 h-4 transition-transform duration-200 ${openSections.policies ? "rotate-180" : ""
+                      }`}
+                  />
+                </button>
+                {openSections.policies && (
+                  <div className="px-4 pb-4 pt-1 border-t border-white/10 flex flex-col gap-1.5 text-[13.5px] text-white/90">
+                    <Link
+                      href="/privacy-policy"
+                      className="py-1.5 hover:text-white transition-colors"
+                    >
+                      {t.footer_privacy_policy}
+                    </Link>
+                    <Link
+                      href="/refund-policy"
+                      className="py-1.5 hover:text-white transition-colors"
+                    >
+                      {t.footer_refund_policy}
+                    </Link>
+                    <Link
+                      href="/terms-and-conditions"
+                      className="py-1.5 hover:text-white transition-colors"
+                    >
+                      {t.footer_terms}
+                    </Link>
+                    <Link
+                      href="/shipping-policy"
+                      className="py-1.5 hover:text-white transition-colors"
+                    >
+                      {t.footer_shipping_policy}
+                    </Link>
+                    <Link
+                      href="/mandatory-policy"
+                      className="py-1.5 hover:text-white transition-colors"
+                    >
+                      {t.footer_mandatory_policy}
+                    </Link>
+                  </div>
+                )}
               </div>
             </div>
           </div>
 
           {/* Column 3: Office Info */}
-          <div className="md:col-span-4 flex flex-col gap-5">
-            <div className="flex flex-col gap-3">
+          <div className="md:col-span-12 lg:col-span-3 flex flex-col gap-4 sm:gap-5">
+            <div className="flex flex-col gap-2.5">
               <h3 className="text-[18px] font-extrabold text-white">
                 {t.footer_office_info}
               </h3>
               <div className="w-full h-[1px] bg-white/30" />
             </div>
             <div className="flex flex-col gap-3">
-              {/* Phone - reduced gap */}
+              {/* Phone */}
               <div className="flex items-center gap-3">
                 <Phone className="w-[16px] h-[16px] text-white shrink-0" />
                 <a
                   href="tel:+917070506070"
-                  className="text-[14px] text-white/85 font-medium hover:text-white transition-colors"
+                  className="text-[14px] text-white/90 font-medium hover:text-white transition-colors py-0.5"
                 >
                   +91 70 70 50 60 70
                 </a>
               </div>
-              {/* Email - reduced gap */}
+              {/* Email */}
               <div className="flex items-center gap-3">
                 <Mail className="w-[16px] h-[16px] text-white shrink-0" />
                 <a
                   href="mailto:info@manvicourier.com"
-                  className="text-[14px] text-white/85 font-medium hover:text-white transition-colors"
+                  className="text-[14px] text-white/90 font-medium hover:text-white transition-colors py-0.5 break-all sm:break-normal"
                 >
                   info@manvicourier.com
                 </a>
               </div>
-              {/* Address - reduced gap */}
+              {/* Address */}
               <div className="flex items-start gap-3">
                 <MapPin className="w-[16px] h-[16px] text-white shrink-0 mt-0.5" />
-                <div className="flex flex-col text-[14px] text-white/85 font-medium leading-relaxed">
+                <div className="flex flex-col text-[13.5px] text-white/90 font-medium leading-relaxed">
                   <span>C-699, Palam Extension, Sector 7,</span>
                   <span>Dwarka, New Delhi, 110077</span>
                 </div>
               </div>
             </div>
 
-            {/* Map */}
-            <div
-              className="w-full rounded-[20px] overflow-hidden mt-1"
-              style={{ height: "200px" }}
-            >
+            {/* Map - Responsive for mobile */}
+            <div className="w-full max-w-full lg:max-w-[260px] h-[160px] sm:h-[150px] rounded-2xl overflow-hidden mt-1 shadow-md border border-white/25 shrink-0">
               <iframe
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3502.1234567890!2d77.0691071!3d28.5850824!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390d1bec78b44a8d%3A0xdaff70b1db8da2c0!2sManvi%20International%20Courier!5e0!3m2!1sen!2sin!4v1234567890"
                 width="100%"
@@ -262,9 +421,12 @@ export default function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="border-t border-white/20 pt-6 flex flex-col sm:flex-row items-center justify-center gap-8 text-[13px] text-white/80">
-          <span>&copy; 2026</span>
-          <span className="font-semibold">Manvi International Courier</span>
+        <div className="border-t border-white/20 pt-6 flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-6 text-[12.5px] sm:text-[13px] text-white/80 text-center">
+          <div className="flex items-center gap-2">
+            <span>&copy; 2026</span>
+            <span className="font-semibold text-white">Manvi International Courier</span>
+          </div>
+          <span className="hidden sm:inline text-white/40">•</span>
           <span>{t.footer_rights}</span>
         </div>
       </div>
