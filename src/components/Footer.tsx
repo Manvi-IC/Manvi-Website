@@ -31,7 +31,10 @@ export default function Footer() {
             <div className="flex items-center gap-3">
               <img
                 src="/footer-logo.png"
-                alt="Logo"
+                alt="Manvi International Courier Logo"
+                width={71}
+                height={36}
+                loading="lazy"
                 style={{ width: "70.69px", height: "36px", opacity: 1 }}
                 className="object-contain shrink-0"
               />
@@ -69,7 +72,7 @@ export default function Footer() {
               {t.footer_desc}
             </p>
 
-            {/* Social Icons */}
+            {/* Social Icons with PageSpeed Lighthouse compliant touch targets (44px+) */}
             <div className="flex items-center gap-3 mt-2">
               <span className="text-white/90 text-[13px] font-semibold">
                 {t.footer_social}
@@ -80,8 +83,8 @@ export default function Footer() {
                   href="https://www.facebook.com/p/Manvi-International-Courier-61575480958807/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label="Facebook"
-                  className="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 active:bg-white/30 flex items-center justify-center text-white transition-colors border border-white/15"
+                  aria-label="Facebook Page"
+                  className="w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 active:bg-white/30 flex items-center justify-center text-white transition-colors border border-white/15"
                 >
                   <svg
                     className="w-4 h-4"
@@ -96,8 +99,8 @@ export default function Footer() {
                   href="https://www.instagram.com/manviinternational/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label="Instagram"
-                  className="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 active:bg-white/30 flex items-center justify-center text-white transition-colors border border-white/15"
+                  aria-label="Instagram Profile"
+                  className="w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 active:bg-white/30 flex items-center justify-center text-white transition-colors border border-white/15"
                 >
                   <svg
                     className="w-4 h-4"
@@ -114,8 +117,8 @@ export default function Footer() {
                 {/* Globe */}
                 <a
                   href="#"
-                  aria-label="Website"
-                  className="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 active:bg-white/30 flex items-center justify-center text-white transition-colors border border-white/15"
+                  aria-label="Website Link"
+                  className="w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 active:bg-white/30 flex items-center justify-center text-white transition-colors border border-white/15"
                 >
                   <svg
                     className="w-4 h-4"

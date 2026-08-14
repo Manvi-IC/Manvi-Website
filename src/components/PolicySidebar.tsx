@@ -63,12 +63,14 @@ export default function PolicySidebar({
     e.preventDefault();
     setActiveId(id);
     setIsMobileOpen(false); // Auto close mobile dropdown on select
-    const element = document.getElementById(id);
-    if (element) {
-      const yOffset = -90; // offset for fixed header on mobile/desktop
-      const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
-      window.scrollTo({ top: y, behavior: "smooth" });
-    }
+
+    // Defer scroll to requestAnimationFrame to prevent forced reflow layout thrashing
+    requestAnimationFrame(() => {
+      const element = document.getElementById(id);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+      }
+    });
   };
 
   const activeItem = items.find((item) => item.id === activeId) || items[0];

@@ -7,17 +7,20 @@ import Script from "next/script";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
+  display: "swap",
 });
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+  display: "swap",
 });
 
 const leagueSpartan = League_Spartan({
   variable: "--font-league-spartan",
   subsets: ["latin"],
   weight: ["700"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -35,8 +38,6 @@ export const metadata: Metadata = {
     images: [
       {
         url: "/opengraph2.png",
-        // width: 1200,
-        // height: 630,
         alt: "Manvi International Courier",
         type: "image/png",
       },
@@ -63,6 +64,10 @@ export default function RootLayout({
       data-scroll-behavior="smooth"
       suppressHydrationWarning
     >
+      <head>
+        <link rel="preconnect" href="https://www.googletagmanager.com" />
+        <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+      </head>
       <body className="min-h-full flex flex-col" suppressHydrationWarning>
         <noscript>
           <iframe
@@ -72,7 +77,7 @@ export default function RootLayout({
             style={{ display: "none", visibility: "hidden" }}
           />
         </noscript>
-        <Script id="google-tag-manager" strategy="beforeInteractive">
+        <Script id="google-tag-manager" strategy="lazyOnload">
           {`
             (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start': new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','${gtmId}');
           `}
@@ -80,9 +85,9 @@ export default function RootLayout({
         <LanguageProvider>{children}</LanguageProvider>
         <Script
           src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}
-          strategy="afterInteractive"
+          strategy="lazyOnload"
         />
-        <Script id="google-analytics" strategy="afterInteractive">
+        <Script id="google-analytics" strategy="lazyOnload">
           {`
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
@@ -95,3 +100,4 @@ export default function RootLayout({
     </html>
   );
 }
+
