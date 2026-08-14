@@ -299,45 +299,45 @@ export default function ClaimPolicy() {
     claimsData.find((d) => d.id === activeTab) || claimsData[0];
 
   return (
-    <section className="w-full mx-auto px-4 sm:px-6 py-10 font-sans max-w-425">
-      <div className="bg-[#eef0f5] rounded-4xl shadow-sm border border-gray-100 p-6 sm:p-10 lg:p-14">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14 items-stretch">
+    <section className="w-full mx-auto px-4 sm:px-8 lg:px-12 py-6 sm:py-10 font-sans max-w-[1650px]">
+      <div className="bg-[#eef0f5] rounded-3xl sm:rounded-4xl shadow-sm border border-gray-100 p-4 sm:p-8 lg:p-14">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-14 items-stretch">
           {/* Left Column */}
           <div className="flex flex-col">
-            <div className="flex flex-col gap-4 mb-8">
-              <div className="border border-orange-300/80 text-[#ff8a00] bg-transparent rounded-full px-4 py-1 text-[12px] font-bold w-fit tracking-wide">
+            <div className="flex flex-col gap-3 sm:gap-4 mb-6 sm:mb-8">
+              <div className="border border-orange-300/80 text-[#ff8a00] bg-transparent rounded-full px-3.5 py-1 text-[11px] sm:text-[12px] font-bold w-fit tracking-wide uppercase">
                 {t.claim_badge}
               </div>
-              <h2 className="text-3xl sm:text-4xl md:text-[42px] font-extrabold text-[#1c1f2e] tracking-tight leading-tight">
+              <h2 className="text-2xl sm:text-4xl md:text-[42px] font-extrabold text-[#1c1f2e] tracking-tight leading-tight">
                 {t.claim_title}
               </h2>
-              <p className="text-[13px] text-gray-500 font-medium leading-relaxed max-w-[98%] mt-1">
+              <p className="text-[12.5px] sm:text-[13px] text-gray-500 font-medium leading-relaxed max-w-[98%] mt-0.5">
                 {t.claim_intro}
               </p>
             </div>
 
-            <div className="flex flex-col gap-4 flex-1">
+            <div className="flex flex-col gap-3 sm:gap-4 flex-1">
               {claimsData.map((item) => {
                 const isActive = activeTab === item.id;
                 return (
                   <div
                     key={item.id}
                     onClick={() => setActiveTab(item.id)}
-                    className={`relative p-4 sm:p-5 lg:p-6 rounded-3xl cursor-pointer flex items-center gap-4 sm:gap-5 transition-all duration-300 ${
+                    className={`relative p-3.5 sm:p-5 lg:p-6 rounded-2xl sm:rounded-3xl cursor-pointer flex items-center gap-3 sm:gap-5 transition-all duration-300 ${
                       isActive
                         ? "bg-white shadow-[0_8px_30px_rgb(0,0,0,0.04)]"
                         : "bg-white/50 hover:bg-white/70"
                     }`}
                   >
                     <TagIcon active={isActive} />
-                    <div className="flex flex-col pr-6 sm:pr-8">
+                    <div className="flex flex-col pr-4 sm:pr-8 min-w-0">
                       <h3
-                        className={`text-[15px] sm:text-[17px] font-extrabold transition-colors duration-300 ${isActive ? "text-[#1c1f2e]" : "text-[#9ca3af]"}`}
+                        className={`text-[14px] sm:text-[17px] font-extrabold transition-colors duration-300 ${isActive ? "text-[#1c1f2e]" : "text-[#9ca3af]"}`}
                       >
                         {item.title}
                       </h3>
                       <p
-                        className={`text-[11.5px] sm:text-[12.5px] font-medium leading-relaxed mt-1 transition-colors duration-300 ${isActive ? "text-[#9ca3af]" : "text-[#d1d5db]"}`}
+                        className={`text-[11px] sm:text-[12.5px] font-medium leading-relaxed mt-0.5 sm:mt-1 transition-colors duration-300 ${isActive ? "text-[#9ca3af]" : "text-[#d1d5db]"}`}
                       >
                         {item.subtext}
                       </p>
@@ -345,7 +345,7 @@ export default function ClaimPolicy() {
 
                     {/* Active Orange Bar */}
                     {isActive && (
-                      <div className="absolute right-0 top-1/2 -translate-y-1/2 w-1 sm:w-1.25 h-7.5 sm:h-9 bg-[#ff8a00] rounded-l-full" />
+                      <div className="absolute right-0 top-1/2 -translate-y-1/2 w-1 sm:w-1.25 h-7 sm:h-9 bg-[#ff8a00] rounded-l-full" />
                     )}
                   </div>
                 );
@@ -354,45 +354,45 @@ export default function ClaimPolicy() {
           </div>
 
           {/* Right Column: Dynamic Panel */}
-          <div className="bg-[#c26d46] rounded-4xl p-6 sm:p-8 lg:p-12 shadow-[0_10px_40px_-10px_rgba(194,109,70,0.4)] flex flex-col h-full justify-between mt-6 lg:mt-0">
+          <div className="bg-[#c26d46] rounded-3xl sm:rounded-4xl p-4 sm:p-8 lg:p-12 shadow-[0_10px_40px_-10px_rgba(194,109,70,0.4)] flex flex-col h-full justify-between mt-4 lg:mt-0">
             <div>
-              <h3 className="text-white text-[22px] sm:text-[24px] md:text-[26px] font-bold leading-[1.3] tracking-tight">
+              <h3 className="text-white text-[19px] sm:text-[24px] md:text-[26px] font-bold leading-[1.3] tracking-tight">
                 {currentData.panelTitle}
               </h3>
 
-              <div className="flex flex-col gap-4 sm:gap-5 mt-8 sm:mt-10">
+              <div className="flex flex-col gap-3.5 sm:gap-5 mt-6 sm:mt-10">
                 {currentData.details.map((detail, idx) => (
                   <div
                     key={idx}
-                    className="bg-white rounded-[20px] sm:rounded-3xl p-5 sm:p-6 lg:p-8 shadow-[0_4px_20px_rgba(0,0,0,0.02)] flex flex-col gap-3"
+                    className="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 lg:p-8 shadow-[0_4px_20px_rgba(0,0,0,0.02)] flex flex-col gap-2.5 sm:gap-3"
                   >
-                    <span className="text-[#ff8a00] text-[12px] sm:text-[13px] font-extrabold tracking-wider">
+                    <span className="text-[#ff8a00] text-[11.5px] sm:text-[13px] font-extrabold tracking-wider">
                       {detail.num}
                     </span>
-                    <h4 className="text-[15px] sm:text-[17px] font-extrabold text-[#1c1f2e]">
+                    <h4 className="text-[14.5px] sm:text-[17px] font-extrabold text-[#1c1f2e]">
                       {detail.title}
                     </h4>
 
                     {detail.desc && (
                       <p
-                        className="text-[12px] sm:text-[13px] text-gray-500 font-medium leading-relaxed"
+                        className="text-[11.5px] sm:text-[13px] text-gray-500 font-medium leading-relaxed"
                         dangerouslySetInnerHTML={{ __html: detail.desc }}
                       />
                     )}
 
                     {detail.subItems && (
-                      <div className="flex flex-col gap-4 mt-2">
+                      <div className="flex flex-col gap-3 sm:gap-4 mt-2">
                         {detail.subItems.map((sub, sIdx) => (
                           <div
                             key={sIdx}
-                            className="grid grid-cols-1 md:grid-cols-[200px_1fr] items-start gap-2 md:gap-4"
+                            className="grid grid-cols-1 sm:grid-cols-[180px_1fr] items-start gap-1.5 sm:gap-4"
                           >
-                            <div className="flex items-center gap-2 sm:gap-3 text-[#1c1f2e] text-[12px] sm:text-[13px] font-extrabold tracking-tight shrink-0">
+                            <div className="flex items-center gap-2 text-[#1c1f2e] text-[11.5px] sm:text-[13px] font-extrabold tracking-tight shrink-0">
                               <DiamondIcon />
                               <span>{sub.label}</span>
                             </div>
                             <p
-                              className="text-[12px] sm:text-[13px] text-gray-500 font-medium leading-relaxed"
+                              className="text-[11.5px] sm:text-[13px] text-gray-500 font-medium leading-relaxed"
                               dangerouslySetInnerHTML={{ __html: sub.text }}
                             />
                           </div>
@@ -409,3 +409,4 @@ export default function ClaimPolicy() {
     </section>
   );
 }
+
