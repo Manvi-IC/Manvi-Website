@@ -300,6 +300,12 @@ export interface Translations {
   footer_quick_links: string;
   footer_office_info: string;
   footer_rights: string;
+  footer_privacy_policy: string;
+  footer_refund_policy: string;
+  footer_terms: string;
+  footer_shipping_policy: string;
+  footer_mandatory_policy: string;
+  footer_policies_title: string;
 
   // Forms & Quotes
   form_select_dest: string;
@@ -754,6 +760,12 @@ const translations: Record<Language, Translations> = {
     footer_quick_links: "Quick Links",
     footer_office_info: "Office Info",
     footer_rights: "All rights reserved.",
+    footer_privacy_policy: "Privacy Policy",
+    footer_refund_policy: "Refund & Cancellation Policy",
+    footer_terms: "Terms & Conditions",
+    footer_shipping_policy: "Shipping Policy",
+    footer_mandatory_policy: "Mandatory Policy",
+    footer_policies_title: "Policies",
     form_select_dest: "Select Destination Country",
     form_select_euro: "Select European Country",
     form_select_country: "Select Country",
@@ -936,6 +948,12 @@ const translations: Record<Language, Translations> = {
     footer_business_campaign: "व्यावसायिक अभियान",
     footer_blog: "ब्लॉग",
     footer_career: "करियर",
+    footer_privacy_policy: "गोपनीयता नीति",
+    footer_refund_policy: "रिफंड और रद्दीकरण नीति",
+    footer_terms: "नियम और शर्तें",
+    footer_shipping_policy: "शिपिंग नीति",
+    footer_mandatory_policy: "अनिवार्य नीति",
+    footer_policies_title: "नीतियां",
     b2b_hero_badge: "भारतीय व्यवसायों के लिए थोक सोर्सिंग",
     b2b_hero_title_line1: "भारत से सोर्स करें।",
     b2b_hero_title_line2: "आपके व्यवसाय तक पहुंचाया जाएगा",
@@ -1403,6 +1421,12 @@ const translations: Record<Language, Translations> = {
     footer_business_campaign: "ਵਪਾਰਕ ਮੁਹਿੰਮ",
     footer_blog: "ਬਲੌਗ",
     footer_career: "ਕੈਰੀਅਰ",
+    footer_privacy_policy: "ਗੋਪਨੀਯਤਾ ਨੀਤੀ",
+    footer_refund_policy: "ਰਿਫੰਡ ਅਤੇ ਰੱਦ ਕਰਨ ਦੀ ਨੀਤੀ",
+    footer_terms: "ਨਿਯਮ ਅਤੇ ਸ਼ਰਤਾਂ",
+    footer_shipping_policy: "ਸ਼ਿਪਿੰਗ ਨੀਤੀ",
+    footer_mandatory_policy: "ਲਾਜ਼ਮੀ ਨੀਤੀ",
+    footer_policies_title: "ਨੀਤੀਆਂ",
     // Add to the 'pa' object in LanguageContext.tsx
     b2b_hero_badge: "ਭਾਰਤੀ ਕਾਰੋਬਾਰਾਂ ਲਈ ਬਲਕ ਸੋਰਸਿੰਗ",
     b2b_hero_title_line1: "ਭਾਰਤ ਤੋਂ ਸੋਰਸ ਕਰੋ।",
@@ -1877,6 +1901,12 @@ const translations: Record<Language, Translations> = {
     footer_business_campaign: "Campagne commerciale",
     footer_blog: "Blog",
     footer_career: "Carrière",
+    footer_privacy_policy: "Politique de confidentialité",
+    footer_refund_policy: "Politique de remboursement et d'annulation",
+    footer_terms: "Conditions générales",
+    footer_shipping_policy: "Politique d'expédition",
+    footer_mandatory_policy: "Politique obligatoire",
+    footer_policies_title: "Politiques",
     // Add to the 'fr' object in LanguageContext.tsx
     b2b_hero_badge: "Approvisionnement en vrac pour les entreprises indiennes",
     b2b_hero_title_line1: "Approvisionnez-vous depuis l'Inde.",
@@ -2353,6 +2383,12 @@ const translations: Record<Language, Translations> = {
     footer_campaign: "Campaña",
     footer_business_campaign: "Campaña comercial",
     footer_blog: "Blog",
+    footer_privacy_policy: "Política de privacidad",
+    footer_refund_policy: "Política de reembolso y cancelación",
+    footer_terms: "Términos y condiciones",
+    footer_shipping_policy: "Política de envío",
+    footer_mandatory_policy: "Política obligatoria",
+    footer_policies_title: "Políticas",
     footer_career: "Carrera",
     // Add to the 'es' object in LanguageContext.tsx
     b2b_hero_badge: "Abastecimiento al por mayor para empresas indias",
