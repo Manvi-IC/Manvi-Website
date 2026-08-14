@@ -23,62 +23,64 @@ export default function Home() {
     <div className="min-h-screen bg-[#f8f9fa] text-[#0f172a] font-sans flex flex-col antialiased">
       <Header />
 
-      <Hero />
+      <main id="main-content" className="flex-1">
+        <Hero />
 
-      {/* Delivery Partners */}
-      <ScrollReveal>
-        <div className="bg-[#f3f4f6] border-y border-slate-200/50 py-8 px-4 sm:px-6">
-          <div className="max-w-425 mx-auto flex flex-col md:flex-row items-center justify-between gap-6 md:gap-10">
-            <div className="flex flex-col text-center md:text-left">
-              <span className="text-[20px] md:text-[24px] font-extrabold text-[#f27a1a] leading-tight italic whitespace-pre-line">
-                {t.partners_title}
-              </span>
-            </div>
-            <div className="flex flex-wrap items-center justify-center md:justify-end gap-6 sm:gap-10 md:gap-16">
-              {["Aramex", "Courier Please", "DHL", "DPD", "FedEx", "UPS"].map((p) => (
-                <span
-                  key={p}
-                  className="text-[18px] sm:text-[20px] md:text-[22px] font-extrabold text-[#1c1f2e] tracking-wide select-none"
-                >
-                  {p}
+        {/* Delivery Partners */}
+        <ScrollReveal>
+          <div className="bg-[#f3f4f6] border-y border-slate-200/50 py-8 px-4 sm:px-6">
+            <div className="max-w-425 mx-auto flex flex-col md:flex-row items-center justify-between gap-6 md:gap-10">
+              <div className="flex flex-col text-center md:text-left">
+                <span className="text-[20px] md:text-[24px] font-extrabold text-[#f27a1a] leading-tight italic whitespace-pre-line">
+                  {t.partners_title}
                 </span>
-              ))}
+              </div>
+              <div className="flex flex-wrap items-center justify-center md:justify-end gap-6 sm:gap-10 md:gap-16">
+                {["Aramex", "Courier Please", "DHL", "DPD", "FedEx", "UPS"].map((p) => (
+                  <span
+                    key={p}
+                    className="text-[18px] sm:text-[20px] md:text-[22px] font-extrabold text-[#1c1f2e] tracking-wide select-none"
+                  >
+                    {p}
+                  </span>
+                ))}
+              </div>
             </div>
           </div>
-        </div>
-      </ScrollReveal>
+        </ScrollReveal>
 
-      <ScrollReveal>
-        <Bespoke />
-      </ScrollReveal>
+        <ScrollReveal>
+          <Bespoke />
+        </ScrollReveal>
 
-      <ScrollReveal>
-        <WhyWeLead />
-      </ScrollReveal>
+        <ScrollReveal>
+          <WhyWeLead />
+        </ScrollReveal>
 
-      <ScrollReveal>
-        <ClaimPolicy />
-      </ScrollReveal>
+        <ScrollReveal>
+          <ClaimPolicy />
+        </ScrollReveal>
 
-      {/* NoCosts + Prohibited combined in one container */}
-      <ScrollReveal>
-        <div className="max-w-425 w-full mx-auto px-4 sm:px-6 py-10 font-sans">
-          <div className="bg-[#eef0f5] rounded-4xl shadow-sm border border-gray-100 overflow-hidden">
-            <NoCosts />
-            <Prohibited />
+        {/* NoCosts + Prohibited combined in one container */}
+        <ScrollReveal>
+          <div className="max-w-425 w-full mx-auto px-4 sm:px-6 py-10 font-sans">
+            <div className="bg-[#eef0f5] rounded-4xl shadow-sm border border-gray-100 overflow-hidden">
+              <NoCosts />
+              <Prohibited />
+            </div>
           </div>
-        </div>
-      </ScrollReveal>
+        </ScrollReveal>
 
-      <Testimonials />
+        <Testimonials />
 
-      <ScrollReveal>
-        <FAQ />
-      </ScrollReveal>
+        <ScrollReveal>
+          <FAQ />
+        </ScrollReveal>
 
-      <ScrollReveal>
-        <Contact />
-      </ScrollReveal>
+        <ScrollReveal>
+          <Contact />
+        </ScrollReveal>
+      </main>
 
       <Footer />
 
