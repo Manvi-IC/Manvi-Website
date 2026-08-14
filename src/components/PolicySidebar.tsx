@@ -148,7 +148,7 @@ export default function PolicySidebar({
       </div>
 
       {/* DESKTOP SIDEBAR (lg:block) */}
-      <div className="hidden lg:block bg-white/95 backdrop-blur-md rounded-2xl border border-slate-200/80 shadow-[0_4px_25px_-5px_rgba(15,23,42,0.06)] overflow-hidden sticky top-[110px]">
+      <div className="hidden lg:block bg-white/95 backdrop-blur-md rounded-2xl border border-slate-200/80 shadow-[0_4px_25px_-5px_rgba(15,23,42,0.06)] overflow-hidden sticky top-[140px]">
         {/* Top Accent Line */}
         <div className="h-1 bg-gradient-to-r from-orange-500 via-[#f27a1a] to-amber-400" />
 
