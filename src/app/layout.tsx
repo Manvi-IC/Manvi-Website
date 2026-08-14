@@ -70,6 +70,51 @@ export default function RootLayout({
       <head>
         <link rel="preconnect" href="https://www.googletagmanager.com" />
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "LocalBusiness",
+              "name": "Manvi International Courier",
+              "image": "https://www.manvicourier.com/logo.png",
+              "@id": "https://www.manvicourier.com",
+              "url": "https://www.manvicourier.com",
+              "telephone": "+917070506070",
+              "priceRange": "$$",
+              "address": {
+                "@type": "PostalAddress",
+                "streetAddress": "Noida / Delhi NCR",
+                "addressLocality": "Noida",
+                "addressRegion": "UP",
+                "postalCode": "201301",
+                "addressCountry": "IN"
+              },
+              "geo": {
+                "@type": "GeoCoordinates",
+                "latitude": 28.5355,
+                "longitude": 77.391
+              },
+              "openingHoursSpecification": {
+                "@type": "OpeningHoursSpecification",
+                "dayOfWeek": [
+                  "Monday",
+                  "Tuesday",
+                  "Wednesday",
+                  "Thursday",
+                  "Friday",
+                  "Saturday"
+                ],
+                "opens": "10:00",
+                "closes": "21:00"
+              },
+              "sameAs": [
+                "https://www.facebook.com/p/Manvi-International-Courier-61575480958807/",
+                "https://www.instagram.com/manviinternational/"
+              ]
+            })
+          }}
+        />
       </head>
       <body className="min-h-full flex flex-col" suppressHydrationWarning>
         <noscript>
