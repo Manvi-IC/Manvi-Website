@@ -173,7 +173,7 @@ export default function JobModal({ job, onClose, onSaved }: JobModalProps) {
                 onChange={handleChange}
                 required
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#e77419] focus:border-transparent"
-                placeholder="e.g. Dwarka, New Delhi"
+                placeholder="e.g. Palam Extn, New Delhi"
               />
             </div>
           </div>

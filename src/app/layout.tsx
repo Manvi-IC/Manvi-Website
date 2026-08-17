@@ -84,10 +84,10 @@ export default function RootLayout({
               "priceRange": "$$",
               "address": {
                 "@type": "PostalAddress",
-                "streetAddress": "Noida / Delhi NCR",
-                "addressLocality": "Noida",
-                "addressRegion": "UP",
-                "postalCode": "201301",
+                "streetAddress": "C1034, A 2nd Floor, Harijan Basti, Palam Extn, Part-1 Ramphal Chowk",
+                "addressLocality": "New Delhi",
+                "addressRegion": "Delhi",
+                "postalCode": "110045",
                 "addressCountry": "IN"
               },
               "geo": {
