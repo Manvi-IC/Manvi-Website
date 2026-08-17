@@ -36,7 +36,6 @@ export default function TermsAndConditionsPage() {
             The legal terms governing the use of Manvi International Courier services, shipment bookings, volumetric weight assessments, customs compliance, and liability boundaries.
           </p>
           <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-xs text-slate-400 border-t border-slate-700/80 pt-3">
-            <span className="bg-slate-800/80 px-2.5 py-1 rounded-md border border-slate-700"><strong>Effective Date:</strong> August 11, 2026</span>
             <span className="bg-slate-800/80 px-2.5 py-1 rounded-md border border-slate-700"><strong>Legal Entity:</strong> Manvi International Courier</span>
             <span className="bg-slate-800/80 px-2.5 py-1 rounded-md border border-slate-700"><strong>Website:</strong> manvicourier.com</span>
           </div>
