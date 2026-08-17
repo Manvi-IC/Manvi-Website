@@ -34,7 +34,6 @@ export default function RefundPolicyPage() {
             Clear guidelines regarding shipment booking cancellations, RTO return charges, refund timelines, and claim processing rules at Manvi International Courier.
           </p>
           <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-xs text-slate-400 border-t border-slate-700/80 pt-3">
-            <span className="bg-slate-800/80 px-2.5 py-1 rounded-md border border-slate-700"><strong>Effective Date:</strong> August 11, 2026</span>
             <span className="bg-slate-800/80 px-2.5 py-1 rounded-md border border-slate-700"><strong>Legal Name:</strong> Manvi International Courier</span>
             <span className="bg-slate-800/80 px-2.5 py-1 rounded-md border border-slate-700"><strong>Website:</strong> manvicourier.com</span>
           </div>
@@ -204,7 +203,7 @@ export default function RefundPolicyPage() {
                 <MapPin className="w-5 h-5 text-[#f27a1a] shrink-0 mt-0.5" />
                 <div>
                   <div className="font-bold text-white mb-0.5">Office Address</div>
-                  <p className="leading-relaxed">HQ Shiksha Bharti school road, opposite Agroha furnishings, blocks C sector 7 Dwarka, Palam, New Delhi, 110077</p>
+                  <p className="leading-relaxed">C1034, A 2ND FLOOR, HARIJAN BASTI, PALAM EXTN, PART-1 RAMPHAL CHOWK, NEW DELHI, INDIA, 110045</p>
                 </div>
               </div>
             </div>
