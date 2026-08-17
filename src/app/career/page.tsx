@@ -114,7 +114,7 @@ const careerTranslations: Record<Language, CareerTranslations> = {
     rolesEyebrow: "Open positions",
     rolesHeading: "Find Your Place In The Network.",
     rolesSubtitle:
-      "All roles are based at our Dwarka, New Delhi office unless noted. Tap a role to see the details and apply.",
+      "All roles are based at our New Delhi office unless noted. Tap a role to see the details and apply.",
     loadingText: "Loading available positions...",
     noJobsText: "No open positions at the moment. Check back soon!",
     applyBtn: "Apply for this role →",
@@ -282,7 +282,7 @@ const careerTranslations: Record<Language, CareerTranslations> = {
     rolesEyebrow: "Postes ouverts",
     rolesHeading: "Trouvez votre place dans le réseau.",
     rolesSubtitle:
-      "Tous les postes sont basés à notre bureau de Dwarka, New Delhi, sauf indication contraire. Cliquez sur un poste pour voir les détails et postuler.",
+      "Tous les postes sont basés à notre bureau de New Delhi, sauf indication contraire. Cliquez sur un poste pour voir les détails et postuler.",
     loadingText: "Chargement des postes disponibles...",
     noJobsText: "Aucun poste ouvert pour le moment. Revenez bientôt !",
     applyBtn: "Postuler à ce poste →",
@@ -339,7 +339,7 @@ const careerTranslations: Record<Language, CareerTranslations> = {
     rolesEyebrow: "Puestos disponibles",
     rolesHeading: "Encuentre su lugar en la red.",
     rolesSubtitle:
-      "Todos los puestos se basan en nuestra oficina de Dwarka, Nueva Delhi, salvo que se indique lo contrario. Toque un puesto para ver los detalles y postularse.",
+      "Todos los puestos se basan en nuestra oficina de Nueva Delhi, salvo que se indique lo contrario. Toque un puesto para ver los detalles y postularse.",
     loadingText: "Cargando puestos disponibles...",
     noJobsText:
       "No hay puestos disponibles por el momento. ¡Vuelva a consultar pronto!",
