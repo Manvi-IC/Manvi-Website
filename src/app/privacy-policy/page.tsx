@@ -35,7 +35,6 @@ export default function PrivacyPolicyPage() {
             Transparent information on how Manvi International Courier protects your personal data, identity documents, and shipment privacy across global operations.
           </p>
           <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-xs text-slate-400 border-t border-slate-700/80 pt-3">
-            <span className="bg-slate-800/80 px-2.5 py-1 rounded-md border border-slate-700"><strong>Effective Date:</strong> August 11, 2026</span>
             <span className="bg-slate-800/80 px-2.5 py-1 rounded-md border border-slate-700"><strong>Legal Name:</strong> Manvi International Courier</span>
             <span className="bg-slate-800/80 px-2.5 py-1 rounded-md border border-slate-700"><strong>Website:</strong> manvicourier.com</span>
           </div>
