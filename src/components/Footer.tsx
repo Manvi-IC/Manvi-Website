@@ -401,8 +401,8 @@ export default function Footer() {
               <div className="flex items-start gap-3">
                 <MapPin className="w-[16px] h-[16px] text-white shrink-0 mt-0.5" />
                 <div className="flex flex-col text-[13.5px] text-white/90 font-medium leading-relaxed">
-                  <span>C-699, Palam Extension, Sector 7,</span>
-                  <span>Dwarka, New Delhi, 110077</span>
+                  <span>C1034, A 2ND FLOOR, HARIJAN BASTI,</span>
+                  <span>PALAM EXTN, PART-1 RAMPHAL CHOWK, NEW DELHI, INDIA, 110045</span>
                 </div>
               </div>
             </div>
