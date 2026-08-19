@@ -1,6 +1,11 @@
 import { NextResponse } from "next/server";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+// Use server-only API_URL (non-NEXT_PUBLIC_) so it is read at runtime, not baked
+// in at build time. Falls back to NEXT_PUBLIC_API_URL for local dev convenience.
+const API_URL =
+  process.env.API_URL ||
+  process.env.NEXT_PUBLIC_API_URL ||
+  "http://localhost:5000";
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);

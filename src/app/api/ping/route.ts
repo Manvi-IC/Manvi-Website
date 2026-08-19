@@ -1,6 +1,9 @@
 import { NextResponse } from "next/server";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+const API_URL =
+  process.env.API_URL ||
+  process.env.NEXT_PUBLIC_API_URL ||
+  "http://localhost:5000";
 
 // Lightweight endpoint to wake the Render backend from cold sleep.
 // Call this before any heavy API operation when the server may be idle.
