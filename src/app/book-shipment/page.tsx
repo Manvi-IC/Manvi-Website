@@ -1259,6 +1259,8 @@ export default function BookShipmentPage() {
       const first = data.quotes[0];
       setSelectedQuoteKey(`${first.service}__${first.rateType}`);
       setStep(5);
+      // Silently warm the booking backend so it's ready when the user submits
+      fetch("/api/ping").catch(() => {});
     } catch (err: any) {
       setError(err.message);
     } finally {
@@ -1342,7 +1344,17 @@ export default function BookShipmentPage() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
     });
-    const data = await res.json();
+
+    // Safely parse response — empty body (e.g. Netlify timeout) would otherwise crash
+    let data: any;
+    try {
+      data = await res.json();
+    } catch {
+      throw new Error(
+        "The server took too long to respond. Please wait a moment and try again — the server may be waking up from idle.",
+      );
+    }
+
     if (!res.ok || !data.success)
       throw new Error(data.message || "Booking creation failed");
 
