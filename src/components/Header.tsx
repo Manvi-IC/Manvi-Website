@@ -1,9 +1,10 @@
 "use client";
-import { useState, useRef, useEffect } from "react";
-import { Phone, ChevronDown, ChevronRight, X, Mail, Globe } from "lucide-react";
+
+import { useEffect, useRef, useState } from "react";
+import { ChevronDown, ChevronRight, Globe, Mail, Phone, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useLanguage, Language } from "@/context/LanguageContext";
+import { Language, useLanguage } from "@/context/LanguageContext";
 
 const LANGUAGES: {
   code: Language;
@@ -24,6 +25,7 @@ export default function Header() {
   const [isLangOpen, setIsLangOpen] = useState(false);
   const [showMarquee, setShowMarquee] = useState(true);
   const [marqueeText, setMarqueeText] = useState("");
+
   const langRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -46,9 +48,7 @@ export default function Header() {
           }
         }
       })
-      .catch((err) =>
-        console.warn("Failed to fetch site settings:", err.message),
-      );
+      .catch((err) => console.warn("Failed to fetch site settings:", err.message));
   }, []);
 
   useEffect(() => {
@@ -57,6 +57,7 @@ export default function Header() {
         setIsLangOpen(false);
       }
     }
+
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
@@ -71,7 +72,6 @@ export default function Header() {
   return (
     <>
       <div className="sticky top-0 z-50 w-full flex flex-col">
-        {/* Top utility bar */}
         <div className="bg-[#0D1527] text-zinc-300 text-[12px] font-semibold py-3.5 px-4 sm:px-6 border-b border-white/5 relative z-50">
           <div className="max-w-425 mx-auto flex flex-col md:flex-row justify-between items-center gap-2.5 md:gap-0">
             <div className="flex items-center justify-between sm:justify-start gap-4 w-full md:w-auto">
@@ -80,50 +80,33 @@ export default function Header() {
                 className="flex items-center gap-1.5 sm:gap-2 hover:text-white transition-colors"
               >
                 <Phone className="h-3.5 w-3.5 text-white shrink-0" />
-                <span className="text-white/90 truncate">
-                  +91 70 70 50 60 70
-                </span>
+                <span className="text-white/90 truncate">+91 70 70 50 60 70</span>
               </a>
               <a
                 href="mailto:Info@manvicourier.com"
                 className="flex items-center gap-1.5 sm:gap-2 hover:text-white transition-colors"
               >
                 <Mail className="h-3.5 w-3.5 text-white shrink-0" />
-                <span className="text-white/90 truncate">
-                  Info@manvicourier.com
-                </span>
+                <span className="text-white/90 truncate">Info@manvicourier.com</span>
               </a>
             </div>
 
-            {/* Marquee offer strip */}
             <div className="flex flex-1 w-full mx-0 md:mx-6 overflow-hidden relative pt-1 md:pt-0">
-              {showMarquee &&
-                marqueeText &&
-                (() => {
-                  const Marquee = "marquee" as any;
-                  return (
-                    <Marquee
-                      behavior="scroll"
-                      direction="left"
-                      scrollamount="3"
-                      className="text-[12.5px] md:text-[14.5px] font-medium md:font-extrabold tracking-wide whitespace-pre"
-                      style={{ color: "#f27a1a" }}
-                    >
-                      {marqueeText}
-                    </Marquee>
-                  ) as any;
-                })()}
+              {showMarquee && marqueeText && (
+                <div
+                  className="text-[12.5px] md:text-[14.5px] font-medium md:font-extrabold tracking-wide whitespace-pre overflow-hidden"
+                  style={{ color: "#f27a1a" }}
+                >
+                  {marqueeText}
+                </div>
+              )}
             </div>
 
             <div className="hidden sm:flex items-center gap-6 overflow-visible">
-              <Link
-                href="/zipcode"
-                className="hover:text-white transition-colors"
-              >
+              <Link href="/zipcode" className="hover:text-white transition-colors">
                 {t.nav_zipcode}
               </Link>
 
-              {/* Language Dropdown */}
               <div className="relative overflow-visible" ref={langRef}>
                 <button
                   id="language-selector"
@@ -144,7 +127,6 @@ export default function Header() {
                   />
                 </button>
 
-                {/* Dropdown — positioned below the entire sticky bar */}
                 {isLangOpen && (
                   <div
                     id="language-dropdown-list"
@@ -183,9 +165,7 @@ export default function Header() {
                         <span className="text-base">{lang.flag}</span>
                         <span className="flex flex-col items-start leading-none gap-0.5">
                           <span>{lang.label}</span>
-                          <span className="text-[10px] opacity-60">
-                            {lang.native}
-                          </span>
+                          <span className="text-[10px] opacity-60">{lang.native}</span>
                         </span>
                       </button>
                     ))}
@@ -196,10 +176,8 @@ export default function Header() {
           </div>
         </div>
 
-        {/* Main header */}
         <header className="px-4 sm:px-6 py-4 relative z-40">
           <div className="max-w-425 mx-auto bg-[#0D1527] rounded-2xl px-6 sm:px-8 py-4 flex justify-between items-center">
-            {/* Logo */}
             <Link href="/" className="flex items-center gap-3">
               <img
                 src="/logo.png"
@@ -208,34 +186,13 @@ export default function Header() {
                 className="object-contain"
               />
               <div className="flex flex-col leading-none">
-                <span
-                  style={{
-                    fontFamily: "var(--font-league-spartan), sans-serif",
-                    fontWeight: 700,
-                    fontSize: "18px",
-                    lineHeight: "100%",
-                    letterSpacing: 0,
-                  }}
-                  className="text-white"
-                >
-                  Manvi
-                </span>
-                <span
-                  style={{
-                    fontFamily: "var(--font-league-spartan), sans-serif",
-                    fontWeight: 700,
-                    fontSize: "18px",
-                    lineHeight: "100%",
-                    letterSpacing: 0,
-                  }}
-                  className="text-white"
-                >
+                <span className="text-white font-bold text-[18px] font-league-spartan">Manvi</span>
+                <span className="text-white font-bold text-[18px] font-league-spartan">
                   International Courier
                 </span>
               </div>
             </Link>
 
-            {/* Desktop Nav */}
             <div className="hidden md:flex items-center gap-8">
               <nav className="flex items-center gap-8 text-[13px] font-semibold text-white">
                 <Link
@@ -246,7 +203,7 @@ export default function Header() {
                 </Link>
                 <Link
                   href="/services"
-                  className={`flex items-center gap-1 transition-colors ${pathname?.startsWith("/services") ? "text-[#f27a1a]" : "hover:text-[#f27a1a]"}`}
+                  className={`transition-colors ${pathname?.startsWith("/services") ? "text-[#f27a1a]" : "hover:text-[#f27a1a]"}`}
                 >
                   {t.nav_services}
                 </Link>
@@ -274,21 +231,19 @@ export default function Header() {
                 >
                   {t.footer_career}
                 </Link>
-                {/* Customer Login */}
-                <a
-                  href="https://portal.manvicourier.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-white transition-colors hover:text-[#f27a1a] whitespace-nowrap"
-                >
-                  Customer Login
-                </a>
               </nav>
 
-              {/* Track Now — orange pill pushed to far right */}
+              <Link
+                href="/book-shipment"
+                className={`px-4 py-2 rounded-full text-[13px] font-bold border border-[#f27a1a] text-[#f27a1a] hover:bg-[#f27a1a] hover:text-white transition-colors whitespace-nowrap ${
+                  pathname?.startsWith("/book-shipment") ? "bg-[#f27a1a] text-white" : ""
+                }`}
+              >
+                Book Shipment
+              </Link>
               <Link
                 href="/track"
-                className={`ml-2 px-5 py-2 rounded-full text-[13px] font-bold transition-colors whitespace-nowrap ${
+                className={`px-5 py-2 rounded-full text-[13px] font-bold transition-colors whitespace-nowrap ${
                   pathname?.startsWith("/track")
                     ? "bg-orange-600 text-white"
                     : "bg-[#f27a1a] text-white hover:bg-orange-600"
@@ -298,7 +253,6 @@ export default function Header() {
               </Link>
             </div>
 
-            {/* Mobile Menu Toggle */}
             <button
               aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
               aria-expanded={isMobileMenuOpen}
@@ -325,7 +279,6 @@ export default function Header() {
         </header>
       </div>
 
-      {/* Mobile Menu Dropdown */}
       {isMobileMenuOpen && (
         <div className="md:hidden fixed inset-0 top-33.75 z-40 bg-white px-6 py-6 shadow-xl border-t border-gray-100 flex flex-col gap-6 font-sans overflow-y-auto">
           <nav className="flex flex-col gap-4 text-[16px] font-bold text-[#1c1f2e]">
@@ -343,15 +296,6 @@ export default function Header() {
             >
               {t.nav_about}
             </Link>
-            <a
-              href="https://portal.manvicourier.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={() => setIsMobileMenuOpen(false)}
-              className="pb-2 border-b border-gray-100"
-            >
-              Customer Login
-            </a>
             <Link
               href="/track"
               onClick={() => setIsMobileMenuOpen(false)}
@@ -366,7 +310,6 @@ export default function Header() {
             >
               {t.nav_quote}
             </Link>
-
             <Link
               href="/zipcode"
               onClick={() => setIsMobileMenuOpen(false)}
@@ -395,9 +338,15 @@ export default function Header() {
             >
               {t.footer_career}
             </Link>
+            <Link
+              href="/book-shipment"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="pb-2 border-b border-gray-100 text-[#f27a1a]"
+            >
+              Book Shipment
+            </Link>
           </nav>
 
-          {/* Mobile Language Selector */}
           <div className="border-t border-gray-100 pt-4">
             <p className="text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-3">
               {t.nav_language}
@@ -408,7 +357,11 @@ export default function Header() {
                   handleSelectLang("en");
                   setIsMobileMenuOpen(false);
                 }}
-                className={`flex items-center gap-2 px-3 py-2 rounded-xl text-[13px] font-semibold border transition-colors ${language === "en" ? "bg-[#f27a1a] text-white border-[#f27a1a]" : "border-gray-200 text-gray-700 hover:border-[#f27a1a] hover:text-[#f27a1a]"}`}
+                className={`flex items-center gap-2 px-3 py-2 rounded-xl text-[13px] font-semibold border transition-colors ${
+                  language === "en"
+                    ? "bg-[#f27a1a] text-white border-[#f27a1a]"
+                    : "border-gray-200 text-gray-700 hover:border-[#f27a1a] hover:text-[#f27a1a]"
+                }`}
               >
                 <span>🌐</span> English
               </button>
@@ -419,7 +372,11 @@ export default function Header() {
                     handleSelectLang(lang.code);
                     setIsMobileMenuOpen(false);
                   }}
-                  className={`flex items-center gap-2 px-3 py-2 rounded-xl text-[13px] font-semibold border transition-colors ${language === lang.code ? "bg-[#f27a1a] text-white border-[#f27a1a]" : "border-gray-200 text-gray-700 hover:border-[#f27a1a] hover:text-[#f27a1a]"}`}
+                  className={`flex items-center gap-2 px-3 py-2 rounded-xl text-[13px] font-semibold border transition-colors ${
+                    language === lang.code
+                      ? "bg-[#f27a1a] text-white border-[#f27a1a]"
+                      : "border-gray-200 text-gray-700 hover:border-[#f27a1a] hover:text-[#f27a1a]"
+                  }`}
                 >
                   <span>{lang.flag}</span> {lang.label}
                 </button>

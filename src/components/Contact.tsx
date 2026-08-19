@@ -1,6 +1,7 @@
 "use client";
 import { Phone, MessageSquare } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
+import { fireClickToCallConversion, fireWhatsappConversion } from "@/lib/ads";
 
 const WhatsAppIcon = ({
   width = 16,
@@ -53,17 +54,13 @@ export default function Contact() {
                 <span className="text-[18px] font-extrabold text-[#1c1f2e]">
                   {t.contact_call}
                 </span>
-                <span className="text-[14px] text-gray-500 font-medium">
-                  +91 70 70 50 60 70
-                </span>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-4">
-              <div className="w-[48px] h-[48px] rounded-full bg-[#008000] flex items-center justify-center shrink-0">
-                <WhatsAppIcon width={20} height={20} fill="white" />
-              </div>
-              <div className="flex flex-col gap-1">
+                  <a
+                    href="tel:+917070506070"
+                    onClick={() => fireClickToCallConversion("tel:+917070506070")}
+                    className="text-[14px] text-gray-500 font-medium hover:text-[#ff8a00] transition-colors"
+                  >
+                    +91 70 70 50 60 70
+                  </a>
                 <span className="text-[18px] font-extrabold text-[#1c1f2e]">
                   {t.contact_whatsapp}
                 </span>
@@ -71,6 +68,7 @@ export default function Contact() {
                   href="https://wa.me/917070506070"
                   target="_blank"
                   rel="noopener noreferrer"
+                  onClick={() => fireWhatsappConversion()}
                   className="text-[14px] text-gray-500 font-medium hover:text-[#ff8a00] transition-colors"
                 >
                   +91 70 70 50 60 70
