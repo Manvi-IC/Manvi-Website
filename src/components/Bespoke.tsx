@@ -57,7 +57,8 @@ export default function Bespoke() {
 
             {/* Bottom Right Cutout Illusion */}
             <div className="absolute -bottom-6 -right-6 w-32 h-32 sm:w-40 sm:h-40 bg-[#eef0f5] rounded-full flex items-center justify-center pointer-events-none">
-              <Link href="/services">
+              <Link href="/services" aria-label="Explore All Courier Services">
+                <span className="sr-only">Explore All Courier Services</span>
                 <div className="w-20 h-20 sm:w-28 sm:h-28 bg-[#ff8a00] rounded-full relative flex items-center justify-center shadow-lg pointer-events-auto cursor-pointer hover:scale-105 transition-transform duration-300">
                   <svg
                     className="w-6 h-6 sm:w-8 sm:h-8 text-white z-10"

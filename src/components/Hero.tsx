@@ -1342,6 +1342,7 @@ export default function Hero() {
                   sizes="(max-width: 1024px) 100vw, 50vw"
                   className="object-cover object-center"
                   priority={i === 0}
+                  fetchPriority={i === 0 ? "high" : "auto"}
                 />
                 {/* Dark gradient overlay */}
                 <div className="absolute inset-0 bg-black/45" />
@@ -1395,8 +1396,10 @@ export default function Hero() {
                   href="https://wa.me/917070506070"
                   target="_blank"
                   rel="noopener noreferrer"
+                  aria-label="WhatsApp Us - Manvi International Courier"
                   className="w-20 h-20 sm:w-28 sm:h-28 bg-[#23c961] rounded-full relative flex items-center justify-center shadow-lg pointer-events-auto cursor-pointer hover:scale-105 transition-transform duration-300 z-50"
                 >
+                  <span className="sr-only">WhatsApp Us on +91 7070506070</span>
                   <svg
                     className="w-7 h-7 sm:w-8 sm:h-8 text-white z-10 relative"
                     viewBox="0 0 24 24"
@@ -1475,9 +1478,10 @@ export default function Hero() {
 
                 <Link
                   href="/about"
+                  aria-label="Read More About Manvi International Courier"
                   className="border border-white/50 text-white text-[12px] font-semibold px-5 py-2 rounded-lg hover:bg-white/10 transition-colors"
                 >
-                  {t.hero_read_more}
+                  Read More About Us
                 </Link>
               </div>
             </div>
@@ -1511,6 +1515,7 @@ export default function Hero() {
             <Link
               key={tab.href}
               href={tab.href}
+              aria-label={tab.label}
               className="flex items-center justify-center gap-2 sm:gap-3 bg-[#0D1527] hover:bg-[#f27a1a] rounded-[14px] sm:rounded-2xl text-[12px] sm:text-[14px] font-semibold text-white py-3 sm:py-4 transition-all text-center px-2"
             >
               {tab.icon} <span className="truncate">{tab.label}</span>

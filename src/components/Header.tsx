@@ -386,29 +386,33 @@ export default function Header() {
         </div>
       )}
 
-      {pathname && pathname !== "/" && pathname !== "/campaign" && (
-        <div className="py-3.5 px-4 sm:px-6 relative z-30">
-          <div className="max-w-425 w-full mx-auto flex items-center gap-2 text-sm font-light text-gray-800">
-            <Link href="/" className="hover:text-[#f27a1a] transition-colors">
-              {t.nav_home}
-            </Link>
-            <ChevronRight className="w-4 h-4 text-gray-600 shrink-0" />
-            <span className="text-gray-900 font-medium uppercase tracking-wide">
-              {pathname === "/about" && t.bc_about}
-              {pathname === "/track" && t.bc_track}
-              {pathname === "/zipcode" && t.bc_zipcode}
-              {pathname === "/contact" && t.bc_contact}
-              {pathname === "/quote" && t.bc_quote}
-              {pathname === "/faq" && t.bc_faq}
-              {pathname === "/services" && t.bc_services}
-              {pathname === "/business-campaign" && t.bc_business_campaign}
-              {pathname === "/blog" && "Blog"}
-              {pathname === "/career" && "Careers"}
-              {pathname === "/pickup-availability" && "Pickup Availability"}
-            </span>
+      {pathname &&
+        pathname !== "/" &&
+        pathname !== "/campaign" &&
+        !pathname.endsWith("-policy") &&
+        pathname !== "/terms-and-conditions" && (
+          <div className="py-3.5 px-4 sm:px-6 relative z-30">
+            <div className="max-w-425 w-full mx-auto flex items-center gap-2 text-sm font-light text-gray-800">
+              <Link href="/" className="hover:text-[#f27a1a] transition-colors">
+                {t.nav_home}
+              </Link>
+              <ChevronRight className="w-4 h-4 text-gray-600 shrink-0" />
+              <span className="text-gray-900 font-medium uppercase tracking-wide">
+                {pathname === "/about" && t.bc_about}
+                {pathname === "/track" && t.bc_track}
+                {pathname === "/zipcode" && t.bc_zipcode}
+                {pathname === "/contact" && t.bc_contact}
+                {pathname === "/quote" && t.bc_quote}
+                {pathname === "/faq" && t.bc_faq}
+                {pathname === "/services" && t.bc_services}
+                {pathname === "/business-campaign" && t.bc_business_campaign}
+                {pathname === "/blog" && "Blog"}
+                {pathname === "/career" && "Careers"}
+                {pathname === "/pickup-availability" && "Pickup Availability"}
+              </span>
+            </div>
           </div>
-        </div>
-      )}
+        )}
     </>
   );
 }

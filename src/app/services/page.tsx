@@ -440,19 +440,14 @@ export default function ServicesPage() {
   const [activeSection, setActiveSection] = useState("direct");
 
   const scrollToSection = (id: string) => {
-    const element = document.getElementById(id);
-    if (element) {
-      const headerOffset = 100; // offset for the sticky header
-      const elementPosition = element.getBoundingClientRect().top + window.scrollY;
-      const offsetPosition = elementPosition - headerOffset;
-
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: "smooth"
-      });
-      window.history.pushState(null, "", `#${id}`);
-      setActiveSection(id);
-    }
+    setActiveSection(id);
+    window.history.pushState(null, "", `#${id}`);
+    requestAnimationFrame(() => {
+      const element = document.getElementById(id);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+      }
+    });
   };
 
   useEffect(() => {
