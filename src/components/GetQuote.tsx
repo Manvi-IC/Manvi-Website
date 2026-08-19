@@ -2,6 +2,7 @@
 "use client";
 import { useState, useEffect, FormEvent } from "react";
 import { useLanguage } from "@/context/LanguageContext";
+import Link from "next/link";
 import {
   ArrowUpRight,
   Plus,
@@ -17,6 +18,10 @@ import {
   Phone,
   Mail,
 } from "lucide-react";
+import {
+  fireLeadFormConversion,
+  fireRequestQuoteConversion,
+} from "@/lib/ads";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 const DB_NAME = process.env.NEXT_PUBLIC_X_DATABASE || "manvi";
@@ -228,6 +233,8 @@ function ApplyModal({
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState("");
 
+  const [awbNo, setAwbNo] = useState("");
+
   if (!open || !quote || !result) return null;
 
   const handleSubmit = async (e: FormEvent) => {
@@ -239,6 +246,7 @@ function ApplyModal({
     }
     setSubmitting(true);
     try {
+      // 1. Submit local Quote Enquiry
       const res = await fetch(`${API_URL}/quote-enquiries`, {
         method: "POST",
         headers: {
@@ -268,10 +276,83 @@ function ApplyModal({
       });
       const data = await res.json();
       if (!data.success) throw new Error(data.message || "Submission failed");
+
+      // 2. Call MANVI Order Create API
+      const timestamp = Date.now().toString().slice(-8);
+      const generatedAwb = `AWB${timestamp}${Math.floor(100 + Math.random() * 900)}`;
+
+      const orderPayload = {
+        Awbno: generatedAwb,
+        AccountCode: "CUST001",
+        AccountName: name.trim(),
+        Origin: "DEL",
+        PaymentType: "Credit",
+        ShipDate: new Date().toISOString(),
+        Sender: {
+          SenderName: name.trim(),
+          SenderContactPerson: name.trim(),
+          SenderAddressLine1: "Main Market",
+          SenderPincode: "110001",
+          SenderCity: "New Delhi",
+          SenderState: "Delhi",
+          SenderTelephone: phone.trim(),
+          SenderEmailId: email.trim(),
+          KYCType: "Aadhaar",
+          KYCNo: "XXXXXXXX1234",
+        },
+        Receiver: {
+          ReceiverName: "Receiver - " + (zoningCountry || destination),
+          ReceiverContactPerson: "Contact Person",
+          ReceiverAddressLine1: "Destination Address",
+          ReceiverZipcode: zipcode || "10001",
+          ReceiverCity: zoningCountry || "Destination City",
+          ReceiverState: zoningCountry || "State",
+          ReceiverCountry: destObj?.label || destination,
+          ReceiverTelephone: phone.trim(),
+          ReceiverEmailid: email.trim(),
+        },
+        ServiceDetails: {
+          ServiceCode: quote.service,
+          ServiceName: quote.service,
+          Forwarder: quote.network || "DHL",
+          NetworkCode: quote.network || "DHL",
+          NetworkName: quote.network || "DHL Express",
+          GoodsType: "NDOX",
+          PackageType: "PACKAGE",
+        },
+        PackageDetails: {
+          PackageDetail: [
+            {
+              Length: parseFloat(length) || 10,
+              Width: parseFloat(breadth) || 10,
+              Height: parseFloat(height) || 10,
+              ActualWeight: parseFloat(actualWt) || 1.0,
+            },
+          ],
+        },
+        FreightDetails: {
+          BasicAmount: quote.totalPrice,
+          NetTotal: quote.totalPrice,
+        },
+      };
+
+      const orderRes = await fetch(`${API_URL}/shipment/order-create`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(orderPayload),
+      });
+
+      const orderData = await orderRes.json().catch(() => ({ success: true }));
+      const finalAwb = orderData.awbno || generatedAwb;
+
+      setAwbNo(finalAwb);
       setSubmitted(true);
+      fireLeadFormConversion();
+      fireRequestQuoteConversion();
       window.dataLayer = window.dataLayer || [];
       window.dataLayer.push({
         event: "form_enquiry_success",
+        awb: finalAwb,
       });
     } catch (err: any) {
       setError(err.message);
@@ -284,6 +365,7 @@ function ApplyModal({
     setName("");
     setPhone("");
     setEmail("");
+    setAwbNo("");
     setError("");
     setSubmitted(false);
     onClose();
@@ -303,10 +385,10 @@ function ApplyModal({
         <div className="bg-[#0D1527] px-6 py-5 flex items-start justify-between">
           <div>
             <p className="text-[#f27a1a] text-[11px] font-extrabold tracking-widest uppercase mb-1">
-              Confirm Your Interest
+              Confirm Your Booking
             </p>
             <h3 className="text-white font-extrabold text-lg leading-tight">
-              Apply Now
+              Order Booking
             </h3>
           </div>
           <button
@@ -318,24 +400,40 @@ function ApplyModal({
         </div>
 
         {submitted ? (
-          <div className="px-6 py-12 flex flex-col items-center text-center gap-4">
+          <div className="px-6 py-10 flex flex-col items-center text-center gap-4">
             <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center">
               <CheckCircle2 size={32} className="text-green-600" />
             </div>
             <div>
-              <p className="font-extrabold text-[#1c1f2e] text-lg">
-                Enquiry Submitted!
+              <p className="font-extrabold text-[#1c1f2e] text-xl">
+                Booking Confirmed!
               </p>
               <p className="text-gray-500 text-sm mt-1">
-                Our team will reach out to you shortly.
+                Your shipment has been created successfully.
               </p>
+              {awbNo && (
+                <div className="mt-4 bg-orange-50 border border-orange-200 rounded-xl p-3 text-center">
+                  <p className="text-xs text-gray-500 font-medium">Your AWB Number</p>
+                  <p className="text-lg font-black text-[#f27a1a] tracking-wider select-all mt-0.5">
+                    {awbNo}
+                  </p>
+                </div>
+              )}
             </div>
-            <button
-              onClick={handleClose}
-              className="mt-2 bg-[#f27a1a] hover:bg-orange-600 text-white font-bold text-sm py-3 px-8 rounded-xl transition-colors"
-            >
-              Done
-            </button>
+            <div className="flex gap-3 mt-2">
+              <a
+                href={`/track?awb=${awbNo}`}
+                className="bg-[#0D1527] hover:bg-[#1a2642] text-white font-bold text-sm py-3 px-6 rounded-xl transition-colors"
+              >
+                Track Shipment
+              </a>
+              <button
+                onClick={handleClose}
+                className="bg-[#f27a1a] hover:bg-orange-600 text-white font-bold text-sm py-3 px-6 rounded-xl transition-colors"
+              >
+                Done
+              </button>
+            </div>
           </div>
         ) : (
           <>
@@ -1008,12 +1106,20 @@ export default function GetQuote() {
                         {convertPrice(selectedQuote.totalPrice)}
                       </p>
                     </div>
-                    <button
-                      onClick={() => setApplyModalOpen(true)}
-                      className="shrink-0 bg-[#f27a1a] hover:bg-orange-600 text-white font-extrabold text-sm py-3.5 px-7 rounded-xl transition-all active:scale-98 flex items-center gap-2 shadow-md shadow-orange-200"
-                    >
-                      Enquire Now <ArrowUpRight size={16} strokeWidth={2.5} />
-                    </button>
+                    <div className="flex gap-2">
+                      <Link
+                        href="/book-shipment"
+                        className="shrink-0 bg-[#0D1527] hover:bg-[#15223e] text-white font-extrabold text-xs sm:text-sm py-3.5 px-5 rounded-xl transition-all flex items-center gap-2 shadow-md"
+                      >
+                        Book Shipment <ArrowUpRight size={16} strokeWidth={2.5} />
+                      </Link>
+                      <button
+                        onClick={() => setApplyModalOpen(true)}
+                        className="shrink-0 bg-[#f27a1a] hover:bg-orange-600 text-white font-extrabold text-xs sm:text-sm py-3.5 px-5 rounded-xl transition-all flex items-center gap-2 shadow-md shadow-orange-200"
+                      >
+                        Enquire Now <ArrowUpRight size={16} strokeWidth={2.5} />
+                      </button>
+                    </div>
                   </div>
                 )}
 

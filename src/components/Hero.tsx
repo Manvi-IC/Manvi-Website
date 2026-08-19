@@ -27,6 +27,7 @@ import {
 import Link from "next/link";
 import Image from "next/image";
 import { useLanguage } from "@/context/LanguageContext";
+import { fireLeadFormConversion, fireRequestQuoteConversion } from "@/lib/ads";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 const DB_NAME = process.env.NEXT_PUBLIC_X_DATABASE || "manvi";
@@ -366,6 +367,8 @@ function ApplyModal({
       const data = await res.json();
       if (!data.success) throw new Error(data.message || "Submission failed");
       setSubmitted(true);
+      fireLeadFormConversion();
+      fireRequestQuoteConversion();
       window.dataLayer = window.dataLayer || [];
       window.dataLayer.push({
         event: "form_enquiry_success",

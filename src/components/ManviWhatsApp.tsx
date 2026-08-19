@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useLanguage, Language } from "@/context/LanguageContext";
+import { fireWhatsappConversion } from "@/lib/ads";
 
 const WhatsAppIcon = ({ width = 16, height = 16, fill = "currentColor", className = "" }) => (
   <svg 
@@ -68,6 +69,7 @@ export default function ManviWhatsApp() {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleStartChat = () => {
+    fireWhatsappConversion();
     window.open(`https://wa.me/917070506070?text=${encodeURIComponent(t.prefill_text)}`, "_blank");
   };
 
