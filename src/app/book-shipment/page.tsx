@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import Footer from "@/components/Footer";
 import {
   User,
   ArrowRight,
@@ -18,6 +19,7 @@ import {
   CreditCard,
   Search,
   X,
+  ChevronRight,
 } from "lucide-react";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
@@ -1135,7 +1137,7 @@ export default function BookShipmentPage() {
       (Number(b.lengthCm || 0) *
         Number(b.widthCm || 0) *
         Number(b.heightCm || 0)) /
-        5000,
+      5000,
     0,
   );
   const chargeableWeight = Math.ceil(
@@ -1260,7 +1262,7 @@ export default function BookShipmentPage() {
       setSelectedQuoteKey(`${first.service}__${first.rateType}`);
       setStep(5);
       // Silently warm the booking backend so it's ready when the user submits
-      fetch("/api/ping").catch(() => {});
+      fetch("/api/ping").catch(() => { });
     } catch (err: any) {
       setError(err.message);
     } finally {
@@ -1281,92 +1283,92 @@ export default function BookShipmentPage() {
     : 0;
 
   const onSubmitBooking = async () => {
-  if (!selectedQuote) return;
-  setSubmitting(true);
-  setError("");
-  try {
-    // Format dates
-    let formattedInvoiceDate;
-    if (invoiceDate) {
-      formattedInvoiceDate = invoiceDate + "T00:00:00";
-    } else {
+    if (!selectedQuote) return;
+    setSubmitting(true);
+    setError("");
+    try {
+      // Format dates
+      let formattedInvoiceDate;
+      if (invoiceDate) {
+        formattedInvoiceDate = invoiceDate + "T00:00:00";
+      } else {
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = String(now.getMonth() + 1).padStart(2, "0");
+        const day = String(now.getDate()).padStart(2, "0");
+        formattedInvoiceDate = `${year}-${month}-${day}T00:00:00`;
+      }
+
       const now = new Date();
       const year = now.getFullYear();
       const month = String(now.getMonth() + 1).padStart(2, "0");
       const day = String(now.getDate()).padStart(2, "0");
-      formattedInvoiceDate = `${year}-${month}-${day}T00:00:00`;
-    }
+      const hours = String(now.getHours()).padStart(2, "0");
+      const minutes = String(now.getMinutes()).padStart(2, "0");
+      const seconds = String(now.getSeconds()).padStart(2, "0");
+      const formattedShipDate = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
 
-    const now = new Date();
-    const year = now.getFullYear();
-    const month = String(now.getMonth() + 1).padStart(2, "0");
-    const day = String(now.getDate()).padStart(2, "0");
-    const hours = String(now.getHours()).padStart(2, "0");
-    const minutes = String(now.getMinutes()).padStart(2, "0");
-    const seconds = String(now.getSeconds()).padStart(2, "0");
-    const formattedShipDate = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
-
-    const payload = {
-      action: "book_shipment",
-      bookingData: {
-        accountCode: DEFAULT_ACCOUNT_CODE,
-        customerName: "Default Account",
-        sector: destination,
-        destination: zoningCountry || destObj?.label || destination,
-        shipper,
-        receiver: {
-          ...receiver,
-          receiverCountry:
-            receiver.receiverCountry || zoningCountry || destObj?.label,
+      const payload = {
+        action: "book_shipment",
+        bookingData: {
+          accountCode: DEFAULT_ACCOUNT_CODE,
+          customerName: "Default Account",
+          sector: destination,
+          destination: zoningCountry || destObj?.label || destination,
+          shipper,
+          receiver: {
+            ...receiver,
+            receiverCountry:
+              receiver.receiverCountry || zoningCountry || destObj?.label,
+          },
+          boxes,
+          contentDescription,
+          invoiceValue: computedInvoiceValue || invoiceValue,
+          invoiceNo,
+          invoiceDate: formattedInvoiceDate,
+          shipDate: formattedShipDate,
+          termsOfSale,
+          reasonForExport,
+          currency: "USD",
+          service: selectedQuote.service,
+          network: selectedQuote.network,
+          chargeableWt: chargeableWeight,
+          basicAmt,
+          cgstAmt,
+          sgstAmt,
+          igstAmt,
+          totalAmt: selectedQuote.totalPrice,
         },
-        boxes,
-        contentDescription,
-        invoiceValue: computedInvoiceValue || invoiceValue,
-        invoiceNo,
-        invoiceDate: formattedInvoiceDate,
-        shipDate: formattedShipDate,
-        termsOfSale,
-        reasonForExport,
-        currency: "USD",
-        service: selectedQuote.service,
-        network: selectedQuote.network,
-        chargeableWt: chargeableWeight,
-        basicAmt,
-        cgstAmt,
-        sgstAmt,
-        igstAmt,
-        totalAmt: selectedQuote.totalPrice,
-      },
-    };
+      };
 
-    const res = await fetch("/api/customers", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
+      const res = await fetch("/api/customers", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
 
-    // Safely parse response — empty body (e.g. Netlify timeout) would otherwise crash
-    let data: any;
-    try {
-      data = await res.json();
-    } catch {
-      throw new Error(
-        "The server took too long to respond. Please wait a moment and try again — the server may be waking up from idle.",
-      );
-    }
+      // Safely parse response — empty body (e.g. Netlify timeout) would otherwise crash
+      let data: any;
+      try {
+        data = await res.json();
+      } catch {
+        throw new Error(
+          "The server took too long to respond. Please wait a moment and try again — the server may be waking up from idle.",
+        );
+      }
 
-    if (!res.ok || !data.success)
-      throw new Error(data.message || "Booking creation failed");
+      if (!res.ok || !data.success)
+        throw new Error(data.message || "Booking creation failed");
 
-    setBookingResult(data.booking);
-    setStep(6);
+      setBookingResult(data.booking);
+      setStep(6);
 
-    // ============================================================
-    // SEND EMAIL NOTIFICATION TO info@manvicourier.com
-    // ============================================================
-    try {
-      // Build email HTML with all shipment details
-      const emailHtml = `
+      // ============================================================
+      // SEND EMAIL NOTIFICATION TO info@manvicourier.com
+      // ============================================================
+      try {
+        // Build email HTML with all shipment details
+        const emailHtml = `
         <html>
           <head>
             <style>
@@ -1494,910 +1496,955 @@ export default function BookShipmentPage() {
         </html>
       `;
 
-      // Send email to info@manvicourier.com
-      await fetch(`${API_URL}/api/send-shipment-email`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          to: "info@manvicourier.com",
-          subject: `📦 New Shipment Booked - AWB: ${data.booking?.awbNo || 'N/A'} - ${shipper.shipperName || 'Customer'}`,
-          html: emailHtml,
-          shipmentData: {
-            awbNo: data.booking?.awbNo,
-            customerName: shipper.shipperName || "Customer",
-            destination: destination,
-            service: selectedQuote.service,
-            totalAmount: selectedQuote.totalPrice,
-            isHold: data.booking?.isHold || false,
-          },
-        }),
-      });
-    } catch (emailErr) {
-      console.error("Failed to send shipment notification email:", emailErr);
-      // Don't fail the booking if email fails
-    }
-    // ============================================================
+        // Send email to info@manvicourier.com
+        await fetch(`${API_URL}/api/send-shipment-email`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            to: "info@manvicourier.com",
+            subject: `📦 New Shipment Booked - AWB: ${data.booking?.awbNo || 'N/A'} - ${shipper.shipperName || 'Customer'}`,
+            html: emailHtml,
+            shipmentData: {
+              awbNo: data.booking?.awbNo,
+              customerName: shipper.shipperName || "Customer",
+              destination: destination,
+              service: selectedQuote.service,
+              totalAmount: selectedQuote.totalPrice,
+              isHold: data.booking?.isHold || false,
+            },
+          }),
+        });
+      } catch (emailErr) {
+        console.error("Failed to send shipment notification email:", emailErr);
+        // Don't fail the booking if email fails
+      }
+      // ============================================================
 
-  } catch (err: any) {
-    setError(err.message || "An error occurred while creating shipment");
-  } finally {
-    setSubmitting(false);
-  }
-};
+    } catch (err: any) {
+      setError(err.message || "An error occurred while creating shipment");
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   const stepsList = [
-    { num: 1, label: "Destination" },
-    { num: 2, label: "Shipper" },
-    { num: 3, label: "Receiver" },
-    { num: 4, label: "Package" },
-    { num: 5, label: "Select Service" },
-    { num: 6, label: "Done" },
+    { num: 1, label: "Destination", icon: "🌍" },
+    { num: 2, label: "Shipper", icon: "📤" },
+    { num: 3, label: "Receiver", icon: "📥" },
+    { num: 4, label: "Package", icon: "📦" },
+    { num: 5, label: "Select Service", icon: "🚚" },
+    { num: 6, label: "Done", icon: "✅" },
   ];
 
+  /* ─── shared input & label classes (matching website theme) ─── */
+  const inp =
+    "w-full bg-[#f8f9fa] text-[#1c1f2e] text-sm font-medium rounded-xl px-4 py-3.5 focus:outline-none border border-gray-200 placeholder:text-gray-400 focus:border-[#f27a1a] focus:ring-2 focus:ring-[#f27a1a]/10 transition-all";
+  const lbl = "block text-xs font-bold text-gray-700 uppercase tracking-wider mb-2";
+
   return (
-    <div className="min-h-screen bg-background text-foreground py-8 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-5xl mx-auto space-y-6">
-        {/* Header Card */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white p-6 rounded-2xl border border-border-color shadow-premium">
-          <div>
-            <Link href="/" className="inline-flex items-center gap-3 mb-2">
-              <img src="/logo.png" alt="Logo" className="h-8 object-contain" />
-              <span className="font-bold text-xl text-foreground tracking-tight">
-                Manvi Courier Portal
-              </span>
+    <div className="min-h-screen bg-[#f8f9fa] text-[#0f172a] font-sans flex flex-col antialiased">
+      {/* ─── Breadcrumb Navigation ─── */}
+      <div className="py-3.5 px-4 sm:px-6 relative z-30">
+        <div className="max-w-425 w-full mx-auto flex items-center justify-between">
+          <div className="flex items-center gap-2 text-sm font-light text-gray-800">
+            <Link href="/" className="hover:text-[#f27a1a] transition-colors">
+              Home
             </Link>
-            <p className="text-xs text-slate-400">
-              Create & Manage International Express Shipments
+            <ChevronRight className="w-4 h-4 text-gray-600 shrink-0" />
+            <span className="text-[#f27a1a] font-semibold underline underline-offset-4 decoration-[#f27a1a]">
+              Book Shipment
+            </span>
+          </div>
+          <Link
+            href="/"
+            className="text-xs font-bold text-gray-600 hover:text-[#f27a1a] transition-colors flex items-center gap-1.5"
+          >
+            ← Back to Home
+          </Link>
+        </div>
+      </div>
+
+      {/* ─── Banner Section (consistent with Track/Services/Quote pages) ─── */}
+      <section className="relative bg-[#0D1527] overflow-hidden py-10 sm:py-14 px-4 sm:px-6">
+        <div className="absolute inset-0 z-0 opacity-15 bg-[url('https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=2000&q=80')] bg-cover bg-center" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0D1527] via-[#0D1527]/95 to-[#162035]/80 z-0" />
+        <div className="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-[#f27a1a]/10 blur-3xl pointer-events-none" />
+
+        <div className="max-w-425 w-full mx-auto flex flex-col md:flex-row justify-between items-start md:items-center relative z-10 gap-6">
+          <div>
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-[#f27a1a] text-xs font-bold uppercase tracking-wider mb-3">
+              <span className="w-2 h-2 rounded-full bg-[#f27a1a] animate-pulse" />
+              Booking Portal
+            </div>
+            <h1 className="text-[28px] sm:text-[36px] md:text-[42px] font-extrabold text-white leading-tight tracking-tight">
+              Book a Shipment
+            </h1>
+            <p className="text-gray-300 text-xs sm:text-sm md:text-base mt-2 leading-relaxed">
+              Calculate live freight tariffs, complete customs documentation, and generate instant airway bills.
             </p>
           </div>
-          <div className="text-right text-xs">
-            <div className="text-slate-400">
-              Account:{" "}
-              <span className="text-brand-orange font-bold">
-                {DEFAULT_ACCOUNT_CODE}
-              </span>
+
+          <div className="flex items-center gap-3">
+            <div className="bg-white/10 border border-white/15 backdrop-blur-md rounded-2xl px-5 py-3 text-right">
+              <div className="text-[11px] text-gray-300 font-semibold uppercase tracking-wider">Account Active</div>
+              <div className="text-white font-mono font-bold text-base flex items-center gap-2 justify-end">
+                <ShieldCheck className="w-4 h-4 text-[#f27a1a]" />
+                #{DEFAULT_ACCOUNT_CODE}
+              </div>
             </div>
-            <div className="text-slate-500">Booking Account: {DEFAULT_ACCOUNT_CODE}</div>
-            <div className="text-slate-500">Balance: ₹0</div>
           </div>
         </div>
+      </section>
 
-        {/* Steps Progress */}
-        <div className="bg-white p-4 rounded-xl border border-border-color overflow-x-auto">
-          <div className="flex items-center justify-between min-w-[600px] px-2">
-            {stepsList.map((item, idx) => (
-              <div
-                key={item.num}
-                className={`flex items-center gap-2 ${
-                  step === item.num
-                    ? "text-brand-orange font-bold"
-                    : step > item.num
-                      ? "text-emerald-500 font-medium"
-                      : "text-slate-500"
-                }`}
-              >
-                <div
-                  className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold ${
-                    step === item.num
-                      ? "bg-brand-orange text-white"
-                      : step > item.num
-                        ? "bg-emerald-500/20 text-emerald-500 border border-emerald-500/40"
-                        : "bg-slate-100 text-slate-500 border border-border-color"
-                  }`}
-                >
-                  {step > item.num ? "✓" : item.num}
-                </div>
-                <span className="text-xs whitespace-nowrap">{item.label}</span>
-                {idx < stepsList.length - 1 && (
-                  <span className="text-slate-300 mx-2">›</span>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
+      {/* ─── Main Content Area ─── */}
+      <main className="flex-grow max-w-425 w-full mx-auto px-4 sm:px-6 py-8 sm:py-20">
 
-        {/* Error Message */}
-        {error && (
-          <div className="p-4 bg-red-50 border border-red-200 rounded-xl flex items-center gap-3 text-red-600 text-sm">
-            <AlertCircle className="w-5 h-5 shrink-0" /> <span>{error}</span>
-          </div>
-        )}
-
-        {/* Step 1: Destination */}
-        {step === 1 && (
-          <div className="bg-white border border-border-color rounded-2xl p-6 sm:p-8 space-y-6">
-            <h2 className="text-xl font-bold text-foreground flex items-center gap-2 border-b border-border-color pb-4">
-              <FileText className="text-brand-orange" /> Step 1: Destination
-            </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              <div>
-                <label className="block text-xs font-semibold text-slate-300 uppercase mb-2">
-                  Destination *
-                </label>
-                <select
-                  value={destination}
-                  onChange={(e) => {
-                    setDestination(e.target.value);
-                    setZipcode("");
-                    setZoningCountry("");
-                  }}
-                  className="w-full bg-slate-50 border border-border-color rounded-xl p-3 text-sm text-foreground focus:border-brand-orange outline-none"
-                >
-                  {DESTINATIONS.map((d) => (
-                    <option key={d.value} value={d.value}>
-                      {d.flag} {d.label}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              {destObj?.requiresSubCountry && (
-                <div>
-                  <label className="block text-xs font-semibold text-slate-300 uppercase mb-2">
-                    Country *
-                  </label>
-                  <select
-                    value={zoningCountry}
-                    onChange={(e) => setZoningCountry(e.target.value)}
-                    className="w-full bg-slate-50 border border-border-color rounded-xl p-3 text-sm text-foreground focus:border-brand-orange outline-none"
-                  >
-                    <option value="">Select Country</option>
-                    {subCountryOptions.map((c) => (
-                      <option key={c} value={c}>
-                        {c}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              )}
-
-              {destObj?.requiresZip && (
-                <div>
-                  <label className="block text-xs font-semibold text-slate-300 uppercase mb-2">
-                    Zipcode / Postcode *
-                  </label>
-                  <input
-                    type="text"
-                    value={zipcode}
-                    onChange={(e) => setZipcode(e.target.value.toUpperCase())}
-                    className="w-full bg-slate-50 border border-border-color rounded-xl p-3 text-sm text-foreground focus:border-brand-orange outline-none"
-                  />
-                </div>
-              )}
-            </div>
-
-            <div className="flex justify-end pt-4">
-              <button
-                onClick={() => {
-                  if (destObj?.requiresZip && !zipcode.trim()) {
-                    setError(`Zipcode is required for ${destObj.label}.`);
-                    return;
-                  }
-                  if (destObj?.requiresSubCountry && !zoningCountry) {
-                    setError(
-                      `Please select a country within ${destObj.label}.`,
-                    );
-                    return;
-                  }
-                  setError("");
-                  setReceiver((prev) => ({
-                    ...prev,
-                    receiverCountry:
-                      zoningCountry || destObj?.label || destination,
-                  }));
-                  setStep(2);
-                }}
-                className="px-6 py-3 bg-brand-orange hover:bg-brand-orange-hover font-bold rounded-xl text-white transition-colors flex items-center gap-2 text-sm"
-              >
-                Next: Shipper Details <ArrowRight className="w-4 h-4" />
-              </button>
-            </div>
-          </div>
-        )}
-
-        {/* Step 2: Shipper */}
-        {step === 2 && (
-          <div className="bg-white border border-border-color rounded-2xl p-6 sm:p-8 space-y-6">
-            <h2 className="text-xl font-bold text-foreground flex items-center gap-2 border-b border-border-color pb-4">
-              <User className="text-brand-orange" /> Step 2: Shipper (Origin)
-              Details
-            </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {(
-                [
-                  ["shipperName", "Full Name *"],
-                  ["shipperPhone", "Mobile / Phone *"],
-                  ["shipperEmail", "Email Address *"],
-                  ["shipperGstin", "GSTIN / PAN"],
-                ] as const
-              ).map(([key, label]) => (
-                <div key={key}>
-                  <label className="block text-xs text-slate-300 mb-1">
-                    {label}
-                  </label>
-                  <input
-                    type="text"
-                    value={(shipper as any)[key]}
-                    onChange={(e) =>
-                      setShipper({ ...shipper, [key]: e.target.value })
-                    }
-                    className="w-full bg-slate-50 border border-border-color rounded-xl p-3 text-sm text-foreground focus:border-brand-orange outline-none"
-                  />
-                </div>
-              ))}
-            </div>
-            <div>
-              <label className="block text-xs text-slate-300 mb-1">
-                Address Line *
-              </label>
-              <input
-                type="text"
-                value={shipper.shipperAddress}
-                onChange={(e) =>
-                  setShipper({ ...shipper, shipperAddress: e.target.value })
-                }
-                className="w-full bg-slate-50 border border-border-color rounded-xl p-3 text-sm text-foreground focus:border-brand-orange outline-none"
-              />
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              {(
-                [
-                  ["shipperCity", "City *"],
-                  ["shipperState", "State *"],
-                  ["shipperPincode", "Pincode *"],
-                ] as const
-              ).map(([key, label]) => (
-                <div key={key}>
-                  <label className="block text-xs text-slate-300 mb-1">
-                    {label}
-                  </label>
-                  <input
-                    type="text"
-                    value={(shipper as any)[key]}
-                    onChange={(e) =>
-                      setShipper({ ...shipper, [key]: e.target.value })
-                    }
-                    className="w-full bg-slate-50 border border-border-color rounded-xl p-3 text-sm text-foreground focus:border-brand-orange outline-none"
-                  />
-                </div>
-              ))}
-            </div>
-            <div className="flex justify-between pt-4">
-              <button
-                onClick={() => setStep(1)}
-                className="px-6 py-3 bg-slate-100 hover:bg-slate-200 font-semibold rounded-xl text-foreground transition-colors flex items-center gap-2 text-sm"
-              >
-                <ArrowLeft className="w-4 h-4" /> Back
-              </button>
-              <button
-                onClick={() => {
-                  if (
-                    !shipper.shipperName ||
-                    !shipper.shipperPhone ||
-                    !shipper.shipperEmail ||
-                    !shipper.shipperAddress ||
-                    !shipper.shipperCity ||
-                    !shipper.shipperState ||
-                    !shipper.shipperPincode
-                  ) {
-                    setError("Please fill all required shipper fields.");
-                    return;
-                  }
-                  setError("");
-                  setStep(3);
-                }}
-                className="px-6 py-3 bg-brand-orange hover:bg-brand-orange-hover font-bold rounded-xl text-white transition-colors flex items-center gap-2 text-sm"
-              >
-                Next: Receiver Details <ArrowRight className="w-4 h-4" />
-              </button>
-            </div>
-          </div>
-        )}
-
-        {/* Step 3: Receiver */}
-        {step === 3 && (
-          <div className="bg-white border border-border-color rounded-2xl p-6 sm:p-8 space-y-6">
-            <h2 className="text-xl font-bold text-foreground flex items-center gap-2 border-b border-border-color pb-4">
-              <User className="text-brand-orange" /> Step 3: Receiver
-              (Destination) Details
-            </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {(
-                [
-                  ["receiverName", "Receiver Name *"],
-                  ["receiverPhone", "Receiver Phone *"],
-                  ["receiverEmail", "Receiver Email"],
-                ] as const
-              ).map(([key, label]) => (
-                <div key={key}>
-                  <label className="block text-xs text-slate-300 mb-1">
-                    {label}
-                  </label>
-                  <input
-                    type="text"
-                    value={(receiver as any)[key]}
-                    onChange={(e) =>
-                      setReceiver({ ...receiver, [key]: e.target.value })
-                    }
-                    className="w-full bg-slate-50 border border-border-color rounded-xl p-3 text-sm text-foreground focus:border-brand-orange outline-none"
-                  />
-                </div>
-              ))}
-              <div>
-                <label className="block text-xs text-slate-300 mb-1">
-                  Country
-                </label>
-                <input
-                  type="text"
-                  readOnly
-                  value={receiver.receiverCountry}
-                  className="w-full bg-slate-50/50 border border-border-color rounded-xl p-3 text-sm text-slate-400 outline-none"
-                />
-              </div>
-            </div>
-            <div>
-              <label className="block text-xs text-slate-300 mb-1">
-                Receiver Address Line *
-              </label>
-              <input
-                type="text"
-                value={receiver.receiverAddress}
-                onChange={(e) =>
-                  setReceiver({ ...receiver, receiverAddress: e.target.value })
-                }
-                className="w-full bg-slate-50 border border-border-color rounded-xl p-3 text-sm text-foreground focus:border-brand-orange outline-none"
-              />
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {(
-                [
-                  ["receiverCity", "City *"],
-                  ["receiverZipcode", "Zipcode / Postal Code *"],
-                ] as const
-              ).map(([key, label]) => (
-                <div key={key}>
-                  <label className="block text-xs text-slate-300 mb-1">
-                    {label}
-                  </label>
-                  <input
-                    type="text"
-                    value={(receiver as any)[key]}
-                    onChange={(e) =>
-                      setReceiver({ ...receiver, [key]: e.target.value })
-                    }
-                    className="w-full bg-slate-50 border border-border-color rounded-xl p-3 text-sm text-foreground focus:border-brand-orange outline-none"
-                  />
-                </div>
-              ))}
-            </div>
-            <div className="flex justify-between pt-4">
-              <button
-                onClick={() => setStep(2)}
-                className="px-6 py-3 bg-slate-100 hover:bg-slate-200 font-semibold rounded-xl text-foreground transition-colors flex items-center gap-2 text-sm"
-              >
-                <ArrowLeft className="w-4 h-4" /> Back
-              </button>
-              <button
-                onClick={() => {
-                  if (
-                    !receiver.receiverName ||
-                    !receiver.receiverPhone ||
-                    !receiver.receiverAddress ||
-                    !receiver.receiverCity ||
-                    !receiver.receiverZipcode
-                  ) {
-                    setError("Please fill all required receiver fields.");
-                    return;
-                  }
-                  setError("");
-                  setStep(4);
-                }}
-                className="px-6 py-3 bg-brand-orange hover:bg-brand-orange-hover font-bold rounded-xl text-white transition-colors flex items-center gap-2 text-sm"
-              >
-                Next: Package Details <ArrowRight className="w-4 h-4" />
-              </button>
-            </div>
-          </div>
-        )}
-
-        {/* Step 4: Package - UPDATED WITH HSN AUTO-SUGGEST */}
-        {step === 4 && (
-          <div className="bg-white border border-border-color rounded-2xl p-6 sm:p-8 space-y-6">
-            <h2 className="text-xl font-bold text-foreground flex items-center gap-2 border-b border-border-color pb-4">
-              <Package className="text-brand-orange" /> Step 4: Shipment &
-              Customs Details
-            </h2>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-xs text-slate-300 mb-1">
-                  Overall Content Description *
-                </label>
-                <input
-                  type="text"
-                  value={contentDescription}
-                  onChange={(e) => setContentDescription(e.target.value)}
-                  className="w-full bg-slate-50 border border-border-color rounded-xl p-3 text-sm text-foreground focus:border-brand-orange outline-none"
-                />
-              </div>
-              <div>
-                <label className="block text-xs text-slate-300 mb-1">
-                  Invoice value
-                </label>
-                <input
-                  type="number"
-                  readOnly
-                  value={computedInvoiceValue || invoiceValue}
-                  className="w-full bg-slate-50/50 border border-border-color rounded-xl p-3 text-sm text-slate-500 outline-none"
-                />
-                <p className="text-[10px] text-slate-400 mt-1">
-                  Auto-calculated from qty × unit rate below
-                </p>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <div>
-                <label className="block text-xs text-slate-300 mb-1">
-                  Invoice No.
-                </label>
-                <input
-                  type="text"
-                  value={invoiceNo}
-                  onChange={(e) => setInvoiceNo(e.target.value)}
-                  className="w-full bg-slate-50 border border-border-color rounded-xl p-3 text-sm font-mono text-foreground focus:border-brand-orange outline-none"
-                />
-              </div>
-              <div>
-                <label className="block text-xs text-slate-300 mb-1">
-                  Invoice Date
-                </label>
-                <input
-                  type="date"
-                  value={invoiceDate}
-                  onChange={(e) => setInvoiceDate(e.target.value)}
-                  className="w-full bg-slate-50 border border-border-color rounded-xl p-3 text-sm text-foreground focus:border-brand-orange outline-none"
-                />
-              </div>
-              <div>
-                <label className="block text-xs text-slate-300 mb-1">
-                  Terms of Sale
-                </label>
-                <select
-                  value={termsOfSale}
-                  onChange={(e) => setTermsOfSale(e.target.value)}
-                  className="w-full bg-slate-50 border border-border-color rounded-xl p-3 text-sm text-foreground focus:border-brand-orange outline-none"
-                >
-                  {TERMS_OF_SALE.map((t) => (
-                    <option key={t} value={t}>
-                      {t}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-xs text-slate-300 mb-1">
-                Reason for Export
-              </label>
-              <select
-                value={reasonForExport}
-                onChange={(e) => setReasonForExport(e.target.value)}
-                className="w-full sm:w-1/3 bg-slate-50 border border-border-color rounded-xl p-3 text-sm text-foreground focus:border-brand-orange outline-none"
-              >
-                {REASONS_FOR_EXPORT.map((r) => (
-                  <option key={r} value={r}>
-                    {r}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div className="space-y-3 pt-2">
-              <div className="flex justify-between items-center">
-                <h3 className="text-sm font-semibold text-brand-orange uppercase tracking-wider">
-                  Boxes, Dimensions & Customs Items
-                </h3>
-                <button
-                  onClick={addBox}
-                  className="inline-flex items-center gap-1 text-xs text-brand-orange hover:underline font-bold"
-                >
-                  <Plus className="w-4 h-4" /> Add Box
-                </button>
-              </div>
-              {boxes.map((box, idx) => (
-                <div
-                  key={box.id}
-                  className="bg-slate-50 p-4 rounded-xl border border-border-color space-y-4"
-                >
-                  <div className="flex justify-between items-center">
-                    <span className="text-xs font-bold text-slate-300">
-                      Box #{idx + 1}
-                    </span>
-                    {boxes.length > 1 && (
-                      <button
-                        onClick={() => removeBox(box.id)}
-                        className="text-rose-400 hover:text-rose-600"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
-                    )}
-                  </div>
-
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                    {(
-                      [
-                        ["weightKg", "Actual Weight (KG)"],
-                        ["lengthCm", "Length (CM)"],
-                        ["widthCm", "Width (CM)"],
-                        ["heightCm", "Height (CM)"],
-                      ] as const
-                    ).map(([field, label]) => (
-                      <div key={field}>
-                        <label className="block text-[11px] text-slate-400">
-                          {label}
-                        </label>
-                        <input
-                          type="number"
-                          value={(box as any)[field]}
-                          onChange={(e) =>
-                            updateBox(
-                              box.id,
-                              field,
-                              parseFloat(e.target.value) || 0,
-                            )
-                          }
-                          className="w-full bg-white border border-border-color rounded-lg p-2 text-xs text-foreground focus:border-brand-orange outline-none"
-                        />
-                      </div>
-                    ))}
-                  </div>
-
-                  <div className="pt-3 border-t border-border-color">
-                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">
-                      Customs Item (for AdditionalDetails.ProductDetails)
-                    </p>
-                    <div className="grid grid-cols-1 sm:grid-cols-4 gap-3">
-                      <div className="sm:col-span-2 relative">
-                        <label className="block text-[11px] text-slate-400">
-                          Item Description *
-                        </label>
-                        <div className="relative">
-                          <input
-                            type="text"
-                            value={box.productDescription}
-                            placeholder="e.g. Cotton T-Shirt"
-                            onChange={(e) =>
-                              handleProductDescriptionChange(
-                                box.id,
-                                e.target.value,
-                              )
-                            }
-                            onFocus={() => {
-                              if (box.productDescription.trim().length > 0) {
-                                const results = searchProduct(
-                                  box.productDescription,
-                                );
-                                setHsnSuggestions((prev) => ({
-                                  ...prev,
-                                  [box.id]: results,
-                                }));
-                                setShowHsnDropdown((prev) => ({
-                                  ...prev,
-                                  [box.id]: results.length > 0,
-                                }));
-                              }
-                            }}
-                            className="w-full bg-white border border-border-color rounded-lg p-2 text-xs text-foreground focus:border-brand-orange outline-none pr-8"
-                          />
-                          <Search className="absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-                          {showHsnDropdown[box.id] &&
-                            hsnSuggestions[box.id]?.length > 0 && (
-                              <button
-                                onClick={() => closeHsnDropdown(box.id)}
-                                className="absolute right-8 top-1/2 -translate-y-1/2 p-0.5 hover:bg-slate-100 rounded-full"
-                              >
-                                <X className="w-3.5 h-3.5 text-slate-400 hover:text-slate-600" />
-                              </button>
-                            )}
-                        </div>
-                        {/* HSN Suggestions Dropdown */}
-                        {showHsnDropdown[box.id] && (
-                          <HsnSuggestions
-                            query={hsnQuery[box.id] || ""}
-                            suggestions={hsnSuggestions[box.id] || []}
-                            onSelect={(name, hsnCode) =>
-                              handleHsnSelect(box.id, name, hsnCode)
-                            }
-                            onClose={() => closeHsnDropdown(box.id)}
-                          />
-                        )}
-                      </div>
-                      <div>
-                        <label className="block text-[11px] text-slate-400">
-                          HSN / HTS Code
-                        </label>
-                        <input
-                          type="text"
-                          value={box.hsnCode}
-                          placeholder={
-                            box.productDescription
-                              ? "Select from dropdown"
-                              : "Auto-detected"
-                          }
-                          onChange={(e) =>
-                            updateBox(box.id, "hsnCode", e.target.value)
-                          }
-                          className="w-full bg-white border border-border-color rounded-lg p-2 text-xs text-foreground focus:border-brand-orange outline-none font-mono"
-                        />
-                      </div>
-                      <div className="grid grid-cols-2 gap-2">
-                        <div>
-                          <label className="block text-[11px] text-slate-400">
-                            Qty
-                          </label>
-                          <input
-                            type="number"
-                            value={box.qty}
-                            onChange={(e) =>
-                              updateBox(
-                                box.id,
-                                "qty",
-                                parseInt(e.target.value) || 1,
-                              )
-                            }
-                            className="w-full bg-white border border-border-color rounded-lg p-2 text-xs text-foreground focus:border-brand-orange outline-none"
-                          />
-                        </div>
-                        <div>
-                          <label className="block text-[11px] text-slate-400">
-                            Unit Rate
-                          </label>
-                          <input
-                            type="number"
-                            value={box.unitRate}
-                            onChange={(e) =>
-                              updateBox(
-                                box.id,
-                                "unitRate",
-                                parseFloat(e.target.value) || 0,
-                              )
-                            }
-                            className="w-full bg-white border border-border-color rounded-lg p-2 text-xs text-foreground focus:border-brand-orange outline-none"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                    {/* Show HSN code hint if product selected */}
-                    {box.productDescription && box.hsnCode && (
-                      <div className="mt-2 text-[10px] text-emerald-600 bg-emerald-50 px-2 py-1 rounded border border-emerald-200 inline-flex items-center gap-1">
-                        <CheckCircle2 className="w-3 h-3" />
-                        Product: {box.productDescription} → HSN: {box.hsnCode}
-                      </div>
-                    )}
-                    {box.productDescription && !box.hsnCode && (
-                      <div className="mt-2 text-[10px] text-amber-600 bg-amber-50 px-2 py-1 rounded border border-amber-200 inline-flex items-center gap-1">
-                        <AlertCircle className="w-3 h-3" />
-                        Select a product from the dropdown to auto-fill HSN code
-                      </div>
-                    )}
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <div className="bg-slate-50 p-4 rounded-xl border border-border-color flex flex-col sm:flex-row justify-between items-center gap-4 text-xs">
-              <div>
-                Actual Wt:{" "}
-                <span className="font-bold text-foreground">
-                  {totalActualWeight.toFixed(2)} KG
-                </span>
-              </div>
-              <div>
-                Volumetric Wt:{" "}
-                <span className="font-bold text-foreground">
-                  {totalVolumetricWeight.toFixed(2)} KG
-                </span>
-              </div>
-              <div>
-                Customs Value:{" "}
-                <span className="font-bold text-foreground">
-                  Rs. {computedInvoiceValue.toFixed(2)}
-                </span>
-              </div>
-              <div className="text-sm font-bold text-brand-orange">
-                Chargeable Wt: {chargeableWeight} KG
-              </div>
-            </div>
-
-            <div className="flex justify-between pt-4">
-              <button
-                onClick={() => setStep(3)}
-                className="px-6 py-3 bg-slate-100 hover:bg-slate-200 font-semibold rounded-xl text-foreground transition-colors flex items-center gap-2 text-sm"
-              >
-                <ArrowLeft className="w-4 h-4" /> Back
-              </button>
-              <button
-                onClick={fetchQuotes}
-                disabled={quoting || totalActualWeight <= 0}
-                className="px-6 py-3 bg-brand-orange hover:bg-brand-orange-hover font-bold rounded-xl text-white transition-colors flex items-center gap-2 text-sm disabled:opacity-50"
-              >
-                {quoting ? (
-                  <>
-                    <Loader2 className="w-4 h-4 animate-spin" /> Fetching
-                    Rates...
-                  </>
-                ) : (
-                  <>
-                    Get Live Rates <ArrowRight className="w-4 h-4" />
-                  </>
-                )}
-              </button>
-            </div>
-          </div>
-        )}
-
-        {/* Step 5: Select Service */}
-        {step === 5 && (
-          <div className="bg-white border border-border-color rounded-2xl p-6 sm:p-8 space-y-6">
-            <h2 className="text-xl font-bold text-foreground flex items-center gap-2 border-b border-border-color pb-4">
-              <Truck className="text-brand-orange" /> Step 5: Select a Service
-            </h2>
-
-            <div className="flex flex-col gap-3">
-              {quotes.map((q) => {
-                const key = `${q.service}__${q.rateType}`;
-                const selected = selectedQuoteKey === key;
+        {/* ─── Step Progress Stepper ─── */}
+        {step <= 5 && (
+          <div className="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 mb-8 border border-gray-200/70 shadow-sm overflow-x-auto">
+            <div className="flex items-center justify-between min-w-[620px] px-2">
+              {stepsList.slice(0, 5).map((item, idx) => {
+                const isDone = step > item.num;
+                const isActive = step === item.num;
                 return (
-                  <div
-                    key={key}
-                    onClick={() => setSelectedQuoteKey(key)}
-                    className={`p-4 rounded-xl border cursor-pointer transition-all ${
-                      selected
-                        ? "bg-brand-orange/10 border-brand-orange"
-                        : "bg-slate-50 border-border-color hover:border-brand-orange/40"
-                    }`}
-                  >
-                    <div className="flex justify-between items-start gap-4">
-                      <div>
-                        <p className="text-sm font-bold text-foreground">
-                          {q.service}
-                        </p>
-                        <p className="text-xs text-slate-400 mt-0.5">
-                          {NETWORK_LABELS[q.network] ?? q.network} · Zone{" "}
-                          {q.zone} · {q.tat}
-                        </p>
+                  <div key={item.num} className="flex items-center flex-1 last:flex-none">
+                    <div className="flex items-center gap-3">
+                      <div
+                        className={`w-9 h-9 rounded-xl flex items-center justify-center text-xs font-bold transition-all duration-300 ${isActive
+                          ? "bg-[#f27a1a] text-white shadow-lg shadow-orange-500/25 ring-4 ring-orange-100 scale-105"
+                          : isDone
+                            ? "bg-emerald-500 text-white shadow-sm shadow-emerald-500/20"
+                            : "bg-gray-100 text-gray-400 border border-gray-200/80"
+                          }`}
+                      >
+                        {isDone ? <CheckCircle2 className="w-4 h-4" /> : item.num}
                       </div>
-                      <p className="text-lg font-extrabold text-brand-orange shrink-0">
-                        ₹{q.totalPrice.toLocaleString()}
-                      </p>
+                      <div>
+                        <div
+                          className={`text-[10px] uppercase tracking-wider font-extrabold transition-colors ${isActive
+                            ? "text-[#f27a1a]"
+                            : isDone
+                              ? "text-emerald-600"
+                              : "text-gray-400"
+                            }`}
+                        >
+                          Step {item.num}
+                        </div>
+                        <div
+                          className={`text-xs whitespace-nowrap font-bold transition-colors ${isActive
+                            ? "text-[#1c1f2e]"
+                            : isDone
+                              ? "text-gray-700"
+                              : "text-gray-400"
+                            }`}
+                        >
+                          {item.label}
+                        </div>
+                      </div>
                     </div>
+                    {idx < 4 && (
+                      <div
+                        className={`h-0.5 flex-1 mx-4 transition-colors duration-500 rounded-full ${isDone ? "bg-emerald-400" : "bg-gray-200"
+                          }`}
+                      />
+                    )}
                   </div>
                 );
               })}
             </div>
+          </div>
+        )}
 
-            {selectedQuote && (
-              <div className="bg-slate-50 p-5 rounded-xl border border-border-color space-y-2">
-                <h3 className="text-xs font-bold text-brand-orange uppercase tracking-wider mb-2">
-                  Freight Charge Breakdown
-                </h3>
-                <div className="flex justify-between text-xs text-slate-500">
-                  <span>Basic Freight</span>
-                  <span className="font-mono text-foreground">
-                    ₹{basicAmt.toLocaleString()}
-                  </span>
+        {/* Error Banner */}
+        {error && (
+          <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-2xl flex items-center gap-3 text-red-600 text-sm font-medium shadow-sm">
+            <div className="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center shrink-0">
+              <AlertCircle className="w-4 h-4" />
+            </div>
+            <span>{error}</span>
+          </div>
+        )}
+
+        {/* ─── STEP 1: Destination ─── */}
+        {step === 1 && (
+          <div className="bg-white rounded-3xl p-6 sm:p-10 shadow-sm border border-gray-200/70">
+            <div className="flex items-center justify-between pb-6 mb-8 border-b border-gray-100">
+              <div className="flex items-center gap-3 sm:gap-4">
+                <div className="w-12 h-12 rounded-2xl bg-orange-50 border border-orange-100 flex items-center justify-center text-[#f27a1a]">
+                  <FileText className="w-6 h-6" />
                 </div>
-                <div className="flex justify-between text-xs text-slate-500">
-                  <span>CGST (9%)</span>
-                  <span className="font-mono text-foreground">
-                    ₹{cgstAmt.toLocaleString()}
-                  </span>
-                </div>
-                <div className="flex justify-between text-xs text-slate-500">
-                  <span>SGST (9%)</span>
-                  <span className="font-mono text-foreground">
-                    ₹{sgstAmt.toLocaleString()}
-                  </span>
-                </div>
-                <div className="flex justify-between text-sm font-bold text-foreground pt-2 border-t border-border-color">
-                  <span>Grand Total</span>
-                  <span className="text-brand-orange font-mono">
-                    ₹{selectedQuote.totalPrice.toLocaleString()}
-                  </span>
+                <div>
+                  <h2 className="text-xl sm:text-2xl font-extrabold text-[#1c1f2e] tracking-tight">
+                    Select Destination
+                  </h2>
+                  <p className="text-xs sm:text-sm text-gray-500 font-medium mt-0.5">
+                    Where is your international parcel being shipped to?
+                  </p>
                 </div>
               </div>
-            )}
+              <span className="hidden sm:inline-flex text-xs font-bold text-gray-500 bg-gray-100 rounded-full px-3.5 py-1.5 border border-gray-200/60">
+                Step 1 of 5
+              </span>
+            </div>
 
-            <div className="flex justify-between pt-4">
-              <button
-                onClick={() => setStep(4)}
-                className="px-6 py-3 bg-slate-100 hover:bg-slate-200 font-semibold rounded-xl text-foreground transition-colors flex items-center gap-2 text-sm"
-              >
-                <ArrowLeft className="w-4 h-4" /> Back
-              </button>
-              <button
-                onClick={onSubmitBooking}
-                disabled={submitting || !selectedQuote}
-                className="px-8 py-3 bg-brand-orange hover:bg-brand-orange-hover font-bold rounded-xl text-white transition-colors flex items-center gap-2 text-sm shadow-premium-hover disabled:opacity-50"
-              >
-                {submitting ? (
-                  <>
-                    <Loader2 className="w-4 h-4 animate-spin" /> Submitting
-                    Shipment...
-                  </>
-                ) : (
-                  <>
-                    Confirm & Book Shipment <CreditCard className="w-4 h-4" />
-                  </>
+            <div className="space-y-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div>
+                  <label className={lbl}>Destination Region *</label>
+                  <select
+                    value={destination}
+                    onChange={(e) => {
+                      setDestination(e.target.value);
+                      setZipcode("");
+                      setZoningCountry("");
+                    }}
+                    className={inp}
+                  >
+                    {DESTINATIONS.map((d) => (
+                      <option key={d.value} value={d.value}>
+                        {d.flag} {d.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {destObj?.requiresSubCountry && (
+                  <div>
+                    <label className={lbl}>Country *</label>
+                    <select
+                      value={zoningCountry}
+                      onChange={(e) => setZoningCountry(e.target.value)}
+                      className={inp}
+                    >
+                      <option value="">Select Country</option>
+                      {subCountryOptions.map((c) => (
+                        <option key={c} value={c}>{c}</option>
+                      ))}
+                    </select>
+                  </div>
                 )}
-              </button>
+
+                {destObj?.requiresZip && (
+                  <div>
+                    <label className={lbl}>Zipcode / Postcode *</label>
+                    <input
+                      type="text"
+                      value={zipcode}
+                      onChange={(e) => setZipcode(e.target.value.toUpperCase())}
+                      placeholder="e.g. SW1A 1AA or 90210"
+                      className={inp}
+                    />
+                  </div>
+                )}
+              </div>
+
+              {/* Destination preview info card */}
+              <div className="flex items-center gap-4 p-5 bg-[#f8f9fa] rounded-2xl border border-gray-200">
+                <span className="text-4xl">{destObj?.flag}</span>
+                <div>
+                  <div className="text-base font-extrabold text-[#1c1f2e]">{destObj?.label}</div>
+                  <div className="text-xs text-gray-500 font-medium">Selected international shipping sector</div>
+                </div>
+              </div>
+
+              <div className="flex justify-end pt-4">
+                <button
+                  onClick={() => {
+                    if (destObj?.requiresZip && !zipcode.trim()) {
+                      setError(`Zipcode is required for ${destObj.label}.`);
+                      return;
+                    }
+                    if (destObj?.requiresSubCountry && !zoningCountry) {
+                      setError(`Please select a country within ${destObj.label}.`);
+                      return;
+                    }
+                    setError("");
+                    setReceiver((prev) => ({
+                      ...prev,
+                      receiverCountry: zoningCountry || destObj?.label || destination,
+                    }));
+                    setStep(2);
+                  }}
+                  className="bg-[#f27a1a] hover:bg-[#db660c] text-white font-bold text-sm py-3.5 px-8 rounded-xl transition-all shadow-md shadow-orange-500/25 hover:shadow-orange-500/35 hover:-translate-y-0.5 active:translate-y-0 flex items-center gap-2 cursor-pointer"
+                >
+                  Next: Shipper Details <ArrowRight className="w-4 h-4" />
+                </button>
+              </div>
             </div>
           </div>
         )}
 
-        {/* Step 6: Done */}
-        {step === 6 && bookingResult && (
-          <div className="bg-white border border-emerald-200 rounded-2xl p-8 text-center space-y-6 shadow-premium">
-            <div className="w-16 h-16 bg-emerald-50 border border-emerald-200 rounded-full flex items-center justify-center mx-auto text-emerald-500">
-              <CheckCircle2 className="w-10 h-10" />
+        {/* ─── STEP 2: Shipper ─── */}
+        {step === 2 && (
+          <div className="bg-white rounded-3xl p-6 sm:p-10 shadow-sm border border-gray-200/70">
+            <div className="flex items-center justify-between pb-6 mb-8 border-b border-gray-100">
+              <div className="flex items-center gap-3 sm:gap-4">
+                <div className="w-12 h-12 rounded-2xl bg-orange-50 border border-orange-100 flex items-center justify-center text-[#f27a1a]">
+                  <User className="w-6 h-6" />
+                </div>
+                <div>
+                  <h2 className="text-xl sm:text-2xl font-extrabold text-[#1c1f2e] tracking-tight">
+                    Shipper / Origin Details
+                  </h2>
+                  <p className="text-xs sm:text-sm text-gray-500 font-medium mt-0.5">
+                    Sender contact & pickup location in India
+                  </p>
+                </div>
+              </div>
+              <span className="hidden sm:inline-flex text-xs font-bold text-gray-500 bg-gray-100 rounded-full px-3.5 py-1.5 border border-gray-200/60">
+                Step 2 of 5
+              </span>
             </div>
-            <div>
-              <h2 className="text-2xl font-bold text-foreground">
-                {bookingResult.isHold
-                  ? "Shipment Created — On Hold"
-                  : "Shipment Created Successfully!"}
-              </h2>
-              <p className="text-slate-400 text-sm mt-1">
-                {bookingResult.isHold
-                  ? "Your account balance was insufficient — this shipment is on hold pending admin review."
-                  : "Your AWB and shipment details have been registered."}
-              </p>
-            </div>
-            <div className="bg-slate-50 p-6 rounded-xl border border-border-color max-w-md mx-auto text-left space-y-3 text-sm font-mono">
-              <div className="flex justify-between border-b border-border-color pb-2">
-                <span className="text-slate-400">AWB Number:</span>
-                <span className="font-bold text-brand-orange">
-                  {bookingResult.awbNo}
-                </span>
+
+            <div className="space-y-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                {(
+                  [
+                    ["shipperName", "Full Name", "text", true, "e.g. Rahul Sharma"],
+                    ["shipperPhone", "Mobile / Phone", "tel", true, "e.g. +91 98765 43210"],
+                    ["shipperEmail", "Email Address", "email", true, "e.g. rahul@example.com"],
+                    ["shipperGstin", "GSTIN / PAN (Optional)", "text", false, "e.g. 07AAAAA0000A1Z5"],
+                  ] as const
+                ).map(([key, label, type, required, placeholder]) => (
+                  <div key={key}>
+                    <label className={lbl}>
+                      {label}{required && " *"}
+                    </label>
+                    <input
+                      type={type}
+                      placeholder={placeholder}
+                      value={(shipper as any)[key]}
+                      onChange={(e) => setShipper({ ...shipper, [key]: e.target.value })}
+                      className={inp}
+                    />
+                  </div>
+                ))}
               </div>
-              <div className="flex justify-between border-b border-border-color pb-2">
-                <span className="text-slate-400">Invoice No:</span>
-                <span className="text-foreground">
-                  {bookingResult.invoiceNo}
-                </span>
+
+              <div>
+                <label className={lbl}>Address Line *</label>
+                <input
+                  type="text"
+                  value={shipper.shipperAddress}
+                  onChange={(e) => setShipper({ ...shipper, shipperAddress: e.target.value })}
+                  placeholder="House / Flat No., Building, Street address, landmark…"
+                  className={inp}
+                />
               </div>
-              <div className="flex justify-between border-b border-border-color pb-2">
-                <span className="text-slate-400">Chargeable Weight:</span>
-                <span className="text-foreground">
-                  {bookingResult.chargeableWt} KG
-                </span>
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                {(
+                  [
+                    ["shipperCity", "City", "e.g. New Delhi"],
+                    ["shipperState", "State", "e.g. Delhi"],
+                    ["shipperPincode", "Pincode", "e.g. 110045"],
+                  ] as const
+                ).map(([key, label, ph]) => (
+                  <div key={key}>
+                    <label className={lbl}>{label} *</label>
+                    <input
+                      type="text"
+                      placeholder={ph}
+                      value={(shipper as any)[key]}
+                      onChange={(e) => setShipper({ ...shipper, [key]: e.target.value })}
+                      className={inp}
+                    />
+                  </div>
+                ))}
               </div>
-              <div className="flex justify-between">
-                <span className="text-slate-400">Grand Total:</span>
-                <span className="font-bold text-emerald-500">
-                  ₹ {Number(bookingResult.totalAmt).toLocaleString()}
-                </span>
+
+              <div className="flex justify-between items-center pt-4 border-t border-gray-100">
+                <button
+                  onClick={() => setStep(1)}
+                  className="bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold text-sm py-3.5 px-6 rounded-xl transition-all flex items-center gap-2 cursor-pointer"
+                >
+                  <ArrowLeft className="w-4 h-4" /> Back
+                </button>
+                <button
+                  onClick={() => {
+                    if (
+                      !shipper.shipperName || !shipper.shipperPhone ||
+                      !shipper.shipperEmail || !shipper.shipperAddress ||
+                      !shipper.shipperCity || !shipper.shipperState ||
+                      !shipper.shipperPincode
+                    ) {
+                      setError("Please fill all required shipper fields.");
+                      return;
+                    }
+                    setError("");
+                    setStep(3);
+                  }}
+                  className="bg-[#f27a1a] hover:bg-[#db660c] text-white font-bold text-sm py-3.5 px-8 rounded-xl transition-all shadow-md shadow-orange-500/25 hover:shadow-orange-500/35 hover:-translate-y-0.5 active:translate-y-0 flex items-center gap-2 cursor-pointer"
+                >
+                  Next: Receiver Details <ArrowRight className="w-4 h-4" />
+                </button>
               </div>
-            </div>
-            <div className="flex flex-col sm:flex-row justify-center gap-4 pt-4">
-              <Link
-                href={`/track?awb=${bookingResult.awbNo}`}
-                className="px-6 py-3 bg-brand-orange hover:bg-brand-orange-hover font-bold rounded-xl text-white transition-colors text-sm"
-              >
-                Track AWB Status
-              </Link>
-              <Link
-                href="/"
-                className="px-6 py-3 bg-slate-100 hover:bg-slate-200 font-semibold rounded-xl text-foreground transition-colors text-sm"
-              >
-                Return to Website
-              </Link>
             </div>
           </div>
         )}
-      </div>
+
+        {/* ─── STEP 3: Receiver ─── */}
+        {step === 3 && (
+          <div className="bg-white rounded-3xl p-6 sm:p-10 shadow-sm border border-gray-200/70">
+            <div className="flex items-center justify-between pb-6 mb-8 border-b border-gray-100">
+              <div className="flex items-center gap-3 sm:gap-4">
+                <div className="w-12 h-12 rounded-2xl bg-orange-50 border border-orange-100 flex items-center justify-center text-[#f27a1a]">
+                  <User className="w-6 h-6" />
+                </div>
+                <div>
+                  <h2 className="text-xl sm:text-2xl font-extrabold text-[#1c1f2e] tracking-tight">
+                    Receiver / Destination Details
+                  </h2>
+                  <p className="text-xs sm:text-sm text-gray-500 font-medium mt-0.5">
+                    Consignee contact & delivery address abroad
+                  </p>
+                </div>
+              </div>
+              <span className="hidden sm:inline-flex text-xs font-bold text-gray-500 bg-gray-100 rounded-full px-3.5 py-1.5 border border-gray-200/60">
+                Step 3 of 5
+              </span>
+            </div>
+
+            <div className="space-y-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                {(
+                  [
+                    ["receiverName", "Receiver Name", true, "e.g. John Doe"],
+                    ["receiverPhone", "Receiver Phone", true, "e.g. +1 555 123 4567"],
+                    ["receiverEmail", "Receiver Email (Optional)", false, "e.g. john@example.com"],
+                  ] as const
+                ).map(([key, label, required, ph]) => (
+                  <div key={key}>
+                    <label className={lbl}>{label}{required && " *"}</label>
+                    <input
+                      type="text"
+                      placeholder={ph}
+                      value={(receiver as any)[key]}
+                      onChange={(e) => setReceiver({ ...receiver, [key]: e.target.value })}
+                      className={inp}
+                    />
+                  </div>
+                ))}
+                <div>
+                  <label className={lbl}>Country</label>
+                  <input
+                    type="text"
+                    readOnly
+                    value={receiver.receiverCountry}
+                    className="w-full bg-gray-100 text-gray-500 text-sm font-medium rounded-xl px-4 py-3.5 border border-gray-200 cursor-not-allowed"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className={lbl}>Address Line *</label>
+                <input
+                  type="text"
+                  value={receiver.receiverAddress}
+                  onChange={(e) => setReceiver({ ...receiver, receiverAddress: e.target.value })}
+                  placeholder="Street address, building, apartment, suite…"
+                  className={inp}
+                />
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                {(
+                  [
+                    ["receiverCity", "City", "e.g. Sydney / London"],
+                    ["receiverZipcode", "Zipcode / Postal Code", "e.g. 2000 / W1A 1AA"],
+                  ] as const
+                ).map(([key, label, ph]) => (
+                  <div key={key}>
+                    <label className={lbl}>{label} *</label>
+                    <input
+                      type="text"
+                      placeholder={ph}
+                      value={(receiver as any)[key]}
+                      onChange={(e) => setReceiver({ ...receiver, [key]: e.target.value })}
+                      className={inp}
+                    />
+                  </div>
+                ))}
+              </div>
+
+              <div className="flex justify-between items-center pt-4 border-t border-gray-100">
+                <button
+                  onClick={() => setStep(2)}
+                  className="bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold text-sm py-3.5 px-6 rounded-xl transition-all flex items-center gap-2 cursor-pointer"
+                >
+                  <ArrowLeft className="w-4 h-4" /> Back
+                </button>
+                <button
+                  onClick={() => {
+                    if (
+                      !receiver.receiverName || !receiver.receiverPhone ||
+                      !receiver.receiverAddress || !receiver.receiverCity ||
+                      !receiver.receiverZipcode
+                    ) {
+                      setError("Please fill all required receiver fields.");
+                      return;
+                    }
+                    setError("");
+                    setStep(4);
+                  }}
+                  className="bg-[#f27a1a] hover:bg-[#db660c] text-white font-bold text-sm py-3.5 px-8 rounded-xl transition-all shadow-md shadow-orange-500/25 hover:shadow-orange-500/35 hover:-translate-y-0.5 active:translate-y-0 flex items-center gap-2 cursor-pointer"
+                >
+                  Next: Package Details <ArrowRight className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* ─── STEP 4: Package & Customs ─── */}
+        {step === 4 && (
+          <div className="bg-white rounded-3xl p-6 sm:p-10 shadow-sm border border-gray-200/70">
+            <div className="flex items-center justify-between pb-6 mb-8 border-b border-gray-100">
+              <div className="flex items-center gap-3 sm:gap-4">
+                <div className="w-12 h-12 rounded-2xl bg-orange-50 border border-orange-100 flex items-center justify-center text-[#f27a1a]">
+                  <Package className="w-6 h-6" />
+                </div>
+                <div>
+                  <h2 className="text-xl sm:text-2xl font-extrabold text-[#1c1f2e] tracking-tight">
+                    Shipment & Customs Details
+                  </h2>
+                  <p className="text-xs sm:text-sm text-gray-500 font-medium mt-0.5">
+                    Package dimensions, declared goods, and commercial invoice data
+                  </p>
+                </div>
+              </div>
+              <span className="hidden sm:inline-flex text-xs font-bold text-gray-500 bg-gray-100 rounded-full px-3.5 py-1.5 border border-gray-200/60">
+                Step 4 of 5
+              </span>
+            </div>
+
+            <div className="space-y-8">
+              {/* Invoice / customs fields */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div>
+                  <label className={lbl}>Overall Content Description *</label>
+                  <input
+                    type="text"
+                    value={contentDescription}
+                    onChange={(e) => setContentDescription(e.target.value)}
+                    placeholder="e.g. Personal Effects, Garments & Gift Items"
+                    className={inp}
+                  />
+                </div>
+                <div>
+                  <label className={lbl}>Invoice Value (USD)</label>
+                  <input
+                    type="number"
+                    readOnly
+                    value={computedInvoiceValue || invoiceValue}
+                    className="w-full bg-gray-100 text-gray-500 text-sm font-medium rounded-xl px-4 py-3.5 border border-gray-200 cursor-not-allowed font-mono"
+                  />
+                  <p className="text-[11px] text-gray-400 font-medium mt-1">Calculated automatically from items sum (Qty × Unit Rate)</p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                <div>
+                  <label className={lbl}>Invoice Number</label>
+                  <input type="text" value={invoiceNo} onChange={(e) => setInvoiceNo(e.target.value)} className={`${inp} font-mono`} />
+                </div>
+                <div>
+                  <label className={lbl}>Invoice Date</label>
+                  <input type="date" value={invoiceDate} onChange={(e) => setInvoiceDate(e.target.value)} className={inp} />
+                </div>
+                <div>
+                  <label className={lbl}>Terms of Sale</label>
+                  <select value={termsOfSale} onChange={(e) => setTermsOfSale(e.target.value)} className={inp}>
+                    {TERMS_OF_SALE.map((t) => <option key={t} value={t}>{t}</option>)}
+                  </select>
+                </div>
+              </div>
+
+              <div className="sm:w-1/3">
+                <label className={lbl}>Reason for Export</label>
+                <select value={reasonForExport} onChange={(e) => setReasonForExport(e.target.value)} className={inp}>
+                  {REASONS_FOR_EXPORT.map((r) => <option key={r} value={r}>{r}</option>)}
+                </select>
+              </div>
+
+              {/* Boxes List */}
+              <div className="space-y-4 pt-4 border-t border-gray-100">
+                <div className="flex justify-between items-center">
+                  <h3 className="text-base font-extrabold text-[#1c1f2e] flex items-center gap-2">
+                    <span className="w-1.5 h-5 bg-[#f27a1a] rounded-full inline-block" />
+                    Boxes & Customs Declarations
+                  </h3>
+                  <button
+                    onClick={addBox}
+                    className="inline-flex items-center gap-1.5 text-xs font-bold text-[#f27a1a] bg-orange-50 hover:bg-orange-100 border border-orange-200 rounded-xl px-4 py-2 transition-colors cursor-pointer"
+                  >
+                    <Plus className="w-4 h-4" /> Add Box
+                  </button>
+                </div>
+
+                {boxes.map((box, idx) => (
+                  <div
+                    key={box.id}
+                    className="bg-[#f8f9fa] p-5 sm:p-6 rounded-2xl border border-gray-200 space-y-5"
+                  >
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm font-extrabold text-[#1c1f2e] flex items-center gap-2">
+                        <Package className="w-4 h-4 text-[#f27a1a]" />
+                        Box #{idx + 1}
+                      </span>
+                      {boxes.length > 1 && (
+                        <button
+                          onClick={() => removeBox(box.id)}
+                          className="text-rose-500 hover:text-rose-700 hover:bg-rose-50 p-2 rounded-xl transition-colors cursor-pointer"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      )}
+                    </div>
+
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                      {(
+                        [
+                          ["weightKg", "Weight (KG)"],
+                          ["lengthCm", "Length (CM)"],
+                          ["widthCm", "Width (CM)"],
+                          ["heightCm", "Height (CM)"],
+                        ] as const
+                      ).map(([field, label]) => (
+                        <div key={field}>
+                          <label className="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-1.5">{label}</label>
+                          <input
+                            type="number"
+                            value={(box as any)[field]}
+                            onChange={(e) => updateBox(box.id, field, parseFloat(e.target.value) || 0)}
+                            className="w-full bg-white border border-gray-200 rounded-xl px-3.5 py-2.5 text-sm font-medium text-[#1c1f2e] focus:border-[#f27a1a] focus:ring-2 focus:ring-[#f27a1a]/10 outline-none transition-all"
+                          />
+                        </div>
+                      ))}
+                    </div>
+
+                    <div className="pt-4 border-t border-gray-200">
+                      <p className="text-[11px] font-extrabold text-[#f27a1a] uppercase tracking-wider mb-3">Customs Item Declaration</p>
+                      <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
+                        <div className="sm:col-span-2 relative">
+                          <label className="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-1.5">Item Description *</label>
+                          <div className="relative">
+                            <input
+                              type="text"
+                              value={box.productDescription}
+                              placeholder="e.g. Cotton T-Shirt, Documents..."
+                              onChange={(e) => handleProductDescriptionChange(box.id, e.target.value)}
+                              onFocus={() => {
+                                if (box.productDescription.trim().length > 0) {
+                                  const results = searchProduct(box.productDescription);
+                                  setHsnSuggestions((prev) => ({ ...prev, [box.id]: results }));
+                                  setShowHsnDropdown((prev) => ({ ...prev, [box.id]: results.length > 0 }));
+                                }
+                              }}
+                              className="w-full bg-white border border-gray-200 rounded-xl px-3.5 py-2.5 text-sm font-medium text-[#1c1f2e] focus:border-[#f27a1a] focus:ring-2 focus:ring-[#f27a1a]/10 outline-none transition-all pr-8"
+                            />
+                            <Search className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                            {showHsnDropdown[box.id] && hsnSuggestions[box.id]?.length > 0 && (
+                              <button
+                                onClick={() => closeHsnDropdown(box.id)}
+                                className="absolute right-8 top-1/2 -translate-y-1/2 p-0.5 hover:bg-gray-100 rounded-full"
+                              >
+                                <X className="w-3.5 h-3.5 text-gray-400" />
+                              </button>
+                            )}
+                          </div>
+                          {showHsnDropdown[box.id] && (
+                            <HsnSuggestions
+                              query={hsnQuery[box.id] || ""}
+                              suggestions={hsnSuggestions[box.id] || []}
+                              onSelect={(name, hsnCode) => handleHsnSelect(box.id, name, hsnCode)}
+                              onClose={() => closeHsnDropdown(box.id)}
+                            />
+                          )}
+                        </div>
+                        <div>
+                          <label className="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-1.5">HSN / HTS Code</label>
+                          <input
+                            type="text"
+                            value={box.hsnCode}
+                            placeholder={box.productDescription ? "Select from list" : "Auto-detected"}
+                            onChange={(e) => updateBox(box.id, "hsnCode", e.target.value)}
+                            className="w-full bg-white border border-gray-200 rounded-xl px-3.5 py-2.5 text-sm font-mono text-[#1c1f2e] focus:border-[#f27a1a] focus:ring-2 focus:ring-[#f27a1a]/10 outline-none transition-all"
+                          />
+                        </div>
+                        <div className="grid grid-cols-2 gap-2">
+                          <div>
+                            <label className="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-1.5">Qty</label>
+                            <input
+                              type="number"
+                              value={box.qty}
+                              onChange={(e) => updateBox(box.id, "qty", parseInt(e.target.value) || 1)}
+                              className="w-full bg-white border border-gray-200 rounded-xl px-3 py-2.5 text-sm font-medium text-[#1c1f2e] focus:border-[#f27a1a] outline-none transition-all"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-1.5">Rate ($)</label>
+                            <input
+                              type="number"
+                              value={box.unitRate}
+                              onChange={(e) => updateBox(box.id, "unitRate", parseFloat(e.target.value) || 0)}
+                              className="w-full bg-white border border-gray-200 rounded-xl px-3 py-2.5 text-sm font-medium text-[#1c1f2e] focus:border-[#f27a1a] outline-none transition-all"
+                            />
+                          </div>
+                        </div>
+                      </div>
+
+                      {box.productDescription && box.hsnCode && (
+                        <div className="mt-3 text-xs text-emerald-700 bg-emerald-50 px-3.5 py-2 rounded-xl border border-emerald-200 inline-flex items-center gap-2 font-medium">
+                          <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                          <span>{box.productDescription} — HSN <strong>{box.hsnCode}</strong></span>
+                        </div>
+                      )}
+                      {box.productDescription && !box.hsnCode && (
+                        <div className="mt-3 text-xs text-amber-700 bg-amber-50 px-3.5 py-2 rounded-xl border border-amber-200 inline-flex items-center gap-2 font-medium">
+                          <AlertCircle className="w-4 h-4 text-amber-600" />
+                          Select from the search dropdown to auto-fill verified HSN code
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Weight summary card */}
+              <div className="bg-gradient-to-r from-[#0d1527] to-[#1c294a] rounded-2xl p-5 sm:p-6 grid grid-cols-2 md:grid-cols-4 gap-4 text-center shadow-md">
+                <div className="p-2">
+                  <div className="text-gray-400 text-[11px] font-bold uppercase tracking-wider">Actual Weight</div>
+                  <div className="text-white font-extrabold text-lg sm:text-xl mt-1">{totalActualWeight.toFixed(2)} KG</div>
+                </div>
+                <div className="p-2 border-l border-white/10">
+                  <div className="text-gray-400 text-[11px] font-bold uppercase tracking-wider">Volumetric Wt</div>
+                  <div className="text-white font-extrabold text-lg sm:text-xl mt-1">{totalVolumetricWeight.toFixed(2)} KG</div>
+                </div>
+                <div className="p-2 border-l border-white/10">
+                  <div className="text-gray-400 text-[11px] font-bold uppercase tracking-wider">Customs Value</div>
+                  <div className="text-white font-extrabold text-lg sm:text-xl mt-1">₹{computedInvoiceValue.toFixed(2)}</div>
+                </div>
+                <div className="p-2 border-l border-white/10">
+                  <div className="text-orange-300 text-[11px] font-bold uppercase tracking-wider">Chargeable Wt</div>
+                  <div className="text-[#f27a1a] font-extrabold text-xl sm:text-2xl mt-0.5">{chargeableWeight} KG</div>
+                </div>
+              </div>
+
+              <div className="flex justify-between items-center pt-4 border-t border-gray-100">
+                <button
+                  onClick={() => setStep(3)}
+                  className="bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold text-sm py-3.5 px-6 rounded-xl transition-all flex items-center gap-2 cursor-pointer"
+                >
+                  <ArrowLeft className="w-4 h-4" /> Back
+                </button>
+                <button
+                  onClick={fetchQuotes}
+                  disabled={quoting || totalActualWeight <= 0}
+                  className="bg-[#f27a1a] hover:bg-[#db660c] text-white font-bold text-sm py-3.5 px-8 rounded-xl transition-all shadow-md shadow-orange-500/25 hover:shadow-orange-500/35 hover:-translate-y-0.5 active:translate-y-0 flex items-center gap-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0"
+                >
+                  {quoting ? (
+                    <><Loader2 className="w-4 h-4 animate-spin" /> Fetching Live Rates…</>
+                  ) : (
+                    <>Get Live Tariffs <ArrowRight className="w-4 h-4" /></>
+                  )}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* ─── STEP 5: Select Service ─── */}
+        {step === 5 && (
+          <div className="bg-white rounded-3xl p-6 sm:p-10 shadow-sm border border-gray-200/70">
+            <div className="flex items-center justify-between pb-6 mb-8 border-b border-gray-100">
+              <div className="flex items-center gap-3 sm:gap-4">
+                <div className="w-12 h-12 rounded-2xl bg-orange-50 border border-orange-100 flex items-center justify-center text-[#f27a1a]">
+                  <Truck className="w-6 h-6" />
+                </div>
+                <div>
+                  <h2 className="text-xl sm:text-2xl font-extrabold text-[#1c1f2e] tracking-tight">
+                    Select Shipping Service
+                  </h2>
+                  <p className="text-xs sm:text-sm text-gray-500 font-medium mt-0.5">
+                    Choose the best carrier rate and transit time for your shipment
+                  </p>
+                </div>
+              </div>
+              <span className="hidden sm:inline-flex text-xs font-bold text-gray-500 bg-gray-100 rounded-full px-3.5 py-1.5 border border-gray-200/60">
+                Step 5 of 5
+              </span>
+            </div>
+
+            <div className="space-y-6">
+              <div className="flex flex-col gap-4">
+                {quotes.map((q) => {
+                  const key = `${q.service}__${q.rateType}`;
+                  const selected = selectedQuoteKey === key;
+                  return (
+                    <div
+                      key={key}
+                      onClick={() => setSelectedQuoteKey(key)}
+                      className={`p-5 sm:p-6 rounded-2xl border-2 cursor-pointer transition-all duration-200 ${selected
+                        ? "border-[#f27a1a] bg-orange-50/60 shadow-md shadow-orange-500/10"
+                        : "border-gray-200 bg-[#f8f9fa] hover:border-orange-300 hover:bg-white"
+                        }`}
+                    >
+                      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                        <div className="flex items-center gap-4">
+                          <div className={`w-5 h-5 rounded-full border-2 transition-all flex items-center justify-center ${selected ? "border-[#f27a1a] bg-[#f27a1a]" : "border-gray-300 bg-white"
+                            }`}>
+                            {selected && <div className="w-2 h-2 rounded-full bg-white" />}
+                          </div>
+                          <div>
+                            <div className="flex items-center gap-2 flex-wrap">
+                              <span className="text-sm font-extrabold text-[#1c1f2e]">{q.service}</span>
+                              <span className="text-[11px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-700">
+                                {NETWORK_LABELS[q.network] ?? q.network}
+                              </span>
+                              {q.zone && (
+                                <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-gray-200 text-gray-700 font-mono">
+                                  Zone {q.zone}
+                                </span>
+                              )}
+                            </div>
+                            <p className="text-xs text-gray-500 font-medium mt-1">
+                              Estimated Delivery: <strong className="text-gray-700">{q.tat}</strong>
+                            </p>
+                          </div>
+                        </div>
+                        <div className="text-left sm:text-right shrink-0">
+                          <div className="text-2xl font-extrabold text-[#f27a1a]">₹{q.totalPrice.toLocaleString()}</div>
+                          <div className="text-[10px] text-gray-400 uppercase font-bold tracking-wider mt-0.5">{q.rateType} · Tax Included</div>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+
+              {selectedQuote && (
+                <div className="bg-gradient-to-r from-[#0d1527] to-[#1c294a] rounded-2xl p-6 space-y-3 shadow-md">
+                  <h3 className="text-xs font-bold text-orange-300 uppercase tracking-widest mb-2">Freight Cost Breakdown</h3>
+                  <div className="flex justify-between text-sm text-gray-300">
+                    <span>Basic Freight Tariff</span>
+                    <span className="font-mono text-white font-semibold">₹{basicAmt.toLocaleString()}</span>
+                  </div>
+                  <div className="flex justify-between text-sm text-gray-300">
+                    <span>CGST (9%)</span>
+                    <span className="font-mono text-white font-semibold">₹{cgstAmt.toLocaleString()}</span>
+                  </div>
+                  <div className="flex justify-between text-sm text-gray-300">
+                    <span>SGST (9%)</span>
+                    <span className="font-mono text-white font-semibold">₹{sgstAmt.toLocaleString()}</span>
+                  </div>
+                  <div className="flex justify-between text-base sm:text-lg font-extrabold pt-4 border-t border-white/15">
+                    <span className="text-white">Total Amount</span>
+                    <span className="text-[#f27a1a] font-mono">₹{selectedQuote.totalPrice.toLocaleString()}</span>
+                  </div>
+                </div>
+              )}
+
+              <div className="flex justify-between items-center pt-4 border-t border-gray-100">
+                <button
+                  onClick={() => setStep(4)}
+                  className="bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold text-sm py-3.5 px-6 rounded-xl transition-all flex items-center gap-2 cursor-pointer"
+                >
+                  <ArrowLeft className="w-4 h-4" /> Back
+                </button>
+                <button
+                  onClick={onSubmitBooking}
+                  disabled={submitting || !selectedQuote}
+                  className="bg-[#f27a1a] hover:bg-[#db660c] text-white font-bold text-sm py-3.5 px-8 rounded-xl transition-all shadow-md shadow-orange-500/25 hover:shadow-orange-500/35 hover:-translate-y-0.5 active:translate-y-0 flex items-center gap-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0"
+                >
+                  {submitting ? (
+                    <><Loader2 className="w-4 h-4 animate-spin" /> Confirming Booking…</>
+                  ) : (
+                    <>Confirm & Book Shipment <CreditCard className="w-4 h-4" /></>
+                  )}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* ─── STEP 6: Booking Confirmation ─── */}
+        {step === 6 && bookingResult && (
+          <div className="bg-white rounded-3xl shadow-sm border border-gray-200/70 overflow-hidden max-w-3xl mx-auto">
+            {/* Header banner */}
+            <div
+              style={{
+                background: bookingResult.isHold
+                  ? "linear-gradient(135deg, #78350f 0%, #92400e 100%)"
+                  : "linear-gradient(135deg, #0d1527 0%, #1a2642 100%)",
+              }}
+              className="px-6 py-10 sm:py-12 text-center relative overflow-hidden"
+            >
+              <div className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 bg-emerald-500/20 border border-emerald-500/40">
+                <CheckCircle2 className={`w-10 h-10 ${bookingResult.isHold ? "text-amber-400" : "text-emerald-400"}`} />
+              </div>
+              <h2 className="text-2xl sm:text-3xl font-extrabold text-white">
+                {bookingResult.isHold ? "Shipment On Hold" : "Shipment Booked Successfully!"}
+              </h2>
+              <p className="text-gray-300 text-xs sm:text-sm mt-2 max-w-md mx-auto leading-relaxed">
+                {bookingResult.isHold
+                  ? "Insufficient account balance — your shipment is pending review."
+                  : "Your Airway Bill has been generated and courier pickup is being scheduled."}
+              </p>
+
+              <div className="mt-6 inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-6 py-2.5 backdrop-blur-sm">
+                <Package className="w-4 h-4 text-[#f27a1a]" />
+                <span className="text-white/80 text-xs font-semibold uppercase tracking-wider">AWB Number:</span>
+                <span className="text-[#f27a1a] font-extrabold text-sm sm:text-base font-mono">{bookingResult.awbNo}</span>
+              </div>
+            </div>
+
+            {/* Summary Details */}
+            <div className="p-6 sm:p-10 space-y-8">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                {[
+                  { label: "AWB Number", value: bookingResult.awbNo, highlight: true },
+                  { label: "Invoice Number", value: bookingResult.invoiceNo, highlight: false },
+                  { label: "Chargeable Wt", value: `${bookingResult.chargeableWt} KG`, highlight: false },
+                  { label: "Total Amount", value: `₹${Number(bookingResult.totalAmt).toLocaleString()}`, highlight: true },
+                ].map(({ label, value, highlight }) => (
+                  <div key={label} className="bg-[#f8f9fa] rounded-2xl p-4 border border-gray-200 text-center">
+                    <div className="text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1">{label}</div>
+                    <div className={`font-bold text-sm font-mono ${highlight ? "text-[#f27a1a]" : "text-[#1c1f2e]"}`}>
+                      {value}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="flex flex-col sm:flex-row justify-center gap-4 pt-2">
+                <Link
+                  href={`/track?awb=${bookingResult.awbNo}`}
+                  className="bg-[#f27a1a] hover:bg-[#db660c] text-white font-bold text-sm py-3.5 px-8 rounded-xl transition-all shadow-md shadow-orange-500/25 hover:shadow-orange-500/35 hover:-translate-y-0.5 active:translate-y-0 text-center"
+                >
+                  Track AWB Status
+                </Link>
+                <Link
+                  href="/book-shipment"
+                  className="bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold text-sm py-3.5 px-6 rounded-xl transition-all text-center"
+                >
+                  Book Another Shipment
+                </Link>
+                <Link
+                  href="/"
+                  className="border border-gray-300 hover:bg-gray-50 text-gray-700 font-bold text-sm py-3.5 px-6 rounded-xl transition-all text-center"
+                >
+                  Return to Home
+                </Link>
+              </div>
+            </div>
+          </div>
+        )}
+      </main>
+
+      {/* ─── Site Footer ─── */}
+      <Footer />
     </div>
   );
 }
+
