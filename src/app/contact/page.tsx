@@ -525,7 +525,7 @@ export default function ContactPage() {
                 <div className="text-[14px] font-semibold text-gray-500 leading-relaxed">
                   {t.address_label}{" "}
                   <span className="text-[#f27a1a] font-bold">
-                    C-699, Palam Extension, Sector 7, Dwarka, New Delhi, 110077
+                    C1034, A 2ND FLOOR, HARIJAN BASTI, PALAM EXTN, PART-1 RAMPHAL CHOWK, NEW DELHI, INDIA, 110045
                   </span>
                 </div>
               </div>

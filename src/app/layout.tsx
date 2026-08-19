@@ -7,17 +7,23 @@ import Script from "next/script";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
+  display: "swap",
+  preload: true,
 });
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+  display: "swap",
+  preload: true,
 });
 
 const leagueSpartan = League_Spartan({
   variable: "--font-league-spartan",
   subsets: ["latin"],
   weight: ["700"],
+  display: "swap",
+  preload: true,
 });
 
 export const metadata: Metadata = {
@@ -35,8 +41,6 @@ export const metadata: Metadata = {
     images: [
       {
         url: "/opengraph2.png",
-        // width: 1200,
-        // height: 630,
         alt: "Manvi International Courier",
         type: "image/png",
       },
@@ -53,6 +57,9 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const gtmId = process.env.NEXT_PUBLIC_GTM_ID || "GTM-T4NM3C9K";
+  const gaId = process.env.NEXT_PUBLIC_GA_ID || "G-5DBZNCNXBY";
+
   return (
     <html
       lang="en"
@@ -60,29 +67,85 @@ export default function RootLayout({
       data-scroll-behavior="smooth"
       suppressHydrationWarning
     >
+      <head>
+        <link rel="preconnect" href="https://www.googletagmanager.com" />
+        <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "LocalBusiness",
+              "name": "Manvi International Courier",
+              "image": "https://www.manvicourier.com/logo.png",
+              "@id": "https://www.manvicourier.com",
+              "url": "https://www.manvicourier.com",
+              "telephone": "+917070506070",
+              "priceRange": "$$",
+              "address": {
+                "@type": "PostalAddress",
+                "streetAddress": "C1034, A 2nd Floor, Harijan Basti, Palam Extn, Part-1 Ramphal Chowk",
+                "addressLocality": "New Delhi",
+                "addressRegion": "Delhi",
+                "postalCode": "110045",
+                "addressCountry": "IN"
+              },
+              "geo": {
+                "@type": "GeoCoordinates",
+                "latitude": 28.5355,
+                "longitude": 77.391
+              },
+              "openingHoursSpecification": {
+                "@type": "OpeningHoursSpecification",
+                "dayOfWeek": [
+                  "Monday",
+                  "Tuesday",
+                  "Wednesday",
+                  "Thursday",
+                  "Friday",
+                  "Saturday"
+                ],
+                "opens": "10:00",
+                "closes": "21:00"
+              },
+              "sameAs": [
+                "https://www.facebook.com/p/Manvi-International-Courier-61575480958807/",
+                "https://www.instagram.com/manviinternational/"
+              ]
+            })
+          }}
+        />
+      </head>
       <body className="min-h-full flex flex-col" suppressHydrationWarning>
+        <noscript>
+          <iframe
+            src={`https://www.googletagmanager.com/ns.html?id=${gtmId}`}
+            height="0"
+            width="0"
+            style={{ display: "none", visibility: "hidden" }}
+          />
+        </noscript>
+        <Script id="google-tag-manager" strategy="lazyOnload">
+          {`
+            (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start': new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','${gtmId}');
+          `}
+        </Script>
         <LanguageProvider>{children}</LanguageProvider>
-        {(() => {
-          const gaId = process.env.NEXT_PUBLIC_GA_ID || "G-5DBZNCNXBY";
-          return (
-            <>
-              <Script
-                src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}
-                strategy="afterInteractive"
-              />
-              <Script id="google-analytics" strategy="afterInteractive">
-                {`
-                  window.dataLayer = window.dataLayer || [];
-                  function gtag(){dataLayer.push(arguments);}
-                  gtag('js', new Date());
+        <Script
+          src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}
+          strategy="lazyOnload"
+        />
+        <Script id="google-analytics" strategy="lazyOnload">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
 
-                  gtag('config', '${gaId}');
-                `}
-              </Script>
-            </>
-          );
-        })()}
+            gtag('config', '${gaId}');
+          `}
+        </Script>
       </body>
     </html>
   );
 }
+

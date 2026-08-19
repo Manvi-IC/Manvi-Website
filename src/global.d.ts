@@ -7,3 +7,12 @@ declare namespace JSX {
     };
   }
 }
+
+declare global {
+  interface Window {
+    dataLayer?: any[];
+    gtag?: (...args: any[]) => void;
+  }
+}
+
+export {};

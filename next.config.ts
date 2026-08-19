@@ -6,7 +6,10 @@ const nextConfig: NextConfig = {
   experimental: {
     cpus: 1,
     optimizeCss: true,
+    optimizePackageImports: ["lucide-react"],
   },
+  compress: true,
+  poweredByHeader: false,
   typescript: {
     ignoreBuildErrors: true,
   },
