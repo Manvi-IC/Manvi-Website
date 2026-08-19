@@ -38,6 +38,7 @@ export default function AdminLayout({
             method: "GET",
             headers: {
               "Content-Type": "application/json",
+              // Add any auth headers if needed
             },
             credentials: "include",
           }),
