@@ -389,6 +389,7 @@ export default function Header() {
       {pathname &&
         pathname !== "/" &&
         pathname !== "/campaign" &&
+        pathname !== "/book-shipment" &&
         !pathname.endsWith("-policy") &&
         pathname !== "/terms-and-conditions" && (
           <div className="py-3.5 px-4 sm:px-6 relative z-30">
@@ -409,6 +410,7 @@ export default function Header() {
                 {pathname === "/blog" && "Blog"}
                 {pathname === "/career" && "Careers"}
                 {pathname === "/pickup-availability" && "Pickup Availability"}
+                {pathname === "/book-shipment" && "Book Shipment"}
               </span>
             </div>
           </div>
