@@ -29,7 +29,7 @@ import Image from "next/image";
 import { useLanguage } from "@/context/LanguageContext";
 import { fireLeadFormConversion, fireRequestQuoteConversion } from "@/lib/ads";
 
-const API_URL = process.env.NEXT_API_PUBLIC_URL|| "http://localhost:5000";
+const API_URL = process.env.NEXT_PUBLIC_API_URL|| "http://localhost:5000";
 const DB_NAME = process.env.NEXT_PUBLIC_X_DATABASE || "manvi";
 
 /* ── Carousel Slides Configuration ── */

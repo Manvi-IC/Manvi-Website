@@ -28,7 +28,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useLanguage } from "@/context/LanguageContext";
 
-const API_URL = process.env.NEXT_API_PUBLIC_URL || "http://localhost:5000";
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 const DB_NAME = process.env.NEXT_PUBLIC_X_DATABASE || "manvi";
 
 // ─── DATA ────────────────────────────────────────────────────────────────────
