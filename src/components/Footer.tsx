@@ -192,6 +192,24 @@ export default function Footer() {
                 >
                   {t.footer_business_campaign}
                 </Link>
+                <Link
+                  href="/winter-campaign"
+                  className="hover:text-white transition-colors py-0.5 font-semibold text-amber-200"
+                >
+                  ❄️ {t.footer_winter_campaign}
+                </Link>
+                <Link
+                  href="/diwali-campaign"
+                  className="hover:text-white transition-colors py-0.5 font-semibold text-amber-200"
+                >
+                  🪔 {t.footer_diwali_campaign}
+                </Link>
+                <Link
+                  href="/pickup-availability"
+                  className="hover:text-white transition-colors py-0.5"
+                >
+                  {t.footer_our_branches}
+                </Link>
                 <Link href="/blog" className="hover:text-white transition-colors py-0.5">
                   {t.footer_blog}
                 </Link>
@@ -306,6 +324,24 @@ export default function Footer() {
                       className="py-1.5 hover:text-white transition-colors font-semibold"
                     >
                       {t.footer_business_campaign}
+                    </Link>
+                    <Link
+                      href="/winter-campaign"
+                      className="py-1.5 hover:text-white transition-colors font-semibold text-amber-200"
+                    >
+                      ❄️ {t.footer_winter_campaign}
+                    </Link>
+                    <Link
+                      href="/diwali-campaign"
+                      className="py-1.5 hover:text-white transition-colors font-semibold text-amber-200"
+                    >
+                      🪔 {t.footer_diwali_campaign}
+                    </Link>
+                    <Link
+                      href="/pickup-availability"
+                      className="py-1.5 hover:text-white transition-colors"
+                    >
+                      {t.footer_our_branches}
                     </Link>
                     <Link href="/blog" className="py-1.5 hover:text-white transition-colors">
                       {t.footer_blog}

@@ -389,6 +389,8 @@ export default function Header() {
       {pathname &&
         pathname !== "/" &&
         pathname !== "/campaign" &&
+        pathname !== "/winter-campaign" &&
+        pathname !== "/diwali-campaign" &&
         pathname !== "/book-shipment" &&
         !pathname.endsWith("-policy") &&
         pathname !== "/terms-and-conditions" && (

@@ -50,7 +50,10 @@ export interface Translations {
   hero_slide4_tagline: string;
   hero_slide4_highlight: string;
   footer_pickup_availability: string;
+  footer_our_branches: string;
   footer_campaign: string;
+  footer_winter_campaign: string;
+  footer_diwali_campaign: string;
   footer_business_campaign: string;
   footer_blog: string;
   footer_career: string;
@@ -467,7 +470,10 @@ const translations: Record<Language, Translations> = {
     hero_slide4_tagline: "Shipping love,",
     hero_slide4_highlight: "packed in a box.",
     footer_pickup_availability: "Pickup Availability",
+    footer_our_branches: "Our Branches",
     footer_campaign: "Campaign",
+    footer_winter_campaign: "Winter Campaign",
+    footer_diwali_campaign: "Diwali Campaign",
     footer_business_campaign: "Business Campaign",
     footer_blog: "Blogs",
     footer_career: "Career",
@@ -944,7 +950,10 @@ const translations: Record<Language, Translations> = {
     hero_slide4_highlight: "एक डिब्बे में बंद।",
 
     footer_pickup_availability: "पिकअप उपलब्धता",
+    footer_our_branches: "हमारी शाखाएं",
     footer_campaign: "अभियान",
+    footer_winter_campaign: "विंटर अभियान",
+    footer_diwali_campaign: "दिवाली अभियान",
     footer_business_campaign: "व्यावसायिक अभियान",
     footer_blog: "ब्लॉग",
     footer_career: "करियर",
@@ -1417,7 +1426,10 @@ const translations: Record<Language, Translations> = {
     hero_slide4_tagline: "ਪਿਆਰ ਭੇਜਣਾ,",
     hero_slide4_highlight: "ਇੱਕ ਡੱਬੇ ਵਿੱਚ ਬੰਦ।",
     footer_pickup_availability: "ਪਿਕਅੱਪ ਉਪਲਬਧਤਾ",
+    footer_our_branches: "ਸਾਡੀਆਂ ਸ਼ਾਖਾਵਾਂ",
     footer_campaign: "ਮੁਹਿੰਮ",
+    footer_winter_campaign: "ਸਰਦੀਆਂ ਦੀ ਮੁਹਿੰਮ",
+    footer_diwali_campaign: "ਦਿਵਾਲੀ ਮੁਹਿੰਮ",
     footer_business_campaign: "ਵਪਾਰਕ ਮੁਹਿੰਮ",
     footer_blog: "ਬਲੌਗ",
     footer_career: "ਕੈਰੀਅਰ",
@@ -1897,7 +1909,10 @@ const translations: Record<Language, Translations> = {
     hero_slide4_tagline: "Envoyer l'amour,",
     hero_slide4_highlight: "emballé dans une boîte.",
     footer_pickup_availability: "Disponibilité du ramassage",
+    footer_our_branches: "Nos agences",
     footer_campaign: "Campagne",
+    footer_winter_campaign: "Campagne d'hiver",
+    footer_diwali_campaign: "Campagne de Diwali",
     footer_business_campaign: "Campagne commerciale",
     footer_blog: "Blog",
     footer_career: "Carrière",
@@ -2380,7 +2395,10 @@ const translations: Record<Language, Translations> = {
     hero_slide4_tagline: "Enviando amor,",
     hero_slide4_highlight: "empaquetado en una caja.",
     footer_pickup_availability: "Disponibilidad de recogida",
+    footer_our_branches: "Nuestras sucursales",
     footer_campaign: "Campaña",
+    footer_winter_campaign: "Campaña de invierno",
+    footer_diwali_campaign: "Campaña de Diwali",
     footer_business_campaign: "Campaña comercial",
     footer_blog: "Blog",
     footer_privacy_policy: "Política de privacidad",
