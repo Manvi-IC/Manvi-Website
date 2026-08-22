@@ -68,6 +68,9 @@ export default function ManviWhatsApp() {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleStartChat = () => {
+    if (typeof window !== "undefined" && typeof (window as any).gtag === "function") {
+      (window as any).gtag("event", "conversion", { "send_to": "AW-16880308122/9ekfCIS399ccEJqflPE-" });
+    }
     window.open(`https://wa.me/917070506070?text=${encodeURIComponent(t.prefill_text)}`, "_blank");
   };
 
