@@ -270,6 +270,9 @@ function ApplyModal({
         window.dataLayer.push({
           event: "form_enquiry_success",
         });
+        if (typeof (window as any).gtag === "function") {
+          (window as any).gtag("event", "conversion", { "send_to": "AW-16880308122/jB3TCL-RwNccEJqflPE-" });
+        }
       }
     } catch (err: any) {
       setError(err.message || "An error occurred. Please try again.");

@@ -142,6 +142,10 @@ export default function RootLayout({
             gtag('js', new Date());
 
             gtag('config', '${gaId}');
+            gtag('config', 'AW-16880308122');
+            gtag('config', 'AW-16880308122/Ek21CIif9tccEJqflPE-', {
+              'phone_conversion_number': '7070506070'
+            });
           `}
         </Script>
       </body>

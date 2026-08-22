@@ -77,6 +77,11 @@ export default function Header() {
             <div className="flex items-center justify-between sm:justify-start gap-4 w-full md:w-auto">
               <a
                 href="tel:+917070506070"
+                onClick={() => {
+                  if (typeof window !== "undefined" && typeof (window as any).gtag === "function") {
+                    (window as any).gtag("event", "conversion", { "send_to": "AW-16880308122/aoaYCMbx5dccEJqflPE-" });
+                  }
+                }}
                 className="flex items-center gap-1.5 sm:gap-2 hover:text-white transition-colors"
               >
                 <Phone className="h-3.5 w-3.5 text-white shrink-0" />
@@ -252,6 +257,11 @@ export default function Header() {
                 </Link>
                 <Link
                   href="/quote"
+                  onClick={() => {
+                    if (typeof window !== "undefined" && typeof (window as any).gtag === "function") {
+                      (window as any).gtag("event", "conversion", { "send_to": "AW-16880308122/iOWzCJbhrtccEJqflPE-" });
+                    }
+                  }}
                   className={`transition-colors ${pathname?.startsWith("/quote") ? "text-[#f27a1a]" : "hover:text-[#f27a1a]"}`}
                 >
                   {t.nav_quote}
@@ -361,7 +371,12 @@ export default function Header() {
             </Link>
             <Link
               href="/quote"
-              onClick={() => setIsMobileMenuOpen(false)}
+              onClick={() => {
+                setIsMobileMenuOpen(false);
+                if (typeof window !== "undefined" && typeof (window as any).gtag === "function") {
+                  (window as any).gtag("event", "conversion", { "send_to": "AW-16880308122/iOWzCJbhrtccEJqflPE-" });
+                }
+              }}
               className={`pb-2 border-b border-gray-100 ${pathname?.startsWith("/quote") ? "text-[#f27a1a]" : ""}`}
             >
               {t.nav_quote}
