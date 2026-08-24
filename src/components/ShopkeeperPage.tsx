@@ -132,7 +132,7 @@ export default function ShopkeeperPage() {
         </div>
 
         {/* ── MOBILE HERO (below md) ── */}
-        <div className="md:hidden relative overflow-hidden rounded-[20px] text-white border border-white/10 shadow-2xl min-h-[460px] flex flex-col justify-end">
+        <div className="md:hidden relative overflow-hidden rounded-[20px] text-white border border-white/10 shadow-2xl min-h-[540px] flex flex-col">
           <Image
             src="/shopkeeper-hero-mobile.jpg"
             alt="Export From India - Manvi International Courier"
@@ -141,59 +141,68 @@ export default function ShopkeeperPage() {
             sizes="100vw"
             className="object-cover object-center"
           />
-          {/* Gradient from bottom so text reads clearly */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-black/50 to-black/90" />
+          {/* Gradient overlay */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/90 via-black/50 to-black/80" />
 
-          <div className="relative z-10 px-5 pt-0 pb-7 flex flex-col justify-end">
-            {/* Logo */}
-            <div className="mb-3 overflow-hidden" style={{ height: "30px" }}>
-              <img
-                src="/logo-png.png"
-                alt="Manvi International Courier"
-                style={{ height: "70px", marginTop: "-20px", width: "auto", display: "block" }}
-              />
+          <div className="relative z-10 px-5 pt-5 pb-5 flex flex-col justify-between flex-grow">
+            {/* Top group: Logo, Heading, Description */}
+            <div>
+              {/* Logo */}
+              <div className="mb-3 overflow-hidden" style={{ height: "30px" }}>
+                <img
+                  src="/logo-png.png"
+                  alt="Manvi International Courier"
+                  style={{ height: "80px", marginTop: "-20px", width: "auto", display: "block" }}
+                />
+              </div>
+
+              <h1 className="text-4xl font-extrabold text-white leading-[1.2] tracking-tight">
+                You already ship from India. <span className="text-[#ff7a00]">Let&apos;s ship it smarter.</span>
+              </h1>
+              <div className="w-[50vw]">
+                <p className="mt-3 text-slate-200 leading-relaxed font-medium">
+                  Manvi picks up from your doorstep, packs it export-ready, clears customs and delivers worldwide.
+                </p>
+              </div>
+
             </div>
 
-            <h1 className="text-[26px] font-extrabold text-white leading-[1.2] tracking-tight">
-              You already ship from India. <span className="text-[#ff7a00]">Let&apos;s ship it smarter.</span>
-            </h1>
-
-            <p className="mt-3 text-[13.5px] text-slate-200 leading-relaxed font-medium">
-              Manvi picks up from your doorstep, packs it export-ready, clears customs and delivers worldwide.
-            </p>
-
-            <div className="flex flex-col gap-2.5 mt-5">
-              <a
-                href="https://wa.me/917070506070?text=Hi%20Manvi%2C%20I%20export%20from%20India%20and%20want%20to%20compare%20my%20shipping%20rates."
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 font-bold text-[14px] px-5 py-2 rounded-full bg-[#23c961] text-[#0a111e] shadow-[0_8px_22px_-8px_rgba(35,201,97,0.6)] hover:bg-[#1fb855] transition-all text-center"
-              >
-                <svg className="w-4 h-4 fill-current shrink-0" viewBox="0 0 24 24">
-                  <path d="M12 2a10 10 0 0 0-8.6 15.06L2 22l5.06-1.32A10 10 0 1 0 12 2Zm5.3 14.1c-.22.62-1.3 1.2-1.8 1.24-.46.05-1.03.07-1.66-.1a13.6 13.6 0 0 1-5.9-4.53c-.44-.58-1.1-1.56-1.1-2.98 0-1.42.75-2.12 1.02-2.4a1.05 1.05 0 0 1 .77-.36c.19 0 .38 0 .55.01.18.01.42-.07.65.5.24.6.8 2.02.87 2.16.07.15.12.32.02.5-.1.19-.15.3-.3.47-.15.18-.3.4-.44.53-.15.15-.3.3-.13.6.18.3.8 1.3 1.7 2.1 1.18 1.05 2.16 1.37 2.47 1.53.3.15.48.12.65-.08.18-.2.75-.87.95-1.17.2-.3.4-.25.66-.15.27.1 1.7.8 2 .95.3.15.5.22.57.34.07.13.07.72-.15 1.34Z" />
-                </svg>
-                <span>Compare your rate on WhatsApp</span>
-              </a>
-              <a
-                href="tel:+917070506070"
-                className="inline-flex items-center justify-center gap-2 font-bold text-[14px] px-5 py-2 rounded-full bg-black/45 text-white border border-white/30 hover:border-white hover:bg-white/10 transition-all text-center"
-              >
-                Call +91 70 70 50 60 70
-              </a>
-            </div>
-
-            <div className="grid grid-cols-3 gap-2 mt-5 pt-4 border-t bg-black/45 rounded-2xl pb-3 pl-3 border-white/15">
-              <div className="border-l-2 border-[#ff7a00] pl-2">
-                <div className="text-[18px] font-extrabold text-white leading-none">1M+</div>
-                <div className="text-[9px] font-bold tracking-wider uppercase text-slate-300 mt-1">Shipments</div>
+            {/* Bottom group: CTA Buttons & Stats Counters */}
+            <div className="flex flex-col gap-3 mt-6">
+              <div className="flex flex-col gap-2.5">
+                <a
+                  href="https://wa.me/917070506070?text=Hi%20Manvi%2C%20I%20export%20from%20India%20and%20want%20to%20compare%20my%20shipping%20rates."
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-2 font-bold text-[14px] px-5 py-2.5 rounded-full bg-[#23c961]/90 text-[#0a111e] shadow-[0_8px_22px_-8px_rgba(35,201,97,0.6)] hover:bg-[#1fb855] transition-all text-center"
+                >
+                  <svg className="w-4 h-4 fill-current shrink-0" viewBox="0 0 24 24">
+                    <path d="M12 2a10 10 0 0 0-8.6 15.06L2 22l5.06-1.32A10 10 0 1 0 12 2Zm5.3 14.1c-.22.62-1.3 1.2-1.8 1.24-.46.05-1.03.07-1.66-.1a13.6 13.6 0 0 1-5.9-4.53c-.44-.58-1.1-1.56-1.1-2.98 0-1.42.75-2.12 1.02-2.4a1.05 1.05 0 0 1 .77-.36c.19 0 .38 0 .55.01.18.01.42-.07.65.5.24.6.8 2.02.87 2.16.07.15.12.32.02.5-.1.19-.15.3-.3.47-.15.18-.3.4-.44.53-.15.15-.3.3-.13.6.18.3.8 1.3 1.7 2.1 1.18 1.05 2.16 1.37 2.47 1.53.3.15.48.12.65-.08.18-.2.75-.87.95-1.17.2-.3.4-.25.66-.15.27.1 1.7.8 2 .95.3.15.5.22.57.34.07.13.07.72-.15 1.34Z" />
+                  </svg>
+                  <span>Compare your rate on WhatsApp</span>
+                </a>
+                <a
+                  href="tel:+917070506070"
+                  className="inline-flex items-center justify-center gap-2 font-bold text-[14px] px-5 py-2.5 rounded-full bg-black/45 text-white border border-white/30 hover:border-white hover:bg-white/10 transition-all text-center"
+                >
+                  Call +91 70 70 50 60 70
+                </a>
               </div>
-              <div className="border-l-2 border-[#ff7a00] pl-2">
-                <div className="text-[18px] font-extrabold text-white leading-none">100K+</div>
-                <div className="text-[9px] font-bold tracking-wider uppercase text-slate-300 mt-1">Customers</div>
-              </div>
-              <div className="border-l-2 border-[#ff7a00] pl-2">
-                <div className="text-[18px] font-extrabold text-white leading-none">200+</div>
-                <div className="text-[9px] font-bold tracking-wider uppercase text-slate-300 mt-1">Countries</div>
+
+              {/* Stats Counters */}
+              <div className="grid grid-cols-3 gap-2 pt-3 bg-black/45 backdrop-blur-sm rounded-2xl pb-3 pl-3 pr-2 border border-white/15">
+                <div className="border-l-2 border-[#ff7a00] pl-2">
+                  <div className="text-[18px] font-extrabold text-white leading-none">1M+</div>
+                  <div className="text-[9px] font-bold tracking-wider uppercase text-slate-300 mt-1">Shipments</div>
+                </div>
+                <div className="border-l-2 border-[#ff7a00] pl-2">
+                  <div className="text-[18px] font-extrabold text-white leading-none">100K+</div>
+                  <div className="text-[9px] font-bold tracking-wider uppercase text-slate-300 mt-1">Customers</div>
+                </div>
+                <div className="border-l-2 border-[#ff7a00] pl-2">
+                  <div className="text-[18px] font-extrabold text-white leading-none">200+</div>
+                  <div className="text-[9px] font-bold tracking-wider uppercase text-slate-300 mt-1">Countries</div>
+                </div>
               </div>
             </div>
           </div>
