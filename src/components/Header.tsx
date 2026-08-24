@@ -447,6 +447,8 @@ export default function Header() {
       {pathname &&
         pathname !== "/" &&
         pathname !== "/campaign" &&
+        pathname !== "/shopkeeper" &&
+        pathname !== "/shopkeepers" &&
         !pathname.endsWith("-policy") &&
         pathname !== "/terms-and-conditions" && (
           <div className="py-3.5 px-4 sm:px-6 relative z-30">
@@ -464,6 +466,7 @@ export default function Header() {
                 {pathname === "/faq" && t.bc_faq}
                 {pathname === "/services" && t.bc_services}
                 {pathname === "/business-campaign" && t.bc_business_campaign}
+                {(pathname === "/shopkeeper" || pathname === "/shopkeepers") && "Shopkeeper's Page"}
                 {pathname === "/blog" && "Blog"}
                 {pathname === "/career" && "Careers"}
                 {pathname === "/pickup-availability" && "Pickup Availability"}
