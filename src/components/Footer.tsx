@@ -192,6 +192,12 @@ export default function Footer() {
                 >
                   {t.footer_business_campaign}
                 </Link>
+                <Link
+                  href="/shopkeeper"
+                  className="hover:text-white transition-colors font-semibold py-0.5"
+                >
+                  {t.footer_shopkeepers_page}
+                </Link>
                 <Link href="/blog" className="hover:text-white transition-colors py-0.5">
                   {t.footer_blog}
                 </Link>
@@ -306,6 +312,12 @@ export default function Footer() {
                       className="py-1.5 hover:text-white transition-colors font-semibold"
                     >
                       {t.footer_business_campaign}
+                    </Link>
+                    <Link
+                      href="/shopkeeper"
+                      className="py-1.5 hover:text-white transition-colors font-semibold"
+                    >
+                      {t.footer_shopkeepers_page}
                     </Link>
                     <Link href="/blog" className="py-1.5 hover:text-white transition-colors">
                       {t.footer_blog}

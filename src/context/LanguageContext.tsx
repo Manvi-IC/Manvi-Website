@@ -52,6 +52,7 @@ export interface Translations {
   footer_pickup_availability: string;
   footer_campaign: string;
   footer_business_campaign: string;
+  footer_shopkeepers_page: string;
   footer_blog: string;
   footer_career: string;
   b2b_hero_badge: string;
@@ -469,6 +470,7 @@ const translations: Record<Language, Translations> = {
     footer_pickup_availability: "Pickup Availability",
     footer_campaign: "Campaign",
     footer_business_campaign: "Business Campaign",
+    footer_shopkeepers_page: "Shopkeeper's Page",
     footer_blog: "Blogs",
     footer_career: "Career",
     b2b_hero_badge: "Bulk Sourcing For Indian Businesses",
@@ -946,6 +948,7 @@ const translations: Record<Language, Translations> = {
     footer_pickup_availability: "पिकअप उपलब्धता",
     footer_campaign: "अभियान",
     footer_business_campaign: "व्यावसायिक अभियान",
+    footer_shopkeepers_page: "दुकानदार पेज",
     footer_blog: "ब्लॉग",
     footer_career: "करियर",
     footer_privacy_policy: "गोपनीयता नीति",
@@ -1419,6 +1422,7 @@ const translations: Record<Language, Translations> = {
     footer_pickup_availability: "ਪਿਕਅੱਪ ਉਪਲਬਧਤਾ",
     footer_campaign: "ਮੁਹਿੰਮ",
     footer_business_campaign: "ਵਪਾਰਕ ਮੁਹਿੰਮ",
+    footer_shopkeepers_page: "ਦੁਕਾਨਦਾਰ ਪੇਜ",
     footer_blog: "ਬਲੌਗ",
     footer_career: "ਕੈਰੀਅਰ",
     footer_privacy_policy: "ਗੋਪਨੀਯਤਾ ਨੀਤੀ",
@@ -1899,6 +1903,7 @@ const translations: Record<Language, Translations> = {
     footer_pickup_availability: "Disponibilité du ramassage",
     footer_campaign: "Campagne",
     footer_business_campaign: "Campagne commerciale",
+    footer_shopkeepers_page: "Page des commerçants",
     footer_blog: "Blog",
     footer_career: "Carrière",
     footer_privacy_policy: "Politique de confidentialité",
@@ -2382,6 +2387,7 @@ const translations: Record<Language, Translations> = {
     footer_pickup_availability: "Disponibilidad de recogida",
     footer_campaign: "Campaña",
     footer_business_campaign: "Campaña comercial",
+    footer_shopkeepers_page: "Página de comerciantes",
     footer_blog: "Blog",
     footer_privacy_policy: "Política de privacidad",
     footer_refund_policy: "Política de reembolso y cancelación",
