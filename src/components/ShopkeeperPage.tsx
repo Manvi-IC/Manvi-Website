@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect } from "react";
+import Image from "next/image";
 
 export default function ShopkeeperPage() {
   useEffect(() => {
@@ -29,7 +30,7 @@ export default function ShopkeeperPage() {
   }, []);
 
   return (
-    <div className="w-full font-sans bg-[#f8f9fa] text-[#0f172a] antialiased">
+    <div className="w-full font-sans bg-[#f8f9fa] text-[#0f172a] antialiased overflow-x-hidden">
       {/* Keyframe animation helpers */}
       <style>{`
         @keyframes skFall {
@@ -58,167 +59,155 @@ export default function ShopkeeperPage() {
       `}</style>
 
       {/* ── 1. HERO CONTAINER ── */}
-      <section className="w-full max-w-[1400px] mx-auto px-4 sm:px-6 pt-6 pb-2">
-        <div className="relative overflow-hidden rounded-[24px] sm:rounded-[32px] bg-[radial-gradient(120%_90%_at_88%_-10%,#1e293b_0%,#0f172a_55%)] text-white border border-white/10 shadow-2xl">
-          {/* Falling particles */}
+      <section className="w-full max-w-[1400px] mx-auto px-3.5 sm:px-6 pt-4 sm:pt-6 pb-2">
+
+        {/* ── DESKTOP HERO (md and above) ── */}
+        <div className="hidden md:flex relative overflow-hidden rounded-[28px] lg:rounded-[32px] text-white border border-white/10 shadow-2xl min-h-[520px] flex-col justify-center">
+          <Image
+            src="/shopkeeper-hero-desktop.jpg"
+            alt="Export From India - Manvi International Courier"
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover object-right lg:object-center"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/60 to-black/20" />
           <div className="absolute inset-0 pointer-events-none overflow-hidden" id="snow" aria-hidden="true" />
 
-          <div className="relative z-10 grid grid-cols-1 lg:grid-cols-[1.05fr_0.95fr] gap-8 lg:gap-10 items-center p-6 sm:p-10 lg:p-14">
-            {/* Left Copy */}
-            <div className="flex flex-col">
-              <div className="inline-flex items-center gap-2.5 text-[11px] sm:text-[12px] font-bold tracking-wider uppercase text-slate-300 mb-3 sm:mb-4">
-                <span className="w-2 h-2 rounded-full bg-[#22c55e] shadow-[0_0_0_4px_rgba(34,197,94,0.25)] animate-pulse" />
-                For businesses exporting from India
-              </div>
-
-              <h1 className="text-[28px] sm:text-[40px] lg:text-[50px] font-extrabold text-white leading-[1.14] tracking-tight">
-                You already ship from India. <span className="text-[#ff7a00]">Let&apos;s ship it smarter.</span>
-              </h1>
-
-              <p className="mt-4 sm:mt-5 text-[15px] sm:text-[17px] text-slate-200 leading-relaxed max-w-xl">
-                Garments, utensils, handicrafts, food or machine parts. Whatever you export, Manvi picks it up directly from your
-                doorstep, packs it export-ready, clears customs and delivers worldwide through DHL, FedEx, UPS and
-                Aramex at competitive rates.
-              </p>
-
-              <div className="flex flex-wrap gap-3.5 sm:gap-4 mt-7 sm:mt-8">
-                <a
-                  href="https://wa.me/917070506070?text=Hi%20Manvi%2C%20I%20export%20from%20India%20and%20want%20to%20compare%20my%20shipping%20rates."
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-2.5 font-bold text-[15px] sm:text-[16px] px-6 sm:px-7 py-3.5 sm:py-4 rounded-full bg-[#23c961] text-[#0a111e] shadow-[0_8px_22px_-8px_rgba(35,201,97,0.6)] hover:bg-[#1fb855] hover:-translate-y-0.5 transition-all w-full sm:w-auto"
-                >
-                  <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
-                    <path d="M12 2a10 10 0 0 0-8.6 15.06L2 22l5.06-1.32A10 10 0 1 0 12 2Zm5.3 14.1c-.22.62-1.3 1.2-1.8 1.24-.46.05-1.03.07-1.66-.1a13.6 13.6 0 0 1-5.9-4.53c-.44-.58-1.1-1.56-1.1-2.98 0-1.42.75-2.12 1.02-2.4a1.05 1.05 0 0 1 .77-.36c.19 0 .38 0 .55.01.18.01.42-.07.65.5.24.6.8 2.02.87 2.16.07.15.12.32.02.5-.1.19-.15.3-.3.47-.15.18-.3.4-.44.53-.15.15-.3.3-.13.6.18.3.8 1.3 1.7 2.1 1.18 1.05 2.16 1.37 2.47 1.53.3.15.48.12.65-.08.18-.2.75-.87.95-1.17.2-.3.4-.25.66-.15.27.1 1.7.8 2 .95.3.15.5.22.57.34.07.13.07.72-.15 1.34Z" />
-                  </svg>
-                  Compare your rate
-                </a>
-                <a
-                  href="tel:+917070506070"
-                  className="inline-flex items-center justify-center gap-2.5 font-bold text-[15px] sm:text-[16px] px-6 sm:px-7 py-3.5 sm:py-4 rounded-full bg-transparent text-white border border-white/30 hover:border-white hover:bg-white/10 hover:-translate-y-0.5 transition-all w-full sm:w-auto"
-                >
-                  Call +91 70 70 50 60 70
-                </a>
-              </div>
-
-              {/* Stats Counters */}
-              <div className="flex flex-wrap gap-6 sm:gap-8 mt-8 pt-6 border-t border-white/10">
-                <div className="border-l-[3px] border-[#ff7a00] pl-3.5">
-                  <div className="text-[24px] sm:text-[28px] font-extrabold text-white leading-none">1M+</div>
-                  <div className="text-[11px] font-bold tracking-wider uppercase text-slate-300 mt-1.5">
-                    Shipments delivered
-                  </div>
-                </div>
-                <div className="border-l-[3px] border-[#ff7a00] pl-3.5">
-                  <div className="text-[24px] sm:text-[28px] font-extrabold text-white leading-none">100K+</div>
-                  <div className="text-[11px] font-bold tracking-wider uppercase text-slate-300 mt-1.5">
-                    Customers served
-                  </div>
-                </div>
-                <div className="border-l-[3px] border-[#ff7a00] pl-3.5">
-                  <div className="text-[24px] sm:text-[28px] font-extrabold text-white leading-none">200+</div>
-                  <div className="text-[11px] font-bold tracking-wider uppercase text-slate-300 mt-1.5">
-                    Destinations worldwide
-                  </div>
-                </div>
-              </div>
+          <div className="relative z-10 px-10 lg:px-14 pb-8 pt-6 max-w-3xl flex flex-col justify-center">
+            {/* Logo */}
+            <div className="mb-3 overflow-hidden" style={{ height: "36px" }}>
+              <img
+                src="/logo-png.png"
+                alt="Manvi International Courier"
+                style={{ height: "100px", marginTop: "-30px", width: "auto", display: "block" }}
+              />
             </div>
 
-            {/* Right Spool Artwork SVG */}
-            <div className="relative w-full max-w-[460px] mx-auto lg:max-w-none">
-              <svg
-                viewBox="0 0 520 430"
-                className="w-full h-auto block"
-                role="img"
-                aria-label="A spool in India sending delivery routes to cities around the world"
+            <h1 className="text-[38px] md:text-[44px] lg:text-[50px] font-extrabold text-white leading-[1.15] tracking-tight mt-1">
+              You already ship from India. <span className="text-[#ff7a00]">Let&apos;s ship it smarter.</span>
+            </h1>
+
+            <p className="mt-5 text-[16px] md:text-[17px] text-slate-200 leading-relaxed max-w-xl font-medium">
+              Garments, utensils, handicrafts, food or machine parts. Whatever you export, Manvi picks it up directly from your
+              doorstep, packs it export-ready, clears customs and delivers worldwide through DHL, FedEx, UPS and
+              Aramex at competitive rates.
+            </p>
+
+            <div className="flex flex-row gap-4 mt-8">
+              <a
+                href="https://wa.me/917070506070?text=Hi%20Manvi%2C%20I%20export%20from%20India%20and%20want%20to%20compare%20my%20shipping%20rates."
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-2.5 font-bold text-[16px] px-7 py-4 rounded-full bg-[#23c961] text-[#0a111e] shadow-[0_8px_22px_-8px_rgba(35,201,97,0.6)] hover:bg-[#1fb855] hover:-translate-y-0.5 transition-all"
               >
-                <path
-                  className="stroke-[#ff7a00] stroke-[2] fill-none stroke-round [stroke-dasharray:5_7] sk-draw sk-draw-d4"
-                  d="M110 300 C 150 200, 190 130, 250 74"
-                />
-                <path
-                  className="stroke-[#ff7a00] stroke-[2] fill-none stroke-round [stroke-dasharray:5_7] sk-draw"
-                  d="M110 300 C 200 220, 300 170, 402 120"
-                />
-                <path
-                  className="stroke-[#ff7a00] stroke-[2] fill-none stroke-round [stroke-dasharray:5_7] sk-draw sk-draw-d2"
-                  d="M110 300 C 220 288, 330 260, 436 232"
-                />
-                <path
-                  className="stroke-[#ff7a00] stroke-[2] fill-none stroke-round [stroke-dasharray:5_7] sk-draw sk-draw-d3"
-                  d="M110 300 C 210 322, 300 336, 410 344"
-                />
+                <svg className="w-5 h-5 fill-current shrink-0" viewBox="0 0 24 24">
+                  <path d="M12 2a10 10 0 0 0-8.6 15.06L2 22l5.06-1.32A10 10 0 1 0 12 2Zm5.3 14.1c-.22.62-1.3 1.2-1.8 1.24-.46.05-1.03.07-1.66-.1a13.6 13.6 0 0 1-5.9-4.53c-.44-.58-1.1-1.56-1.1-2.98 0-1.42.75-2.12 1.02-2.4a1.05 1.05 0 0 1 .77-.36c.19 0 .38 0 .55.01.18.01.42-.07.65.5.24.6.8 2.02.87 2.16.07.15.12.32.02.5-.1.19-.15.3-.3.47-.15.18-.3.4-.44.53-.15.15-.3.3-.13.6.18.3.8 1.3 1.7 2.1 1.18 1.05 2.16 1.37 2.47 1.53.3.15.48.12.65-.08.18-.2.75-.87.95-1.17.2-.3.4-.25.66-.15.27.1 1.7.8 2 .95.3.15.5.22.57.34.07.13.07.72-.15 1.34Z" />
+                </svg>
+                <span>Compare your rate</span>
+              </a>
+              <a
+                href="tel:+917070506070"
+                className="inline-flex items-center justify-center gap-2.5 font-bold text-[16px] px-7 py-4 rounded-full bg-transparent text-white border border-white/30 hover:border-white hover:bg-white/10 hover:-translate-y-0.5 transition-all"
+              >
+                Call +91 70 70 50 60 70
+              </a>
+            </div>
 
-                <g className="sk-pop-4" transform="translate(250,74)">
-                  <circle r="6.5" fill="#ff7a00" />
-                  <circle r="2.6" fill="#0f172a" />
-                  <text x="13" y="4" className="text-[11px] font-bold fill-white tracking-wider">
-                    NEW YORK
-                  </text>
-                </g>
-                <g className="sk-pop-1" transform="translate(402,120)">
-                  <circle r="6.5" fill="#ff7a00" />
-                  <circle r="2.6" fill="#0f172a" />
-                  <text x="13" y="4" className="text-[11px] font-bold fill-white tracking-wider">
-                    TORONTO
-                  </text>
-                </g>
-                <g className="sk-pop-2" transform="translate(436,232)">
-                  <circle r="6.5" fill="#ff7a00" />
-                  <circle r="2.6" fill="#0f172a" />
-                  <text x="-13" y="4" textAnchor="end" className="text-[11px] font-bold fill-white tracking-wider">
-                    LONDON
-                  </text>
-                </g>
-                <g className="sk-pop-3" transform="translate(410,344)">
-                  <circle r="6.5" fill="#ff7a00" />
-                  <circle r="2.6" fill="#0f172a" />
-                  <text x="13" y="4" className="text-[11px] font-bold fill-white tracking-wider">
-                    SYDNEY
-                  </text>
-                </g>
-
-                <g transform="translate(110,300)">
-                  <circle r="47" fill="#1e293b" stroke="#ff7a00" strokeWidth="1.5" />
-                  <clipPath id="sk-ball">
-                    <circle r="47" />
-                  </clipPath>
-                  <g
-                    className="sk-yarn"
-                    clipPath="url(#sk-ball)"
-                    stroke="#ff7a00"
-                    strokeWidth="1.8"
-                    fill="none"
-                    opacity="0.85"
-                    strokeLinecap="round"
-                  >
-                    <ellipse rx="44" ry="17" transform="rotate(22)" />
-                    <ellipse rx="44" ry="17" transform="rotate(68)" />
-                    <ellipse rx="44" ry="17" transform="rotate(112)" />
-                    <ellipse rx="44" ry="17" transform="rotate(158)" />
-                    <ellipse rx="17" ry="44" />
-                  </g>
-                  <text
-                    y="70"
-                    textAnchor="middle"
-                    className="font-bold text-[11px] fill-slate-300 tracking-[1.2px]"
-                  >
-                    YOUR SHOP · INDIA
-                  </text>
-                </g>
-              </svg>
+            <div className="grid grid-cols-3 gap-6 mt-8 pt-6 border-t border-white/15">
+              <div className="border-l-[3px] border-[#ff7a00] pl-3.5">
+                <div className="text-[24px] md:text-[28px] font-extrabold text-white leading-none">1M+</div>
+                <div className="text-[11px] font-bold tracking-wider uppercase text-slate-300 mt-1">Shipments</div>
+              </div>
+              <div className="border-l-[3px] border-[#ff7a00] pl-3.5">
+                <div className="text-[24px] md:text-[28px] font-extrabold text-white leading-none">100K+</div>
+                <div className="text-[11px] font-bold tracking-wider uppercase text-slate-300 mt-1">Customers</div>
+              </div>
+              <div className="border-l-[3px] border-[#ff7a00] pl-3.5">
+                <div className="text-[24px] md:text-[28px] font-extrabold text-white leading-none">200+</div>
+                <div className="text-[11px] font-bold tracking-wider uppercase text-slate-300 mt-1">Countries</div>
+              </div>
             </div>
           </div>
         </div>
+
+        {/* ── MOBILE HERO (below md) ── */}
+        <div className="md:hidden relative overflow-hidden rounded-[20px] text-white border border-white/10 shadow-2xl min-h-[460px] flex flex-col justify-end">
+          <Image
+            src="/shopkeeper-hero-mobile.jpg"
+            alt="Export From India - Manvi International Courier"
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover object-center"
+          />
+          {/* Gradient from bottom so text reads clearly */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-black/50 to-black/90" />
+
+          <div className="relative z-10 px-5 pt-0 pb-7 flex flex-col justify-end">
+            {/* Logo */}
+            <div className="mb-3 overflow-hidden" style={{ height: "30px" }}>
+              <img
+                src="/logo-png.png"
+                alt="Manvi International Courier"
+                style={{ height: "70px", marginTop: "-20px", width: "auto", display: "block" }}
+              />
+            </div>
+
+            <h1 className="text-[26px] font-extrabold text-white leading-[1.2] tracking-tight">
+              You already ship from India. <span className="text-[#ff7a00]">Let&apos;s ship it smarter.</span>
+            </h1>
+
+            <p className="mt-3 text-[13.5px] text-slate-200 leading-relaxed font-medium">
+              Manvi picks up from your doorstep, packs it export-ready, clears customs and delivers worldwide.
+            </p>
+
+            <div className="flex flex-col gap-2.5 mt-5">
+              <a
+                href="https://wa.me/917070506070?text=Hi%20Manvi%2C%20I%20export%20from%20India%20and%20want%20to%20compare%20my%20shipping%20rates."
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-2 font-bold text-[14px] px-5 py-2 rounded-full bg-[#23c961] text-[#0a111e] shadow-[0_8px_22px_-8px_rgba(35,201,97,0.6)] hover:bg-[#1fb855] transition-all text-center"
+              >
+                <svg className="w-4 h-4 fill-current shrink-0" viewBox="0 0 24 24">
+                  <path d="M12 2a10 10 0 0 0-8.6 15.06L2 22l5.06-1.32A10 10 0 1 0 12 2Zm5.3 14.1c-.22.62-1.3 1.2-1.8 1.24-.46.05-1.03.07-1.66-.1a13.6 13.6 0 0 1-5.9-4.53c-.44-.58-1.1-1.56-1.1-2.98 0-1.42.75-2.12 1.02-2.4a1.05 1.05 0 0 1 .77-.36c.19 0 .38 0 .55.01.18.01.42-.07.65.5.24.6.8 2.02.87 2.16.07.15.12.32.02.5-.1.19-.15.3-.3.47-.15.18-.3.4-.44.53-.15.15-.3.3-.13.6.18.3.8 1.3 1.7 2.1 1.18 1.05 2.16 1.37 2.47 1.53.3.15.48.12.65-.08.18-.2.75-.87.95-1.17.2-.3.4-.25.66-.15.27.1 1.7.8 2 .95.3.15.5.22.57.34.07.13.07.72-.15 1.34Z" />
+                </svg>
+                <span>Compare your rate on WhatsApp</span>
+              </a>
+              <a
+                href="tel:+917070506070"
+                className="inline-flex items-center justify-center gap-2 font-bold text-[14px] px-5 py-2 rounded-full bg-black/45 text-white border border-white/30 hover:border-white hover:bg-white/10 transition-all text-center"
+              >
+                Call +91 70 70 50 60 70
+              </a>
+            </div>
+
+            <div className="grid grid-cols-3 gap-2 mt-5 pt-4 border-t bg-black/45 rounded-2xl pb-3 pl-3 border-white/15">
+              <div className="border-l-2 border-[#ff7a00] pl-2">
+                <div className="text-[18px] font-extrabold text-white leading-none">1M+</div>
+                <div className="text-[9px] font-bold tracking-wider uppercase text-slate-300 mt-1">Shipments</div>
+              </div>
+              <div className="border-l-2 border-[#ff7a00] pl-2">
+                <div className="text-[18px] font-extrabold text-white leading-none">100K+</div>
+                <div className="text-[9px] font-bold tracking-wider uppercase text-slate-300 mt-1">Customers</div>
+              </div>
+              <div className="border-l-2 border-[#ff7a00] pl-2">
+                <div className="text-[18px] font-extrabold text-white leading-none">200+</div>
+                <div className="text-[9px] font-bold tracking-wider uppercase text-slate-300 mt-1">Countries</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </section>
 
       {/* ── 2. PARTNERS ── */}
-      <div className="w-full bg-[#0f172a] text-white py-7 border-y border-white/10 mt-6">
-        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-5 sm:gap-8">
-          <span className="text-[12px] font-bold tracking-widest uppercase text-slate-300">
+      <div className="w-full bg-[#0f172a] text-white py-5 sm:py-7 border-y border-white/10 mt-4 sm:mt-6">
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-8 text-center sm:text-left">
+          <span className="text-[11px] sm:text-[12px] font-bold tracking-widest uppercase text-slate-300">
             One partner, every major carrier
           </span>
-          <div className="flex flex-wrap justify-center sm:justify-end gap-6 sm:gap-8 items-center font-extrabold text-[18px] sm:text-[20px] text-white/90">
+          <div className="grid grid-cols-3 sm:flex sm:flex-wrap justify-center sm:justify-end gap-3.5 sm:gap-8 items-center font-extrabold text-[15px] sm:text-[18px] md:text-[20px] text-white/90">
             <span>DHL</span>
             <span>FedEx</span>
             <span>UPS</span>
@@ -230,69 +219,69 @@ export default function ShopkeeperPage() {
       </div>
 
       {/* ── 3. WHAT WE SHIP ── */}
-      <section className="w-full max-w-[1400px] mx-auto px-4 sm:px-6 py-16">
-        <div className="max-w-2xl mb-12">
-          <div className="inline-flex items-center gap-2.5 text-[12px] font-bold tracking-wider uppercase text-[#ff7a00] mb-3">
-            <span className="w-6 h-[2px] bg-[#ff7a00] rounded-full" />
+      <section className="w-full max-w-[1400px] mx-auto px-3.5 sm:px-6 py-10 sm:py-16">
+        <div className="max-w-2xl mb-8 sm:mb-12">
+          <div className="inline-flex items-center gap-2 text-[11px] sm:text-[12px] font-bold tracking-wider uppercase text-[#ff7a00] mb-2.5 sm:mb-3">
+            <span className="w-5 sm:w-6 h-[2px] bg-[#ff7a00] rounded-full" />
             Whatever you export
           </div>
-          <h2 className="text-[28px] sm:text-[36px] lg:text-[42px] font-extrabold text-[#0f172a] leading-tight">
+          <h2 className="text-[24px] sm:text-[34px] lg:text-[42px] font-extrabold text-[#0f172a] leading-tight">
             If you send it abroad, we move it.
           </h2>
-          <p className="mt-3 text-[16px] sm:text-[17px] text-[#555555] leading-relaxed">
+          <p className="mt-2.5 sm:mt-3 text-[14.5px] sm:text-[16px] md:text-[17px] text-[#555555] leading-relaxed">
             Manvi is product-agnostic. From a single sample to a full bulk consignment, packed export-ready and shipped
             worldwide.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <div className="bg-white border border-slate-200 rounded-[20px] p-7 sm:p-8 relative overflow-hidden shadow-sm hover:shadow-lg hover:-translate-y-1 hover:border-slate-300 transition-all">
-            <span className="text-[32px] leading-none mb-4 block">👕</span>
-            <h3 className="text-[20px] font-bold text-[#0f172a]">Garments &amp; textiles</h3>
-            <p className="mt-2.5 text-[15px] text-[#555555] leading-relaxed">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+          <div className="bg-white border border-slate-200 rounded-[18px] sm:rounded-[20px] p-5 sm:p-8 relative overflow-hidden shadow-sm hover:shadow-lg hover:-translate-y-1 hover:border-slate-300 transition-all">
+            <span className="text-[28px] sm:text-[32px] leading-none mb-3 sm:mb-4 block">👕</span>
+            <h3 className="text-[18px] sm:text-[20px] font-bold text-[#0f172a]">Garments &amp; textiles</h3>
+            <p className="mt-2 text-[14px] sm:text-[15px] text-[#555555] leading-relaxed">
               Apparel, fabrics, home linen and made-ups in retail quantities or bulk cartons.
             </p>
           </div>
 
-          <div className="bg-white border border-slate-200 rounded-[20px] p-7 sm:p-8 relative overflow-hidden shadow-sm hover:shadow-lg hover:-translate-y-1 hover:border-slate-300 transition-all">
-            <span className="text-[32px] leading-none mb-4 block">🍽️</span>
-            <h3 className="text-[20px] font-bold text-[#0f172a]">Utensils &amp; kitchenware</h3>
-            <p className="mt-2.5 text-[15px] text-[#555555] leading-relaxed">
+          <div className="bg-white border border-slate-200 rounded-[18px] sm:rounded-[20px] p-5 sm:p-8 relative overflow-hidden shadow-sm hover:shadow-lg hover:-translate-y-1 hover:border-slate-300 transition-all">
+            <span className="text-[28px] sm:text-[32px] leading-none mb-3 sm:mb-4 block">🍽️</span>
+            <h3 className="text-[18px] sm:text-[20px] font-bold text-[#0f172a]">Utensils &amp; kitchenware</h3>
+            <p className="mt-2 text-[14px] sm:text-[15px] text-[#555555] leading-relaxed">
               Steel, brass, cookware and small appliances, packed carefully to arrive dent-free.
             </p>
           </div>
 
-          <div className="bg-white border border-slate-200 rounded-[20px] p-7 sm:p-8 relative overflow-hidden shadow-sm hover:shadow-lg hover:-translate-y-1 hover:border-slate-300 transition-all">
-            <span className="text-[32px] leading-none mb-4 block">🪔</span>
-            <h3 className="text-[20px] font-bold text-[#0f172a]">Handicrafts &amp; home décor</h3>
-            <p className="mt-2.5 text-[15px] text-[#555555] leading-relaxed">
+          <div className="bg-white border border-slate-200 rounded-[18px] sm:rounded-[20px] p-5 sm:p-8 relative overflow-hidden shadow-sm hover:shadow-lg hover:-translate-y-1 hover:border-slate-300 transition-all">
+            <span className="text-[28px] sm:text-[32px] leading-none mb-3 sm:mb-4 block">🪔</span>
+            <h3 className="text-[18px] sm:text-[20px] font-bold text-[#0f172a]">Handicrafts &amp; home décor</h3>
+            <p className="mt-2 text-[14px] sm:text-[15px] text-[#555555] leading-relaxed">
               Fragile, artisan and decorative goods, export-packed to survive the global journey.
             </p>
           </div>
 
-          <div className="bg-white border border-slate-200 rounded-[20px] p-7 sm:p-8 relative overflow-hidden shadow-sm hover:shadow-lg hover:-translate-y-1 hover:border-slate-300 transition-all">
-            <span className="text-[32px] leading-none mb-4 block">🫙</span>
-            <h3 className="text-[20px] font-bold text-[#0f172a]">Food &amp; packaged goods</h3>
-            <p className="mt-2.5 text-[15px] text-[#555555] leading-relaxed">
+          <div className="bg-white border border-slate-200 rounded-[18px] sm:rounded-[20px] p-5 sm:p-8 relative overflow-hidden shadow-sm hover:shadow-lg hover:-translate-y-1 hover:border-slate-300 transition-all">
+            <span className="text-[28px] sm:text-[32px] leading-none mb-3 sm:mb-4 block">🫙</span>
+            <h3 className="text-[18px] sm:text-[20px] font-bold text-[#0f172a]">Food &amp; packaged goods</h3>
+            <p className="mt-2 text-[14px] sm:text-[15px] text-[#555555] leading-relaxed">
               Spices, snacks, dry foods and FMCG, shipped with proper export documentation.
             </p>
           </div>
 
-          <div className="bg-white border border-slate-200 rounded-[20px] p-7 sm:p-8 relative overflow-hidden shadow-sm hover:shadow-lg hover:-translate-y-1 hover:border-slate-300 transition-all">
-            <span className="text-[32px] leading-none mb-4 block">⚙️</span>
-            <h3 className="text-[20px] font-bold text-[#0f172a]">Parts, tools &amp; samples</h3>
-            <p className="mt-2.5 text-[15px] text-[#555555] leading-relaxed">
+          <div className="bg-white border border-slate-200 rounded-[18px] sm:rounded-[20px] p-5 sm:p-8 relative overflow-hidden shadow-sm hover:shadow-lg hover:-translate-y-1 hover:border-slate-300 transition-all">
+            <span className="text-[28px] sm:text-[32px] leading-none mb-3 sm:mb-4 block">⚙️</span>
+            <h3 className="text-[18px] sm:text-[20px] font-bold text-[#0f172a]">Parts, tools &amp; samples</h3>
+            <p className="mt-2 text-[14px] sm:text-[15px] text-[#555555] leading-relaxed">
               Components, machinery parts and commercial samples for your buyers overseas.
             </p>
           </div>
 
-          <div className="bg-white border border-slate-200 rounded-[20px] p-7 sm:p-8 relative overflow-hidden shadow-sm hover:shadow-lg hover:-translate-y-1 hover:border-slate-300 transition-all">
-            <span className="absolute top-4 right-4 text-[10.5px] font-bold uppercase tracking-wider text-[#ff7a00] bg-[#fff5ed] border border-orange-200 px-2.5 py-1 rounded-full">
+          <div className="bg-white border border-slate-200 rounded-[18px] sm:rounded-[20px] p-5 sm:p-8 relative overflow-hidden shadow-sm hover:shadow-lg hover:-translate-y-1 hover:border-slate-300 transition-all">
+            <span className="absolute top-3.5 right-3.5 sm:top-4 sm:right-4 text-[10px] sm:text-[10.5px] font-bold uppercase tracking-wider text-[#ff7a00] bg-[#fff5ed] border border-orange-200 px-2.5 py-1 rounded-full">
               Anything else?
             </span>
-            <span className="text-[32px] leading-none mb-4 block">📦</span>
-            <h3 className="text-[20px] font-bold text-[#0f172a]">Not on this list?</h3>
-            <p className="mt-2.5 text-[15px] text-[#555555] leading-relaxed">
+            <span className="text-[28px] sm:text-[32px] leading-none mb-3 sm:mb-4 block">📦</span>
+            <h3 className="text-[18px] sm:text-[20px] font-bold text-[#0f172a]">Not on this list?</h3>
+            <p className="mt-2 text-[14px] sm:text-[15px] text-[#555555] leading-relaxed">
               Send us a photo on WhatsApp. We will confirm if we can ship it, how to pack it and what it costs.
             </p>
           </div>
@@ -300,59 +289,59 @@ export default function ShopkeeperPage() {
       </section>
 
       {/* ── 4. HOW IT WORKS ── */}
-      <section className="w-full max-w-[1400px] mx-auto px-4 sm:px-6 py-4">
-        <div className="bg-[#0f172a] text-white rounded-[24px] sm:rounded-[32px] p-6 sm:p-10 lg:p-14 border border-white/10 shadow-2xl">
-          <div className="max-w-2xl mb-12">
-            <div className="inline-flex items-center gap-2.5 text-[12px] font-bold tracking-wider uppercase text-[#ff7a00] mb-3">
-              <span className="w-6 h-[2px] bg-[#ff7a00] rounded-full" />
+      <section className="w-full max-w-[1400px] mx-auto px-3.5 sm:px-6 py-4 sm:py-6">
+        <div className="bg-[#0f172a] text-white rounded-[20px] sm:rounded-[28px] lg:rounded-[32px] p-5 sm:p-10 lg:p-14 border border-white/10 shadow-2xl">
+          <div className="max-w-2xl mb-8 sm:mb-12">
+            <div className="inline-flex items-center gap-2 text-[11px] sm:text-[12px] font-bold tracking-wider uppercase text-[#ff7a00] mb-2.5 sm:mb-3">
+              <span className="w-5 sm:w-6 h-[2px] bg-[#ff7a00] rounded-full" />
               How it works
             </div>
-            <h2 className="text-[28px] sm:text-[36px] lg:text-[42px] font-extrabold text-white leading-tight">
+            <h2 className="text-[24px] sm:text-[34px] lg:text-[42px] font-extrabold text-white leading-tight">
               You run the business. We run the logistics.
             </h2>
-            <p className="mt-3 text-[15px] sm:text-[16px] text-slate-300 leading-relaxed">
+            <p className="mt-2.5 sm:mt-3 text-[14px] sm:text-[16px] text-slate-300 leading-relaxed">
               No juggling carriers and no customs forms to fill. Send your shipment details on WhatsApp and we handle it end
               to end.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-6 relative">
-            <div className="relative">
-              <div className="w-13 h-13 rounded-2xl bg-[#1e293b] border border-[#ff7a00]/50 text-[#ff7a00] font-extrabold text-[20px] grid place-items-center mb-5 w-[52px] h-[52px]">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-8 lg:gap-6 relative">
+            <div className="relative p-4 sm:p-0 bg-white/5 sm:bg-transparent rounded-xl sm:rounded-none border border-white/10 sm:border-0">
+              <div className="w-11 h-11 sm:w-[52px] sm:h-[52px] rounded-xl sm:rounded-2xl bg-[#1e293b] border border-[#ff7a00]/50 text-[#ff7a00] font-extrabold text-[18px] sm:text-[20px] grid place-items-center mb-4 sm:mb-5">
                 1
               </div>
-              <h3 className="text-[19px] font-bold text-white mb-2">Send your shipment details</h3>
-              <p className="text-[15px] text-slate-300 leading-relaxed">
+              <h3 className="text-[17px] sm:text-[19px] font-bold text-white mb-1.5 sm:mb-2">Send your shipment details</h3>
+              <p className="text-[13.5px] sm:text-[15px] text-slate-300 leading-relaxed">
                 WhatsApp what you are sending, the weight and the destination. We reply with a clear quote.
               </p>
             </div>
 
-            <div className="relative">
-              <div className="w-13 h-13 rounded-2xl bg-[#1e293b] border border-[#ff7a00]/50 text-[#ff7a00] font-extrabold text-[20px] grid place-items-center mb-5 w-[52px] h-[52px]">
+            <div className="relative p-4 sm:p-0 bg-white/5 sm:bg-transparent rounded-xl sm:rounded-none border border-white/10 sm:border-0">
+              <div className="w-11 h-11 sm:w-[52px] sm:h-[52px] rounded-xl sm:rounded-2xl bg-[#1e293b] border border-[#ff7a00]/50 text-[#ff7a00] font-extrabold text-[18px] sm:text-[20px] grid place-items-center mb-4 sm:mb-5">
                 2
               </div>
-              <h3 className="text-[19px] font-bold text-white mb-2">We pick up from your door</h3>
-              <p className="text-[15px] text-slate-300 leading-relaxed">
+              <h3 className="text-[17px] sm:text-[19px] font-bold text-white mb-1.5 sm:mb-2">We pick up from your door</h3>
+              <p className="text-[13.5px] sm:text-[15px] text-slate-300 leading-relaxed">
                 Collection from your shop, factory or godown anywhere in North and West India, with pan-India pickup on request.
               </p>
             </div>
 
-            <div className="relative">
-              <div className="w-13 h-13 rounded-2xl bg-[#1e293b] border border-[#ff7a00]/50 text-[#ff7a00] font-extrabold text-[20px] grid place-items-center mb-5 w-[52px] h-[52px]">
+            <div className="relative p-4 sm:p-0 bg-white/5 sm:bg-transparent rounded-xl sm:rounded-none border border-white/10 sm:border-0">
+              <div className="w-11 h-11 sm:w-[52px] sm:h-[52px] rounded-xl sm:rounded-2xl bg-[#1e293b] border border-[#ff7a00]/50 text-[#ff7a00] font-extrabold text-[18px] sm:text-[20px] grid place-items-center mb-4 sm:mb-5">
                 3
               </div>
-              <h3 className="text-[19px] font-bold text-white mb-2">We pack, ship &amp; clear customs</h3>
-              <p className="text-[15px] text-slate-300 leading-relaxed">
+              <h3 className="text-[17px] sm:text-[19px] font-bold text-white mb-1.5 sm:mb-2">We pack, ship &amp; clear customs</h3>
+              <p className="text-[13.5px] sm:text-[15px] text-slate-300 leading-relaxed">
                 Export-grade packing plus all documentation and clearance, handled for you across our carrier network.
               </p>
             </div>
 
-            <div className="relative">
-              <div className="w-13 h-13 rounded-2xl bg-[#1e293b] border border-[#ff7a00]/50 text-[#ff7a00] font-extrabold text-[20px] grid place-items-center mb-5 w-[52px] h-[52px]">
+            <div className="relative p-4 sm:p-0 bg-white/5 sm:bg-transparent rounded-xl sm:rounded-none border border-white/10 sm:border-0">
+              <div className="w-11 h-11 sm:w-[52px] sm:h-[52px] rounded-xl sm:rounded-2xl bg-[#1e293b] border border-[#ff7a00]/50 text-[#ff7a00] font-extrabold text-[18px] sm:text-[20px] grid place-items-center mb-4 sm:mb-5">
                 4
               </div>
-              <h3 className="text-[19px] font-bold text-white mb-2">Delivered &amp; tracked</h3>
-              <p className="text-[15px] text-slate-300 leading-relaxed">
+              <h3 className="text-[17px] sm:text-[19px] font-bold text-white mb-1.5 sm:mb-2">Delivered &amp; tracked</h3>
+              <p className="text-[13.5px] sm:text-[15px] text-slate-300 leading-relaxed">
                 Door delivery to your buyer abroad with live tracking. Set up recurring pickups for regular orders anytime.
               </p>
             </div>
@@ -361,31 +350,31 @@ export default function ShopkeeperPage() {
       </section>
 
       {/* ── 5. RATE COMPARE HIGHLIGHT BOX ── */}
-      <section className="w-full max-w-[1400px] mx-auto px-4 sm:px-6 py-12">
-        <div className="relative overflow-hidden rounded-[24px] sm:rounded-[32px] bg-[#0f172a] text-white p-7 sm:p-12 lg:p-14 border border-white/10 shadow-2xl">
+      <section className="w-full max-w-[1400px] mx-auto px-3.5 sm:px-6 py-8 sm:py-12">
+        <div className="relative overflow-hidden rounded-[20px] sm:rounded-[28px] lg:rounded-[32px] bg-[#0f172a] text-white p-5 sm:p-10 lg:p-14 border border-white/10 shadow-2xl">
           {/* Radial Glow */}
           <div className="absolute -right-10 -top-10 w-64 h-64 rounded-full bg-[radial-gradient(circle,rgba(255,122,0,0.25),transparent_70%)] pointer-events-none" />
 
-          <div className="relative z-10 grid grid-cols-1 lg:grid-cols-[1.2fr_0.8fr] gap-8 lg:gap-12 items-center">
+          <div className="relative z-10 grid grid-cols-1 lg:grid-cols-[1.2fr_0.8fr] gap-6 lg:gap-12 items-center">
             <div>
-              <h2 className="text-[26px] sm:text-[32px] lg:text-[36px] font-extrabold text-white leading-tight">
+              <h2 className="text-[22px] sm:text-[30px] lg:text-[36px] font-extrabold text-white leading-tight">
                 Already paying for shipping? Let&apos;s beat it.
               </h2>
-              <p className="mt-3.5 text-[15px] sm:text-[16px] text-slate-300 leading-relaxed max-w-xl">
+              <p className="mt-2.5 sm:mt-3.5 text-[14px] sm:text-[16px] text-slate-300 leading-relaxed max-w-xl">
                 Send us a recent invoice or your typical weight, destination and volume. We will come back
                 with a quote and show you the difference, with no obligation and no switching hassle.
               </p>
             </div>
 
-            <div className="flex flex-col gap-3.5">
-              <span className="text-[12px] font-bold tracking-wider uppercase text-[#ff7a00]">
+            <div className="flex flex-col gap-3 sm:gap-3.5">
+              <span className="text-[11px] sm:text-[12px] font-bold tracking-wider uppercase text-[#ff7a00]">
                 Free rate comparison
               </span>
               <a
                 href="https://wa.me/917070506070?text=Hi%20Manvi%2C%20here%20are%20my%20current%20export%20shipping%20details%20to%20compare%20rates."
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2.5 font-bold text-[15px] sm:text-[16px] px-6 sm:px-7 py-3.5 sm:py-4 rounded-full bg-[#23c961] text-[#0a111e] shadow-[0_8px_22px_-8px_rgba(35,201,97,0.6)] hover:bg-[#1fb855] hover:-translate-y-0.5 transition-all text-center"
+                className="inline-flex items-center justify-center gap-2.5 font-bold text-[14px] sm:text-[16px] px-6 sm:px-7 py-3.5 sm:py-4 rounded-full bg-[#23c961] text-[#0a111e] shadow-[0_8px_22px_-8px_rgba(35,201,97,0.6)] hover:bg-[#1fb855] hover:-translate-y-0.5 transition-all text-center"
               >
                 <svg className="w-5 h-5 fill-current shrink-0" viewBox="0 0 24 24">
                   <path d="M12 2a10 10 0 0 0-8.6 15.06L2 22l5.06-1.32A10 10 0 1 0 12 2Zm5.3 14.1c-.22.62-1.3 1.2-1.8 1.24-.46.05-1.03.07-1.66-.1a13.6 13.6 0 0 1-5.9-4.53c-.44-.58-1.1-1.56-1.1-2.98 0-1.42.75-2.12 1.02-2.4a1.05 1.05 0 0 1 .77-.36c.19 0 .38 0 .55.01.18.01.42-.07.65.5.24.6.8 2.02.87 2.16.07.15.12.32.02.5-.1.19-.15.3-.3.47-.15.18-.3.4-.44.53-.15.15-.3.3-.13.6.18.3.8 1.3 1.7 2.1 1.18 1.05 2.16 1.37 2.47 1.53.3.15.48.12.65-.08.18-.2.75-.87.95-1.17.2-.3.4-.25.66-.15.27.1 1.7.8 2 .95.3.15.5.22.57.34.07.13.07.72-.15 1.34Z" />
@@ -394,7 +383,7 @@ export default function ShopkeeperPage() {
               </a>
               <a
                 href="tel:+917070506070"
-                className="inline-flex items-center justify-center gap-2.5 font-bold text-[15px] sm:text-[16px] px-6 sm:px-7 py-3.5 sm:py-4 rounded-full bg-transparent text-white border border-white/30 hover:border-white hover:bg-white/10 hover:-translate-y-0.5 transition-all text-center"
+                className="inline-flex items-center justify-center gap-2.5 font-bold text-[14px] sm:text-[16px] px-6 sm:px-7 py-3.5 sm:py-4 rounded-full bg-transparent text-white border border-white/30 hover:border-white hover:bg-white/10 hover:-translate-y-0.5 transition-all text-center"
               >
                 Call +91 70 70 50 60 70
               </a>
@@ -404,74 +393,74 @@ export default function ShopkeeperPage() {
       </section>
 
       {/* ── 6. WHY EXPORTERS SWITCH ── */}
-      <section className="w-full max-w-[1400px] mx-auto px-4 sm:px-6 py-12">
-        <div className="max-w-2xl mb-12">
-          <div className="inline-flex items-center gap-2.5 text-[12px] font-bold tracking-wider uppercase text-[#ff7a00] mb-3">
-            <span className="w-6 h-[2px] bg-[#ff7a00] rounded-full" />
+      <section className="w-full max-w-[1400px] mx-auto px-3.5 sm:px-6 py-8 sm:py-12">
+        <div className="max-w-2xl mb-8 sm:mb-12">
+          <div className="inline-flex items-center gap-2 text-[11px] sm:text-[12px] font-bold tracking-wider uppercase text-[#ff7a00] mb-2.5 sm:mb-3">
+            <span className="w-5 sm:w-6 h-[2px] bg-[#ff7a00] rounded-full" />
             Why exporters switch to Manvi
           </div>
-          <h2 className="text-[28px] sm:text-[36px] lg:text-[42px] font-extrabold text-[#0f172a] leading-tight">
+          <h2 className="text-[24px] sm:text-[34px] lg:text-[42px] font-extrabold text-[#0f172a] leading-tight">
             A logistics partner that protects your margins.
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[1px] bg-slate-200 border border-slate-200 rounded-[20px] overflow-hidden shadow-sm">
-          <div className="bg-white p-7 sm:p-8 flex flex-col justify-between">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[1px] bg-slate-200 border border-slate-200 rounded-[18px] sm:rounded-[20px] overflow-hidden shadow-sm">
+          <div className="bg-white p-5 sm:p-8 flex flex-col justify-between">
             <div>
-              <div className="text-[14px] font-extrabold text-[#ff7a00] tracking-wide mb-2.5">01</div>
-              <h3 className="text-[19px] font-bold text-[#0f172a] mb-2">Rates that beat the market</h3>
-              <p className="text-[15px] text-[#555555] leading-relaxed">
+              <div className="text-[13px] sm:text-[14px] font-extrabold text-[#ff7a00] tracking-wide mb-2 sm:mb-2.5">01</div>
+              <h3 className="text-[17px] sm:text-[19px] font-bold text-[#0f172a] mb-1.5 sm:mb-2">Rates that beat the market</h3>
+              <p className="text-[14px] sm:text-[15px] text-[#555555] leading-relaxed">
                 Transparent per-kg pricing by weight, destination and transit speed. Share your current bill and we will try to
                 beat it.
               </p>
             </div>
           </div>
 
-          <div className="bg-white p-7 sm:p-8 flex flex-col justify-between">
+          <div className="bg-white p-5 sm:p-8 flex flex-col justify-between">
             <div>
-              <div className="text-[14px] font-extrabold text-[#ff7a00] tracking-wide mb-2.5">02</div>
-              <h3 className="text-[19px] font-bold text-[#0f172a] mb-2">Every major carrier, one desk</h3>
-              <p className="text-[15px] text-[#555555] leading-relaxed">
+              <div className="text-[13px] sm:text-[14px] font-extrabold text-[#ff7a00] tracking-wide mb-2 sm:mb-2.5">02</div>
+              <h3 className="text-[17px] sm:text-[19px] font-bold text-[#0f172a] mb-1.5 sm:mb-2">Every major carrier, one desk</h3>
+              <p className="text-[14px] sm:text-[15px] text-[#555555] leading-relaxed">
                 DHL, FedEx, UPS and Aramex under one account. We pick the best route for each shipment.
               </p>
             </div>
           </div>
 
-          <div className="bg-white p-7 sm:p-8 flex flex-col justify-between">
+          <div className="bg-white p-5 sm:p-8 flex flex-col justify-between">
             <div>
-              <div className="text-[14px] font-extrabold text-[#ff7a00] tracking-wide mb-2.5">03</div>
-              <h3 className="text-[19px] font-bold text-[#0f172a] mb-2">Customs &amp; paperwork done</h3>
-              <p className="text-[15px] text-[#555555] leading-relaxed">
+              <div className="text-[13px] sm:text-[14px] font-extrabold text-[#ff7a00] tracking-wide mb-2 sm:mb-2.5">03</div>
+              <h3 className="text-[17px] sm:text-[19px] font-bold text-[#0f172a] mb-1.5 sm:mb-2">Customs &amp; paperwork done</h3>
+              <p className="text-[14px] sm:text-[15px] text-[#555555] leading-relaxed">
                 Commercial invoices, packing lists and clearance handled so your goods never get stuck at the border.
               </p>
             </div>
           </div>
 
-          <div className="bg-white p-7 sm:p-8 flex flex-col justify-between">
+          <div className="bg-white p-5 sm:p-8 flex flex-col justify-between">
             <div>
-              <div className="text-[14px] font-extrabold text-[#ff7a00] tracking-wide mb-2.5">04</div>
-              <h3 className="text-[19px] font-bold text-[#0f172a] mb-2">Doorstep pickup, pan-India</h3>
-              <p className="text-[15px] text-[#555555] leading-relaxed">
+              <div className="text-[13px] sm:text-[14px] font-extrabold text-[#ff7a00] tracking-wide mb-2 sm:mb-2.5">04</div>
+              <h3 className="text-[17px] sm:text-[19px] font-bold text-[#0f172a] mb-1.5 sm:mb-2">Doorstep pickup, pan-India</h3>
+              <p className="text-[14px] sm:text-[15px] text-[#555555] leading-relaxed">
                 From your shop, factory or godown across North and West India, with pan-India pickup on request.
               </p>
             </div>
           </div>
 
-          <div className="bg-white p-7 sm:p-8 flex flex-col justify-between">
+          <div className="bg-white p-5 sm:p-8 flex flex-col justify-between">
             <div>
-              <div className="text-[14px] font-extrabold text-[#ff7a00] tracking-wide mb-2.5">05</div>
-              <h3 className="text-[19px] font-bold text-[#0f172a] mb-2">Bulk &amp; recurring shipments</h3>
-              <p className="text-[15px] text-[#555555] leading-relaxed">
+              <div className="text-[13px] sm:text-[14px] font-extrabold text-[#ff7a00] tracking-wide mb-2 sm:mb-2.5">05</div>
+              <h3 className="text-[17px] sm:text-[19px] font-bold text-[#0f172a] mb-1.5 sm:mb-2">Bulk &amp; recurring shipments</h3>
+              <p className="text-[14px] sm:text-[15px] text-[#555555] leading-relaxed">
                 From a single sample carton to scheduled weekly, monthly and seasonal exports for your regular buyers.
               </p>
             </div>
           </div>
 
-          <div className="bg-white p-7 sm:p-8 flex flex-col justify-between">
+          <div className="bg-white p-5 sm:p-8 flex flex-col justify-between">
             <div>
-              <div className="text-[14px] font-extrabold text-[#ff7a00] tracking-wide mb-2.5">06</div>
-              <h3 className="text-[19px] font-bold text-[#0f172a] mb-2">A dedicated point of contact</h3>
-              <p className="text-[15px] text-[#555555] leading-relaxed">
+              <div className="text-[13px] sm:text-[14px] font-extrabold text-[#ff7a00] tracking-wide mb-2 sm:mb-2.5">06</div>
+              <h3 className="text-[17px] sm:text-[19px] font-bold text-[#0f172a] mb-1.5 sm:mb-2">A dedicated point of contact</h3>
+              <p className="text-[14px] sm:text-[15px] text-[#555555] leading-relaxed">
                 A real logistics specialist on WhatsApp who knows your account and your orders, not a frustrating call center queue.
               </p>
             </div>
@@ -480,22 +469,22 @@ export default function ShopkeeperPage() {
       </section>
 
       {/* ── 7. WHO IT'S FOR ── */}
-      <section className="w-full max-w-[1400px] mx-auto px-4 sm:px-6 py-12">
-        <div className="bg-white border border-slate-200 rounded-[24px] sm:rounded-[32px] p-6 sm:p-10 lg:p-12 shadow-sm">
-          <div className="max-w-2xl mb-8">
-            <div className="inline-flex items-center gap-2.5 text-[12px] font-bold tracking-wider uppercase text-[#ff7a00] mb-3">
-              <span className="w-6 h-[2px] bg-[#ff7a00] rounded-full" />
+      <section className="w-full max-w-[1400px] mx-auto px-3.5 sm:px-6 py-8 sm:py-12">
+        <div className="bg-white border border-slate-200 rounded-[20px] sm:rounded-[28px] lg:rounded-[32px] p-5 sm:p-10 lg:p-12 shadow-sm">
+          <div className="max-w-2xl mb-6 sm:mb-8">
+            <div className="inline-flex items-center gap-2 text-[11px] sm:text-[12px] font-bold tracking-wider uppercase text-[#ff7a00] mb-2.5 sm:mb-3">
+              <span className="w-5 sm:w-6 h-[2px] bg-[#ff7a00] rounded-full" />
               Built for exporters like you
             </div>
-            <h2 className="text-[26px] sm:text-[34px] font-extrabold text-[#0f172a] leading-tight">
+            <h2 className="text-[22px] sm:text-[30px] lg:text-[34px] font-extrabold text-[#0f172a] leading-tight">
               If you are already shipping out of India, this is for you.
             </h2>
-            <p className="mt-2.5 text-[15px] sm:text-[16px] text-[#555555] leading-relaxed">
+            <p className="mt-2 sm:mt-2.5 text-[14px] sm:text-[16px] text-[#555555] leading-relaxed">
               Whatever your product and whatever your consignment volume, we have moved similar goods across global borders.
             </p>
           </div>
 
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap gap-2 sm:gap-3">
             {[
               "Garment & apparel exporters",
               "Utensil & kitchenware exporters",
@@ -507,9 +496,9 @@ export default function ShopkeeperPage() {
             ].map((chip, idx) => (
               <span
                 key={idx}
-                className="inline-flex items-center gap-2.5 bg-[#f8f9fa] border border-slate-200 rounded-full px-5 py-3 text-[15px] font-semibold text-[#0f172a] shadow-sm hover:border-[#ff7a00] transition-colors"
+                className="inline-flex items-center gap-2 bg-[#f8f9fa] border border-slate-200 rounded-full px-3.5 sm:px-5 py-2 sm:py-2.5 text-[13px] sm:text-[15px] font-semibold text-[#0f172a] shadow-sm hover:border-[#ff7a00] transition-colors"
               >
-                <span className="w-2 h-2 rounded-full bg-[#ff7a00]" />
+                <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-[#ff7a00]" />
                 {chip}
               </span>
             ))}
@@ -518,13 +507,13 @@ export default function ShopkeeperPage() {
       </section>
 
       {/* ── 8. FAQ ── */}
-      <section className="w-full max-w-[1000px] mx-auto px-4 sm:px-6 py-12">
-        <div className="max-w-2xl mb-10">
-          <div className="inline-flex items-center gap-2.5 text-[12px] font-bold tracking-wider uppercase text-[#ff7a00] mb-3">
-            <span className="w-6 h-[2px] bg-[#ff7a00] rounded-full" />
+      <section className="w-full max-w-[1000px] mx-auto px-3.5 sm:px-6 py-8 sm:py-12">
+        <div className="max-w-2xl mb-6 sm:mb-10">
+          <div className="inline-flex items-center gap-2 text-[11px] sm:text-[12px] font-bold tracking-wider uppercase text-[#ff7a00] mb-2.5 sm:mb-3">
+            <span className="w-5 sm:w-6 h-[2px] bg-[#ff7a00] rounded-full" />
             Questions? Glad you asked
           </div>
-          <h2 className="text-[28px] sm:text-[36px] font-extrabold text-[#0f172a] leading-tight">
+          <h2 className="text-[24px] sm:text-[32px] lg:text-[36px] font-extrabold text-[#0f172a] leading-tight">
             What exporters ask us first.
           </h2>
         </div>
@@ -568,15 +557,15 @@ export default function ShopkeeperPage() {
             <details
               key={i}
               open={faq.defaultOpen}
-              className="group border-b border-slate-200 py-4 transition-all"
+              className="group border-b border-slate-200 py-3.5 sm:py-4 transition-all"
             >
-              <summary className="list-none cursor-pointer flex items-center justify-between text-[18px] sm:text-[19px] font-bold text-[#0f172a] select-none">
+              <summary className="list-none cursor-pointer flex items-center justify-between text-[15.5px] sm:text-[18px] md:text-[19px] font-bold text-[#0f172a] select-none gap-2">
                 <span>{faq.q}</span>
-                <span className="text-[#ff7a00] font-bold text-[24px] ml-4 shrink-0 transition-transform group-open:rotate-45">
+                <span className="text-[#ff7a00] font-bold text-[20px] sm:text-[24px] ml-2 shrink-0 transition-transform group-open:rotate-45">
                   +
                 </span>
               </summary>
-              <p className="mt-3 text-[15px] sm:text-[16px] text-[#555555] leading-relaxed pr-6">
+              <p className="mt-2.5 sm:mt-3 text-[14px] sm:text-[15.5px] text-[#555555] leading-relaxed pr-2 sm:pr-6">
                 {faq.a}
               </p>
             </details>
@@ -585,27 +574,27 @@ export default function ShopkeeperPage() {
       </section>
 
       {/* ── 9. FINAL CTA ── */}
-      <section className="w-full max-w-[1400px] mx-auto px-4 sm:px-6 pt-4 pb-16">
-        <div className="rounded-[24px] sm:rounded-[32px] bg-[radial-gradient(120%_130%_at_15%_0%,#1e293b_0%,#0f172a_60%)] text-white text-center p-8 sm:p-12 lg:p-16 border border-white/10 shadow-2xl">
-          <div className="inline-flex items-center gap-2.5 text-[12px] font-bold tracking-wider uppercase text-[#ff7a00] mb-3">
-            <span className="w-6 h-[2px] bg-[#ff7a00] rounded-full" />
+      <section className="w-full max-w-[1400px] mx-auto px-3.5 sm:px-6 pt-4 pb-12 sm:pb-16">
+        <div className="rounded-[20px] sm:rounded-[28px] lg:rounded-[32px] bg-[radial-gradient(120%_130%_at_15%_0%,#1e293b_0%,#0f172a_60%)] text-white text-center p-6 sm:p-10 lg:p-16 border border-white/10 shadow-2xl">
+          <div className="inline-flex items-center gap-2 text-[11px] sm:text-[12px] font-bold tracking-wider uppercase text-[#ff7a00] mb-2.5 sm:mb-3">
+            <span className="w-5 sm:w-6 h-[2px] bg-[#ff7a00] rounded-full" />
             Ready when you are
           </div>
 
-          <h2 className="text-[28px] sm:text-[38px] lg:text-[46px] font-extrabold text-white max-w-2xl mx-auto leading-tight">
+          <h2 className="text-[24px] sm:text-[34px] lg:text-[46px] font-extrabold text-white max-w-2xl mx-auto leading-tight">
             Get a quote before your next shipment goes out.
           </h2>
 
-          <p className="mt-4 text-[18px] sm:text-[20px] text-[#ff7a00] italic font-medium">
+          <p className="mt-3.5 sm:mt-4 text-[16px] sm:text-[19px] md:text-[20px] text-[#ff7a00] italic font-medium">
             &ldquo;Aap export karo, pickup, customs aur delivery hum sambhaal lenge.&rdquo;
           </p>
 
-          <div className="flex flex-wrap justify-center gap-3.5 sm:gap-4 mt-8">
+          <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4 mt-6 sm:mt-8">
             <a
               href="https://wa.me/917070506070?text=Hi%20Manvi%2C%20I%20export%20from%20India%20and%20want%20a%20shipping%20quote."
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2.5 font-bold text-[15px] sm:text-[16px] px-6 sm:px-7 py-3.5 sm:py-4 rounded-full bg-[#23c961] text-[#0a111e] shadow-[0_8px_22px_-8px_rgba(35,201,97,0.6)] hover:bg-[#1fb855] hover:-translate-y-0.5 transition-all w-full sm:w-auto"
+              className="inline-flex items-center justify-center gap-2.5 font-bold text-[14px] sm:text-[16px] px-6 sm:px-7 py-3.5 sm:py-4 rounded-full bg-[#23c961] text-[#0a111e] shadow-[0_8px_22px_-8px_rgba(35,201,97,0.6)] hover:bg-[#1fb855] hover:-translate-y-0.5 transition-all text-center"
             >
               <svg className="w-5 h-5 fill-current shrink-0" viewBox="0 0 24 24">
                 <path d="M12 2a10 10 0 0 0-8.6 15.06L2 22l5.06-1.32A10 10 0 1 0 12 2Zm5.3 14.1c-.22.62-1.3 1.2-1.8 1.24-.46.05-1.03.07-1.66-.1a13.6 13.6 0 0 1-5.9-4.53c-.44-.58-1.1-1.56-1.1-2.98 0-1.42.75-2.12 1.02-2.4a1.05 1.05 0 0 1 .77-.36c.19 0 .38 0 .55.01.18.01.42-.07.65.5.24.6.8 2.02.87 2.16.07.15.12.32.02.5-.1.19-.15.3-.3.47-.15.18-.3.4-.44.53-.15.15-.3.3-.13.6.18.3.8 1.3 1.7 2.1 1.18 1.05 2.16 1.37 2.47 1.53.3.15.48.12.65-.08.18-.2.75-.87.95-1.17.2-.3.4-.25.66-.15.27.1 1.7.8 2 .95.3.15.5.22.57.34.07.13.07.72-.15 1.34Z" />
@@ -614,13 +603,13 @@ export default function ShopkeeperPage() {
             </a>
             <a
               href="tel:+917070506070"
-              className="inline-flex items-center justify-center gap-2.5 font-bold text-[15px] sm:text-[16px] px-6 sm:px-7 py-3.5 sm:py-4 rounded-full bg-transparent text-white border border-white/30 hover:border-white hover:bg-white/10 hover:-translate-y-0.5 transition-all w-full sm:w-auto"
+              className="inline-flex items-center justify-center gap-2.5 font-bold text-[14px] sm:text-[16px] px-6 sm:px-7 py-3.5 sm:py-4 rounded-full bg-transparent text-white border border-white/30 hover:border-white hover:bg-white/10 hover:-translate-y-0.5 transition-all text-center"
             >
               Call +91 70 70 50 60 70
             </a>
           </div>
 
-          <p className="mt-5 text-[13.5px] sm:text-[14.5px] text-slate-300">
+          <p className="mt-4 sm:mt-5 text-[12.5px] sm:text-[14px] text-slate-300">
             Doorstep pickup across Punjab · Delhi NCR · Haryana · Rajasthan · Gujarat · Mumbai, delivered worldwide.
           </p>
         </div>
