@@ -174,7 +174,7 @@ export default function ShopkeeperPage() {
             className="object-cover object-center"
           />
           {/* Soft gradient so the background artwork remains clear and visible */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/75 via-black/15 to-black/75" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/40 to-black/15" />
 
           <div className="relative z-10 px-5 pt-5 pb-5 flex flex-col justify-between flex-grow">
             {/* Top group: Logo, Heading, Description */}
@@ -192,7 +192,7 @@ export default function ShopkeeperPage() {
                 You already ship from India. <span className="text-[#ff7a00]">Let&apos;s ship it smarter.</span>
               </h1>
               <div className="w-[50vw]">
-                <p className="mt-3 text-slate-200 leading-relaxed font-medium">
+                <p className="mt-3 text-sm text-slate-200 leading-relaxed font-medium">
                   Manvi picks up from your doorstep, packs it export-ready, clears customs and delivers worldwide.
                 </p>
               </div>
