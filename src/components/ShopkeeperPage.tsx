@@ -94,19 +94,19 @@ export default function ShopkeeperPage() {
       <section className="w-full max-w-[1400px] mx-auto px-3.5 sm:px-6 pt-4 sm:pt-6 pb-2">
 
         {/* ── DESKTOP HERO (md and above) ── */}
-        <div className="hidden md:flex relative overflow-hidden rounded-[28px] lg:rounded-[32px] text-white border border-white/10 shadow-2xl min-h-[520px] flex-col justify-center">
+        <div className="hidden md:flex relative overflow-hidden rounded-[28px] lg:rounded-[32px] text-white border border-white/10 shadow-2xl min-h-[540px] lg:min-h-[580px] flex-col justify-center">
           <Image
             src="/shopkeeper-hero-desktop.jpg"
             alt="Export From India - Manvi International Courier"
             fill
             priority
-            sizes="100vw"
-            className="object-cover object-right lg:object-center"
+            unoptimized
+            className="object-contain object-right"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-black/10" />
           <div className="absolute inset-0 pointer-events-none overflow-hidden" id="snow" aria-hidden="true" />
 
-          <div className="relative z-10 px-10 lg:px-14 pb-8 pt-6 max-w-3xl flex flex-col justify-center">
+          <div className="relative z-10 px-10 lg:px-14 py-10 max-w-3xl flex flex-col justify-center">
             {/* Logo */}
             <div className="mb-3 overflow-hidden" style={{ height: "36px" }}>
               <img
@@ -116,22 +116,22 @@ export default function ShopkeeperPage() {
               />
             </div>
 
-            <h1 className="text-[38px] md:text-[44px] lg:text-[50px] font-extrabold text-white leading-[1.15] tracking-tight mt-1">
+            <h1 className="text-[36px] lg:text-[44px] xl:text-[50px] font-extrabold text-white leading-[1.15] tracking-tight mt-1">
               You already ship from India. <span className="text-[#ff7a00]">Let&apos;s ship it smarter.</span>
             </h1>
 
-            <p className="mt-5 text-[16px] md:text-[17px] text-slate-200 leading-relaxed max-w-xl font-medium">
+            <p className="mt-4 lg:mt-5 text-[15px] lg:text-[16.5px] text-slate-200 leading-relaxed max-w-xl font-medium">
               Garments, utensils, handicrafts, food or machine parts. Whatever you export, Manvi picks it up directly from your
               doorstep, packs it export-ready, clears customs and delivers worldwide through DHL, FedEx, UPS and
               Aramex at competitive rates.
             </p>
 
-            <div className="flex flex-row gap-4 mt-8">
+            <div className="flex flex-row gap-4 mt-7 lg:mt-8">
               <a
                 href="https://wa.me/917070506070?text=Hi%20Manvi%2C%20I%20export%20from%20India%20and%20want%20to%20compare%20my%20shipping%20rates."
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2.5 font-bold text-[16px] px-7 py-4 rounded-full bg-[#23c961] text-[#0a111e] shadow-[0_8px_22px_-8px_rgba(35,201,97,0.6)] hover:bg-[#1fb855] hover:-translate-y-0.5 transition-all"
+                className="inline-flex items-center justify-center gap-2.5 font-bold text-[15px] lg:text-[16px] px-7 py-3.5 lg:py-4 rounded-full bg-[#23c961] text-[#0a111e] shadow-[0_8px_22px_-8px_rgba(35,201,97,0.6)] hover:bg-[#1fb855] hover:-translate-y-0.5 transition-all"
               >
                 <svg className="w-5 h-5 fill-current shrink-0" viewBox="0 0 24 24">
                   <path d="M12 2a10 10 0 0 0-8.6 15.06L2 22l5.06-1.32A10 10 0 1 0 12 2Zm5.3 14.1c-.22.62-1.3 1.2-1.8 1.24-.46.05-1.03.07-1.66-.1a13.6 13.6 0 0 1-5.9-4.53c-.44-.58-1.1-1.56-1.1-2.98 0-1.42.75-2.12 1.02-2.4a1.05 1.05 0 0 1 .77-.36c.19 0 .38 0 .55.01.18.01.42-.07.65.5.24.6.8 2.02.87 2.16.07.15.12.32.02.5-.1.19-.15.3-.3.47-.15.18-.3.4-.44.53-.15.15-.3.3-.13.6.18.3.8 1.3 1.7 2.1 1.18 1.05 2.16 1.37 2.47 1.53.3.15.48.12.65-.08.18-.2.75-.87.95-1.17.2-.3.4-.25.66-.15.27.1 1.7.8 2 .95.3.15.5.22.57.34.07.13.07.72-.15 1.34Z" />
@@ -140,24 +140,24 @@ export default function ShopkeeperPage() {
               </a>
               <a
                 href="tel:+917070506070"
-                className="inline-flex items-center justify-center gap-2.5 font-bold text-[16px] px-7 py-4 rounded-full bg-transparent text-white border border-white/30 hover:border-white hover:bg-white/10 hover:-translate-y-0.5 transition-all"
+                className="inline-flex items-center justify-center gap-2.5 font-bold text-[15px] lg:text-[16px] px-7 py-3.5 lg:py-4 rounded-full bg-transparent text-white border border-white/30 hover:border-white hover:bg-white/10 hover:-translate-y-0.5 transition-all"
               >
                 Call +91 70 70 50 60 70
               </a>
             </div>
 
-            <div className="grid grid-cols-3 gap-6 mt-8 pt-6 border-t border-white/15">
+            <div className="grid grid-cols-3 gap-6 mt-7 lg:mt-8 pt-5 lg:pt-6 border-t border-white/15">
               <div className="border-l-[3px] border-[#ff7a00] pl-3.5">
-                <div className="text-[24px] md:text-[28px] font-extrabold text-white leading-none">1M+</div>
-                <div className="text-[11px] font-bold tracking-wider uppercase text-slate-300 mt-1">Shipments</div>
+                <div className="text-[22px] lg:text-[26px] xl:text-[28px] font-extrabold text-white leading-none">1M+</div>
+                <div className="text-[10px] lg:text-[11px] font-bold tracking-wider uppercase text-slate-300 mt-1">Shipments</div>
               </div>
               <div className="border-l-[3px] border-[#ff7a00] pl-3.5">
-                <div className="text-[24px] md:text-[28px] font-extrabold text-white leading-none">100K+</div>
-                <div className="text-[11px] font-bold tracking-wider uppercase text-slate-300 mt-1">Customers</div>
+                <div className="text-[22px] lg:text-[26px] xl:text-[28px] font-extrabold text-white leading-none">100K+</div>
+                <div className="text-[10px] lg:text-[11px] font-bold tracking-wider uppercase text-slate-300 mt-1">Customers</div>
               </div>
               <div className="border-l-[3px] border-[#ff7a00] pl-3.5">
-                <div className="text-[24px] md:text-[28px] font-extrabold text-white leading-none">200+</div>
-                <div className="text-[11px] font-bold tracking-wider uppercase text-slate-300 mt-1">Countries</div>
+                <div className="text-[22px] lg:text-[26px] xl:text-[28px] font-extrabold text-white leading-none">200+</div>
+                <div className="text-[10px] lg:text-[11px] font-bold tracking-wider uppercase text-slate-300 mt-1">Countries</div>
               </div>
             </div>
           </div>
