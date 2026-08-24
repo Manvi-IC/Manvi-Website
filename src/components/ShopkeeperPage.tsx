@@ -188,7 +188,7 @@ export default function ShopkeeperPage() {
                 />
               </div>
 
-              <h1 className="text-4xl font-extrabold text-white leading-[1.2] tracking-tight">
+              <h1 className="text-3xl font-extrabold text-white leading-[1.2] tracking-tight">
                 You already ship from India. <span className="text-[#ff7a00]">Let&apos;s ship it smarter.</span>
               </h1>
               <div className="w-[50vw]">
