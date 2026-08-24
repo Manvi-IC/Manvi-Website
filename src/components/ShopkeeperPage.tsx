@@ -94,19 +94,19 @@ export default function ShopkeeperPage() {
       <section className="w-full max-w-[1400px] mx-auto px-3.5 sm:px-6 pt-4 sm:pt-6 pb-2">
 
         {/* ── DESKTOP HERO (md and above) ── */}
-        <div className="hidden md:flex relative overflow-hidden rounded-[28px] lg:rounded-[32px] text-white border border-white/10 shadow-2xl min-h-[540px] lg:min-h-[580px] flex-col justify-center">
+        <div className="hidden md:flex relative overflow-hidden rounded-[28px] lg:rounded-[32px] text-white border border-white/10 shadow-2xl min-h-[460px] lg:min-h-[500px] flex-col justify-center">
           <Image
             src="/shopkeeper-hero-desktop.jpg"
             alt="Export From India - Manvi International Courier"
             fill
             priority
             unoptimized
-            className="object-contain object-right"
+            className="object-cover object-right lg:object-center"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-black/10" />
           <div className="absolute inset-0 pointer-events-none overflow-hidden" id="snow" aria-hidden="true" />
 
-          <div className="relative z-10 px-10 lg:px-14 py-10 max-w-3xl flex flex-col justify-center">
+          <div className="relative z-10 px-8 lg:px-12 py-6 lg:py-8 max-w-3xl flex flex-col justify-center">
             {/* Logo */}
             <div className="mb-3 overflow-hidden" style={{ height: "36px" }}>
               <img
