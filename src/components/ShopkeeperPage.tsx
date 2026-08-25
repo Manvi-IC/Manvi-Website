@@ -261,42 +261,46 @@ export default function ShopkeeperPage() {
 
       {/* ── 2.5 LEAD / QUOTE FORM CONTAINER ── */}
       <section className="w-full max-w-[1400px] mx-auto px-3.5 sm:px-6 py-6 sm:py-10" id="quote">
-        <div className="bg-white border border-slate-200 rounded-[20px] sm:rounded-[28px] lg:rounded-[32px] p-6 sm:p-10 lg:p-12 shadow-sm">
-          <div className="grid grid-cols-1 lg:grid-cols-[0.92fr_1.08fr] gap-8 lg:gap-12 items-center">
+        <div className="bg-[#0f172a] text-white border border-white/10 rounded-[20px] sm:rounded-[28px] lg:rounded-[32px] p-6 sm:p-10 lg:p-12 shadow-2xl relative overflow-hidden">
+          {/* Subtle background glow */}
+          <div className="absolute -top-24 -left-24 w-72 h-72 rounded-full bg-[#ff7a00]/10 blur-3xl pointer-events-none" />
+          <div className="absolute -bottom-24 -right-24 w-72 h-72 rounded-full bg-[#ff7a00]/15 blur-3xl pointer-events-none" />
+
+          <div className="grid grid-cols-1 lg:grid-cols-[0.92fr_1.08fr] gap-8 lg:gap-12 items-center relative z-10">
             {/* Left Copy */}
             <div className="flex flex-col">
               <div className="inline-flex items-center gap-2 text-[11px] sm:text-[12px] font-bold tracking-wider uppercase text-[#ff7a00] mb-2.5 sm:mb-3">
                 <span className="w-5 sm:w-6 h-[2px] bg-[#ff7a00] rounded-full" />
                 Get your quote
               </div>
-              <h2 className="text-[24px] sm:text-[32px] lg:text-[38px] font-extrabold text-[#0f172a] leading-tight">
-                Tell us what you ship. Get a rate that beats your current one.
+              <h2 className="text-[24px] sm:text-[32px] lg:text-[38px] font-extrabold text-white leading-tight">
+                Tell us what you ship. <span className="text-[#ff7a00]">Get a rate that beats your current one.</span>
               </h2>
-              <p className="mt-3 text-[14.5px] sm:text-[16px] text-[#555555] leading-relaxed">
+              <p className="mt-3 text-[14.5px] sm:text-[16px] text-slate-300 leading-relaxed">
                 Fill this in and we will send a clear quote on WhatsApp, usually within a few hours. No obligation and no switching hassle.
               </p>
 
               <ul className="mt-6 sm:mt-8 space-y-3 sm:space-y-3.5">
-                <li className="flex items-center gap-3 text-[14px] sm:text-[15px] text-[#0f172a] font-medium">
-                  <span className="w-5 h-5 rounded-full bg-[#ff7a00]/15 text-[#ff7a00] flex items-center justify-center font-bold text-[12px] shrink-0">
+                <li className="flex items-center gap-3 text-[14px] sm:text-[15px] text-slate-200 font-medium">
+                  <span className="w-5 h-5 rounded-full bg-[#ff7a00]/20 text-[#ff7a00] flex items-center justify-center font-bold text-[12px] shrink-0">
                     ✓
                   </span>
                   Free rate comparison against what you pay today
                 </li>
-                <li className="flex items-center gap-3 text-[14px] sm:text-[15px] text-[#0f172a] font-medium">
-                  <span className="w-5 h-5 rounded-full bg-[#ff7a00]/15 text-[#ff7a00] flex items-center justify-center font-bold text-[12px] shrink-0">
+                <li className="flex items-center gap-3 text-[14px] sm:text-[15px] text-slate-200 font-medium">
+                  <span className="w-5 h-5 rounded-full bg-[#ff7a00]/20 text-[#ff7a00] flex items-center justify-center font-bold text-[12px] shrink-0">
                     ✓
                   </span>
                   Customs, packing and documentation handled for you
                 </li>
-                <li className="flex items-center gap-3 text-[14px] sm:text-[15px] text-[#0f172a] font-medium">
-                  <span className="w-5 h-5 rounded-full bg-[#ff7a00]/15 text-[#ff7a00] flex items-center justify-center font-bold text-[12px] shrink-0">
+                <li className="flex items-center gap-3 text-[14px] sm:text-[15px] text-slate-200 font-medium">
+                  <span className="w-5 h-5 rounded-full bg-[#ff7a00]/20 text-[#ff7a00] flex items-center justify-center font-bold text-[12px] shrink-0">
                     ✓
                   </span>
                   Doorstep pickup across North and West India
                 </li>
-                <li className="flex items-center gap-3 text-[14px] sm:text-[15px] text-[#0f172a] font-medium">
-                  <span className="w-5 h-5 rounded-full bg-[#ff7a00]/15 text-[#ff7a00] flex items-center justify-center font-bold text-[12px] shrink-0">
+                <li className="flex items-center gap-3 text-[14px] sm:text-[15px] text-slate-200 font-medium">
+                  <span className="w-5 h-5 rounded-full bg-[#ff7a00]/20 text-[#ff7a00] flex items-center justify-center font-bold text-[12px] shrink-0">
                     ✓
                   </span>
                   One dedicated logistics contact on WhatsApp
@@ -304,21 +308,18 @@ export default function ShopkeeperPage() {
               </ul>
             </div>
 
-            {/* Right Form Card - Styled in Brand Dark Navy / Bluish-Gray */}
-            <div className="bg-[#0f172a] text-white border border-white/10 rounded-[20px] sm:rounded-[28px] p-6 sm:p-8 shadow-2xl relative overflow-hidden">
-              {/* Subtle background glow */}
-              <div className="absolute -top-16 -right-16 w-44 h-44 rounded-full bg-[#ff7a00]/10 blur-3xl pointer-events-none" />
-
+            {/* Right Form Card - Styled in Brand Orange Theme */}
+            <div className="bg-gradient-to-br from-[#ff7a00] to-[#e66c00] text-white border border-orange-400/30 rounded-[20px] sm:rounded-[28px] p-6 sm:p-8 shadow-[0_20px_50px_-15px_rgba(255,122,0,0.4)] relative overflow-hidden">
               <h3 className="text-[21px] sm:text-[25px] font-extrabold text-white">Request your quote</h3>
-              <p className="mt-1 text-[13px] sm:text-[13.5px] text-slate-300 mb-5">
-                Takes under a minute. Fields marked with <span className="text-[#ff7a00] font-bold">*</span> are required.
+              <p className="mt-1 text-[13px] sm:text-[13.5px] text-orange-100 mb-5">
+                Takes under a minute. Fields marked with <span className="text-white font-bold">*</span> are required.
               </p>
 
               <form onSubmit={handleLeadSubmit} className="space-y-3.5 relative z-10">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                   <div>
-                    <label className="block text-[11px] font-bold tracking-wider uppercase text-slate-300 mb-1.5">
-                      Your Name <span className="text-[#ff7a00]">*</span>
+                    <label className="block text-[11px] font-bold tracking-wider uppercase text-white/90 mb-1.5">
+                      Your Name <span className="text-white font-black">*</span>
                     </label>
                     <input
                       type="text"
@@ -326,12 +327,12 @@ export default function ShopkeeperPage() {
                       placeholder="Full name"
                       value={formState.name}
                       onChange={(e) => setFormState({ ...formState, name: e.target.value })}
-                      className="w-full px-3.5 py-2.5 bg-[#1e293b] text-white placeholder-slate-400 rounded-xl text-[14.5px] border border-slate-700 focus:outline-none focus:border-[#ff7a00] focus:ring-2 focus:ring-[#ff7a00]/20 transition-all"
+                      className="w-full px-3.5 py-2.5 bg-white text-slate-900 placeholder-slate-400 rounded-xl text-[14.5px] border border-white/80 focus:outline-none focus:ring-2 focus:ring-slate-900/20 shadow-sm transition-all"
                     />
                   </div>
                   <div>
-                    <label className="block text-[11px] font-bold tracking-wider uppercase text-slate-300 mb-1.5">
-                      WhatsApp Number <span className="text-[#ff7a00]">*</span>
+                    <label className="block text-[11px] font-bold tracking-wider uppercase text-white/90 mb-1.5">
+                      WhatsApp Number <span className="text-white font-black">*</span>
                     </label>
                     <input
                       type="tel"
@@ -339,13 +340,13 @@ export default function ShopkeeperPage() {
                       placeholder="e.g. 98xxxxxxxx"
                       value={formState.phone}
                       onChange={(e) => setFormState({ ...formState, phone: e.target.value })}
-                      className="w-full px-3.5 py-2.5 bg-[#1e293b] text-white placeholder-slate-400 rounded-xl text-[14.5px] border border-slate-700 focus:outline-none focus:border-[#ff7a00] focus:ring-2 focus:ring-[#ff7a00]/20 transition-all"
+                      className="w-full px-3.5 py-2.5 bg-white text-slate-900 placeholder-slate-400 rounded-xl text-[14.5px] border border-white/80 focus:outline-none focus:ring-2 focus:ring-slate-900/20 shadow-sm transition-all"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-[11px] font-bold tracking-wider uppercase text-slate-300 mb-1.5">
+                  <label className="block text-[11px] font-bold tracking-wider uppercase text-white/90 mb-1.5">
                     Shop / Business Name
                   </label>
                   <input
@@ -353,12 +354,12 @@ export default function ShopkeeperPage() {
                     placeholder="Optional"
                     value={formState.biz}
                     onChange={(e) => setFormState({ ...formState, biz: e.target.value })}
-                    className="w-full px-3.5 py-2.5 bg-[#1e293b] text-white placeholder-slate-400 rounded-xl text-[14.5px] border border-slate-700 focus:outline-none focus:border-[#ff7a00] focus:ring-2 focus:ring-[#ff7a00]/20 transition-all"
+                    className="w-full px-3.5 py-2.5 bg-white text-slate-900 placeholder-slate-400 rounded-xl text-[14.5px] border border-white/80 focus:outline-none focus:ring-2 focus:ring-slate-900/20 shadow-sm transition-all"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-[11px] font-bold tracking-wider uppercase text-slate-300 mb-1.5">
+                  <label className="block text-[11px] font-bold tracking-wider uppercase text-white/90 mb-1.5">
                     What do you export?
                   </label>
                   <input
@@ -366,50 +367,50 @@ export default function ShopkeeperPage() {
                     placeholder="e.g. garments, utensils, handicrafts, spices"
                     value={formState.goods}
                     onChange={(e) => setFormState({ ...formState, goods: e.target.value })}
-                    className="w-full px-3.5 py-2.5 bg-[#1e293b] text-white placeholder-slate-400 rounded-xl text-[14.5px] border border-slate-700 focus:outline-none focus:border-[#ff7a00] focus:ring-2 focus:ring-[#ff7a00]/20 transition-all"
+                    className="w-full px-3.5 py-2.5 bg-white text-slate-900 placeholder-slate-400 rounded-xl text-[14.5px] border border-white/80 focus:outline-none focus:ring-2 focus:ring-slate-900/20 shadow-sm transition-all"
                   />
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                   <div>
-                    <label className="block text-[11px] font-bold tracking-wider uppercase text-slate-300 mb-1.5">
+                    <label className="block text-[11px] font-bold tracking-wider uppercase text-white/90 mb-1.5">
                       Main Destination
                     </label>
                     <select
                       value={formState.dest}
                       onChange={(e) => setFormState({ ...formState, dest: e.target.value })}
-                      className="w-full px-3.5 py-2.5 bg-[#1e293b] text-white rounded-xl text-[14.5px] border border-slate-700 focus:outline-none focus:border-[#ff7a00] focus:ring-2 focus:ring-[#ff7a00]/20 transition-all"
+                      className="w-full px-3.5 py-2.5 bg-white text-slate-900 rounded-xl text-[14.5px] border border-white/80 focus:outline-none focus:ring-2 focus:ring-slate-900/20 shadow-sm transition-all"
                     >
-                      <option value="" className="bg-[#1e293b] text-white">Select destination...</option>
-                      <option value="USA" className="bg-[#1e293b] text-white">USA</option>
-                      <option value="UK" className="bg-[#1e293b] text-white">UK</option>
-                      <option value="Canada" className="bg-[#1e293b] text-white">Canada</option>
-                      <option value="Australia" className="bg-[#1e293b] text-white">Australia</option>
-                      <option value="Europe" className="bg-[#1e293b] text-white">Europe</option>
-                      <option value="Other / Multiple" className="bg-[#1e293b] text-white">Other / Multiple</option>
+                      <option value="" className="text-slate-700">Select destination...</option>
+                      <option value="USA">USA</option>
+                      <option value="UK">UK</option>
+                      <option value="Canada">Canada</option>
+                      <option value="Australia">Australia</option>
+                      <option value="Europe">Europe</option>
+                      <option value="Other / Multiple">Other / Multiple</option>
                     </select>
                   </div>
 
                   <div>
-                    <label className="block text-[11px] font-bold tracking-wider uppercase text-slate-300 mb-1.5">
+                    <label className="block text-[11px] font-bold tracking-wider uppercase text-white/90 mb-1.5">
                       Shipments / Month
                     </label>
                     <select
                       value={formState.vol}
                       onChange={(e) => setFormState({ ...formState, vol: e.target.value })}
-                      className="w-full px-3.5 py-2.5 bg-[#1e293b] text-white rounded-xl text-[14.5px] border border-slate-700 focus:outline-none focus:border-[#ff7a00] focus:ring-2 focus:ring-[#ff7a00]/20 transition-all"
+                      className="w-full px-3.5 py-2.5 bg-white text-slate-900 rounded-xl text-[14.5px] border border-white/80 focus:outline-none focus:ring-2 focus:ring-slate-900/20 shadow-sm transition-all"
                     >
-                      <option value="" className="bg-[#1e293b] text-white">Select volume...</option>
-                      <option value="Just starting" className="bg-[#1e293b] text-white">Just starting</option>
-                      <option value="1-5 shipments" className="bg-[#1e293b] text-white">1 - 5 shipments</option>
-                      <option value="5-20 shipments" className="bg-[#1e293b] text-white">5 - 20 shipments</option>
-                      <option value="20+ shipments" className="bg-[#1e293b] text-white">20+ shipments</option>
+                      <option value="" className="text-slate-700">Select volume...</option>
+                      <option value="Just starting">Just starting</option>
+                      <option value="1-5 shipments">1 - 5 shipments</option>
+                      <option value="5-20 shipments">5 - 20 shipments</option>
+                      <option value="20+ shipments">20+ shipments</option>
                     </select>
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-[11px] font-bold tracking-wider uppercase text-slate-300 mb-1.5">
+                  <label className="block text-[11px] font-bold tracking-wider uppercase text-white/90 mb-1.5">
                     Anything else?
                   </label>
                   <textarea
@@ -417,26 +418,26 @@ export default function ShopkeeperPage() {
                     placeholder="Current courier, typical weight, or any specific questions"
                     value={formState.msg}
                     onChange={(e) => setFormState({ ...formState, msg: e.target.value })}
-                    className="w-full px-3.5 py-2.5 bg-[#1e293b] text-white placeholder-slate-400 rounded-xl text-[14.5px] border border-slate-700 focus:outline-none focus:border-[#ff7a00] focus:ring-2 focus:ring-[#ff7a00]/20 transition-all resize-none"
+                    className="w-full px-3.5 py-2.5 bg-white text-slate-900 placeholder-slate-400 rounded-xl text-[14.5px] border border-white/80 focus:outline-none focus:ring-2 focus:ring-slate-900/20 shadow-sm transition-all resize-none"
                   />
                 </div>
 
                 <button
                   type="submit"
-                  className="w-full inline-flex items-center justify-center gap-2.5 font-bold text-[15px] sm:text-[16px] px-6 py-3.5 rounded-full bg-[#23c961] text-[#0a111e] shadow-[0_8px_22px_-8px_rgba(35,201,97,0.6)] hover:bg-[#1fb855] hover:-translate-y-0.5 transition-all text-center cursor-pointer mt-1"
+                  className="w-full inline-flex items-center justify-center gap-2.5 font-bold text-[15px] sm:text-[16px] px-6 py-3.5 rounded-full bg-[#0f172a] hover:bg-[#1e293b] text-white shadow-xl hover:-translate-y-0.5 transition-all text-center cursor-pointer mt-1"
                 >
-                  <svg className="w-5 h-5 fill-current shrink-0" viewBox="0 0 24 24">
+                  <svg className="w-5 h-5 fill-[#23c961] shrink-0" viewBox="0 0 24 24">
                     <path d="M12 2a10 10 0 0 0-8.6 15.06L2 22l5.06-1.32A10 10 0 1 0 12 2Zm5.3 14.1c-.22.62-1.3 1.2-1.8 1.24-.46.05-1.03.07-1.66-.1a13.6 13.6 0 0 1-5.9-4.53c-.44-.58-1.1-1.56-1.1-2.98 0-1.42.75-2.12 1.02-2.4a1.05 1.05 0 0 1 .77-.36c.19 0 .38 0 .55.01.18.01.42-.07.65.5.24.6.8 2.02.87 2.16.07.15.12.32.02.5-.1.19-.15.3-.3.47-.15.18-.3.4-.44.53-.15.15-.3.3-.13.6.18.3.8 1.3 1.7 2.1 1.18 1.05 2.16 1.37 2.47 1.53.3.15.48.12.65-.08.18-.2.75-.87.95-1.17.2-.3.4-.25.66-.15.27.1 1.7.8 2 .95.3.15.5.22.57.34.07.13.07.72-.15 1.34Z" />
                   </svg>
                   <span>Get my quote on WhatsApp</span>
                 </button>
 
-                <p className="text-[11.5px] sm:text-[12px] text-slate-400 text-center leading-relaxed mt-1">
+                <p className="text-[11.5px] sm:text-[12px] text-orange-100 text-center leading-relaxed mt-1">
                   On submit, you will be taken to WhatsApp with your details pre-filled.
                 </p>
 
                 {showOk && (
-                  <div className="mt-2.5 p-3 bg-emerald-950/60 border border-emerald-500/40 text-emerald-300 rounded-xl text-[13px] text-center leading-relaxed">
+                  <div className="mt-2.5 p-3 bg-black/40 border border-white/30 text-white rounded-xl text-[13px] text-center leading-relaxed">
                     Opening WhatsApp with your details... If it doesn&apos;t open, message us directly at{" "}
                     <a href="tel:+917070506070" className="font-bold underline text-white">
                       +91 70 70 50 60 70
