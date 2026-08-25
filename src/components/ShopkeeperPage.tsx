@@ -36,38 +36,10 @@ export default function ShopkeeperPage() {
     window.open(`https://wa.me/917070506070?text=${text}`, "_blank");
   };
 
-  useEffect(() => {
-    if (typeof window === "undefined" || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const snow = document.getElementById("snow");
-    if (!snow) return;
-    snow.innerHTML = "";
-    for (let i = 0; i < 24; i++) {
-      const f = document.createElement("i");
-      f.style.left = Math.random() * 100 + "%";
-      f.style.animationDuration = 6 + Math.random() * 8 + "s";
-      f.style.animationDelay = -Math.random() * 10 + "s";
-      const s = 2 + Math.random() * 3;
-      f.style.width = s + "px";
-      f.style.height = s + "px";
-      f.style.opacity = String(0.2 + Math.random() * 0.45);
-      f.style.position = "absolute";
-      f.style.top = "-10px";
-      f.style.borderRadius = "50%";
-      f.style.background = "rgba(255, 255, 255, 0.45)";
-      f.style.animationName = "skFall";
-      f.style.animationTimingFunction = "linear";
-      f.style.animationIterationCount = "infinite";
-      snow.appendChild(f);
-    }
-  }, []);
-
   return (
     <div className="w-full font-sans bg-[#f8f9fa] text-[#0f172a] antialiased overflow-x-hidden">
       {/* Keyframe animation helpers */}
       <style>{`
-        @keyframes skFall {
-          to { transform: translateY(560px); opacity: 0; }
-        }
         @keyframes skDraw {
           to { stroke-dashoffset: 0; }
         }
@@ -96,15 +68,15 @@ export default function ShopkeeperPage() {
         {/* ── DESKTOP HERO (md and above) ── */}
         <div className="hidden md:flex relative overflow-hidden rounded-[28px] lg:rounded-[32px] text-white border border-white/10 shadow-2xl min-h-[460px] lg:min-h-[500px] flex-col justify-center">
           <Image
-            src="/shopkeeper-hero-desktop.jpg"
+            src="/shopkeeper-hero-desktop.png"
             alt="Export From India - Manvi International Courier"
             fill
             priority
             unoptimized
             className="object-cover object-right lg:object-center"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-black/10" />
-          <div className="absolute inset-0 pointer-events-none overflow-hidden" id="snow" aria-hidden="true" />
+          {/* Scrim only behind text on the left, leaving the 3D graphics on the right 100% crisp and clear */}
+          <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/45 via-45% to-transparent" />
 
           <div className="relative z-10 px-8 lg:px-12 py-6 lg:py-8 max-w-3xl flex flex-col justify-center">
             {/* Logo */}
@@ -146,7 +118,7 @@ export default function ShopkeeperPage() {
               </a>
             </div>
 
-            <div className="grid grid-cols-3 gap-6 mt-7 lg:mt-8 pt-5 lg:pt-6 border-t border-white/15">
+            <div className="flex gap-10 mt-7 lg:mt-8 pt-5 lg:pt-6 border-t border-white/15">
               <div className="border-l-[3px] border-[#ff7a00] pl-3.5">
                 <div className="text-[22px] lg:text-[26px] xl:text-[28px] font-extrabold text-white leading-none">1M+</div>
                 <div className="text-[10px] lg:text-[11px] font-bold tracking-wider uppercase text-slate-300 mt-1">Shipments</div>
@@ -462,8 +434,7 @@ export default function ShopkeeperPage() {
             If you send it abroad, we move it.
           </h2>
           <p className="mt-2.5 sm:mt-3 text-[14.5px] sm:text-[16px] md:text-[17px] text-[#555555] leading-relaxed">
-            Manvi is product-agnostic. From a single sample to a full bulk consignment, packed export-ready and shipped
-            worldwide.
+            No matter what you sell, we can ship it. From a single sample to a full bulk consignment- packed export-ready and delivered worldwide.
           </p>
         </div>
 
@@ -776,7 +747,7 @@ export default function ShopkeeperPage() {
             },
             {
               q: "Where do you pick up from in India?",
-              a: "Doorstep pickup is available across Punjab, Delhi NCR, Haryana, Rajasthan, Gujarat and Mumbai, with pan-India pickup arranged upon request.",
+              a: "Doorstep pickup is available across Punjab, Delhi NCR, Haryana. Further, with pan-India pickup arranged upon request.",
             },
             {
               q: "What items cannot be shipped?",
@@ -843,7 +814,7 @@ export default function ShopkeeperPage() {
           </div>
 
           <p className="mt-4 sm:mt-5 text-[12.5px] sm:text-[14px] text-slate-300">
-            Doorstep pickup across Punjab · Delhi NCR · Haryana · Rajasthan · Gujarat · Mumbai, delivered worldwide.
+            Standard doorstep pickup across Punjab, Delhi NCR, Haryana and Rajasthan. Gujarat, Mumbai and pan-India available on request. Delivered worldwide.
           </p>
         </div>
       </section>
