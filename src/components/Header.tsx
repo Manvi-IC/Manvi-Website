@@ -449,6 +449,7 @@ export default function Header() {
         pathname !== "/campaign" &&
         pathname !== "/shopkeeper" &&
         pathname !== "/shopkeepers" &&
+        pathname !== "/winter" &&
         !pathname.endsWith("-policy") &&
         pathname !== "/terms-and-conditions" && (
           <div className="py-3.5 px-4 sm:px-6 relative z-30">
