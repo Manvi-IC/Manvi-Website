@@ -68,7 +68,7 @@ export default function ShopkeeperPage() {
         {/* ── DESKTOP HERO (md and above) ── */}
         <div className="hidden md:flex relative overflow-hidden rounded-[28px] lg:rounded-[32px] text-white border border-white/10 shadow-2xl min-h-[460px] lg:min-h-[500px] flex-col justify-center">
           <Image
-            src="/shopkeeper-hero-desktop.png"
+            src="/laptop banner.webp"
             alt="Export From India - Manvi International Courier"
             fill
             priority
