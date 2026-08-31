@@ -1,8 +1,11 @@
 import type { NextConfig } from "next";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+const API_URL = process.env.NEXT_API_URL || "http://localhost:5000";
 
 const nextConfig: NextConfig = {
+  env: {
+    NEXT_API_URL: process.env.NEXT_API_URL || "http://localhost:5000",
+  },
   experimental: {
     cpus: 1,
     optimizeCss: true,

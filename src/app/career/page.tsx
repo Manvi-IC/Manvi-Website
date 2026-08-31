@@ -366,7 +366,7 @@ const careerTranslations: Record<Language, CareerTranslations> = {
   },
 };
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+const API_URL = process.env.NEXT_API_URL || "http://localhost:5000";
 
 export default function CareerPage(): React.ReactElement {
   const { language } = useLanguage();
