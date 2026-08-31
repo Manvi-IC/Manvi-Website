@@ -153,7 +153,7 @@ export default function WinterPage() {
               </h1>
 
               <p className="mt-4 sm:mt-5 text-[15px] sm:text-[17px] text-slate-200 leading-relaxed max-w-xl font-medium">
-                Warm sweaters, maa ke haath ki pinni, dry fruits, festive gifts — we pick them up from your doorstep in India
+                Warm sweaters, maa ke haath ki pinni, dry fruits, festive gifts, we pick them up from your doorstep in India
                 and deliver to your family&apos;s door abroad, safe and in time for the season.
               </p>
 
@@ -180,12 +180,12 @@ export default function WinterPage() {
                 <span className="text-[11px] font-bold tracking-wider uppercase text-[#ff7a00] block mb-1">
                   Pickup · India
                 </span>
-                <b className="text-white font-semibold">Standard doorstep pickup across Punjab, Delhi NCR, Haryana and Rajasthan</b>{" "}
-                — Gujarat, Mumbai and pan-India on request.
+                <b className="text-white font-semibold">Standard doorstep pickup across Punjab, Delhi NCR, Haryana and Rajasthan</b>,{" "}
+                Gujarat, Mumbai and pan-India on request.
                 <span className="text-[11px] font-bold tracking-wider uppercase text-[#ff7a00] block mt-3 mb-1">
                   Delivered · Worldwide
                 </span>
-                <b className="text-white font-semibold">USA · UK · Canada · Australia · Europe</b> — right to their door.
+                <b className="text-white font-semibold">USA · UK · Canada · Australia · Europe</b>, right to their door.
               </div>
             </div>
 
@@ -352,7 +352,7 @@ export default function WinterPage() {
                 Tell us what to send. <span className="text-[#ff7a00]">We&apos;ll bring winter to their door.</span>
               </h2>
               <p className="mt-3 text-[14.5px] sm:text-[16px] text-[#555555] leading-relaxed">
-                Share a few details and we will reply on WhatsApp with a clear quote and pickup schedule — usually within a few
+                Share a few details and we will reply on WhatsApp with a clear quote and pickup schedule, usually within a few
                 hours. You don&apos;t step out in the cold; we come right to you.
               </p>
 
@@ -384,22 +384,43 @@ export default function WinterPage() {
               </ul>
             </div>
 
-            {/* Right Form Card */}
-            <div className="bg-[#0f172a] text-white border border-white/10 rounded-[20px] sm:rounded-[28px] p-6 sm:p-8 shadow-2xl relative overflow-hidden">
-              {/* Subtle background glow */}
-              <div className="absolute -top-16 -right-16 w-44 h-44 rounded-full bg-[#ff7a00]/10 blur-3xl pointer-events-none" />
+            {/* Right Form Card - Light Winter Theme */}
+            <div className="bg-gradient-to-br from-[#f0f7ff] via-[#ffffff] to-[#e6f2fd] text-[#0f172a] border border-sky-200/90 rounded-[20px] sm:rounded-[28px] p-6 sm:p-8 shadow-[0_16px_44px_-12px_rgba(56,189,248,0.22),0_4px_18px_rgba(15,23,42,0.05)] relative overflow-hidden">
+              {/* Subtle winter ambient background glows */}
+              <div className="absolute -top-16 -right-16 w-48 h-48 rounded-full bg-sky-200/40 blur-3xl pointer-events-none" />
+              <div className="absolute -bottom-16 -left-16 w-44 h-44 rounded-full bg-[#ff7a00]/10 blur-3xl pointer-events-none" />
 
-              <h3 className="text-[21px] sm:text-[25px] font-extrabold text-white">
-                Send a winter parcel
-              </h3>
-              <p className="mt-1 text-[13px] sm:text-[13.5px] text-slate-300 mb-5">
-                Takes under a minute. Fields marked with <span className="text-[#ff7a00] font-bold">*</span> are required.
-              </p>
+              {/* Decorative subtle snowflake watermark */}
+              <svg
+                className="absolute -top-4 -right-4 w-32 h-32 text-sky-300/25 pointer-events-none stroke-current"
+                viewBox="0 0 24 24"
+                fill="none"
+                strokeWidth="1.2"
+                aria-hidden="true"
+              >
+                <path
+                  d="M12 2v20M2 12h20M4.93 4.93l14.14 14.14M4.93 19.07l14.14-14.14M12 2l2 3M12 2l-2 3M12 22l2-3M12 22l-2-3M2 12l3 2M2 12l3-2M22 12l-3 2M22 12l-3-2M4.93 4.93l3.54 0.7M4.93 4.93l0.7 3.54M19.07 19.07l-3.54-0.7M19.07 19.07l-0.7-3.54M4.93 19.07l3.54-0.7M4.93 19.07l0.7-3.54M19.07 4.93l-3.54 0.7M19.07 4.93l-0.7 3.54"
+                  strokeLinecap="round"
+                />
+              </svg>
+
+              <div className="relative z-10 mb-4">
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-sky-100/90 border border-sky-200/80 text-sky-800 text-[11px] font-bold tracking-wider uppercase mb-2.5 shadow-xs">
+                  <span className="text-sky-500 font-normal">❄</span>
+                  <span>Doorstep Pickup Request</span>
+                </div>
+                <h3 className="text-[22px] sm:text-[26px] font-extrabold text-[#0f172a] leading-tight">
+                  Send a winter parcel
+                </h3>
+                <p className="mt-1 text-[13px] sm:text-[13.5px] text-[#555555]">
+                  Takes under a minute. Fields marked with <span className="text-[#ff7a00] font-bold">*</span> are required.
+                </p>
+              </div>
 
               <form onSubmit={handleLeadSubmit} className="space-y-3.5 relative z-10">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                   <div>
-                    <label className="block text-[11px] font-bold tracking-wider uppercase text-slate-300 mb-1.5">
+                    <label className="block text-[11px] font-bold tracking-wider uppercase text-[#334155] mb-1.5">
                       Your Name <span className="text-[#ff7a00]">*</span>
                     </label>
                     <input
@@ -408,11 +429,11 @@ export default function WinterPage() {
                       placeholder="Full name"
                       value={formState.name}
                       onChange={(e) => setFormState({ ...formState, name: e.target.value })}
-                      className="w-full px-3.5 py-2.5 bg-[#1e293b] text-white placeholder-slate-400 rounded-xl text-[14.5px] border border-slate-700 focus:outline-none focus:border-[#ff7a00] focus:ring-2 focus:ring-[#ff7a00]/20 transition-all"
+                      className="w-full px-3.5 py-2.5 bg-white text-[#0f172a] placeholder-slate-400 rounded-xl text-[14.5px] border border-sky-200/90 shadow-[0_1px_3px_rgba(0,0,0,0.03)] hover:border-sky-300 focus:outline-none focus:border-[#ff7a00] focus:ring-3 focus:ring-[#ff7a00]/15 transition-all"
                     />
                   </div>
                   <div>
-                    <label className="block text-[11px] font-bold tracking-wider uppercase text-slate-300 mb-1.5">
+                    <label className="block text-[11px] font-bold tracking-wider uppercase text-[#334155] mb-1.5">
                       WhatsApp Number <span className="text-[#ff7a00]">*</span>
                     </label>
                     <input
@@ -421,14 +442,14 @@ export default function WinterPage() {
                       placeholder="e.g. 98xxxxxxxx"
                       value={formState.phone}
                       onChange={(e) => setFormState({ ...formState, phone: e.target.value })}
-                      className="w-full px-3.5 py-2.5 bg-[#1e293b] text-white placeholder-slate-400 rounded-xl text-[14.5px] border border-slate-700 focus:outline-none focus:border-[#ff7a00] focus:ring-2 focus:ring-[#ff7a00]/20 transition-all"
+                      className="w-full px-3.5 py-2.5 bg-white text-[#0f172a] placeholder-slate-400 rounded-xl text-[14.5px] border border-sky-200/90 shadow-[0_1px_3px_rgba(0,0,0,0.03)] hover:border-sky-300 focus:outline-none focus:border-[#ff7a00] focus:ring-3 focus:ring-[#ff7a00]/15 transition-all"
                     />
                   </div>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                   <div>
-                    <label className="block text-[11px] font-bold tracking-wider uppercase text-slate-300 mb-1.5">
+                    <label className="block text-[11px] font-bold tracking-wider uppercase text-[#334155] mb-1.5">
                       Pickup City (India)
                     </label>
                     <input
@@ -436,31 +457,31 @@ export default function WinterPage() {
                       placeholder="e.g. Ludhiana, Delhi"
                       value={formState.city}
                       onChange={(e) => setFormState({ ...formState, city: e.target.value })}
-                      className="w-full px-3.5 py-2.5 bg-[#1e293b] text-white placeholder-slate-400 rounded-xl text-[14.5px] border border-slate-700 focus:outline-none focus:border-[#ff7a00] focus:ring-2 focus:ring-[#ff7a00]/20 transition-all"
+                      className="w-full px-3.5 py-2.5 bg-white text-[#0f172a] placeholder-slate-400 rounded-xl text-[14.5px] border border-sky-200/90 shadow-[0_1px_3px_rgba(0,0,0,0.03)] hover:border-sky-300 focus:outline-none focus:border-[#ff7a00] focus:ring-3 focus:ring-[#ff7a00]/15 transition-all"
                     />
                   </div>
                   <div>
-                    <label className="block text-[11px] font-bold tracking-wider uppercase text-slate-300 mb-1.5">
+                    <label className="block text-[11px] font-bold tracking-wider uppercase text-[#334155] mb-1.5">
                       Send to (Country)
                     </label>
                     <select
                       value={formState.dest}
                       onChange={(e) => setFormState({ ...formState, dest: e.target.value })}
-                      className="w-full px-3.5 py-2.5 bg-[#1e293b] text-white rounded-xl text-[14.5px] border border-slate-700 focus:outline-none focus:border-[#ff7a00] focus:ring-2 focus:ring-[#ff7a00]/20 transition-all"
+                      className="w-full px-3.5 py-2.5 bg-white text-[#0f172a] rounded-xl text-[14.5px] border border-sky-200/90 shadow-[0_1px_3px_rgba(0,0,0,0.03)] hover:border-sky-300 focus:outline-none focus:border-[#ff7a00] focus:ring-3 focus:ring-[#ff7a00]/15 transition-all cursor-pointer"
                     >
-                      <option value="" className="bg-[#1e293b] text-white">Select country...</option>
-                      <option value="USA" className="bg-[#1e293b] text-white">USA</option>
-                      <option value="UK" className="bg-[#1e293b] text-white">UK</option>
-                      <option value="Canada" className="bg-[#1e293b] text-white">Canada</option>
-                      <option value="Australia" className="bg-[#1e293b] text-white">Australia</option>
-                      <option value="Europe" className="bg-[#1e293b] text-white">Europe</option>
-                      <option value="Other" className="bg-[#1e293b] text-white">Other</option>
+                      <option value="" className="text-slate-500">Select country...</option>
+                      <option value="USA">USA</option>
+                      <option value="UK">UK</option>
+                      <option value="Canada">Canada</option>
+                      <option value="Australia">Australia</option>
+                      <option value="Europe">Europe</option>
+                      <option value="Other">Other</option>
                     </select>
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-[11px] font-bold tracking-wider uppercase text-slate-300 mb-1.5">
+                  <label className="block text-[11px] font-bold tracking-wider uppercase text-[#334155] mb-1.5">
                     What would you like to send?
                   </label>
                   <input
@@ -468,12 +489,12 @@ export default function WinterPage() {
                     placeholder="e.g. sweaters, pinni & dry fruits, a gift"
                     value={formState.goods}
                     onChange={(e) => setFormState({ ...formState, goods: e.target.value })}
-                    className="w-full px-3.5 py-2.5 bg-[#1e293b] text-white placeholder-slate-400 rounded-xl text-[14.5px] border border-slate-700 focus:outline-none focus:border-[#ff7a00] focus:ring-2 focus:ring-[#ff7a00]/20 transition-all"
+                    className="w-full px-3.5 py-2.5 bg-white text-[#0f172a] placeholder-slate-400 rounded-xl text-[14.5px] border border-sky-200/90 shadow-[0_1px_3px_rgba(0,0,0,0.03)] hover:border-sky-300 focus:outline-none focus:border-[#ff7a00] focus:ring-3 focus:ring-[#ff7a00]/15 transition-all"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-[11px] font-bold tracking-wider uppercase text-slate-300 mb-1.5">
+                  <label className="block text-[11px] font-bold tracking-wider uppercase text-[#334155] mb-1.5">
                     Anything else?
                   </label>
                   <textarea
@@ -481,13 +502,13 @@ export default function WinterPage() {
                     placeholder="Roughly how much, by when, or any specific question"
                     value={formState.msg}
                     onChange={(e) => setFormState({ ...formState, msg: e.target.value })}
-                    className="w-full px-3.5 py-2.5 bg-[#1e293b] text-white placeholder-slate-400 rounded-xl text-[14.5px] border border-slate-700 focus:outline-none focus:border-[#ff7a00] focus:ring-2 focus:ring-[#ff7a00]/20 transition-all resize-none"
+                    className="w-full px-3.5 py-2.5 bg-white text-[#0f172a] placeholder-slate-400 rounded-xl text-[14.5px] border border-sky-200/90 shadow-[0_1px_3px_rgba(0,0,0,0.03)] hover:border-sky-300 focus:outline-none focus:border-[#ff7a00] focus:ring-3 focus:ring-[#ff7a00]/15 transition-all resize-none"
                   />
                 </div>
 
                 <button
                   type="submit"
-                  className="w-full inline-flex items-center justify-center gap-2.5 font-bold text-[15px] sm:text-[16px] px-6 py-3.5 rounded-full bg-[#23c961] text-[#0a111e] shadow-[0_8px_22px_-8px_rgba(35,201,97,0.6)] hover:bg-[#1fb855] hover:-translate-y-0.5 transition-all text-center cursor-pointer mt-1"
+                  className="w-full inline-flex items-center justify-center gap-2.5 font-bold text-[15px] sm:text-[16px] px-6 py-3.5 rounded-full bg-[#23c961] text-[#0a111e] shadow-[0_8px_22px_-6px_rgba(35,201,97,0.5)] hover:bg-[#1fb855] hover:shadow-[0_10px_24px_-4px_rgba(35,201,97,0.6)] hover:-translate-y-0.5 active:translate-y-0 transition-all text-center cursor-pointer mt-1"
                 >
                   <svg className="w-5 h-5 fill-current shrink-0" viewBox="0 0 24 24">
                     <path d="M12 2a10 10 0 0 0-8.6 15.06L2 22l5.06-1.32A10 10 0 1 0 12 2Zm5.3 14.1c-.22.62-1.3 1.2-1.8 1.24-.46.05-1.03.07-1.66-.1a13.6 13.6 0 0 1-5.9-4.53c-.44-.58-1.1-1.56-1.1-2.98 0-1.42.75-2.12 1.02-2.4a1.05 1.05 0 0 1 .77-.36c.19 0 .38 0 .55.01.18.01.42-.07.65.5.24.6.8 2.02.87 2.16.07.15.12.32.02.5-.1.19-.15.3-.3.47-.15.18-.3.4-.44.53-.15.15-.3.3-.13.6.18.3.8 1.3 1.7 2.1 1.18 1.05 2.16 1.37 2.47 1.53.3.15.48.12.65-.08.18-.2.75-.87.95-1.17.2-.3.4-.25.66-.15.27.1 1.7.8 2 .95.3.15.5.22.57.34.07.13.07.72-.15 1.34Z" />
@@ -495,14 +516,14 @@ export default function WinterPage() {
                   <span>Book on WhatsApp</span>
                 </button>
 
-                <p className="text-[11.5px] sm:text-[12px] text-slate-400 text-center leading-relaxed mt-1">
+                <p className="text-[11.5px] sm:text-[12px] text-[#64748b] text-center leading-relaxed mt-1">
                   On submit you will be taken to WhatsApp with your details pre-filled so we can arrange your pickup.
                 </p>
 
                 {showOk && (
-                  <div className="mt-2.5 p-3 bg-emerald-950/60 border border-emerald-500/40 text-emerald-300 rounded-xl text-[13px] text-center leading-relaxed">
+                  <div className="mt-2.5 p-3 bg-emerald-50 border border-emerald-200 text-emerald-900 rounded-xl text-[13px] text-center leading-relaxed shadow-xs">
                     Opening WhatsApp with your details... If it doesn&apos;t open, message us at{" "}
-                    <a href="tel:+917070506070" className="font-bold underline text-white">
+                    <a href="tel:+917070506070" className="font-bold underline text-emerald-950">
                       +91 70 70 50 60 70
                     </a>
                     .
@@ -525,7 +546,7 @@ export default function WinterPage() {
             The things they miss most, when it&apos;s coldest.
           </h2>
           <p className="mt-2.5 sm:mt-3 text-[14.5px] sm:text-[16px] md:text-[17px] text-[#555555] leading-relaxed">
-            From warm clothes to maa ke haath ka khaana — packed to travel safely and arrive just the way you sent it.
+            From warm clothes to maa ke haath ka khaana, packed to travel safely and arrive just the way you sent it.
           </p>
         </div>
 
@@ -542,7 +563,7 @@ export default function WinterPage() {
             <span className="text-[32px] leading-none mb-3 sm:mb-4 block">🍲</span>
             <h3 className="text-[18px] sm:text-[20px] font-bold text-[#0f172a]">Maa ke haath ka khaana</h3>
             <p className="mt-2 text-[14px] sm:text-[15px] text-[#555555] leading-relaxed">
-              Pinni, gajak, panjiri, laddoo, achaar and masalas — packed food-safe to arrive fresh.
+              Pinni, gajak, panjiri, laddoo, achaar and masalas, packed food-safe to arrive fresh.
             </p>
           </div>
 
@@ -550,7 +571,7 @@ export default function WinterPage() {
             <span className="text-[32px] leading-none mb-3 sm:mb-4 block">🥜</span>
             <h3 className="text-[18px] sm:text-[20px] font-bold text-[#0f172a]">Dry fruits &amp; mithai</h3>
             <p className="mt-2 text-[14px] sm:text-[15px] text-[#555555] leading-relaxed">
-              Almonds, walnuts, cashews and festive sweets — the winter favourites they crave.
+              Almonds, walnuts, cashews and festive sweets, the winter favourites they crave.
             </p>
           </div>
 
@@ -577,7 +598,7 @@ export default function WinterPage() {
             <span className="text-[32px] leading-none mb-3 sm:mb-4 block">📦</span>
             <h3 className="text-[18px] sm:text-[20px] font-bold text-[#0f172a]">Not sure about an item?</h3>
             <p className="mt-2 text-[14px] sm:text-[15px] text-[#555555] leading-relaxed">
-              Documents, essentials, a surprise — WhatsApp us a photo and we will tell you if we can send it.
+              Documents, essentials, a surprise, WhatsApp us a photo and we will tell you if we can send it.
             </p>
           </div>
         </div>
@@ -595,7 +616,7 @@ export default function WinterPage() {
               Four easy steps. You don&apos;t even leave home.
             </h2>
             <p className="mt-3 text-[14.5px] sm:text-[16px] text-slate-300 leading-relaxed">
-              Tell us what to send on WhatsApp and we take care of the rest — pickup, packing, customs and delivery.
+              Tell us what to send on WhatsApp and we take care of the rest, pickup, packing, customs and delivery.
             </p>
           </div>
 
@@ -616,7 +637,7 @@ export default function WinterPage() {
               </div>
               <h3 className="text-[18px] sm:text-[20px] font-bold text-white mb-2">We pick up from home</h3>
               <p className="text-[14px] sm:text-[15px] text-slate-300 leading-relaxed">
-                Our team collects from your doorstep at a time that suits you — no queues, no cold.
+                Our team collects from your doorstep at a time that suits you, no queues, no cold.
               </p>
             </div>
 
@@ -660,7 +681,7 @@ export default function WinterPage() {
             <div className="text-[12px] font-extrabold text-[#ff7a00] tracking-wider mb-2">01</div>
             <h3 className="text-[18px] sm:text-[19px] font-bold text-[#0f172a]">Doorstep pickup</h3>
             <p className="mt-2 text-[14px] sm:text-[15px] text-[#555555] leading-relaxed">
-              We collect from your home in India — no courier-office visits, no standing in the cold.
+              We collect from your home in India, no courier-office visits, no standing in the cold.
             </p>
           </div>
 
@@ -676,7 +697,7 @@ export default function WinterPage() {
             <div className="text-[12px] font-extrabold text-[#ff7a00] tracking-wider mb-2">03</div>
             <h3 className="text-[18px] sm:text-[19px] font-bold text-[#0f172a]">Customs handled</h3>
             <p className="mt-2 text-[14px] sm:text-[15px] text-[#555555] leading-relaxed">
-              No forms or paperwork for you — we take care of the documentation end to end.
+              No forms or paperwork for you, we take care of the documentation end to end.
             </p>
           </div>
 
@@ -718,7 +739,7 @@ export default function WinterPage() {
               Distance is hard in winter. Make it a little warmer.
             </h2>
             <p className="mt-2 sm:mt-2.5 text-[14px] sm:text-[16px] text-[#555555] leading-relaxed">
-              Whoever they are, wherever they&apos;ve moved — send them a reason to smile this season.
+              Whoever they are, wherever they&apos;ve moved, send them a reason to smile this season.
             </p>
           </div>
 
@@ -759,7 +780,7 @@ export default function WinterPage() {
           {[
             {
               q: "Can I send homemade food and sweets?",
-              a: "Yes — we pack food safely so it travels well, and we handle the documentation. A few countries restrict certain items, so we'll check and let you know before pickup.",
+              a: "Yes, we pack food safely so it travels well, and we handle the documentation. A few countries restrict certain items, so we'll check and let you know before pickup.",
               defaultOpen: true,
             },
             {
@@ -776,7 +797,7 @@ export default function WinterPage() {
             },
             {
               q: "Where do you pick up from?",
-              a: "We offer standard doorstep pickup across Punjab, Delhi NCR, Haryana and Rajasthan. Pickup from Gujarat, Mumbai and other locations across India can be arranged on request — just share your address.",
+              a: "We offer standard doorstep pickup across Punjab, Delhi NCR, Haryana and Rajasthan. Pickup from Gujarat, Mumbai and other locations across India can be arranged on request, just share your address.",
             },
             {
               q: "What can't I send?",
@@ -861,7 +882,7 @@ export default function WinterPage() {
             </div>
 
             <p className="mt-4 sm:mt-5 text-[12.5px] sm:text-[14px] text-slate-300">
-              Standard doorstep pickup across Punjab, Delhi NCR, Haryana and Rajasthan — Gujarat, Mumbai and pan-India on request. Delivered worldwide.
+              Standard doorstep pickup across Punjab, Delhi NCR, Haryana and Rajasthan, Gujarat, Mumbai and pan-India on request. Delivered worldwide.
             </p>
           </div>
         </div>
