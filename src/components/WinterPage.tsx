@@ -114,8 +114,14 @@ export default function WinterPage() {
       `}</style>
 
       {/* ── 1. HERO CONTAINER ── */}
-      <section className="w-full max-w-[1400px] mx-auto px-3.5 sm:px-6 pt-4 sm:pt-6 pb-2">
-        <div className="relative overflow-hidden rounded-[20px] sm:rounded-[28px] lg:rounded-[32px] bg-[#0f172a] text-white border border-white/10 shadow-2xl p-6 sm:p-10 lg:p-14">
+      <section className="w-full max-w-425 mx-auto px-3.5 sm:px-6 pt-4 sm:pt-6 pb-2">
+        <div
+          className="relative overflow-hidden rounded-[20px] sm:rounded-[28px] lg:rounded-[32px] bg-[#0f172a] text-white border border-white/10 shadow-2xl p-5 sm:p-10 lg:p-14 bg-cover bg-[65%_center] sm:bg-center"
+          style={{
+            backgroundImage:
+              "linear-gradient(90deg, rgba(15, 23, 42, 0.9) 0%, rgba(15, 23, 42, 0.72) 42%, rgba(15, 23, 42, 0.2) 100%), url('/winter-banner.webp')",
+          }}
+        >
           {/* Ambient background glow & Snowfall background layer */}
           <div className="absolute -top-32 -left-32 w-80 h-80 rounded-full bg-[#ff7a00]/10 blur-3xl pointer-events-none" />
           <div className="absolute -bottom-32 -right-32 w-80 h-80 rounded-full bg-[#ff7a00]/15 blur-3xl pointer-events-none" />
@@ -136,7 +142,7 @@ export default function WinterPage() {
             ))}
           </div>
 
-          <div className="relative z-10 grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-10 lg:gap-12 items-center">
+          <div className="relative z-10 grid min-w-0 grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-8 sm:gap-10 lg:gap-12 items-center">
             {/* Left Copy */}
             <div className="flex flex-col">
               {/* Logo */}
@@ -157,7 +163,7 @@ export default function WinterPage() {
                 and deliver to your family&apos;s door abroad, safe and in time for the season.
               </p>
 
-              <div className="flex flex-wrap gap-3.5 sm:gap-4 mt-6 sm:mt-8">
+              <div className="flex flex-col sm:flex-row flex-wrap gap-3.5 sm:gap-4 mt-6 sm:mt-8">
                 <a
                   href="#book"
                   className="inline-flex items-center justify-center gap-2.5 font-bold text-[15px] sm:text-[16px] px-6 sm:px-7 py-3.5 sm:py-4 rounded-full bg-[#23c961] text-[#0a111e] shadow-[0_8px_22px_-8px_rgba(35,201,97,0.6)] hover:bg-[#1fb855] hover:-translate-y-0.5 transition-all text-center"
@@ -190,7 +196,7 @@ export default function WinterPage() {
             </div>
 
             {/* Right Signature Artwork: Winter Care Package SVG */}
-            <div className="relative w-full max-w-[480px] lg:max-w-none mx-auto order-first lg:order-last">
+            <div className="hidden">
               <svg
                 viewBox="0 0 520 470"
                 className="w-full h-auto drop-shadow-2xl"
@@ -322,12 +328,12 @@ export default function WinterPage() {
       </section>
 
       {/* ── 2. PARTNERS STRIP ── */}
-      <div className="w-full max-w-[1400px] mx-auto px-3.5 sm:px-6 py-4 sm:py-5">
-        <div className="rounded-[18px] sm:rounded-[22px] bg-[#0f172a] text-white px-5 sm:px-8 py-3.5 sm:py-4 flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-6 border border-white/10 shadow-sm">
-          <span className="text-[11px] sm:text-[12px] font-bold tracking-wider uppercase text-[#ff7a00]">
+      <div className="w-full max-w-425 mx-auto px-3.5 sm:px-6 py-4 sm:py-5">
+          <div className="rounded-[18px] sm:rounded-[22px] bg-[#0f172a] text-white px-4 sm:px-8 py-3.5 sm:py-4 flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-6 border border-white/10 shadow-sm">
+          <span className="text-center sm:text-left text-[11px] sm:text-[12px] font-bold tracking-wider uppercase text-[#ff7a00]">
             Delivered by trusted carriers
           </span>
-          <div className="grid grid-cols-3 sm:flex sm:flex-wrap justify-center sm:justify-end gap-3.5 sm:gap-8 items-center font-extrabold text-[15px] sm:text-[18px] md:text-[20px] text-white/90">
+          <div className="grid grid-cols-2 min-[360px]:grid-cols-3 sm:flex sm:flex-wrap justify-center sm:justify-end gap-x-5 gap-y-2 sm:gap-8 items-center font-extrabold text-[14px] sm:text-[18px] md:text-[20px] text-white/90">
             <span>DHL</span>
             <span>FedEx</span>
             <span>UPS</span>
@@ -339,9 +345,9 @@ export default function WinterPage() {
       </div>
 
       {/* ── 3. BOOK A PICKUP / LEAD FORM CONTAINER ── */}
-      <section className="w-full max-w-[1400px] mx-auto px-3.5 sm:px-6 py-8 sm:py-12" id="book">
-        <div className="bg-white border border-slate-200 rounded-[20px] sm:rounded-[28px] lg:rounded-[32px] p-6 sm:p-10 lg:p-12 shadow-sm">
-          <div className="grid grid-cols-1 lg:grid-cols-[0.92fr_1.08fr] gap-8 lg:gap-12 items-center">
+      <section className="w-full max-w-425 mx-auto px-3.5 sm:px-6 py-8 sm:py-12" id="book">
+        <div className="bg-white border border-slate-200 rounded-[20px] sm:rounded-[28px] lg:rounded-[32px] p-5 sm:p-10 lg:p-12 shadow-sm">
+          <div className="grid min-w-0 grid-cols-1 lg:grid-cols-[0.92fr_1.08fr] gap-8 lg:gap-12 items-center">
             {/* Left Copy */}
             <div className="flex flex-col">
               <div className="inline-flex items-center gap-2 text-[11px] sm:text-[12px] font-bold tracking-wider uppercase text-[#ff7a00] mb-2.5 sm:mb-3">
@@ -357,25 +363,25 @@ export default function WinterPage() {
               </p>
 
               <ul className="mt-6 sm:mt-8 space-y-3 sm:space-y-3.5">
-                <li className="flex items-center gap-3 text-[14px] sm:text-[15px] text-[#0f172a] font-medium">
+                <li className="flex items-start gap-3 text-[14px] sm:text-[15px] text-[#0f172a] font-medium">
                   <span className="w-5 h-5 rounded-full bg-[#ff7a00]/15 text-[#ff7a00] flex items-center justify-center font-bold text-[12px] shrink-0">
                     ✓
                   </span>
                   Doorstep pickup from your home in India
                 </li>
-                <li className="flex items-center gap-3 text-[14px] sm:text-[15px] text-[#0f172a] font-medium">
+                <li className="flex items-start gap-3 text-[14px] sm:text-[15px] text-[#0f172a] font-medium">
                   <span className="w-5 h-5 rounded-full bg-[#ff7a00]/15 text-[#ff7a00] flex items-center justify-center font-bold text-[12px] shrink-0">
                     ✓
                   </span>
                   Homemade food &amp; fragile gifts packed safely
                 </li>
-                <li className="flex items-center gap-3 text-[14px] sm:text-[15px] text-[#0f172a] font-medium">
+                <li className="flex items-start gap-3 text-[14px] sm:text-[15px] text-[#0f172a] font-medium">
                   <span className="w-5 h-5 rounded-full bg-[#ff7a00]/15 text-[#ff7a00] flex items-center justify-center font-bold text-[12px] shrink-0">
                     ✓
                   </span>
                   Customs and paperwork handled for you
                 </li>
-                <li className="flex items-center gap-3 text-[14px] sm:text-[15px] text-[#0f172a] font-medium">
+                <li className="flex items-start gap-3 text-[14px] sm:text-[15px] text-[#0f172a] font-medium">
                   <span className="w-5 h-5 rounded-full bg-[#ff7a00]/15 text-[#ff7a00] flex items-center justify-center font-bold text-[12px] shrink-0">
                     ✓
                   </span>
@@ -385,7 +391,7 @@ export default function WinterPage() {
             </div>
 
             {/* Right Form Card - Light Winter Theme */}
-            <div className="bg-gradient-to-br from-[#f0f7ff] via-[#ffffff] to-[#e6f2fd] text-[#0f172a] border border-sky-200/90 rounded-[20px] sm:rounded-[28px] p-6 sm:p-8 shadow-[0_16px_44px_-12px_rgba(56,189,248,0.22),0_4px_18px_rgba(15,23,42,0.05)] relative overflow-hidden">
+            <div className="min-w-0 bg-gradient-to-br from-[#f0f7ff] via-[#ffffff] to-[#e6f2fd] text-[#0f172a] border border-sky-200/90 rounded-[20px] sm:rounded-[28px] p-5 sm:p-8 shadow-[0_16px_44px_-12px_rgba(56,189,248,0.22),0_4px_18px_rgba(15,23,42,0.05)] relative overflow-hidden">
               {/* Subtle winter ambient background glows */}
               <div className="absolute -top-16 -right-16 w-48 h-48 rounded-full bg-sky-200/40 blur-3xl pointer-events-none" />
               <div className="absolute -bottom-16 -left-16 w-44 h-44 rounded-full bg-[#ff7a00]/10 blur-3xl pointer-events-none" />
@@ -536,7 +542,7 @@ export default function WinterPage() {
       </section>
 
       {/* ── 4. WHAT YOU CAN SEND ── */}
-      <section className="w-full max-w-[1400px] mx-auto px-3.5 sm:px-6 py-10 sm:py-16">
+      <section className="w-full max-w-425 mx-auto px-3.5 sm:px-6 py-10 sm:py-16">
         <div className="max-w-2xl mb-8 sm:mb-12">
           <div className="inline-flex items-center gap-2 text-[11px] sm:text-[12px] font-bold tracking-wider uppercase text-[#ff7a00] mb-2.5 sm:mb-3">
             <span className="w-5 sm:w-6 h-[2px] bg-[#ff7a00] rounded-full" />
@@ -605,7 +611,7 @@ export default function WinterPage() {
       </section>
 
       {/* ── 5. HOW IT WORKS ── */}
-      <section className="w-full max-w-[1400px] mx-auto px-3.5 sm:px-6 py-10 sm:py-16">
+      <section className="w-full max-w-425 mx-auto px-3.5 sm:px-6 py-10 sm:py-16">
         <div className="rounded-[20px] sm:rounded-[28px] lg:rounded-[32px] bg-[#0f172a] text-white p-6 sm:p-10 lg:p-14 border border-white/10 shadow-2xl relative overflow-hidden">
           <div className="max-w-2xl mb-8 sm:mb-12 relative z-10">
             <div className="inline-flex items-center gap-2 text-[11px] sm:text-[12px] font-bold tracking-wider uppercase text-[#ff7a00] mb-2.5 sm:mb-3">
@@ -665,7 +671,7 @@ export default function WinterPage() {
       </section>
 
       {/* ── 6. WHY CHOOSE MANVI ── */}
-      <section className="w-full max-w-[1400px] mx-auto px-3.5 sm:px-6 py-10 sm:py-16">
+      <section className="w-full max-w-425 mx-auto px-3.5 sm:px-6 py-10 sm:py-16">
         <div className="max-w-2xl mb-8 sm:mb-12">
           <div className="inline-flex items-center gap-2 text-[11px] sm:text-[12px] font-bold tracking-wider uppercase text-[#ff7a00] mb-2.5 sm:mb-3">
             <span className="w-5 sm:w-6 h-[2px] bg-[#ff7a00] rounded-full" />
@@ -728,7 +734,7 @@ export default function WinterPage() {
       </section>
 
       {/* ── 7. WHO YOU'RE SENDING TO ── */}
-      <section className="w-full max-w-[1400px] mx-auto px-3.5 sm:px-6 py-8 sm:py-12">
+      <section className="w-full max-w-425 mx-auto px-3.5 sm:px-6 py-8 sm:py-12">
         <div className="bg-white border border-slate-200 rounded-[20px] sm:rounded-[28px] lg:rounded-[32px] p-6 sm:p-10 lg:p-12 shadow-sm">
           <div className="max-w-2xl mb-6 sm:mb-8">
             <div className="inline-flex items-center gap-2 text-[11px] sm:text-[12px] font-bold tracking-wider uppercase text-[#ff7a00] mb-2.5 sm:mb-3">
@@ -828,7 +834,7 @@ export default function WinterPage() {
       </section>
 
       {/* ── 9. FINAL CTA ── */}
-      <section className="w-full max-w-[1400px] mx-auto px-3.5 sm:px-6 pt-4 pb-12 sm:pb-16">
+      <section className="w-full max-w-425 mx-auto px-3.5 sm:px-6 pt-4 pb-12 sm:pb-16">
         <div className="rounded-[20px] sm:rounded-[28px] lg:rounded-[32px] bg-[radial-gradient(120%_130%_at_15%_0%,#1e293b_0%,#0f172a_60%)] text-white text-center p-6 sm:p-10 lg:p-16 border border-white/10 shadow-2xl relative overflow-hidden">
           {/* Subtle Snow effect on final section */}
           <div className="absolute inset-0 pointer-events-none overflow-hidden z-0" aria-hidden="true">
