@@ -1,40 +1,440 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Image from "next/image";
 
+const zohoFormHtml = `
+<div id='crmWebToEntityForm' class='zcwf_lblLeft crmWebToEntityForm' style='background-color: white;color: black;max-width: 600px;'>
+  <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+  <META HTTP-EQUIV='content-type' CONTENT='text/html;charset=UTF-8'>
+  <form id='webform1394241000000604320' action='https://crm.zoho.in/crm/WebToLeadForm' name='WebToLeads1394241000000604320' method='POST' onSubmit='javascript:document.charset="UTF-8"; return checkMandatory1394241000000604320()' accept-charset='UTF-8'>
+    <input type='text' style='display:none;' name='xnQsjsdp' value='5d36fe4ccf2211a95a323ac159955263068b8121667a6497bffb393b6173e11b'>
+    <input type='hidden' name='zc_gad' id='zc_gad' value=''>
+    <input type='text' style='display:none;' name='xmIwtLD' value='f02ff563ef0a153f6056f8c0fa24d1af0d4ee55f0c9366b73786d5d47923b9417d30878160ae6a4ce3a766b78f2f5d78'>
+    <input type='text' style='display:none;' name='actionType' value='TGVhZHM='>
+    <input type='text' style='display:none;' name='returnURL' value='null'>
+    <style>
+      html,body{margin:0px;} .formsubmit.zcwf_button{color:white !important;background:transparent linear-gradient(0deg, #0279FF 0%, #00A3F3 100%);} #crmWebToEntityForm.zcwf_lblLeft{width:100%;padding:25px;margin:0 auto;box-sizing:border-box;} #crmWebToEntityForm.zcwf_lblLeft *{box-sizing:border-box;} #crmWebToEntityForm{text-align:left;} #crmWebToEntityForm *{direction:ltr;} .zcwf_lblLeft .zcwf_title{word-wrap:break-word;padding:0px 6px 10px;font-weight:bold} .zcwf_lblLeft.cpT_primaryBtn:hover{background:linear-gradient(#02acff 0,#006be4 100%)no-repeat padding-box !important;box-shadow:0 -2px 0 0 #0159b9 inset !important;border:0 !important;color:#fff !important;outline:0 !important;} .zcwf_lblLeft .zcwf_col_fld input[ type = text], input[ type = password], .zcwf_lblLeft .zcwf_col_fld textarea{width:60%;border:1px solid #c0c6cc !important;resize:vertical;border-radius:2px;float:left;} .zcwf_lblLeft .zcwf_col_lab{width:30%;word-break:break-word;padding:0px 6px 0px;margin-right:10px;margin-top:5px;float:left;min-height:1px;} .zcwf_lblLeft .zcwf_col_fld{float:left;width:68%;padding:0px 6px 0px;position:relative;margin-top:5px;} .zcwf_lblLeft .zcwf_privacy{padding:6px;} .zcwf_lblLeft .wfrm_fld_dpNn{display:none;} .dIB{display:inline-block;} .zcwf_lblLeft .zcwf_col_fld_slt{width:60%;border:1px solid #ccc;background:#fff;border-radius:4px;font-size:12px;float:left;resize:vertical;padding:2px 5px;} .zcwf_lblLeft .zcwf_row:after, .zcwf_lblLeft .zcwf_col_fld:after{content:'';display:table;clear:both;} .zcwf_lblLeft .zcwf_col_help{float:left;margin-left:7px;font-size:12px;max-width:35%;word-break:break-word;} .zcwf_lblLeft .zcwf_help_icon{cursor:pointer;width:16px;height:16px;display:inline-block;background:#fff;border:1px solid #c0c6cc;color:#c1c1c1;text-align:center;font-size:11px;line-height:16px;font-weight:bold;border-radius:50%;} .zcwf_lblLeft .zcwf_row{margin:15px 0px;} .zcwf_lblLeft .formsubmit{margin-right:5px;cursor:pointer;color:#313949;font-size:12px;} .zcwf_lblLeft .zcwf_privacy_txt{width:90%;color:rgb(0, 0, 0);font-size:12px;font-family:Arial;display:inline-block;vertical-align:top;color:#313949;padding-top:2px;margin-left:6px;} .zcwf_lblLeft .zcwf_button{font-size:12px;color:#313949;border:1px solid #c0c6cc;padding:3px 9px;border-radius:4px;cursor:pointer;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;} .zcwf_lblLeft .zcwf_tooltip_over{position:relative;} .zcwf_lblLeft .zcwf_tooltip_ctn{position:absolute;background:#dedede;padding:3px 6px;top:3px;border-radius:4px;word-break:break-word;min-width:100px;max-width:150px;color:#313949;z-index:100;} .zcwf_lblLeft .zcwf_ckbox{float:left;} .zcwf_lblLeft .zcwf_file{width:55%;box-sizing:border-box;float:left;} .cBoth:after{content:'';display:block;clear:both;} @media all and (max-width: 600px){ .zcwf_lblLeft .zcwf_col_lab, .zcwf_lblLeft .zcwf_col_fld{width:auto;float:none !important;} .zcwf_lblLeft .zcwf_col_help{width:40%;} }
+    </style>
+    <div class='zcwf_title' style='max-width: 600px;color: black; font-family:Arial;'>WhatsApp Redirect Form</div>
+    <div class='zcwf_row'>
+      <div class='zcwf_col_lab' style='font-size:12px; font-family: Arial;'><label for='First_Name'>First Name</label></div>
+      <div class='zcwf_col_fld'><input type='text' id='First_Name' aria-required='false' aria-label='First Name' name='First Name' aria-valuemax='40' maxlength='40'><div class='zcwf_col_help'></div></div>
+    </div>
+    <div class='zcwf_row'>
+      <div class='zcwf_col_lab' style='font-size:12px; font-family: Arial;'><label for='Last_Name'>Last Name <span style='color:red;'>*</span></label></div>
+      <div class='zcwf_col_fld'><input type='text' id='Last_Name' aria-required='true' aria-label='Last Name' name='Last Name' aria-valuemax='80' maxlength='80'><div class='zcwf_col_help'></div></div>
+    </div>
+    <div class='zcwf_row'>
+      <div class='zcwf_col_lab' style='font-size:12px; font-family: Arial;'><label for='Mobile'>Mobile</label></div>
+      <div class='zcwf_col_fld'><input type='text' id='Mobile' aria-required='false' aria-label='Mobile' name='Mobile' aria-valuemax='30' maxlength='30'><div class='zcwf_col_help'></div></div>
+    </div>
+    <input type='text' type='hidden' style='display: none;' name='aG9uZXlwb3Q' value='' />
+    <div class='zcwf_row'>
+      <div class='zcwf_col_lab'></div>
+      <div class='zcwf_col_fld'><input type='submit' id='formsubmit' role='button' class='formsubmit zcwf_button' value='Submit' aria-label='Submit' title='Submit'><input type='reset' class='zcwf_button' role='button' name='reset' value='Reset' aria-label='Reset' title='Reset'></div>
+    </div>
+    <script>
+      function checkMandatory1394241000000604320(isAjax){
+        var mndFileds = new Array('Last Name');
+        var fldLangVal = new Array('Last Name');
+        for (i = 0; i < mndFileds.length; i++ ) {
+          var fieldObj = document.forms['WebToLeads1394241000000604320'] [mndFileds[i]];
+          if (fieldObj) {
+            if(((fieldObj.value) .replace (/^\s+|\s+$/g,'') ) .length == 0) {
+              if (fieldObj.type == 'file') {
+                alert('Please select a file to upload.');
+                fieldObj.focus();
+                return false;
+              }
+              alert(fldLangVal[i] + ' cannot be empty.');
+              fieldObj.focus();
+              return false;
+            } else if (fieldObj.nodeName == 'SELECT') {
+              if (fieldObj.options[fieldObj.selectedIndex].value == '-None-') {
+                alert(fldLangVal[i] + ' cannot be none.');
+                fieldObj.focus();
+                return false;
+              }
+            } else if (fieldObj.type == 'checkbox') {
+              if (fieldObj.checked == false) {
+                alert('Please accept ' + fldLangVal[i]);
+                fieldObj.focus();
+                return false;
+              }
+            }
+            try{
+              if (fieldObj.name == 'Last Name') { name = fieldObj.value; }
+            } catch (e){}
+          }
+        }
+        var urlparams = new URLSearchParams(window.location.search);
+        if (urlparams.has ('service') && (urlparams.get ('service') === 'smarturl') ) {
+          var webform = document.getElementById('webform1394241000000604320');
+          var service = urlparams.get('service');
+          var smarturlfield = document.createElement('input');
+          smarturlfield.setAttribute('type', 'hidden');
+          smarturlfield.setAttribute('value', service);
+          smarturlfield.setAttribute('name', 'service');
+          webform.appendChild(smarturlfield);
+        }
+        document.querySelector('.crmWebToEntityForm .formsubmit').setAttribute('disabled', true);
+      }
+      _wFa_ajax_will_be_replaced = false;
+      if (typeof _wfa_fstprtcken == 'undefined') {
+        _wfa_fstprtcken = {};
+      }
+      _wfa_fstprtcken[1394241000000604320] = true;
+      function tooltipShow1394241000000604320(el){
+        var tooltip = el.nextElementSibling;
+        var tooltipDisplay = tooltip.style.display;
+        if (tooltipDisplay == 'none') {
+          var allTooltip = document.getElementsByClassName('zcwf_tooltip_over');
+          for (i = 0; i < allTooltip.length; i++ ) {
+            allTooltip[i].style.display = 'none';
+          }
+          tooltip.style.display = 'block';
+        } else {
+          tooltip.style.display = 'none';
+        }
+      }
+    </script>
+    <script id='wf_anal' src='https://crm.zohopublic.in/crm/WebFormAnalyticsServeServlet?rid=d023568e1e3e6fa18f4c65deedbaf5bc7f1cd4b152b8e5a19ab6edcaef23b301e62ee712edde36cec4caa7ba4154a584gidacef6996ea9494b52c0598738546e612e2a0a5be6351888a2c61d75436d46e2dgidf646a7fe147ef8abef157542804ad5353ed0c88259c12374e1616665bee5deddgid9df265a27c59cea1a3209824dffe14bf32108b2470f9382cadb7d7c87376883a&tw=71ad78d900e1d4b8b9fc1253be7bad177119792698b6ee802bfee724b6dad136&version=v2'></script>
+  </form>
+</div>`;
+
+const stripScriptTags = (html: string) => html.replace(/<script[\s\S]*?<\/script>/gi, "");
+
+const zohoFormHtml2 = `
+<div id = 'crmWebToEntityForm' class = 'zcwf_lblLeft crmWebToEntityForm' style = 'background-color: white;color: black;max-width: 600px;'>
+  <meta name = 'viewport' content = 'width=device-width, initial-scale=1.0'>
+  <META HTTP-EQUIV = 'content-type' CONTENT = 'text/html;charset=UTF-8'>
+  <form id = 'webform1394241000000550005' action = 'https://crm.zoho.in/crm/WebToLeadForm' name = WebToLeads1394241000000550005 method = 'POST' onSubmit = 'javascript:document.charset="UTF-8"; return checkMandatory1394241000000550005()' accept-charset = 'UTF-8'>
+    <input type = 'text' style = 'display:none;' name = 'xnQsjsdp' value = 'dcf9c09ca44b5db50269f4473000ac152f7be0e80acc8fb90f4757b6b36a9e27'>
+    </input>
+    <input type = 'hidden' name = 'zc_gad' id = 'zc_gad' value = ''>
+    </input>
+    <input type = 'text' style = 'display:none;' name = 'xmIwtLD' value = 'd5a822371e292333ab4fe6d48265fe0ed7a9faaf0c85b19778e40ee9e59a7317ef38de400e7df726a366bb3876b99c30'>
+    </input>
+    <input type = 'text' style = 'display:none;' name = 'actionType' value = 'TGVhZHM='>
+    </input>
+    <input type = 'text' style = 'display:none;' name = 'returnURL' value = 'null'>
+    </input>
+    <style>
+      html,body{margin: 0px;} .formsubmit.zcwf_button{color: white !important;background: transparent linear-gradient(0deg, #0279FF 0%, #00A3F3 100%);} #crmWebToEntityForm.zcwf_lblLeft{width: 100%;padding: 25px;margin: 0 auto;box-sizing: border-box;} #crmWebToEntityForm.zcwf_lblLeft *{box-sizing: border-box;} #crmWebToEntityForm{text-align: left;} #crmWebToEntityForm *{direction: ltr;} .zcwf_lblLeft .zcwf_title{word-wrap: break-word;padding: 0px 6px 10px;font-weight: bold } .zcwf_lblLeft.cpT_primaryBtn:hover{background: linear-gradient(#02acff 0,#006be4 100%)no-repeat padding-box !important;box-shadow: 0 -2px 0 0 #0159b9 inset !important;border: 0 !important;color: #fff !important;outline: 0 !important;} .zcwf_lblLeft .zcwf_col_fld input[ type = text], input[ type = password], .zcwf_lblLeft .zcwf_col_fld textarea{width: 60%;border: 1px solid #c0c6cc !important;resize: vertical;border-radius: 2px;float: left;} .zcwf_lblLeft .zcwf_col_lab{width: 30%;word-break: break-word;padding: 0px 6px 0px;margin-right: 10px;margin-top: 5px;float: left;min-height: 1px;} .zcwf_lblLeft .zcwf_col_fld{float: left;width: 68%;padding: 0px 6px 0px;position: relative;margin-top: 5px;} .zcwf_lblLeft .zcwf_privacy{padding: 6px;} .zcwf_lblLeft .wfrm_fld_dpNn{display: none;} .dIB{display: inline-block;} .zcwf_lblLeft .zcwf_col_fld_slt{width: 60%;border: 1px solid #ccc;background: #fff;border-radius: 4px;font-size: 12px;float: left;resize: vertical;padding: 2px 5px;} .zcwf_lblLeft .zcwf_row:after, .zcwf_lblLeft .zcwf_col_fld:after{content: '';display: table;clear: both;} .zcwf_lblLeft .zcwf_col_help{float: left;margin-left: 7px;font-size: 12px;max-width: 35%;word-break: break-word;} .zcwf_lblLeft .zcwf_help_icon{cursor: pointer;width: 16px;height: 16px;display: inline-block;background: #fff;border: 1px solid #c0c6cc;color: #c1c1c1;text-align: center;font-size: 11px;line-height: 16px;font-weight: bold;border-radius: 50%;} .zcwf_lblLeft .zcwf_row{margin: 15px 0px;} .zcwf_lblLeft .formsubmit{margin-right: 5px;cursor: pointer;color: #313949;font-size: 12px;} .zcwf_lblLeft .zcwf_privacy_txt{width: 90%;color: rgb(0, 0, 0);font-size: 12px;font-family: Arial;display: inline-block;vertical-align: top;color: #313949;padding-top: 2px;margin-left: 6px;} .zcwf_lblLeft .zcwf_button{font-size: 12px;color: #313949;border: 1px solid #c0c6cc;padding: 3px 9px;border-radius: 4px;cursor: pointer;max-width: 120px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;} .zcwf_lblLeft .zcwf_tooltip_over{position: relative;} .zcwf_lblLeft .zcwf_tooltip_ctn{position: absolute;background: #dedede;padding: 3px 6px;top: 3px;border-radius: 4px;word-break: break-word;min-width: 100px;max-width: 150px;color: #313949;z-index: 100;} .zcwf_lblLeft .zcwf_ckbox{float: left;} .zcwf_lblLeft .zcwf_file{width: 55%;box-sizing: border-box;float: left;} .cBoth:after{content: '';display: block;clear: both;} @media all and (max-width: 600px){ .zcwf_lblLeft .zcwf_col_lab, .zcwf_lblLeft .zcwf_col_fld{width: auto;float: none !important;} .zcwf_lblLeft .zcwf_col_help{width: 40%;} }
+    </style>
+    <div class = 'zcwf_title' style = 'max-width: 600px;color: black; font-family:Arial;'>Get Quote</div>
+    <div class = 'zcwf_row'>
+      <div class = 'zcwf_col_lab' style = 'font-size:12px; font-family: Arial;'><label for = 'Last_Name'>Full Name <span style = 'color:red;'>*</span></label></div>
+      <div class = 'zcwf_col_fld'><input type = 'text' id = 'Last_Name' aria-required = 'true' aria-label = 'Last Name' name = 'Last Name' aria-valuemax = '80' maxlength = '80'></input><div class = 'zcwf_col_help'></div></div>
+    </div>
+    <div class = 'zcwf_row'>
+      <div class = 'zcwf_col_lab' style = 'font-size:12px; font-family: Arial;'><label for = 'Email'>Email <span style = 'color:red;'>*</span></label></div>
+      <div class = 'zcwf_col_fld'><input type = 'text' ftype = 'email' autocomplete = 'false' id = 'Email' aria-required = 'true' aria-label = 'Email' name = 'Email' aria-valuemax = '100' crmlabel = '' maxlength = '100'></input><div class = 'zcwf_col_help'></div></div>
+    </div>
+    <div class = 'zcwf_row'>
+      <div class = 'zcwf_col_lab' style = 'font-size:12px; font-family: Arial;'><label for = 'Phone'>Phone <span style = 'color:red;'>*</span></label></div>
+      <div class = 'zcwf_col_fld'><input type = 'text' id = 'Phone' aria-required = 'true' aria-label = 'Phone' name = 'Phone' aria-valuemax = '30' maxlength = '30'></input><div class = 'zcwf_col_help'></div></div>
+    </div>
+    <div class = 'zcwf_row wfrm_fld_dpNn'>
+      <div class = 'zcwf_col_lab' style = 'font-size:12px; font-family: Arial;'><label for = 'LEADCF1'>Google Click ID</label></div>
+      <div class = 'zcwf_col_fld'><input type = 'text' id = 'LEADCF1' aria-required = 'false' aria-label = 'LEADCF1' name = 'LEADCF1' aria-valuemax = '255' maxlength = '255' value = '-'></input><div class = 'zcwf_col_help'></div></div>
+    </div>
+    <div class = 'zcwf_row'>
+      <div class = 'zcwf_col_lab' style = 'font-size:12px; font-family: Arial;'><label for = 'Designation'>Amount</label></div>
+      <div class = 'zcwf_col_fld'><input type = 'text' id = 'Designation' aria-required = 'false' aria-label = 'Designation' name = 'Designation' aria-valuemax = '100' maxlength = '100'></input><div class = 'zcwf_col_help'></div></div>
+    </div>
+    <div class = 'zcwf_row'>
+      <div class = 'zcwf_col_lab' style = 'font-size:12px; font-family: Arial;'><label for = 'Fax'>Service</label></div>
+      <div class = 'zcwf_col_fld'><input type = 'text' id = 'Fax' aria-required = 'false' aria-label = 'Fax' name = 'Fax' aria-valuemax = '30' maxlength = '30'></input><div class = 'zcwf_col_help'></div></div>
+    </div>
+    <input type = 'text' type = 'hidden' style = 'display: none;' name = 'aG9uZXlwb3Q' value = ''/>
+    <div class = 'zcwf_row'>
+      <div class = 'zcwf_col_lab'></div>
+      <div class = 'zcwf_col_fld'><input type = 'submit' id = 'formsubmit' role = 'button' class = 'formsubmit zcwf_button' value = 'Submit' aria-label = 'Submit' title = 'Submit'>
+        <input type = 'reset' class = 'zcwf_button' role = 'button' name = 'reset' value = 'Reset' aria-label = 'Reset' title = 'Reset'>
+      </div>
+    </div>
+    <script>
+      function validateEmail1394241000000550005(){
+        var form = document.forms['WebToLeads1394241000000550005'];
+        var emailFld = form.querySelectorAll('[ftype=email]');
+        var i;
+        for(i = 0; i < emailFld.length; i++ ) {
+          var emailVal = emailFld[i].value;
+          if ((emailVal.replace (/^\s+|\s+$/g,'') ) .length != 0) {
+            var atpos = emailVal.indexOf('@');
+            var dotpos = emailVal.lastIndexOf('.');
+            if(atpos < 1 || dotpos < atpos + 2 || dotpos + 2 >= emailVal.length) {
+              alert('Please enter a valid email address. ');
+              emailFld[i].focus();
+              return false;
+            }
+          }
+        }
+        return true;
+      }
+      function checkMandatory1394241000000550005(isAjax){
+        var mndFileds = new Array('Last Name', 'Email', 'Phone');
+        var fldLangVal = new Array('Full Name', 'Email', 'Phone');
+        for (i = 0; i < mndFileds.length; i++ ) {
+          var fieldObj = document.forms['WebToLeads1394241000000550005'] [mndFileds[i]];
+          if (fieldObj) {
+            if(((fieldObj.value) .replace (/^\s+|\s+$/g,'') ) .length == 0) {
+              if (fieldObj.type == 'file') {
+                alert('Please select a file to upload.');
+                fieldObj.focus();
+                return false;
+              }
+              alert(fldLangVal[i] + ' cannot be empty.');
+              fieldObj.focus();
+              return false;
+            } else if (fieldObj.nodeName == 'SELECT') {
+              if (fieldObj.options[fieldObj.selectedIndex].value == '-None-') {
+                alert(fldLangVal[i] + ' cannot be none.');
+                fieldObj.focus();
+                return false;
+              }
+            } else if (fieldObj.type == 'checkbox') {
+              if (fieldObj.checked == false) {
+                alert('Please accept ' + fldLangVal[i]);
+                fieldObj.focus();
+                return false;
+              }
+            }
+            try{
+              if (fieldObj.name == 'Last Name') {
+                name = fieldObj.value;
+              }
+            } catch (e){}
+          }
+        }
+        if ( !validateEmail1394241000000550005 () ) {
+          return false;
+        }
+        var urlparams = new URLSearchParams(window.location.search);
+        if (urlparams.has ('service') && (urlparams.get ('service') === 'smarturl') ) {
+          var webform = document.getElementById('webform1394241000000550005');
+          var service = urlparams.get('service');
+          var smarturlfield = document.createElement('input');
+          smarturlfield.setAttribute('type', 'hidden');
+          smarturlfield.setAttribute('value', service);
+          smarturlfield.setAttribute('name', 'service');
+          webform.appendChild(smarturlfield);
+        }
+        document.querySelector('.crmWebToEntityForm .formsubmit').setAttribute('disabled', true);
+      }
+      _wFa_ajax_will_be_replaced = false;
+      if (typeof _wfa_fstprtcken == 'undefined') {
+        _wfa_fstprtcken = {};
+      }
+      _wfa_fstprtcken[1394241000000550005] = true;
+      function tooltipShow1394241000000550005(el){
+        var tooltip = el.nextElementSibling;
+        var tooltipDisplay = tooltip.style.display;
+        if (tooltipDisplay == 'none') {
+          var allTooltip = document.getElementsByClassName('zcwf_tooltip_over');
+          for (i = 0; i < allTooltip.length; i++ ) {
+            allTooltip[i].style.display = 'none';
+          }
+          tooltip.style.display = 'block';
+        } else {
+          tooltip.style.display = 'none';
+        }
+      }
+    </script>
+    <script id = 'wf_anal' src = 'https://crm.zohopublic.in/crm/WebFormAnalyticsServeServlet?rid=fcc37eb175672bc867bae7e9a3147c387ddd6a242dacb91df708fe2a3a8d4a94a55501d41b5e2ffe049c5ea83b9bfb1bgidfeb5d87609c5a7cc02b8b007cc31a15510868f04ec773c6fce329116ae5bd027gid8982ce5c45f91083ab3c5b5f02eca287b96997d19d27aaacb01ec344207e2353gid759baa46bcd67586fa7f2b7b40d91c0b70f493e28688460ce3f80ddb84f31008&tw=8fd7c75f48e333b5f4475da68e3118753a123924dae55c135878eef0089ce6e2&version=v2'></script>
+  </form>
+</div>`;
+
 export default function ShopkeeperPage() {
-  const [formState, setFormState] = useState({
-    name: "",
-    phone: "",
-    biz: "",
-    goods: "",
-    dest: "",
-    vol: "",
-    msg: "",
-  });
-  const [showOk, setShowOk] = useState(false);
+  useEffect(() => {
+    if (typeof window === "undefined") return;
 
-  const handleLeadSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!formState.name.trim() || !formState.phone.trim()) return;
+    const scriptText = `
+      function checkMandatory1394241000000604320(isAjax){
+        var mndFileds = new Array('Last Name');
+        var fldLangVal = new Array('Last Name');
+        for (i = 0; i < mndFileds.length; i++ ) {
+          var fieldObj = document.forms['WebToLeads1394241000000604320'] [mndFileds[i]];
+          if (fieldObj) {
+            if(((fieldObj.value) .replace (/^\s+|\s+$/g,'') ) .length == 0) {
+              if (fieldObj.type == 'file') {
+                alert('Please select a file to upload.');
+                fieldObj.focus();
+                return false;
+              }
+              alert(fldLangVal[i] + ' cannot be empty.');
+              fieldObj.focus();
+              return false;
+            } else if (fieldObj.nodeName == 'SELECT') {
+              if (fieldObj.options[fieldObj.selectedIndex].value == '-None-') {
+                alert(fldLangVal[i] + ' cannot be none.');
+                fieldObj.focus();
+                return false;
+              }
+            } else if (fieldObj.type == 'checkbox') {
+              if (fieldObj.checked == false) {
+                alert('Please accept ' + fldLangVal[i]);
+                fieldObj.focus();
+                return false;
+              }
+            }
+            try{
+              if (fieldObj.name == 'Last Name') { name = fieldObj.value; }
+            } catch (e){}
+          }
+        }
+        var urlparams = new URLSearchParams(window.location.search);
+        if (urlparams.has ('service') && (urlparams.get ('service') === 'smarturl') ) {
+          var webform = document.getElementById('webform1394241000000604320');
+          var service = urlparams.get('service');
+          var smarturlfield = document.createElement('input');
+          smarturlfield.setAttribute('type', 'hidden');
+          smarturlfield.setAttribute('value', service);
+          smarturlfield.setAttribute('name', 'service');
+          webform.appendChild(smarturlfield);
+        }
+        document.querySelector('.crmWebToEntityForm .formsubmit').setAttribute('disabled', true);
+      }
+      _wFa_ajax_will_be_replaced = false;
+      if (typeof _wfa_fstprtcken == 'undefined') {
+        _wfa_fstprtcken = {};
+      }
+      _wfa_fstprtcken[1394241000000604320] = true;
+      function tooltipShow1394241000000604320(el){
+        var tooltip = el.nextElementSibling;
+        var tooltipDisplay = tooltip.style.display;
+        if (tooltipDisplay == 'none') {
+          var allTooltip = document.getElementsByClassName('zcwf_tooltip_over');
+          for (i = 0; i < allTooltip.length; i++ ) {
+            allTooltip[i].style.display = 'none';
+          }
+          tooltip.style.display = 'block';
+        } else {
+          tooltip.style.display = 'none';
+        }
+      }
+    `;
 
-    const parts = [
-      "New export quote request",
-      "",
-      `Name: ${formState.name.trim()}`,
-      `WhatsApp: ${formState.phone.trim()}`,
-    ];
-    if (formState.biz.trim()) parts.push(`Business: ${formState.biz.trim()}`);
-    if (formState.goods.trim()) parts.push(`Exports: ${formState.goods.trim()}`);
-    if (formState.dest) parts.push(`Destination: ${formState.dest}`);
-    if (formState.vol) parts.push(`Shipments/month: ${formState.vol}`);
-    if (formState.msg.trim()) parts.push(`Notes: ${formState.msg.trim()}`);
+    const scriptText2 = `
+      function validateEmail1394241000000550005(){
+        var form = document.forms['WebToLeads1394241000000550005'];
+        var emailFld = form.querySelectorAll('[ftype=email]');
+        var i;
+        for(i = 0; i < emailFld.length; i++ ) {
+          var emailVal = emailFld[i].value;
+          if ((emailVal.replace (/^\s+|\s+$/g,'') ) .length != 0) {
+            var atpos = emailVal.indexOf('@');
+            var dotpos = emailVal.lastIndexOf('.');
+            if(atpos < 1 || dotpos < atpos + 2 || dotpos + 2 >= emailVal.length) {
+              alert('Please enter a valid email address. ');
+              emailFld[i].focus();
+              return false;
+            }
+          }
+        }
+        return true;
+      }
+      function checkMandatory1394241000000550005(isAjax){
+        var mndFileds = new Array('Last Name', 'Email', 'Phone');
+        var fldLangVal = new Array('Full Name', 'Email', 'Phone');
+        for (i = 0; i < mndFileds.length; i++ ) {
+          var fieldObj = document.forms['WebToLeads1394241000000550005'] [mndFileds[i]];
+          if (fieldObj) {
+            if(((fieldObj.value) .replace (/^\s+|\s+$/g,'') ) .length == 0) {
+              if (fieldObj.type == 'file') {
+                alert('Please select a file to upload.');
+                fieldObj.focus();
+                return false;
+              }
+              alert(fldLangVal[i] + ' cannot be empty.');
+              fieldObj.focus();
+              return false;
+            } else if (fieldObj.nodeName == 'SELECT') {
+              if (fieldObj.options[fieldObj.selectedIndex].value == '-None-') {
+                alert(fldLangVal[i] + ' cannot be none.');
+                fieldObj.focus();
+                return false;
+              }
+            } else if (fieldObj.type == 'checkbox') {
+              if (fieldObj.checked == false) {
+                alert('Please accept ' + fldLangVal[i]);
+                fieldObj.focus();
+                return false;
+              }
+            }
+            try{
+              if (fieldObj.name == 'Last Name') {
+                name = fieldObj.value;
+              }
+            } catch (e){}
+          }
+        }
+        if ( !validateEmail1394241000000550005 () ) {
+          return false;
+        }
+        var urlparams = new URLSearchParams(window.location.search);
+        if (urlparams.has ('service') && (urlparams.get ('service') === 'smarturl') ) {
+          var webform = document.getElementById('webform1394241000000550005');
+          var service = urlparams.get('service');
+          var smarturlfield = document.createElement('input');
+          smarturlfield.setAttribute('type', 'hidden');
+          smarturlfield.setAttribute('value', service);
+          smarturlfield.setAttribute('name', 'service');
+          webform.appendChild(smarturlfield);
+        }
+        document.querySelector('.crmWebToEntityForm .formsubmit').setAttribute('disabled', true);
+      }
+      _wFa_ajax_will_be_replaced = false;
+      if (typeof _wfa_fstprtcken == 'undefined') {
+        _wfa_fstprtcken = {};
+      }
+      _wfa_fstprtcken[1394241000000550005] = true;
+      function tooltipShow1394241000000550005(el){
+        var tooltip = el.nextElementSibling;
+        var tooltipDisplay = tooltip.style.display;
+        if (tooltipDisplay == 'none') {
+          var allTooltip = document.getElementsByClassName('zcwf_tooltip_over');
+          for (i = 0; i < allTooltip.length; i++ ) {
+            allTooltip[i].style.display = 'none';
+          }
+          tooltip.style.display = 'block';
+        } else {
+          tooltip.style.display = 'none';
+        }
+      }
+    `;
 
-    const text = encodeURIComponent(parts.join("\n"));
-    setShowOk(true);
-    window.open(`https://wa.me/917070506070?text=${text}`, "_blank");
-  };
+    const inlineScript = document.createElement("script");
+    inlineScript.type = "text/javascript";
+    inlineScript.textContent = scriptText;
+    document.body.appendChild(inlineScript);
+
+    const inlineScript2 = document.createElement("script");
+    inlineScript2.type = "text/javascript";
+    inlineScript2.textContent = scriptText2;
+    document.body.appendChild(inlineScript2);
+
+    const analyticsScript = document.createElement("script");
+    analyticsScript.id = "wf_anal_shopkeeper";
+    analyticsScript.src = "https://crm.zohopublic.in/crm/WebFormAnalyticsServeServlet?rid=d023568e1e3e6fa18f4c65deedbaf5bc7f1cd4b152b8e5a19ab6edcaef23b301e62ee712edde36cec4caa7ba4154a584gidacef6996ea9494b52c0598738546e612e2a0a5be6351888a2c61d75436d46e2dgidf646a7fe147ef8abef157542804ad5353ed0c88259c12374e1616665bee5deddgid9df265a27c59cea1a3209824dffe14bf32108b2470f9382cadb7d7c87376883a&tw=71ad78d900e1d4b8b9fc1253be7bad177119792698b6ee802bfee724b6dad136&version=v2";
+    analyticsScript.async = true;
+    document.body.appendChild(analyticsScript);
+
+    const analyticsScript2 = document.createElement("script");
+    analyticsScript2.id = "wf_anal_shopkeeper_2";
+    analyticsScript2.src = "https://crm.zohopublic.in/crm/WebFormAnalyticsServeServlet?rid=fcc37eb175672bc867bae7e9a3147c387ddd6a242dacb91df708fe2a3a8d4a94a55501d41b5e2ffe049c5ea83b9bfb1bgidfeb5d87609c5a7cc02b8b007cc31a15510868f04ec773c6fce329116ae5bd027gid8982ce5c45f91083ab3c5b5f02eca287b96997d19d27aaacb01ec344207e2353gid759baa46bcd67586fa7f2b7b40d91c0b70f493e28688460ce3f80ddb84f31008&tw=8fd7c75f48e333b5f4475da68e3118753a123924dae55c135878eef0089ce6e2&version=v2";
+    analyticsScript2.async = true;
+    document.body.appendChild(analyticsScript2);
+
+    return () => {
+      inlineScript.remove();
+      inlineScript2.remove();
+      analyticsScript.remove();
+      analyticsScript2.remove();
+    };
+  }, []);
 
   return (
     <div className="w-full font-sans bg-[#f8f9fa] text-[#0f172a] antialiased overflow-x-hidden">
@@ -281,143 +681,19 @@ export default function ShopkeeperPage() {
             </div>
 
             {/* Right Form Card - Styled in Brand Orange Theme */}
-            <div className="bg-gradient-to-br from-[#ff7a00] to-[#e66c00] text-white border border-orange-400/30 rounded-[20px] sm:rounded-[28px] p-6 sm:p-8 shadow-[0_20px_50px_-15px_rgba(255,122,0,0.4)] relative overflow-hidden">
-              <h3 className="text-[21px] sm:text-[25px] font-extrabold text-white">Request your quote</h3>
-              <p className="mt-1 text-[13px] sm:text-[13.5px] text-orange-100 mb-5">
-                Takes under a minute. Fields marked with <span className="text-white font-bold">*</span> are required.
-              </p>
+            <div className="bg-gradient-to-br from-[#ff7a00] to-[#e66c00] text-white border border-orange-400/30 rounded-[20px] sm:rounded-[28px] p-5 sm:p-6 shadow-[0_20px_50px_-15px_rgba(255,122,0,0.4)] relative overflow-hidden">
+              <div
+                className="relative z-10 [&_.zcwf_lblLeft]:!w-full [&_.zcwf_lblLeft]:!max-w-none [&_.zcwf_lblLeft]:!p-0 [&_.zcwf_lblLeft]:!bg-transparent [&_.zcwf_lblLeft]:!text-white [&_.zcwf_row]:!mt-2 [&_.zcwf_col_lab]:!text-white [&_.zcwf_col_lab]:!text-[11px] [&_.zcwf_col_lab]:!font-bold [&_.zcwf_col_lab]:!tracking-[0.12em] [&_.zcwf_col_lab]:!uppercase [&_.zcwf_col_lab]:!text-white/90 [&_.zcwf_col_fld]:!w-full [&_.zcwf_col_fld]:!float-none [&_input[type='text']]:!w-full [&_input[type='text']]:!rounded-xl [&_input[type='text']]:!border [&_input[type='text']]:!border-white/80 [&_input[type='text']]:!bg-white [&_input[type='text']]:!px-3 [&_input[type='text']]:!py-2.5 [&_input[type='text']]:!text-slate-900 [&_input[type='text']]:!text-[14.5px] [&_input[type='text']]:!placeholder:text-slate-400 [&_input[type='submit']]:!w-full [&_input[type='submit']]:!bg-[#0f172a] [&_input[type='submit']]:!text-white [&_input[type='submit']]:!rounded-full [&_input[type='submit']]:!px-6 [&_input[type='submit']]:!py-3 [&_input[type='submit']]:!font-bold [&_input[type='submit']]:!tracking-wide [&_input[type='reset']]:!ml-2 [&_input[type='reset']]:!bg-white/10 [&_input[type='reset']]:!text-white [&_input[type='reset']]:!border [&_input[type='reset']]:!border-white/30 [&_input[type='reset']]:!rounded-full [&_input[type='reset']]:!px-5 [&_input[type='reset']]:!py-2.5 [&_input[type='reset']]:!font-bold"
+                dangerouslySetInnerHTML={{ __html: stripScriptTags(zohoFormHtml) }}
+              />
 
-              <form onSubmit={handleLeadSubmit} className="space-y-3.5 relative z-10">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                  <div>
-                    <label className="block text-[11px] font-bold tracking-wider uppercase text-white/90 mb-1.5">
-                      Your Name <span className="text-white font-black">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      required
-                      placeholder="Full name"
-                      value={formState.name}
-                      onChange={(e) => setFormState({ ...formState, name: e.target.value })}
-                      className="w-full px-3.5 py-2.5 bg-white text-slate-900 placeholder-slate-400 rounded-xl text-[14.5px] border border-white/80 focus:outline-none focus:ring-2 focus:ring-slate-900/20 shadow-sm transition-all"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-[11px] font-bold tracking-wider uppercase text-white/90 mb-1.5">
-                      WhatsApp Number <span className="text-white font-black">*</span>
-                    </label>
-                    <input
-                      type="tel"
-                      required
-                      placeholder="e.g. 98xxxxxxxx"
-                      value={formState.phone}
-                      onChange={(e) => setFormState({ ...formState, phone: e.target.value })}
-                      className="w-full px-3.5 py-2.5 bg-white text-slate-900 placeholder-slate-400 rounded-xl text-[14.5px] border border-white/80 focus:outline-none focus:ring-2 focus:ring-slate-900/20 shadow-sm transition-all"
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-[11px] font-bold tracking-wider uppercase text-white/90 mb-1.5">
-                    Shop / Business Name
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="Optional"
-                    value={formState.biz}
-                    onChange={(e) => setFormState({ ...formState, biz: e.target.value })}
-                    className="w-full px-3.5 py-2.5 bg-white text-slate-900 placeholder-slate-400 rounded-xl text-[14.5px] border border-white/80 focus:outline-none focus:ring-2 focus:ring-slate-900/20 shadow-sm transition-all"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-[11px] font-bold tracking-wider uppercase text-white/90 mb-1.5">
-                    What do you export?
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="e.g. garments, utensils, handicrafts, spices"
-                    value={formState.goods}
-                    onChange={(e) => setFormState({ ...formState, goods: e.target.value })}
-                    className="w-full px-3.5 py-2.5 bg-white text-slate-900 placeholder-slate-400 rounded-xl text-[14.5px] border border-white/80 focus:outline-none focus:ring-2 focus:ring-slate-900/20 shadow-sm transition-all"
-                  />
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                  <div>
-                    <label className="block text-[11px] font-bold tracking-wider uppercase text-white/90 mb-1.5">
-                      Main Destination
-                    </label>
-                    <select
-                      value={formState.dest}
-                      onChange={(e) => setFormState({ ...formState, dest: e.target.value })}
-                      className="w-full px-3.5 py-2.5 bg-white text-slate-900 rounded-xl text-[14.5px] border border-white/80 focus:outline-none focus:ring-2 focus:ring-slate-900/20 shadow-sm transition-all"
-                    >
-                      <option value="" className="text-slate-700">Select destination...</option>
-                      <option value="USA">USA</option>
-                      <option value="UK">UK</option>
-                      <option value="Canada">Canada</option>
-                      <option value="Australia">Australia</option>
-                      <option value="Europe">Europe</option>
-                      <option value="Other / Multiple">Other / Multiple</option>
-                    </select>
-                  </div>
-
-                  <div>
-                    <label className="block text-[11px] font-bold tracking-wider uppercase text-white/90 mb-1.5">
-                      Shipments / Month
-                    </label>
-                    <select
-                      value={formState.vol}
-                      onChange={(e) => setFormState({ ...formState, vol: e.target.value })}
-                      className="w-full px-3.5 py-2.5 bg-white text-slate-900 rounded-xl text-[14.5px] border border-white/80 focus:outline-none focus:ring-2 focus:ring-slate-900/20 shadow-sm transition-all"
-                    >
-                      <option value="" className="text-slate-700">Select volume...</option>
-                      <option value="Just starting">Just starting</option>
-                      <option value="1-5 shipments">1 - 5 shipments</option>
-                      <option value="5-20 shipments">5 - 20 shipments</option>
-                      <option value="20+ shipments">20+ shipments</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-[11px] font-bold tracking-wider uppercase text-white/90 mb-1.5">
-                    Anything else?
-                  </label>
-                  <textarea
-                    rows={2}
-                    placeholder="Current courier, typical weight, or any specific questions"
-                    value={formState.msg}
-                    onChange={(e) => setFormState({ ...formState, msg: e.target.value })}
-                    className="w-full px-3.5 py-2.5 bg-white text-slate-900 placeholder-slate-400 rounded-xl text-[14.5px] border border-white/80 focus:outline-none focus:ring-2 focus:ring-slate-900/20 shadow-sm transition-all resize-none"
-                  />
-                </div>
-
-                <button
-                  type="submit"
-                  className="w-full inline-flex items-center justify-center gap-2.5 font-bold text-[15px] sm:text-[16px] px-6 py-3.5 rounded-full bg-[#0f172a] hover:bg-[#1e293b] text-white shadow-xl hover:-translate-y-0.5 transition-all text-center cursor-pointer mt-1"
-                >
-                  <svg className="w-5 h-5 fill-[#23c961] shrink-0" viewBox="0 0 24 24">
-                    <path d="M12 2a10 10 0 0 0-8.6 15.06L2 22l5.06-1.32A10 10 0 1 0 12 2Zm5.3 14.1c-.22.62-1.3 1.2-1.8 1.24-.46.05-1.03.07-1.66-.1a13.6 13.6 0 0 1-5.9-4.53c-.44-.58-1.1-1.56-1.1-2.98 0-1.42.75-2.12 1.02-2.4a1.05 1.05 0 0 1 .77-.36c.19 0 .38 0 .55.01.18.01.42-.07.65.5.24.6.8 2.02.87 2.16.07.15.12.32.02.5-.1.19-.15.3-.3.47-.15.18-.3.4-.44.53-.15.15-.3.3-.13.6.18.3.8 1.3 1.7 2.1 1.18 1.05 2.16 1.37 2.47 1.53.3.15.48.12.65-.08.18-.2.75-.87.95-1.17.2-.3.4-.25.66-.15.27.1 1.7.8 2 .95.3.15.5.22.57.34.07.13.07.72-.15 1.34Z" />
-                  </svg>
-                  <span>Get my quote on WhatsApp</span>
-                </button>
-
-                <p className="text-[11.5px] sm:text-[12px] text-orange-100 text-center leading-relaxed mt-1">
-                  On submit, you will be taken to WhatsApp with your details pre-filled.
-                </p>
-
-                {showOk && (
-                  <div className="mt-2.5 p-3 bg-black/40 border border-white/30 text-white rounded-xl text-[13px] text-center leading-relaxed">
-                    Opening WhatsApp with your details... If it doesn&apos;t open, message us directly at{" "}
-                    <a href="tel:+917070506070" className="font-bold underline text-white">
-                      +91 70 70 50 60 70
-                    </a>
-                    .
-                  </div>
-                )}
-              </form>
+              <div className="mt-8 border-t border-white/20 pt-6">
+                <div className="mb-3 text-[11px] font-bold tracking-[0.16em] uppercase text-white/80">Secondary enquiry form</div>
+                <div
+                  className="relative z-10 [&_.zcwf_lblLeft]:!w-full [&_.zcwf_lblLeft]:!max-w-none [&_.zcwf_lblLeft]:!p-0 [&_.zcwf_lblLeft]:!bg-transparent [&_.zcwf_lblLeft]:!text-white [&_.zcwf_row]:!mt-2 [&_.zcwf_col_lab]:!text-white [&_.zcwf_col_lab]:!text-[11px] [&_.zcwf_col_lab]:!font-bold [&_.zcwf_col_lab]:!tracking-[0.12em] [&_.zcwf_col_lab]:!uppercase [&_.zcwf_col_lab]:!text-white/90 [&_.zcwf_col_fld]:!w-full [&_.zcwf_col_fld]:!float-none [&_input[type='text']]:!w-full [&_input[type='text']]:!rounded-xl [&_input[type='text']]:!border [&_input[type='text']]:!border-white/80 [&_input[type='text']]:!bg-white [&_input[type='text']]:!px-3 [&_input[type='text']]:!py-2.5 [&_input[type='text']]:!text-slate-900 [&_input[type='text']]:!text-[14.5px] [&_input[type='text']]:!placeholder:text-slate-400 [&_input[type='submit']]:!w-full [&_input[type='submit']]:!bg-[#0f172a] [&_input[type='submit']]:!text-white [&_input[type='submit']]:!rounded-full [&_input[type='submit']]:!px-6 [&_input[type='submit']]:!py-3 [&_input[type='submit']]:!font-bold [&_input[type='submit']]:!tracking-wide [&_input[type='reset']]:!ml-2 [&_input[type='reset']]:!bg-white/10 [&_input[type='reset']]:!text-white [&_input[type='reset']]:!border [&_input[type='reset']]:!border-white/30 [&_input[type='reset']]:!rounded-full [&_input[type='reset']]:!px-5 [&_input[type='reset']]:!py-2.5 [&_input[type='reset']]:!font-bold"
+                  dangerouslySetInnerHTML={{ __html: stripScriptTags(zohoFormHtml2) }}
+                />
+              </div>
             </div>
           </div>
         </div>
