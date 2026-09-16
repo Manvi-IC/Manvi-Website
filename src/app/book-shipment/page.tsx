@@ -25,6 +25,47 @@ import {
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 const DB_NAME = process.env.NEXT_PUBLIC_X_DATABASE || "manvi";
 
+type ProductSuggestion = { name: string; hsnCode: string };
+type Box = {
+  id: number;
+  weightKg: number;
+  lengthCm: number;
+  widthCm: number;
+  heightCm: number;
+  productDescription: string;
+  hsnCode: string;
+  qty: number;
+  unitRate: number;
+};
+type Shipper = {
+  shipperName: string;
+  shipperPhone: string;
+  shipperEmail: string;
+  shipperAddress: string;
+  shipperCity: string;
+  shipperState: string;
+  shipperPincode: string;
+  shipperGstin: string;
+};
+type Receiver = {
+  receiverName: string;
+  receiverPhone: string;
+  receiverEmail: string;
+  receiverAddress: string;
+  receiverCity: string;
+  receiverState: string;
+  receiverZipcode: string;
+  receiverCountry: string;
+};
+type Quote = {
+  service: string;
+  rateType: string;
+  network: string;
+  totalPrice: number;
+  zone?: string;
+  tat?: string | number;
+};
+
 // ============================================================
 // PRODUCT DATABASE FOR HSN CODE AUTO-SUGGEST
 // ============================================================
@@ -839,33 +880,23 @@ const PRODUCT_DATABASE = [
   },
 ];
 
-// ============================================================
-// HSN SEARCH FUNCTION
-// ============================================================
-function searchProduct(query: string): { name: string; hsnCode: string }[] {
+function searchProduct(query: string): ProductSuggestion[] {
   if (!query || query.trim().length < 1) return [];
 
   const searchTerm = query.trim().toLowerCase();
-  const results: { name: string; hsnCode: string; score: number }[] = [];
+  const results: (ProductSuggestion & { score: number })[] = [];
 
   PRODUCT_DATABASE.forEach((product) => {
     let score = 0;
     const productNameLower = product.name.toLowerCase();
 
-    // Exact match on name
     if (productNameLower === searchTerm) {
       score = 100;
-    }
-    // Name starts with search term
-    else if (productNameLower.startsWith(searchTerm)) {
+    } else if (productNameLower.startsWith(searchTerm)) {
       score = 80;
-    }
-    // Name includes search term
-    else if (productNameLower.includes(searchTerm)) {
+    } else if (productNameLower.includes(searchTerm)) {
       score = 60;
-    }
-    // Check keywords
-    else {
+    } else {
       for (const keyword of product.keywords) {
         const keywordLower = keyword.toLowerCase();
         if (keywordLower === searchTerm) {
@@ -886,11 +917,66 @@ function searchProduct(query: string): { name: string; hsnCode: string }[] {
     }
   });
 
-  // Sort by score descending and limit to 8 results
   results.sort((a, b) => b.score - a.score);
   return results.slice(0, 8).map(({ name, hsnCode }) => ({ name, hsnCode }));
 }
+
 // ============================================================
+
+function HsnSuggestions({
+  query,
+  suggestions,
+  onSelect,
+  onClose,
+}: {
+  query: string;
+  suggestions: ProductSuggestion[];
+  onSelect: (name: string, hsnCode: string) => void;
+  onClose: () => void;
+}) {
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (
+        dropdownRef.current &&
+        e.target instanceof Node &&
+        !dropdownRef.current.contains(e.target)
+      ) {
+        onClose();
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [onClose]);
+
+  if (suggestions.length === 0) return null;
+
+  return (
+    <div
+      ref={dropdownRef}
+      className="absolute z-50 w-full mt-1 bg-white border border-border-color rounded-xl shadow-lg max-h-60 overflow-y-auto"
+    >
+      {suggestions.map((item) => (
+        <button
+          key={item.hsnCode + item.name}
+          onClick={() => {
+            onSelect(item.name, item.hsnCode);
+            onClose();
+          }}
+          className="w-full px-4 py-2.5 text-left hover:bg-slate-50 transition-colors border-b border-border-color last:border-0 flex justify-between items-center group"
+        >
+          <span className="text-sm font-medium text-foreground">
+            {item.name}
+          </span>
+          <span className="text-xs font-mono text-slate-400 bg-slate-100 px-2 py-1 rounded group-hover:bg-slate-200 transition-colors">
+            {item.hsnCode}
+          </span>
+        </button>
+      ))}
+    </div>
+  );
+}
 
 const DESTINATIONS = [
   {
@@ -967,102 +1053,26 @@ const NETWORK_LABELS: Record<string, string> = {
   FED: "FedEx",
 };
 
-interface Quote {
-  service: string;
-  network: string;
-  chargeableWt: number;
-  zone: string;
-  rateType: string;
-  totalPrice: number;
-  tat: string;
-}
-
-interface Box {
-  id: number;
-  weightKg: number;
-  lengthCm: number;
-  widthCm: number;
-  heightCm: number;
-  productDescription: string;
-  hsnCode: string;
-  qty: number;
-  unitRate: number;
-}
-
-// ============================================================
-// HSN AUTO-SUGGEST DROPDOWN COMPONENT
-// ============================================================
-function HsnSuggestions({
-  query,
-  suggestions,
-  onSelect,
-  onClose,
-}: {
-  query: string;
-  suggestions: { name: string; hsnCode: string }[];
-  onSelect: (name: string, hsnCode: string) => void;
-  onClose: () => void;
-}) {
-  const dropdownRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    function handleClickOutside(e: MouseEvent) {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(e.target as Node)
-      ) {
-        onClose();
-      }
-    }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [onClose]);
-
-  if (suggestions.length === 0) return null;
-
-  return (
-    <div
-      ref={dropdownRef}
-      className="absolute z-50 w-full mt-1 bg-white border border-border-color rounded-xl shadow-lg max-h-60 overflow-y-auto"
-    >
-      {suggestions.map((item) => (
-        <button
-          key={item.hsnCode + item.name}
-          onClick={() => {
-            onSelect(item.name, item.hsnCode);
-            onClose();
-          }}
-          className="w-full px-4 py-2.5 text-left hover:bg-slate-50 transition-colors border-b border-border-color last:border-0 flex justify-between items-center group"
-        >
-          <span className="text-sm font-medium text-foreground">
-            {item.name}
-          </span>
-          <span className="text-xs font-mono text-slate-400 bg-slate-100 px-2 py-1 rounded group-hover:bg-slate-200 transition-colors">
-            {item.hsnCode}
-          </span>
-        </button>
-      ))}
-    </div>
-  );
-}
-// ============================================================
-
 const DEFAULT_ACCOUNT_CODE = "1270";
 
 export default function BookShipmentPage() {
   const [step, setStep] = useState(1);
   const [submitting, setSubmitting] = useState(false);
   const [quoting, setQuoting] = useState(false);
-  const [bookingResult, setBookingResult] = useState<any>(null);
+  const [bookingResult, setBookingResult] = useState<unknown>(null);
   const [error, setError] = useState("");
   const [quotes, setQuotes] = useState<Quote[]>([]);
   const [selectedQuoteKey, setSelectedQuoteKey] = useState<string | null>(null);
+
+  // Payment states
+  const [paymentProcessing, setPaymentProcessing] = useState(false);
+  const [paymentSession, setPaymentSession] = useState<unknown>(null);
 
   const [destination, setDestination] = useState("AUSTRALIA");
   const [zoningCountry, setZoningCountry] = useState("");
   const [zipcode, setZipcode] = useState("");
 
-  const [shipper, setShipper] = useState({
+  const [shipper, setShipper] = useState<Shipper>({
     shipperName: "",
     shipperPhone: "",
     shipperEmail: "",
@@ -1073,7 +1083,7 @@ export default function BookShipmentPage() {
     shipperGstin: "",
   });
 
-  const [receiver, setReceiver] = useState({
+  const [receiver, setReceiver] = useState<Receiver>({
     receiverName: "",
     receiverPhone: "",
     receiverEmail: "",
@@ -1088,7 +1098,9 @@ export default function BookShipmentPage() {
     "Personal Effects & Commercial Samples",
   );
   const [invoiceValue, setInvoiceValue] = useState(250);
-  const [invoiceNo, setInvoiceNo] = useState("");
+  const [invoiceNo, setInvoiceNo] = useState(
+    () => `INV-${new Date().getFullYear()}-${Math.floor(1000 + Math.random() * 9000)}`,
+  );
   const [invoiceDate, setInvoiceDate] = useState(
     new Date().toISOString().split("T")[0],
   );
@@ -1109,19 +1121,9 @@ export default function BookShipmentPage() {
     },
   ]);
 
-  // HSN suggestion states
-  const [hsnQuery, setHsnQuery] = useState<{ [key: number]: string }>({});
-  const [hsnSuggestions, setHsnSuggestions] = useState<{
-    [key: number]: { name: string; hsnCode: string }[];
-  }>({});
-  const [showHsnDropdown, setShowHsnDropdown] = useState<{
-    [key: number]: boolean;
-  }>({});
-
-  useEffect(() => {
-    const randomInv = `INV-${new Date().getFullYear()}-${Math.floor(1000 + Math.random() * 9000)}`;
-    setInvoiceNo(randomInv);
-  }, []);
+  const [hsnQuery, setHsnQuery] = useState<Record<number, string>>({});
+  const [hsnSuggestions, setHsnSuggestions] = useState<Record<number, ProductSuggestion[]>>({});
+  const [showHsnDropdown, setShowHsnDropdown] = useState<Record<number, boolean>>({});
 
   const destObj = DESTINATIONS.find((d) => d.value === destination);
   const subCountryOptions =
@@ -1137,7 +1139,7 @@ export default function BookShipmentPage() {
       (Number(b.lengthCm || 0) *
         Number(b.widthCm || 0) *
         Number(b.heightCm || 0)) /
-      5000,
+        5000,
     0,
   );
   const chargeableWeight = Math.ceil(
@@ -1165,7 +1167,6 @@ export default function BookShipmentPage() {
         unitRate: 10,
       },
     ]);
-    // Initialize suggestion state for new box
     setHsnQuery((prev) => ({ ...prev, [newId]: "" }));
     setHsnSuggestions((prev) => ({ ...prev, [newId]: [] }));
     setShowHsnDropdown((prev) => ({ ...prev, [newId]: false }));
@@ -1174,7 +1175,6 @@ export default function BookShipmentPage() {
   const removeBox = (id: number) => {
     if (boxes.length <= 1) return;
     setBoxes((prev) => prev.filter((b) => b.id !== id));
-    // Clean up suggestion states
     setHsnQuery((prev) => {
       const newState = { ...prev };
       delete newState[id];
@@ -1192,18 +1192,16 @@ export default function BookShipmentPage() {
     });
   };
 
-  const updateBox = (id: number, field: keyof Box, value: any) => {
+  const updateBox = (id: number, field: keyof Box, value: string | number) => {
     setBoxes((prev) =>
       prev.map((b) => (b.id === id ? { ...b, [field]: value } : b)),
     );
   };
 
-  // Handle product description change with HSN suggestions
   const handleProductDescriptionChange = (id: number, value: string) => {
     setHsnQuery((prev) => ({ ...prev, [id]: value }));
     updateBox(id, "productDescription", value);
 
-    // Get suggestions if there's input
     if (value.trim().length > 0) {
       const results = searchProduct(value);
       setHsnSuggestions((prev) => ({ ...prev, [id]: results }));
@@ -1214,7 +1212,6 @@ export default function BookShipmentPage() {
     }
   };
 
-  // Handle HSN selection from dropdown
   const handleHsnSelect = (id: number, name: string, hsnCode: string) => {
     updateBox(id, "productDescription", name);
     updateBox(id, "hsnCode", hsnCode);
@@ -1222,7 +1219,6 @@ export default function BookShipmentPage() {
     setShowHsnDropdown((prev) => ({ ...prev, [id]: false }));
   };
 
-  // Close dropdown handler
   const closeHsnDropdown = (id: number) => {
     setShowHsnDropdown((prev) => ({ ...prev, [id]: false }));
   };
@@ -1261,10 +1257,8 @@ export default function BookShipmentPage() {
       const first = data.quotes[0];
       setSelectedQuoteKey(`${first.service}__${first.rateType}`);
       setStep(5);
-      // Silently warm the booking backend so it's ready when the user submits
-      fetch("/api/ping").catch(() => { });
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to fetch rates");
     } finally {
       setQuoting(false);
     }
@@ -1282,51 +1276,40 @@ export default function BookShipmentPage() {
     ? selectedQuote.totalPrice - cgstAmt - sgstAmt
     : 0;
 
-  const onSubmitBooking = async () => {
+  // ============================================================
+  // PAYMENT HANDLER - FIXED: Creates shipment first
+  // ============================================================
+  const handlePayment = async () => {
     if (!selectedQuote) return;
-    setSubmitting(true);
+
+    setPaymentProcessing(true);
     setError("");
+
     try {
-      // Format dates
-      let formattedInvoiceDate;
-      if (invoiceDate) {
-        formattedInvoiceDate = invoiceDate + "T00:00:00";
-      } else {
-        const now = new Date();
-        const year = now.getFullYear();
-        const month = String(now.getMonth() + 1).padStart(2, "0");
-        const day = String(now.getDate()).padStart(2, "0");
-        formattedInvoiceDate = `${year}-${month}-${day}T00:00:00`;
-      }
+      console.log("[Payment] Step 1: Creating shipment...");
 
-      const now = new Date();
-      const year = now.getFullYear();
-      const month = String(now.getMonth() + 1).padStart(2, "0");
-      const day = String(now.getDate()).padStart(2, "0");
-      const hours = String(now.getHours()).padStart(2, "0");
-      const minutes = String(now.getMinutes()).padStart(2, "0");
-      const seconds = String(now.getSeconds()).padStart(2, "0");
-      const formattedShipDate = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
-
-      const payload = {
-        action: "book_shipment",
-        bookingData: {
+      // STEP 1: Create the shipment first
+      const shipmentResponse = await fetch(`${API_URL}/portal/create-shipment`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
           accountCode: DEFAULT_ACCOUNT_CODE,
-          customerName: "Default Account",
+          customerName: shipper.shipperName || "Default Account",
           sector: destination,
           destination: zoningCountry || destObj?.label || destination,
           shipper,
           receiver: {
             ...receiver,
-            receiverCountry:
-              receiver.receiverCountry || zoningCountry || destObj?.label,
+            receiverCountry: receiver.receiverCountry || zoningCountry || destObj?.label,
           },
           boxes,
           contentDescription,
           invoiceValue: computedInvoiceValue || invoiceValue,
           invoiceNo,
-          invoiceDate: formattedInvoiceDate,
-          shipDate: formattedShipDate,
+          invoiceDate: invoiceDate || new Date().toISOString().split("T")[0],
+          shipDate: new Date().toISOString(),
           termsOfSale,
           reasonForExport,
           currency: "USD",
@@ -1338,192 +1321,94 @@ export default function BookShipmentPage() {
           sgstAmt,
           igstAmt,
           totalAmt: selectedQuote.totalPrice,
-        },
-      };
-
-      const res = await fetch("/api/customers", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
+        }),
       });
 
-      // Safely parse response — empty body (e.g. Netlify timeout) would otherwise crash
-      let data: any;
-      try {
-        data = await res.json();
-      } catch {
-        throw new Error(
-          "The server took too long to respond. Please wait a moment and try again — the server may be waking up from idle.",
-        );
+      const shipmentData = await shipmentResponse.json();
+      console.log("[Payment] Shipment creation response:", shipmentData);
+
+      if (!shipmentData.success) {
+        throw new Error(shipmentData.message || "Failed to create shipment");
       }
 
-      if (!res.ok || !data.success)
-        throw new Error(data.message || "Booking creation failed");
+      // Get the created shipment
+      const createdShipment = shipmentData.booking || shipmentData.data;
+      console.log("[Payment] ✅ Shipment created:", {
+        id: createdShipment._id,
+        awbNo: createdShipment.awbNo,
+      });
 
-      setBookingResult(data.booking);
-      setStep(6);
+      // STEP 2: Now initiate payment with the real shipment ID and AWB
+      console.log("[Payment] Step 2: Initiating payment for shipment:", createdShipment.awbNo);
 
-      // ============================================================
-      // SEND EMAIL NOTIFICATION TO info@manvicourier.com
-      // ============================================================
-      try {
-        // Build email HTML with all shipment details
-        const emailHtml = `
-        <html>
-          <head>
-            <style>
-              body { font-family: Arial, sans-serif; color: #333; }
-              .container { max-width: 700px; margin: 0 auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 8px; }
-              .header { background: #f7931e; color: white; padding: 15px; border-radius: 8px 8px 0 0; text-align: center; }
-              .header h2 { margin: 0; }
-              .section { margin: 20px 0; padding: 15px; background: #f9f9f9; border-radius: 6px; }
-              .section h3 { color: #f7931e; margin-top: 0; border-bottom: 1px solid #e0e0e0; padding-bottom: 8px; }
-              .row { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #eee; }
-              .row:last-child { border-bottom: none; }
-              .label { font-weight: bold; color: #666; }
-              .value { color: #333; }
-              .total-row { background: #f7931e; color: white; padding: 10px; border-radius: 4px; margin-top: 10px; font-weight: bold; }
-              .box-item { background: white; padding: 10px; margin: 8px 0; border: 1px solid #ddd; border-radius: 4px; }
-              .box-item .box-header { font-weight: bold; color: #f7931e; }
-              .footer { text-align: center; padding: 15px; font-size: 12px; color: #999; border-top: 1px solid #e0e0e0; margin-top: 20px; }
-            </style>
-          </head>
-          <body>
-            <div class="container">
-              <div class="header">
-                <h2>📦 New Shipment Booking Confirmed</h2>
-                <p style="margin: 5px 0 0; font-size: 14px;">AWB: ${data.booking?.awbNo || 'N/A'}</p>
-              </div>
+      const paymentResult = await initiatePaymentWithShipment(
+        createdShipment._id,
+        createdShipment.awbNo,
+        selectedQuote.totalPrice,
+        {
+          email: shipper.shipperEmail || "customer@example.com",
+          phone: shipper.shipperPhone || "919999999999",
+          name: shipper.shipperName || "Customer",
+        }
+      );
 
-              <!-- Shipper Details -->
-              <div class="section">
-                <h3>📍 Shipper Details</h3>
-                <div class="row"><span class="label">Name:</span><span class="value">${shipper.shipperName || 'N/A'}</span></div>
-                <div class="row"><span class="label">Phone:</span><span class="value">${shipper.shipperPhone || 'N/A'}</span></div>
-                <div class="row"><span class="label">Email:</span><span class="value">${shipper.shipperEmail || 'N/A'}</span></div>
-                <div class="row"><span class="label">Address:</span><span class="value">${shipper.shipperAddress || 'N/A'}</span></div>
-                <div class="row"><span class="label">City:</span><span class="value">${shipper.shipperCity || 'N/A'}</span></div>
-                <div class="row"><span class="label">State:</span><span class="value">${shipper.shipperState || 'N/A'}</span></div>
-                <div class="row"><span class="label">Pincode:</span><span class="value">${shipper.shipperPincode || 'N/A'}</span></div>
-                <div class="row"><span class="label">GSTIN:</span><span class="value">${shipper.shipperGstin || 'N/A'}</span></div>
-              </div>
+      setPaymentSession(paymentResult);
 
-              <!-- Receiver Details -->
-              <div class="section">
-                <h3>📍 Receiver Details</h3>
-                <div class="row"><span class="label">Name:</span><span class="value">${receiver.receiverName || 'N/A'}</span></div>
-                <div class="row"><span class="label">Phone:</span><span class="value">${receiver.receiverPhone || 'N/A'}</span></div>
-                <div class="row"><span class="label">Email:</span><span class="value">${receiver.receiverEmail || 'N/A'}</span></div>
-                <div class="row"><span class="label">Address:</span><span class="value">${receiver.receiverAddress || 'N/A'}</span></div>
-                <div class="row"><span class="label">City:</span><span class="value">${receiver.receiverCity || 'N/A'}</span></div>
-                <div class="row"><span class="label">State:</span><span class="value">${receiver.receiverState || 'N/A'}</span></div>
-                <div class="row"><span class="label">Zipcode:</span><span class="value">${receiver.receiverZipcode || 'N/A'}</span></div>
-                <div class="row"><span class="label">Country:</span><span class="value">${receiver.receiverCountry || destination}</span></div>
-              </div>
-
-              <!-- Shipment Details -->
-              <div class="section">
-                <h3>📋 Shipment Details</h3>
-                <div class="row"><span class="label">Destination:</span><span class="value">${destination}</span></div>
-                <div class="row"><span class="label">Service:</span><span class="value">${selectedQuote.service}</span></div>
-                <div class="row"><span class="label">Network:</span><span class="value">${selectedQuote.network}</span></div>
-                <div class="row"><span class="label">Zone:</span><span class="value">${selectedQuote.zone}</span></div>
-                <div class="row"><span class="label">Rate Type:</span><span class="value">${selectedQuote.rateType}</span></div>
-                <div class="row"><span class="label">TAT:</span><span class="value">${selectedQuote.tat}</span></div>
-                <div class="row"><span class="label">Invoice No:</span><span class="value">${invoiceNo}</span></div>
-                <div class="row"><span class="label">Invoice Date:</span><span class="value">${invoiceDate}</span></div>
-                <div class="row"><span class="label">Terms of Sale:</span><span class="value">${termsOfSale}</span></div>
-                <div class="row"><span class="label">Reason for Export:</span><span class="value">${reasonForExport}</span></div>
-                <div class="row"><span class="label">Content Description:</span><span class="value">${contentDescription}</span></div>
-              </div>
-
-              <!-- Boxes / Package Details -->
-              <div class="section">
-                <h3>📦 Package Details (${boxes.length} Box${boxes.length > 1 ? 'es' : ''})</h3>
-                ${boxes.map((box, idx) => `
-                  <div class="box-item">
-                    <div class="box-header">Box #${idx + 1}</div>
-                    <div class="row"><span class="label">Weight:</span><span class="value">${box.weightKg} KG</span></div>
-                    <div class="row"><span class="label">Dimensions:</span><span class="value">${box.lengthCm} × ${box.widthCm} × ${box.heightCm} CM</span></div>
-                    <div class="row"><span class="label">Product:</span><span class="value">${box.productDescription || 'N/A'}</span></div>
-                    <div class="row"><span class="label">HSN Code:</span><span class="value">${box.hsnCode || 'N/A'}</span></div>
-                    <div class="row"><span class="label">Quantity:</span><span class="value">${box.qty}</span></div>
-                    <div class="row"><span class="label">Unit Rate:</span><span class="value">₹${box.unitRate}</span></div>
-                    <div class="row"><span class="label">Total Value:</span><span class="value">₹${(box.qty * box.unitRate).toFixed(2)}</span></div>
-                  </div>
-                `).join('')}
-              </div>
-
-              <!-- Weight Summary -->
-              <div class="section">
-                <h3>⚖️ Weight Summary</h3>
-                <div class="row"><span class="label">Actual Weight:</span><span class="value">${totalActualWeight.toFixed(2)} KG</span></div>
-                <div class="row"><span class="label">Volumetric Weight:</span><span class="value">${totalVolumetricWeight.toFixed(2)} KG</span></div>
-                <div class="row"><span class="label" style="color: #f7931e; font-size: 16px;">Chargeable Weight:</span><span class="value" style="color: #f7931e; font-size: 16px; font-weight: bold;">${chargeableWeight} KG</span></div>
-              </div>
-
-              <!-- Freight Breakdown -->
-              <div class="section">
-                <h3>💰 Freight Breakdown</h3>
-                <div class="row"><span class="label">Basic Freight:</span><span class="value">₹${basicAmt.toLocaleString()}</span></div>
-                <div class="row"><span class="label">CGST (9%):</span><span class="value">₹${cgstAmt.toLocaleString()}</span></div>
-                <div class="row"><span class="label">SGST (9%):</span><span class="value">₹${sgstAmt.toLocaleString()}</span></div>
-                ${igstAmt > 0 ? `<div class="row"><span class="label">IGST:</span><span class="value">₹${igstAmt.toLocaleString()}</span></div>` : ''}
-                <div class="total-row" style="display: flex; justify-content: space-between; padding: 12px; background: #f7931e; color: white; border-radius: 4px; margin-top: 10px; font-weight: bold;">
-                  <span>Grand Total</span>
-                  <span>₹${selectedQuote.totalPrice.toLocaleString()}</span>
-                </div>
-              </div>
-
-              <!-- Status -->
-              <div class="section" style="background: ${data.booking?.isHold ? '#fff3cd' : '#d4edda'}; border-left: 4px solid ${data.booking?.isHold ? '#ffc107' : '#28a745'};">
-                <h3 style="color: ${data.booking?.isHold ? '#856404' : '#155724'};">📌 Shipment Status</h3>
-                <p style="margin: 0; font-weight: bold;">
-                  ${data.booking?.isHold ? '⏳ ON HOLD — Insufficient balance' : '✅ CONFIRMED — Shipment booked successfully'}
-                </p>
-                <p style="margin: 5px 0 0; font-size: 13px;">
-                  AWB: <strong>${data.booking?.awbNo || 'N/A'}</strong>
-                  ${data.booking?.isHold ? '<br><span style="color: #856404;">This shipment is on hold pending admin review.</span>' : ''}
-                </p>
-              </div>
-
-              <div class="footer">
-                <p>This is an automated notification from Manvi Courier Portal.</p>
-                <p>© ${new Date().getFullYear()} Manvi International — All Rights Reserved</p>
-              </div>
-            </div>
-          </body>
-        </html>
-      `;
-
-        // Send email to info@manvicourier.com
-        await fetch(`${API_URL}/api/send-shipment-email`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            to: "info@manvicourier.com",
-            subject: `📦 New Shipment Booked - AWB: ${data.booking?.awbNo || 'N/A'} - ${shipper.shipperName || 'Customer'}`,
-            html: emailHtml,
-            shipmentData: {
-              awbNo: data.booking?.awbNo,
-              customerName: shipper.shipperName || "Customer",
-              destination: destination,
-              service: selectedQuote.service,
-              totalAmount: selectedQuote.totalPrice,
-              isHold: data.booking?.isHold || false,
-            },
-          }),
-        });
-      } catch (emailErr) {
-        console.error("Failed to send shipment notification email:", emailErr);
-        // Don't fail the booking if email fails
+      // Redirect to payment gateway
+      if (paymentResult.redirectUrl) {
+        window.location.assign(paymentResult.redirectUrl);
+      } else {
+        throw new Error("No redirect URL received from payment gateway");
       }
-      // ============================================================
+    } catch (err) {
+      console.error("[Payment] ❌ Error:", err);
+      setError(err instanceof Error ? err.message : "Payment initiation failed");
+      setPaymentProcessing(false);
+    }
+  };
 
-    } catch (err: any) {
-      setError(err.message || "An error occurred while creating shipment");
-    } finally {
-      setSubmitting(false);
+  // ============================================================
+  // PAYMENT API CALL - FIXED: Accepts shipmentId and awbNo
+  // ============================================================
+  const initiatePaymentWithShipment = async (
+    shipmentId: string,
+    awbNo: string,
+    totalAmount: number,
+    customerDetails: { email: string; phone: string; name: string },
+  ) => {
+    try {
+      console.log("[Payment] Initiate payment with:", { shipmentId, awbNo });
+
+      const response = await fetch(`${API_URL}/api/payment/initiate`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          bookingData: {
+            _id: shipmentId,
+            awbNo: awbNo,
+          },
+          totalAmount,
+          customerEmail: customerDetails.email,
+          customerPhone: customerDetails.phone,
+          customerName: customerDetails.name,
+          shipmentId: shipmentId,  // Pass real shipment ID
+          awbNo: awbNo,            // Pass real AWB
+        }),
+      });
+
+      const data = await response.json();
+      console.log("[Payment] Payment initiation response:", data);
+
+      if (!data.success) {
+        throw new Error(data.message || "Payment initiation failed");
+      }
+
+      return data.data;
+    } catch (error) {
+      console.error("[Payment] Initiate Error:", error);
+      throw error;
     }
   };
 
@@ -1536,14 +1421,14 @@ export default function BookShipmentPage() {
     { num: 6, label: "Done", icon: "✅" },
   ];
 
-  /* ─── shared input & label classes (matching website theme) ─── */
   const inp =
     "w-full bg-[#f8f9fa] text-[#1c1f2e] text-sm font-medium rounded-xl px-4 py-3.5 focus:outline-none border border-gray-200 placeholder:text-gray-400 focus:border-[#f27a1a] focus:ring-2 focus:ring-[#f27a1a]/10 transition-all";
-  const lbl = "block text-xs font-bold text-gray-700 uppercase tracking-wider mb-2";
+  const lbl =
+    "block text-xs font-bold text-gray-700 uppercase tracking-wider mb-2";
 
   return (
     <div className="min-h-screen bg-[#f8f9fa] text-[#0f172a] font-sans flex flex-col antialiased">
-      {/* ─── Breadcrumb Navigation ─── */}
+      {/* Breadcrumb Navigation */}
       <div className="py-3.5 px-4 sm:px-6 relative z-30">
         <div className="max-w-425 w-full mx-auto flex items-center justify-between">
           <div className="flex items-center gap-2 text-sm font-light text-gray-800">
@@ -1564,7 +1449,7 @@ export default function BookShipmentPage() {
         </div>
       </div>
 
-      {/* ─── Banner Section (consistent with Track/Services/Quote pages) ─── */}
+      {/* Banner Section */}
       <section className="relative bg-[#0D1527] overflow-hidden py-10 sm:py-14 px-4 sm:px-6">
         <div className="absolute inset-0 z-0 opacity-15 bg-[url('https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=2000&q=80')] bg-cover bg-center" />
         <div className="absolute inset-0 bg-gradient-to-r from-[#0D1527] via-[#0D1527]/95 to-[#162035]/80 z-0" />
@@ -1580,26 +1465,16 @@ export default function BookShipmentPage() {
               Book a Shipment
             </h1>
             <p className="text-gray-300 text-xs sm:text-sm md:text-base mt-2 leading-relaxed">
-              Calculate live freight tariffs, complete customs documentation, and generate instant airway bills.
+              Calculate live freight tariffs, complete customs documentation,
+              and generate instant airway bills.
             </p>
-          </div>
-
-          <div className="flex items-center gap-3">
-            <div className="bg-white/10 border border-white/15 backdrop-blur-md rounded-2xl px-5 py-3 text-right">
-              <div className="text-[11px] text-gray-300 font-semibold uppercase tracking-wider">Account Active</div>
-              <div className="text-white font-mono font-bold text-base flex items-center gap-2 justify-end">
-                <ShieldCheck className="w-4 h-4 text-[#f27a1a]" />
-                #{DEFAULT_ACCOUNT_CODE}
-              </div>
-            </div>
           </div>
         </div>
       </section>
 
-      {/* ─── Main Content Area ─── */}
+      {/* Main Content */}
       <main className="flex-grow max-w-425 w-full mx-auto px-4 sm:px-6 py-8 sm:py-20">
-
-        {/* ─── Step Progress Stepper ─── */}
+        {/* Step Progress */}
         {step <= 5 && (
           <div className="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 mb-8 border border-gray-200/70 shadow-sm overflow-x-auto">
             <div className="flex items-center justify-between min-w-[620px] px-2">
@@ -1607,36 +1482,46 @@ export default function BookShipmentPage() {
                 const isDone = step > item.num;
                 const isActive = step === item.num;
                 return (
-                  <div key={item.num} className="flex items-center flex-1 last:flex-none">
+                  <div
+                    key={item.num}
+                    className="flex items-center flex-1 last:flex-none"
+                  >
                     <div className="flex items-center gap-3">
                       <div
-                        className={`w-9 h-9 rounded-xl flex items-center justify-center text-xs font-bold transition-all duration-300 ${isActive
-                          ? "bg-[#f27a1a] text-white shadow-lg shadow-orange-500/25 ring-4 ring-orange-100 scale-105"
-                          : isDone
-                            ? "bg-emerald-500 text-white shadow-sm shadow-emerald-500/20"
-                            : "bg-gray-100 text-gray-400 border border-gray-200/80"
-                          }`}
+                        className={`w-9 h-9 rounded-xl flex items-center justify-center text-xs font-bold transition-all duration-300 ${
+                          isActive
+                            ? "bg-[#f27a1a] text-white shadow-lg shadow-orange-500/25 ring-4 ring-orange-100 scale-105"
+                            : isDone
+                              ? "bg-emerald-500 text-white shadow-sm shadow-emerald-500/20"
+                              : "bg-gray-100 text-gray-400 border border-gray-200/80"
+                        }`}
                       >
-                        {isDone ? <CheckCircle2 className="w-4 h-4" /> : item.num}
+                        {isDone ? (
+                          <CheckCircle2 className="w-4 h-4" />
+                        ) : (
+                          item.num
+                        )}
                       </div>
                       <div>
                         <div
-                          className={`text-[10px] uppercase tracking-wider font-extrabold transition-colors ${isActive
-                            ? "text-[#f27a1a]"
-                            : isDone
-                              ? "text-emerald-600"
-                              : "text-gray-400"
-                            }`}
+                          className={`text-[10px] uppercase tracking-wider font-extrabold transition-colors ${
+                            isActive
+                              ? "text-[#f27a1a]"
+                              : isDone
+                                ? "text-emerald-600"
+                                : "text-gray-400"
+                          }`}
                         >
                           Step {item.num}
                         </div>
                         <div
-                          className={`text-xs whitespace-nowrap font-bold transition-colors ${isActive
-                            ? "text-[#1c1f2e]"
-                            : isDone
-                              ? "text-gray-700"
-                              : "text-gray-400"
-                            }`}
+                          className={`text-xs whitespace-nowrap font-bold transition-colors ${
+                            isActive
+                              ? "text-[#1c1f2e]"
+                              : isDone
+                                ? "text-gray-700"
+                                : "text-gray-400"
+                          }`}
                         >
                           {item.label}
                         </div>
@@ -1644,8 +1529,9 @@ export default function BookShipmentPage() {
                     </div>
                     {idx < 4 && (
                       <div
-                        className={`h-0.5 flex-1 mx-4 transition-colors duration-500 rounded-full ${isDone ? "bg-emerald-400" : "bg-gray-200"
-                          }`}
+                        className={`h-0.5 flex-1 mx-4 transition-colors duration-500 rounded-full ${
+                          isDone ? "bg-emerald-400" : "bg-gray-200"
+                        }`}
                       />
                     )}
                   </div>
@@ -1665,12 +1551,12 @@ export default function BookShipmentPage() {
           </div>
         )}
 
-        {/* ─── STEP 1: Destination ─── */}
+        {/* STEP 1: Destination */}
         {step === 1 && (
           <div className="bg-white rounded-3xl p-6 sm:p-10 shadow-sm border border-gray-200/70">
             <div className="flex items-center justify-between pb-6 mb-8 border-b border-gray-100">
-              <div className="flex items-center gap-3 sm:gap-4">
-                <div className="w-12 h-12 rounded-2xl bg-orange-50 border border-orange-100 flex items-center justify-center text-[#f27a1a]">
+              <div className="flex items-center gap-2 sm:gap-3">
+                <div className="w-12 h-12 rounded-2xl bg-orange-50 border border-orange-100 flex items-center justify-center text-[#f27a1a] shrink-0">
                   <FileText className="w-6 h-6" />
                 </div>
                 <div>
@@ -1718,7 +1604,9 @@ export default function BookShipmentPage() {
                     >
                       <option value="">Select Country</option>
                       {subCountryOptions.map((c) => (
-                        <option key={c} value={c}>{c}</option>
+                        <option key={c} value={c}>
+                          {c}
+                        </option>
                       ))}
                     </select>
                   </div>
@@ -1738,12 +1626,15 @@ export default function BookShipmentPage() {
                 )}
               </div>
 
-              {/* Destination preview info card */}
               <div className="flex items-center gap-4 p-5 bg-[#f8f9fa] rounded-2xl border border-gray-200">
                 <span className="text-4xl">{destObj?.flag}</span>
                 <div>
-                  <div className="text-base font-extrabold text-[#1c1f2e]">{destObj?.label}</div>
-                  <div className="text-xs text-gray-500 font-medium">Selected international shipping sector</div>
+                  <div className="text-base font-extrabold text-[#1c1f2e]">
+                    {destObj?.label}
+                  </div>
+                  <div className="text-xs text-gray-500 font-medium">
+                    Selected international shipping sector
+                  </div>
                 </div>
               </div>
 
@@ -1755,13 +1646,16 @@ export default function BookShipmentPage() {
                       return;
                     }
                     if (destObj?.requiresSubCountry && !zoningCountry) {
-                      setError(`Please select a country within ${destObj.label}.`);
+                      setError(
+                        `Please select a country within ${destObj.label}.`,
+                      );
                       return;
                     }
                     setError("");
                     setReceiver((prev) => ({
                       ...prev,
-                      receiverCountry: zoningCountry || destObj?.label || destination,
+                      receiverCountry:
+                        zoningCountry || destObj?.label || destination,
                     }));
                     setStep(2);
                   }}
@@ -1774,12 +1668,18 @@ export default function BookShipmentPage() {
           </div>
         )}
 
-        {/* ─── STEP 2: Shipper ─── */}
+        {/* STEP 2: Shipper */}
         {step === 2 && (
           <div className="bg-white rounded-3xl p-6 sm:p-10 shadow-sm border border-gray-200/70">
             <div className="flex items-center justify-between pb-6 mb-8 border-b border-gray-100">
-              <div className="flex items-center gap-3 sm:gap-4">
-                <div className="w-12 h-12 rounded-2xl bg-orange-50 border border-orange-100 flex items-center justify-center text-[#f27a1a]">
+              <div className="flex items-center gap-2 sm:gap-3">
+                <button
+                  onClick={() => setStep(1)}
+                  className="bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold text-sm py-2.5 px-4 rounded-xl transition-all flex items-center gap-2 cursor-pointer shrink-0"
+                >
+                  <ArrowLeft className="w-4 h-7" /> 
+                </button>
+                <div className="w-12 h-12 rounded-2xl bg-orange-50 border border-orange-100 flex items-center justify-center text-[#f27a1a] shrink-0">
                   <User className="w-6 h-6" />
                 </div>
                 <div>
@@ -1798,23 +1698,48 @@ export default function BookShipmentPage() {
 
             <div className="space-y-6">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                {(
+                {([
                   [
-                    ["shipperName", "Full Name", "text", true, "e.g. Rahul Sharma"],
-                    ["shipperPhone", "Mobile / Phone", "tel", true, "e.g. +91 98765 43210"],
-                    ["shipperEmail", "Email Address", "email", true, "e.g. rahul@example.com"],
-                    ["shipperGstin", "GSTIN / PAN (Optional)", "text", false, "e.g. 07AAAAA0000A1Z5"],
-                  ] as const
-                ).map(([key, label, type, required, placeholder]) => (
+                    "shipperName",
+                    "Full Name",
+                    "text",
+                    true,
+                    "e.g. Rahul Sharma",
+                  ],
+                  [
+                    "shipperPhone",
+                    "Mobile / Phone",
+                    "tel",
+                    true,
+                    "e.g. +91 98765 43210",
+                  ],
+                  [
+                    "shipperEmail",
+                    "Email Address",
+                    "email",
+                    true,
+                    "e.g. rahul@example.com",
+                  ],
+                  [
+                    "shipperGstin",
+                    "GSTIN / PAN (Optional)",
+                    "text",
+                    false,
+                    "e.g. 07AAAAA0000A1Z5",
+                  ],
+                ] as const).map(([key, label, type, required, placeholder]) => (
                   <div key={key}>
                     <label className={lbl}>
-                      {label}{required && " *"}
+                      {label}
+                      {required && " *"}
                     </label>
                     <input
                       type={type}
                       placeholder={placeholder}
-                      value={(shipper as any)[key]}
-                      onChange={(e) => setShipper({ ...shipper, [key]: e.target.value })}
+                      value={shipper[key]}
+                      onChange={(e) =>
+                        setShipper({ ...shipper, [key]: e.target.value })
+                      }
                       className={inp}
                     />
                   </div>
@@ -1826,46 +1751,45 @@ export default function BookShipmentPage() {
                 <input
                   type="text"
                   value={shipper.shipperAddress}
-                  onChange={(e) => setShipper({ ...shipper, shipperAddress: e.target.value })}
+                  onChange={(e) =>
+                    setShipper({ ...shipper, shipperAddress: e.target.value })
+                  }
                   placeholder="House / Flat No., Building, Street address, landmark…"
                   className={inp}
                 />
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-                {(
-                  [
-                    ["shipperCity", "City", "e.g. New Delhi"],
-                    ["shipperState", "State", "e.g. Delhi"],
-                    ["shipperPincode", "Pincode", "e.g. 110045"],
-                  ] as const
-                ).map(([key, label, ph]) => (
+                {([
+                  ["shipperCity", "City", "e.g. New Delhi"],
+                  ["shipperState", "State", "e.g. Delhi"],
+                  ["shipperPincode", "Pincode", "e.g. 110045"],
+                ] as const).map(([key, label, ph]) => (
                   <div key={key}>
                     <label className={lbl}>{label} *</label>
                     <input
                       type="text"
                       placeholder={ph}
-                      value={(shipper as any)[key]}
-                      onChange={(e) => setShipper({ ...shipper, [key]: e.target.value })}
+                      value={shipper[key]}
+                      onChange={(e) =>
+                        setShipper({ ...shipper, [key]: e.target.value })
+                      }
                       className={inp}
                     />
                   </div>
                 ))}
               </div>
 
-              <div className="flex justify-between items-center pt-4 border-t border-gray-100">
-                <button
-                  onClick={() => setStep(1)}
-                  className="bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold text-sm py-3.5 px-6 rounded-xl transition-all flex items-center gap-2 cursor-pointer"
-                >
-                  <ArrowLeft className="w-4 h-4" /> Back
-                </button>
+              <div className="flex justify-end items-center pt-4 border-t border-gray-100">
                 <button
                   onClick={() => {
                     if (
-                      !shipper.shipperName || !shipper.shipperPhone ||
-                      !shipper.shipperEmail || !shipper.shipperAddress ||
-                      !shipper.shipperCity || !shipper.shipperState ||
+                      !shipper.shipperName ||
+                      !shipper.shipperPhone ||
+                      !shipper.shipperEmail ||
+                      !shipper.shipperAddress ||
+                      !shipper.shipperCity ||
+                      !shipper.shipperState ||
                       !shipper.shipperPincode
                     ) {
                       setError("Please fill all required shipper fields.");
@@ -1883,12 +1807,18 @@ export default function BookShipmentPage() {
           </div>
         )}
 
-        {/* ─── STEP 3: Receiver ─── */}
+        {/* STEP 3: Receiver */}
         {step === 3 && (
           <div className="bg-white rounded-3xl p-6 sm:p-10 shadow-sm border border-gray-200/70">
             <div className="flex items-center justify-between pb-6 mb-8 border-b border-gray-100">
-              <div className="flex items-center gap-3 sm:gap-4">
-                <div className="w-12 h-12 rounded-2xl bg-orange-50 border border-orange-100 flex items-center justify-center text-[#f27a1a]">
+              <div className="flex items-center gap-2 sm:gap-3">
+                <button
+                  onClick={() => setStep(2)}
+                  className="bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold text-sm py-2.5 px-4 rounded-xl transition-all flex items-center gap-2 cursor-pointer shrink-0"
+                >
+                  <ArrowLeft className="w-4 h-4" /> Back
+                </button>
+                <div className="w-12 h-12 rounded-2xl bg-orange-50 border border-orange-100 flex items-center justify-center text-[#f27a1a] shrink-0">
                   <User className="w-6 h-6" />
                 </div>
                 <div>
@@ -1907,20 +1837,33 @@ export default function BookShipmentPage() {
 
             <div className="space-y-6">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                {(
+                {([
+                  ["receiverName", "Receiver Name", true, "e.g. John Doe"],
+                      [
+                    "receiverPhone",
+                    "Receiver Phone",
+                    true,
+                    "e.g. +1 555 123 4567",
+                  ],
                   [
-                    ["receiverName", "Receiver Name", true, "e.g. John Doe"],
-                    ["receiverPhone", "Receiver Phone", true, "e.g. +1 555 123 4567"],
-                    ["receiverEmail", "Receiver Email (Optional)", false, "e.g. john@example.com"],
-                  ] as const
-                ).map(([key, label, required, ph]) => (
+                    "receiverEmail",
+                    "Receiver Email (Optional)",
+                    false,
+                    "e.g. john@example.com",
+                  ],
+                ] as const).map(([key, label, required, ph]) => (
                   <div key={key}>
-                    <label className={lbl}>{label}{required && " *"}</label>
+                    <label className={lbl}>
+                      {label}
+                      {required && " *"}
+                    </label>
                     <input
                       type="text"
                       placeholder={ph}
-                      value={(receiver as any)[key]}
-                      onChange={(e) => setReceiver({ ...receiver, [key]: e.target.value })}
+                      value={receiver[key]}
+                      onChange={(e) =>
+                        setReceiver({ ...receiver, [key]: e.target.value })
+                      }
                       className={inp}
                     />
                   </div>
@@ -1941,44 +1884,49 @@ export default function BookShipmentPage() {
                 <input
                   type="text"
                   value={receiver.receiverAddress}
-                  onChange={(e) => setReceiver({ ...receiver, receiverAddress: e.target.value })}
+                  onChange={(e) =>
+                    setReceiver({
+                      ...receiver,
+                      receiverAddress: e.target.value,
+                    })
+                  }
                   placeholder="Street address, building, apartment, suite…"
                   className={inp}
                 />
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                {(
+                {([
+                  ["receiverCity", "City", "e.g. Sydney / London"],
                   [
-                    ["receiverCity", "City", "e.g. Sydney / London"],
-                    ["receiverZipcode", "Zipcode / Postal Code", "e.g. 2000 / W1A 1AA"],
-                  ] as const
-                ).map(([key, label, ph]) => (
+                    "receiverZipcode",
+                    "Zipcode / Postal Code",
+                    "e.g. 2000 / W1A 1AA",
+                  ],
+                ] as const).map(([key, label, ph]) => (
                   <div key={key}>
                     <label className={lbl}>{label} *</label>
                     <input
                       type="text"
                       placeholder={ph}
-                      value={(receiver as any)[key]}
-                      onChange={(e) => setReceiver({ ...receiver, [key]: e.target.value })}
+                      value={receiver[key]}
+                      onChange={(e) =>
+                        setReceiver({ ...receiver, [key]: e.target.value })
+                      }
                       className={inp}
                     />
                   </div>
                 ))}
               </div>
 
-              <div className="flex justify-between items-center pt-4 border-t border-gray-100">
-                <button
-                  onClick={() => setStep(2)}
-                  className="bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold text-sm py-3.5 px-6 rounded-xl transition-all flex items-center gap-2 cursor-pointer"
-                >
-                  <ArrowLeft className="w-4 h-4" /> Back
-                </button>
+              <div className="flex justify-end items-center pt-4 border-t border-gray-100">
                 <button
                   onClick={() => {
                     if (
-                      !receiver.receiverName || !receiver.receiverPhone ||
-                      !receiver.receiverAddress || !receiver.receiverCity ||
+                      !receiver.receiverName ||
+                      !receiver.receiverPhone ||
+                      !receiver.receiverAddress ||
+                      !receiver.receiverCity ||
                       !receiver.receiverZipcode
                     ) {
                       setError("Please fill all required receiver fields.");
@@ -1996,12 +1944,18 @@ export default function BookShipmentPage() {
           </div>
         )}
 
-        {/* ─── STEP 4: Package & Customs ─── */}
+        {/* STEP 4: Package & Customs */}
         {step === 4 && (
           <div className="bg-white rounded-3xl p-6 sm:p-10 shadow-sm border border-gray-200/70">
             <div className="flex items-center justify-between pb-6 mb-8 border-b border-gray-100">
-              <div className="flex items-center gap-3 sm:gap-4">
-                <div className="w-12 h-12 rounded-2xl bg-orange-50 border border-orange-100 flex items-center justify-center text-[#f27a1a]">
+              <div className="flex items-center gap-2 sm:gap-3">
+                <button
+                  onClick={() => setStep(3)}
+                  className="bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold text-sm py-2.5 px-4 rounded-xl transition-all flex items-center gap-2 cursor-pointer shrink-0"
+                >
+                  <ArrowLeft className="w-4 h-4" /> Back
+                </button>
+                <div className="w-12 h-12 rounded-2xl bg-orange-50 border border-orange-100 flex items-center justify-center text-[#f27a1a] shrink-0">
                   <Package className="w-6 h-6" />
                 </div>
                 <div>
@@ -2009,7 +1963,8 @@ export default function BookShipmentPage() {
                     Shipment & Customs Details
                   </h2>
                   <p className="text-xs sm:text-sm text-gray-500 font-medium mt-0.5">
-                    Package dimensions, declared goods, and commercial invoice data
+                    Package dimensions, declared goods, and commercial invoice
+                    data
                   </p>
                 </div>
               </div>
@@ -2039,31 +1994,59 @@ export default function BookShipmentPage() {
                     value={computedInvoiceValue || invoiceValue}
                     className="w-full bg-gray-100 text-gray-500 text-sm font-medium rounded-xl px-4 py-3.5 border border-gray-200 cursor-not-allowed font-mono"
                   />
-                  <p className="text-[11px] text-gray-400 font-medium mt-1">Calculated automatically from items sum (Qty × Unit Rate)</p>
+                  <p className="text-[11px] text-gray-400 font-medium mt-1">
+                    Calculated automatically from items sum (Qty × Unit Rate)
+                  </p>
                 </div>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
                 <div>
                   <label className={lbl}>Invoice Number</label>
-                  <input type="text" value={invoiceNo} onChange={(e) => setInvoiceNo(e.target.value)} className={`${inp} font-mono`} />
+                  <input
+                    type="text"
+                    value={invoiceNo}
+                    onChange={(e) => setInvoiceNo(e.target.value)}
+                    className={`${inp} font-mono`}
+                  />
                 </div>
                 <div>
                   <label className={lbl}>Invoice Date</label>
-                  <input type="date" value={invoiceDate} onChange={(e) => setInvoiceDate(e.target.value)} className={inp} />
+                  <input
+                    type="date"
+                    value={invoiceDate}
+                    onChange={(e) => setInvoiceDate(e.target.value)}
+                    className={inp}
+                  />
                 </div>
                 <div>
                   <label className={lbl}>Terms of Sale</label>
-                  <select value={termsOfSale} onChange={(e) => setTermsOfSale(e.target.value)} className={inp}>
-                    {TERMS_OF_SALE.map((t) => <option key={t} value={t}>{t}</option>)}
+                  <select
+                    value={termsOfSale}
+                    onChange={(e) => setTermsOfSale(e.target.value)}
+                    className={inp}
+                  >
+                    {TERMS_OF_SALE.map((t) => (
+                      <option key={t} value={t}>
+                        {t}
+                      </option>
+                    ))}
                   </select>
                 </div>
               </div>
 
               <div className="sm:w-1/3">
                 <label className={lbl}>Reason for Export</label>
-                <select value={reasonForExport} onChange={(e) => setReasonForExport(e.target.value)} className={inp}>
-                  {REASONS_FOR_EXPORT.map((r) => <option key={r} value={r}>{r}</option>)}
+                <select
+                  value={reasonForExport}
+                  onChange={(e) => setReasonForExport(e.target.value)}
+                  className={inp}
+                >
+                  {REASONS_FOR_EXPORT.map((r) => (
+                    <option key={r} value={r}>
+                      {r}
+                    </option>
+                  ))}
                 </select>
               </div>
 
@@ -2103,20 +2086,26 @@ export default function BookShipmentPage() {
                     </div>
 
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                      {(
-                        [
-                          ["weightKg", "Weight (KG)"],
-                          ["lengthCm", "Length (CM)"],
-                          ["widthCm", "Width (CM)"],
-                          ["heightCm", "Height (CM)"],
-                        ] as const
-                      ).map(([field, label]) => (
+                      {([
+                        ["weightKg", "Weight (KG)"],
+                        ["lengthCm", "Length (CM)"],
+                        ["widthCm", "Width (CM)"],
+                        ["heightCm", "Height (CM)"],
+                      ] as const).map(([field, label]) => (
                         <div key={field}>
-                          <label className="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-1.5">{label}</label>
+                          <label className="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-1.5">
+                            {label}
+                          </label>
                           <input
                             type="number"
-                            value={(box as any)[field]}
-                            onChange={(e) => updateBox(box.id, field, parseFloat(e.target.value) || 0)}
+                            value={box[field]}
+                            onChange={(e) =>
+                              updateBox(
+                                box.id,
+                                field,
+                                parseFloat(e.target.value) || 0,
+                              )
+                            }
                             className="w-full bg-white border border-gray-200 rounded-xl px-3.5 py-2.5 text-sm font-medium text-[#1c1f2e] focus:border-[#f27a1a] focus:ring-2 focus:ring-[#f27a1a]/10 outline-none transition-all"
                           />
                         </div>
@@ -2124,70 +2113,114 @@ export default function BookShipmentPage() {
                     </div>
 
                     <div className="pt-4 border-t border-gray-200">
-                      <p className="text-[11px] font-extrabold text-[#f27a1a] uppercase tracking-wider mb-3">Customs Item Declaration</p>
+                      <p className="text-[11px] font-extrabold text-[#f27a1a] uppercase tracking-wider mb-3">
+                        Customs Item Declaration
+                      </p>
                       <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
                         <div className="sm:col-span-2 relative">
-                          <label className="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-1.5">Item Description *</label>
+                          <label className="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-1.5">
+                            Item Description *
+                          </label>
                           <div className="relative">
                             <input
                               type="text"
                               value={box.productDescription}
                               placeholder="e.g. Cotton T-Shirt, Documents..."
-                              onChange={(e) => handleProductDescriptionChange(box.id, e.target.value)}
+                              onChange={(e) =>
+                                handleProductDescriptionChange(
+                                  box.id,
+                                  e.target.value,
+                                )
+                              }
                               onFocus={() => {
                                 if (box.productDescription.trim().length > 0) {
-                                  const results = searchProduct(box.productDescription);
-                                  setHsnSuggestions((prev) => ({ ...prev, [box.id]: results }));
-                                  setShowHsnDropdown((prev) => ({ ...prev, [box.id]: results.length > 0 }));
+                                  const results = searchProduct(
+                                    box.productDescription,
+                                  );
+                                  setHsnSuggestions((prev) => ({
+                                    ...prev,
+                                    [box.id]: results,
+                                  }));
+                                  setShowHsnDropdown((prev) => ({
+                                    ...prev,
+                                    [box.id]: results.length > 0,
+                                  }));
                                 }
                               }}
                               className="w-full bg-white border border-gray-200 rounded-xl px-3.5 py-2.5 text-sm font-medium text-[#1c1f2e] focus:border-[#f27a1a] focus:ring-2 focus:ring-[#f27a1a]/10 outline-none transition-all pr-8"
                             />
                             <Search className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-                            {showHsnDropdown[box.id] && hsnSuggestions[box.id]?.length > 0 && (
-                              <button
-                                onClick={() => closeHsnDropdown(box.id)}
-                                className="absolute right-8 top-1/2 -translate-y-1/2 p-0.5 hover:bg-gray-100 rounded-full"
-                              >
-                                <X className="w-3.5 h-3.5 text-gray-400" />
-                              </button>
-                            )}
+                            {showHsnDropdown[box.id] &&
+                              hsnSuggestions[box.id]?.length > 0 && (
+                                <button
+                                  onClick={() => closeHsnDropdown(box.id)}
+                                  className="absolute right-8 top-1/2 -translate-y-1/2 p-0.5 hover:bg-gray-100 rounded-full"
+                                >
+                                  <X className="w-3.5 h-3.5 text-gray-400" />
+                                </button>
+                              )}
                           </div>
                           {showHsnDropdown[box.id] && (
                             <HsnSuggestions
                               query={hsnQuery[box.id] || ""}
                               suggestions={hsnSuggestions[box.id] || []}
-                              onSelect={(name, hsnCode) => handleHsnSelect(box.id, name, hsnCode)}
+                              onSelect={(name, hsnCode) =>
+                                handleHsnSelect(box.id, name, hsnCode)
+                              }
                               onClose={() => closeHsnDropdown(box.id)}
                             />
                           )}
                         </div>
                         <div>
-                          <label className="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-1.5">HSN / HTS Code</label>
+                          <label className="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-1.5">
+                            HSN / HTS Code
+                          </label>
                           <input
                             type="text"
                             value={box.hsnCode}
-                            placeholder={box.productDescription ? "Select from list" : "Auto-detected"}
-                            onChange={(e) => updateBox(box.id, "hsnCode", e.target.value)}
+                            placeholder={
+                              box.productDescription
+                                ? "Select from list"
+                                : "Auto-detected"
+                            }
+                            onChange={(e) =>
+                              updateBox(box.id, "hsnCode", e.target.value)
+                            }
                             className="w-full bg-white border border-gray-200 rounded-xl px-3.5 py-2.5 text-sm font-mono text-[#1c1f2e] focus:border-[#f27a1a] focus:ring-2 focus:ring-[#f27a1a]/10 outline-none transition-all"
                           />
                         </div>
                         <div className="grid grid-cols-2 gap-2">
                           <div>
-                            <label className="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-1.5">Qty</label>
+                            <label className="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-1.5">
+                              Qty
+                            </label>
                             <input
                               type="number"
                               value={box.qty}
-                              onChange={(e) => updateBox(box.id, "qty", parseInt(e.target.value) || 1)}
+                              onChange={(e) =>
+                                updateBox(
+                                  box.id,
+                                  "qty",
+                                  parseInt(e.target.value) || 1,
+                                )
+                              }
                               className="w-full bg-white border border-gray-200 rounded-xl px-3 py-2.5 text-sm font-medium text-[#1c1f2e] focus:border-[#f27a1a] outline-none transition-all"
                             />
                           </div>
                           <div>
-                            <label className="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-1.5">Rate ($)</label>
+                            <label className="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-1.5">
+                              Rate ($)
+                            </label>
                             <input
                               type="number"
                               value={box.unitRate}
-                              onChange={(e) => updateBox(box.id, "unitRate", parseFloat(e.target.value) || 0)}
+                              onChange={(e) =>
+                                updateBox(
+                                  box.id,
+                                  "unitRate",
+                                  parseFloat(e.target.value) || 0,
+                                )
+                              }
                               className="w-full bg-white border border-gray-200 rounded-xl px-3 py-2.5 text-sm font-medium text-[#1c1f2e] focus:border-[#f27a1a] outline-none transition-all"
                             />
                           </div>
@@ -2197,13 +2230,17 @@ export default function BookShipmentPage() {
                       {box.productDescription && box.hsnCode && (
                         <div className="mt-3 text-xs text-emerald-700 bg-emerald-50 px-3.5 py-2 rounded-xl border border-emerald-200 inline-flex items-center gap-2 font-medium">
                           <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                          <span>{box.productDescription} — HSN <strong>{box.hsnCode}</strong></span>
+                          <span>
+                            {box.productDescription} — HSN{" "}
+                            <strong>{box.hsnCode}</strong>
+                          </span>
                         </div>
                       )}
                       {box.productDescription && !box.hsnCode && (
                         <div className="mt-3 text-xs text-amber-700 bg-amber-50 px-3.5 py-2 rounded-xl border border-amber-200 inline-flex items-center gap-2 font-medium">
                           <AlertCircle className="w-4 h-4 text-amber-600" />
-                          Select from the search dropdown to auto-fill verified HSN code
+                          Select from the search dropdown to auto-fill verified
+                          HSN code
                         </div>
                       )}
                     </div>
@@ -2211,42 +2248,57 @@ export default function BookShipmentPage() {
                 ))}
               </div>
 
-              {/* Weight summary card */}
+              {/* Weight summary */}
               <div className="bg-gradient-to-r from-[#0d1527] to-[#1c294a] rounded-2xl p-5 sm:p-6 grid grid-cols-2 md:grid-cols-4 gap-4 text-center shadow-md">
                 <div className="p-2">
-                  <div className="text-gray-400 text-[11px] font-bold uppercase tracking-wider">Actual Weight</div>
-                  <div className="text-white font-extrabold text-lg sm:text-xl mt-1">{totalActualWeight.toFixed(2)} KG</div>
+                  <div className="text-gray-400 text-[11px] font-bold uppercase tracking-wider">
+                    Actual Weight
+                  </div>
+                  <div className="text-white font-extrabold text-lg sm:text-xl mt-1">
+                    {totalActualWeight.toFixed(2)} KG
+                  </div>
                 </div>
                 <div className="p-2 border-l border-white/10">
-                  <div className="text-gray-400 text-[11px] font-bold uppercase tracking-wider">Volumetric Wt</div>
-                  <div className="text-white font-extrabold text-lg sm:text-xl mt-1">{totalVolumetricWeight.toFixed(2)} KG</div>
+                  <div className="text-gray-400 text-[11px] font-bold uppercase tracking-wider">
+                    Volumetric Wt
+                  </div>
+                  <div className="text-white font-extrabold text-lg sm:text-xl mt-1">
+                    {totalVolumetricWeight.toFixed(2)} KG
+                  </div>
                 </div>
                 <div className="p-2 border-l border-white/10">
-                  <div className="text-gray-400 text-[11px] font-bold uppercase tracking-wider">Customs Value</div>
-                  <div className="text-white font-extrabold text-lg sm:text-xl mt-1">₹{computedInvoiceValue.toFixed(2)}</div>
+                  <div className="text-gray-400 text-[11px] font-bold uppercase tracking-wider">
+                    Customs Value
+                  </div>
+                  <div className="text-white font-extrabold text-lg sm:text-xl mt-1">
+                    ₹{computedInvoiceValue.toFixed(2)}
+                  </div>
                 </div>
                 <div className="p-2 border-l border-white/10">
-                  <div className="text-orange-300 text-[11px] font-bold uppercase tracking-wider">Chargeable Wt</div>
-                  <div className="text-[#f27a1a] font-extrabold text-xl sm:text-2xl mt-0.5">{chargeableWeight} KG</div>
+                  <div className="text-orange-300 text-[11px] font-bold uppercase tracking-wider">
+                    Chargeable Wt
+                  </div>
+                  <div className="text-[#f27a1a] font-extrabold text-xl sm:text-2xl mt-0.5">
+                    {chargeableWeight} KG
+                  </div>
                 </div>
               </div>
 
-              <div className="flex justify-between items-center pt-4 border-t border-gray-100">
-                <button
-                  onClick={() => setStep(3)}
-                  className="bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold text-sm py-3.5 px-6 rounded-xl transition-all flex items-center gap-2 cursor-pointer"
-                >
-                  <ArrowLeft className="w-4 h-4" /> Back
-                </button>
+              <div className="flex justify-end items-center pt-4 border-t border-gray-100">
                 <button
                   onClick={fetchQuotes}
                   disabled={quoting || totalActualWeight <= 0}
                   className="bg-[#f27a1a] hover:bg-[#db660c] text-white font-bold text-sm py-3.5 px-8 rounded-xl transition-all shadow-md shadow-orange-500/25 hover:shadow-orange-500/35 hover:-translate-y-0.5 active:translate-y-0 flex items-center gap-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0"
                 >
                   {quoting ? (
-                    <><Loader2 className="w-4 h-4 animate-spin" /> Fetching Live Rates…</>
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin" /> Fetching Live
+                      Rates…
+                    </>
                   ) : (
-                    <>Get Live Tariffs <ArrowRight className="w-4 h-4" /></>
+                    <>
+                      Get Live Tariffs <ArrowRight className="w-4 h-4" />
+                    </>
                   )}
                 </button>
               </div>
@@ -2254,12 +2306,18 @@ export default function BookShipmentPage() {
           </div>
         )}
 
-        {/* ─── STEP 5: Select Service ─── */}
+        {/* STEP 5: Select Service & Pay */}
         {step === 5 && (
           <div className="bg-white rounded-3xl p-6 sm:p-10 shadow-sm border border-gray-200/70">
             <div className="flex items-center justify-between pb-6 mb-8 border-b border-gray-100">
-              <div className="flex items-center gap-3 sm:gap-4">
-                <div className="w-12 h-12 rounded-2xl bg-orange-50 border border-orange-100 flex items-center justify-center text-[#f27a1a]">
+              <div className="flex items-center gap-2 sm:gap-3">
+                <button
+                  onClick={() => setStep(4)}
+                  className="bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold text-sm py-2.5 px-4 rounded-xl transition-all flex items-center gap-2 cursor-pointer shrink-0"
+                >
+                  <ArrowLeft className="w-4 h-4" /> Back
+                </button>
+                <div className="w-12 h-12 rounded-2xl bg-orange-50 border border-orange-100 flex items-center justify-center text-[#f27a1a] shrink-0">
                   <Truck className="w-6 h-6" />
                 </div>
                 <div>
@@ -2267,7 +2325,8 @@ export default function BookShipmentPage() {
                     Select Shipping Service
                   </h2>
                   <p className="text-xs sm:text-sm text-gray-500 font-medium mt-0.5">
-                    Choose the best carrier rate and transit time for your shipment
+                    Choose the best carrier rate and transit time for your
+                    shipment
                   </p>
                 </div>
               </div>
@@ -2277,6 +2336,18 @@ export default function BookShipmentPage() {
             </div>
 
             <div className="space-y-6">
+              {/* Chargeable Weight Display */}
+              <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 border border-blue-200/50">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-bold text-gray-700 uppercase tracking-wider">
+                    Chargeable Weight
+                  </span>
+                  <span className="text-2xl font-extrabold text-blue-600">
+                    {chargeableWeight} KG
+                  </span>
+                </div>
+              </div>
+
               <div className="flex flex-col gap-4">
                 {quotes.map((q) => {
                   const key = `${q.service}__${q.rateType}`;
@@ -2285,20 +2356,30 @@ export default function BookShipmentPage() {
                     <div
                       key={key}
                       onClick={() => setSelectedQuoteKey(key)}
-                      className={`p-5 sm:p-6 rounded-2xl border-2 cursor-pointer transition-all duration-200 ${selected
-                        ? "border-[#f27a1a] bg-orange-50/60 shadow-md shadow-orange-500/10"
-                        : "border-gray-200 bg-[#f8f9fa] hover:border-orange-300 hover:bg-white"
-                        }`}
+                      className={`p-5 sm:p-6 rounded-2xl border-2 cursor-pointer transition-all duration-200 ${
+                        selected
+                          ? "border-[#f27a1a] bg-orange-50/60 shadow-md shadow-orange-500/10"
+                          : "border-gray-200 bg-[#f8f9fa] hover:border-orange-300 hover:bg-white"
+                      }`}
                     >
                       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                         <div className="flex items-center gap-4">
-                          <div className={`w-5 h-5 rounded-full border-2 transition-all flex items-center justify-center ${selected ? "border-[#f27a1a] bg-[#f27a1a]" : "border-gray-300 bg-white"
-                            }`}>
-                            {selected && <div className="w-2 h-2 rounded-full bg-white" />}
+                          <div
+                            className={`w-5 h-5 rounded-full border-2 transition-all flex items-center justify-center ${
+                              selected
+                                ? "border-[#f27a1a] bg-[#f27a1a]"
+                                : "border-gray-300 bg-white"
+                            }`}
+                          >
+                            {selected && (
+                              <div className="w-2 h-2 rounded-full bg-white" />
+                            )}
                           </div>
                           <div>
                             <div className="flex items-center gap-2 flex-wrap">
-                              <span className="text-sm font-extrabold text-[#1c1f2e]">{q.service}</span>
+                              <span className="text-sm font-extrabold text-[#1c1f2e]">
+                                {q.service}
+                              </span>
                               <span className="text-[11px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-700">
                                 {NETWORK_LABELS[q.network] ?? q.network}
                               </span>
@@ -2309,13 +2390,18 @@ export default function BookShipmentPage() {
                               )}
                             </div>
                             <p className="text-xs text-gray-500 font-medium mt-1">
-                              Estimated Delivery: <strong className="text-gray-700">{q.tat}</strong>
+                              Estimated Delivery:{" "}
+                              <strong className="text-gray-700">{q.tat}</strong>
                             </p>
                           </div>
                         </div>
                         <div className="text-left sm:text-right shrink-0">
-                          <div className="text-2xl font-extrabold text-[#f27a1a]">₹{q.totalPrice.toLocaleString()}</div>
-                          <div className="text-[10px] text-gray-400 uppercase font-bold tracking-wider mt-0.5">{q.rateType} · Tax Included</div>
+                          <div className="text-2xl font-extrabold text-[#f27a1a]">
+                            ₹{q.totalPrice.toLocaleString()}
+                          </div>
+                          <div className="text-[10px] text-gray-400 uppercase font-bold tracking-wider mt-0.5">
+                            {q.rateType} · Tax Included
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -2325,126 +2411,61 @@ export default function BookShipmentPage() {
 
               {selectedQuote && (
                 <div className="bg-gradient-to-r from-[#0d1527] to-[#1c294a] rounded-2xl p-6 space-y-3 shadow-md">
-                  <h3 className="text-xs font-bold text-orange-300 uppercase tracking-widest mb-2">Freight Cost Breakdown</h3>
+                  <h3 className="text-xs font-bold text-orange-300 uppercase tracking-widest mb-2">
+                    Freight Cost Breakdown
+                  </h3>
                   <div className="flex justify-between text-sm text-gray-300">
                     <span>Basic Freight Tariff</span>
-                    <span className="font-mono text-white font-semibold">₹{basicAmt.toLocaleString()}</span>
+                    <span className="font-mono text-white font-semibold">
+                      ₹{basicAmt.toLocaleString()}
+                    </span>
                   </div>
                   <div className="flex justify-between text-sm text-gray-300">
                     <span>CGST (9%)</span>
-                    <span className="font-mono text-white font-semibold">₹{cgstAmt.toLocaleString()}</span>
+                    <span className="font-mono text-white font-semibold">
+                      ₹{cgstAmt.toLocaleString()}
+                    </span>
                   </div>
                   <div className="flex justify-between text-sm text-gray-300">
                     <span>SGST (9%)</span>
-                    <span className="font-mono text-white font-semibold">₹{sgstAmt.toLocaleString()}</span>
+                    <span className="font-mono text-white font-semibold">
+                      ₹{sgstAmt.toLocaleString()}
+                    </span>
                   </div>
                   <div className="flex justify-between text-base sm:text-lg font-extrabold pt-4 border-t border-white/15">
                     <span className="text-white">Total Amount</span>
-                    <span className="text-[#f27a1a] font-mono">₹{selectedQuote.totalPrice.toLocaleString()}</span>
+                    <span className="text-[#f27a1a] font-mono">
+                      ₹{selectedQuote.totalPrice.toLocaleString()}
+                    </span>
                   </div>
                 </div>
               )}
 
-              <div className="flex justify-between items-center pt-4 border-t border-gray-100">
+              <div className="flex justify-end items-center pt-4 border-t border-gray-100">
                 <button
-                  onClick={() => setStep(4)}
-                  className="bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold text-sm py-3.5 px-6 rounded-xl transition-all flex items-center gap-2 cursor-pointer"
+                  onClick={handlePayment}
+                  disabled={submitting || !selectedQuote || paymentProcessing}
+                  className="bg-[#f27a1a] hover:bg-[#db660c] text-white font-bold text-sm py-3.5 px-8 rounded-xl transition-all shadow-md shadow-orange-500/25 hover:shadow-orange-500/35 hover:-translate-y-0.5 active:translate-y-0 flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0"
                 >
-                  <ArrowLeft className="w-4 h-4" /> Back
-                </button>
-                <button
-                  onClick={onSubmitBooking}
-                  disabled={submitting || !selectedQuote}
-                  className="bg-[#f27a1a] hover:bg-[#db660c] text-white font-bold text-sm py-3.5 px-8 rounded-xl transition-all shadow-md shadow-orange-500/25 hover:shadow-orange-500/35 hover:-translate-y-0.5 active:translate-y-0 flex items-center gap-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0"
-                >
-                  {submitting ? (
-                    <><Loader2 className="w-4 h-4 animate-spin" /> Confirming Booking…</>
+                  {paymentProcessing ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin" /> Processing
+                      Payment…
+                    </>
                   ) : (
-                    <>Confirm & Book Shipment <CreditCard className="w-4 h-4" /></>
+                    <>
+                      Pay ₹{selectedQuote?.totalPrice.toLocaleString()}{" "}
+                      <CreditCard className="w-4 h-4" />
+                    </>
                   )}
                 </button>
               </div>
             </div>
           </div>
         )}
-
-        {/* ─── STEP 6: Booking Confirmation ─── */}
-        {step === 6 && bookingResult && (
-          <div className="bg-white rounded-3xl shadow-sm border border-gray-200/70 overflow-hidden max-w-3xl mx-auto">
-            {/* Header banner */}
-            <div
-              style={{
-                background: bookingResult.isHold
-                  ? "linear-gradient(135deg, #78350f 0%, #92400e 100%)"
-                  : "linear-gradient(135deg, #0d1527 0%, #1a2642 100%)",
-              }}
-              className="px-6 py-10 sm:py-12 text-center relative overflow-hidden"
-            >
-              <div className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 bg-emerald-500/20 border border-emerald-500/40">
-                <CheckCircle2 className={`w-10 h-10 ${bookingResult.isHold ? "text-amber-400" : "text-emerald-400"}`} />
-              </div>
-              <h2 className="text-2xl sm:text-3xl font-extrabold text-white">
-                {bookingResult.isHold ? "Shipment On Hold" : "Shipment Booked Successfully!"}
-              </h2>
-              <p className="text-gray-300 text-xs sm:text-sm mt-2 max-w-md mx-auto leading-relaxed">
-                {bookingResult.isHold
-                  ? "Insufficient account balance — your shipment is pending review."
-                  : "Your Airway Bill has been generated and courier pickup is being scheduled."}
-              </p>
-
-              <div className="mt-6 inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-6 py-2.5 backdrop-blur-sm">
-                <Package className="w-4 h-4 text-[#f27a1a]" />
-                <span className="text-white/80 text-xs font-semibold uppercase tracking-wider">AWB Number:</span>
-                <span className="text-[#f27a1a] font-extrabold text-sm sm:text-base font-mono">{bookingResult.awbNo}</span>
-              </div>
-            </div>
-
-            {/* Summary Details */}
-            <div className="p-6 sm:p-10 space-y-8">
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                {[
-                  { label: "AWB Number", value: bookingResult.awbNo, highlight: true },
-                  { label: "Invoice Number", value: bookingResult.invoiceNo, highlight: false },
-                  { label: "Chargeable Wt", value: `${bookingResult.chargeableWt} KG`, highlight: false },
-                  { label: "Total Amount", value: `₹${Number(bookingResult.totalAmt).toLocaleString()}`, highlight: true },
-                ].map(({ label, value, highlight }) => (
-                  <div key={label} className="bg-[#f8f9fa] rounded-2xl p-4 border border-gray-200 text-center">
-                    <div className="text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1">{label}</div>
-                    <div className={`font-bold text-sm font-mono ${highlight ? "text-[#f27a1a]" : "text-[#1c1f2e]"}`}>
-                      {value}
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              <div className="flex flex-col sm:flex-row justify-center gap-4 pt-2">
-                <Link
-                  href={`/track?awb=${bookingResult.awbNo}`}
-                  className="bg-[#f27a1a] hover:bg-[#db660c] text-white font-bold text-sm py-3.5 px-8 rounded-xl transition-all shadow-md shadow-orange-500/25 hover:shadow-orange-500/35 hover:-translate-y-0.5 active:translate-y-0 text-center"
-                >
-                  Track AWB Status
-                </Link>
-                <Link
-                  href="/book-shipment"
-                  className="bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold text-sm py-3.5 px-6 rounded-xl transition-all text-center"
-                >
-                  Book Another Shipment
-                </Link>
-                <Link
-                  href="/"
-                  className="border border-gray-300 hover:bg-gray-50 text-gray-700 font-bold text-sm py-3.5 px-6 rounded-xl transition-all text-center"
-                >
-                  Return to Home
-                </Link>
-              </div>
-            </div>
-          </div>
-        )}
       </main>
 
-      {/* ─── Site Footer ─── */}
       <Footer />
     </div>
   );
 }
-
