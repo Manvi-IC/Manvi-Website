@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import {
@@ -60,7 +60,7 @@ interface PaymentResponseData {
   };
 }
 
-export default function BookingConfirmationPage() {
+function BookingConfirmationContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [status, setStatus] = useState<"loading" | "success" | "failed" | "error" | "unknown">("loading");
@@ -493,5 +493,19 @@ export default function BookingConfirmationPage() {
         )}
       </div>
     </div>
+  );
+}
+
+export default function BookingConfirmationPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-[#f8f9fa] flex items-center justify-center">
+          <div className="w-12 h-12 rounded-full border-4 border-[#f27a1a] border-t-transparent animate-spin" />
+        </div>
+      }
+    >
+      <BookingConfirmationContent />
+    </Suspense>
   );
 }
