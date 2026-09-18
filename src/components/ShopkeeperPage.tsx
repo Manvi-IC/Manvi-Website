@@ -796,7 +796,7 @@ function QuotesModal({
                 }}
                 className={`px-2.5 sm:px-3 py-1.5 rounded-lg text-[10px] sm:text-[11px] font-semibold transition-all ${
                   filter === "all"
-                    ? "bg-[#e77419] text-white"
+                    ? "bg-[#f27a1a] text-white"
                     : "bg-white/10 text-zinc-400 hover:bg-white/20 hover:text-white"
                 }`}
               >
@@ -809,7 +809,7 @@ function QuotesModal({
                 }}
                 className={`px-2.5 sm:px-3 py-1.5 rounded-lg text-[10px] sm:text-[11px] font-semibold transition-all flex items-center gap-1 ${
                   filter === "cheapest"
-                    ? "bg-[#e77419] text-white"
+                    ? "bg-[#f27a1a] text-white"
                     : "bg-white/10 text-zinc-400 hover:bg-white/20 hover:text-white"
                 }`}
               >
@@ -824,7 +824,7 @@ function QuotesModal({
                 }}
                 className={`px-2.5 sm:px-3 py-1.5 rounded-lg text-[10px] sm:text-[11px] font-semibold transition-all flex items-center gap-1 ${
                   filter === "fastest"
-                    ? "bg-[#e77419] text-white"
+                    ? "bg-[#f27a1a] text-white"
                     : "bg-white/10 text-zinc-400 hover:bg-white/20 hover:text-white"
                 }`}
               >
@@ -877,12 +877,12 @@ function QuotesModal({
                 onClick={() => handleServiceSelect(key)}
                 className={`relative rounded-xl border-2 cursor-pointer transition-all min-w-[82vw] xs:min-w-[300px] sm:min-w-[300px] max-w-[340px] flex-shrink-0 flex flex-col max-h-full ${
                   isSelected
-                    ? "border-[#e77419] bg-[#e77419]/10"
+                    ? "border-[#f27a1a] bg-[#f27a1a]/10"
                     : "border-zinc-700 bg-zinc-800/60 hover:border-zinc-500"
                 }`}
               >
                 {isSelected && (
-                  <div className="absolute -top-2.5 left-3 z-10 bg-[#e77419] text-white text-[9px] font-bold px-2 py-0.5 rounded-full shadow-sm">
+                  <div className="absolute -top-2.5 left-3 z-10 bg-[#f27a1a] text-white text-[9px] font-bold px-2 py-0.5 rounded-full shadow-sm">
                     {t.form_selected}
                   </div>
                 )}
@@ -1005,7 +1005,7 @@ function QuotesModal({
                       {q.tat}
                     </p>
                     <div className="text-right">
-                      <p className="text-[20px] sm:text-[22px] font-extrabold text-[#e77419] leading-none tracking-tight">
+                      <p className="text-[20px] sm:text-[22px] font-extrabold text-[#f27a1a] leading-none tracking-tight">
                         ₹{Math.round(q.totalPrice).toLocaleString("en-IN")}
                       </p>
                       <p className="text-[9px] sm:text-[10px] text-zinc-500 mt-0.5 font-medium tracking-wide uppercase">
@@ -1021,7 +1021,7 @@ function QuotesModal({
 
         {selectedService && selectedQuote && (
           <div className="px-4 sm:px-5 pt-3 shrink-0">
-            <div className="bg-white/5 rounded-2xl border-2 border-[#e77419] p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div className="bg-white/5 rounded-2xl border-2 border-[#f27a1a] p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
               <div>
                 <p className="text-xs text-zinc-400 font-medium">
                   Ready to ship with
@@ -1029,14 +1029,14 @@ function QuotesModal({
                 <p className="text-sm font-extrabold text-white mt-0.5 leading-tight">
                   {selectedQuote.service}
                 </p>
-                <p className="text-[#e77419] font-extrabold text-lg mt-0.5">
+                <p className="text-[#f27a1a] font-extrabold text-lg mt-0.5">
                   ₹
                   {Math.round(selectedQuote.totalPrice).toLocaleString("en-IN")}
                 </p>
               </div>
               <button
                 onClick={onApplyNow}
-                className="shrink-0 bg-[#e77419] hover:bg-orange-600 text-white font-extrabold text-sm py-3.5 px-7 rounded-xl transition-all active:scale-98 flex items-center gap-2 shadow-md shadow-orange-900/30 w-full sm:w-auto justify-center"
+                className="shrink-0 bg-[#f27a1a] hover:bg-[#d96d12] text-white font-extrabold text-sm py-3.5 px-7 rounded-xl transition-all active:scale-98 flex items-center gap-2 shadow-md shadow-orange-900/30 w-full sm:w-auto justify-center"
               >
                 Enquire Now <ArrowUpRight size={16} strokeWidth={2.5} />
               </button>
@@ -1173,9 +1173,9 @@ function QuoteCalculator({
 
   // White inputs on the orange card — matching Hero's form styling
   const inputCls =
-    "w-full bg-white text-[#333] text-[13.5px] font-medium rounded-xl px-3.5 py-3 border border-transparent focus:outline-none placeholder:text-gray-400 focus:ring-2 focus:ring-white/60 transition-all";
+    "w-full bg-white text-[#333] text-[13.5px] font-sans font-medium rounded-xl px-3.5 py-3 border border-transparent focus:outline-none placeholder:text-gray-400 focus:ring-2 focus:ring-white/60 transition-all";
   const labelCls =
-    "block text-white/85 text-[11px] font-bold tracking-[0.12em] uppercase mb-1.5 pl-1";
+    "block font-sans text-white/85 text-[11px] font-bold tracking-[0.12em] uppercase mb-1.5 pl-1";
 
   return (
     <>
@@ -1480,7 +1480,7 @@ export default function ShopkeeperPage() {
   }, []);
 
   return (
-    <div className="w-full font-sans bg-[#f8f9fa] text-[#0f172a] antialiased overflow-x-hidden">
+    <div className="w-full font-sans bg-[#f4f5f7] text-[#1c1f2e] antialiased overflow-x-hidden">
       {/* Keyframe animation helpers */}
       <style>{`
         @keyframes skDraw { to { stroke-dashoffset: 0; } }
@@ -1550,7 +1550,7 @@ export default function ShopkeeperPage() {
 
             <h1 className="text-[36px] lg:text-[44px] xl:text-[50px] font-extrabold text-white leading-[1.15] tracking-tight mt-1">
               You already ship from India.{" "}
-              <span className="text-[#ff7a00]">
+              <span className="text-[#f27a1a]">
                 Let&apos;s ship it smarter.
               </span>
             </h1>
@@ -1586,7 +1586,7 @@ export default function ShopkeeperPage() {
             </div>
 
             <div className="flex gap-10 mt-7 lg:mt-8 pt-5 lg:pt-6 border-t border-white/15">
-              <div className="border-l-[3px] border-[#ff7a00] pl-3.5">
+              <div className="border-l-[3px] border-[#f27a1a] pl-3.5">
                 <div className="text-[22px] lg:text-[26px] xl:text-[28px] font-extrabold text-white leading-none">
                   1M+
                 </div>
@@ -1594,7 +1594,7 @@ export default function ShopkeeperPage() {
                   Shipments
                 </div>
               </div>
-              <div className="border-l-[3px] border-[#ff7a00] pl-3.5">
+              <div className="border-l-[3px] border-[#f27a1a] pl-3.5">
                 <div className="text-[22px] lg:text-[26px] xl:text-[28px] font-extrabold text-white leading-none">
                   100K+
                 </div>
@@ -1602,7 +1602,7 @@ export default function ShopkeeperPage() {
                   Customers
                 </div>
               </div>
-              <div className="border-l-[3px] border-[#ff7a00] pl-3.5">
+              <div className="border-l-[3px] border-[#f27a1a] pl-3.5">
                 <div className="text-[22px] lg:text-[26px] xl:text-[28px] font-extrabold text-white leading-none">
                   200+
                 </div>
@@ -1643,7 +1643,7 @@ export default function ShopkeeperPage() {
 
               <h1 className="text-3xl font-extrabold text-white leading-[1.2] tracking-tight">
                 You already ship from India.{" "}
-                <span className="text-[#ff7a00]">
+                <span className="text-[#f27a1a]">
                   Let&apos;s ship it smarter.
                 </span>
               </h1>
@@ -1680,7 +1680,7 @@ export default function ShopkeeperPage() {
               </div>
 
               <div className="grid grid-cols-3 gap-2 pt-3 bg-black/45 backdrop-blur-sm rounded-2xl pb-3 pl-3 pr-2 border border-white/15">
-                <div className="border-l-2 border-[#ff7a00] pl-2">
+                <div className="border-l-2 border-[#f27a1a] pl-2">
                   <div className="text-[18px] font-extrabold text-white leading-none">
                     1M+
                   </div>
@@ -1688,7 +1688,7 @@ export default function ShopkeeperPage() {
                     Shipments
                   </div>
                 </div>
-                <div className="border-l-2 border-[#ff7a00] pl-2">
+                <div className="border-l-2 border-[#f27a1a] pl-2">
                   <div className="text-[18px] font-extrabold text-white leading-none">
                     100K+
                   </div>
@@ -1696,7 +1696,7 @@ export default function ShopkeeperPage() {
                     Customers
                   </div>
                 </div>
-                <div className="border-l-2 border-[#ff7a00] pl-2">
+                <div className="border-l-2 border-[#f27a1a] pl-2">
                   <div className="text-[18px] font-extrabold text-white leading-none">
                     200+
                   </div>
@@ -1711,7 +1711,7 @@ export default function ShopkeeperPage() {
       </section>
 
       {/* ── 2. PARTNERS ── */}
-      <div className="w-full bg-[#0f172a] text-white py-5 sm:py-7 border-y border-white/10 mt-4 sm:mt-6">
+      <div className="w-full bg-[#0D1527] text-white py-5 sm:py-7 border-y border-white/10 mt-4 sm:mt-6">
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-8 text-center sm:text-left">
           <span className="text-[11px] sm:text-[12px] font-bold tracking-widest uppercase text-slate-300">
             One partner, every major carrier
@@ -1732,19 +1732,65 @@ export default function ShopkeeperPage() {
         className="w-full max-w-[1400px] mx-auto px-3.5 sm:px-6 py-6 sm:py-10"
         id="quote"
       >
-        <div className="bg-[#0f172a] text-white border border-white/10 rounded-[20px] sm:rounded-[28px] lg:rounded-[32px] p-6 sm:p-10 lg:p-12 shadow-2xl relative overflow-hidden">
-          <div className="absolute -top-24 -left-24 w-72 h-72 rounded-full bg-[#ff7a00]/10 blur-3xl pointer-events-none" />
-          <div className="absolute -bottom-24 -right-24 w-72 h-72 rounded-full bg-[#ff7a00]/15 blur-3xl pointer-events-none" />
+        <div className="bg-[#0D1527] text-white border border-white/10 rounded-[20px] sm:rounded-[28px] lg:rounded-[32px] p-6 sm:p-10 lg:p-12 shadow-2xl relative overflow-hidden">
+          <div className="absolute -top-24 -left-24 w-72 h-72 rounded-full bg-[#f27a1a]/10 blur-3xl pointer-events-none" />
+          <div className="absolute -bottom-24 -right-24 w-72 h-72 rounded-full bg-[#f27a1a]/15 blur-3xl pointer-events-none" />
 
           <div className="relative z-10">
-            <div className="max-w-3xl">
-              <div className="inline-flex items-center gap-2 text-[11px] sm:text-[12px] font-bold tracking-wider uppercase text-[#ff7a00] mb-2.5 sm:mb-3">
-                <span className="w-5 sm:w-6 h-[2px] bg-[#ff7a00] rounded-full" />
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-stretch">
+              {/* WhatsApp form (form 1 — unchanged logic, restyled shell) */}
+              <div className="bg-white text-slate-900 rounded-[22px] p-5 sm:p-6 shadow-[0_18px_45px_-22px_rgba(15,23,42,0.55)] border border-slate-200 flex flex-col">
+                <div className="flex items-center justify-between gap-3 pb-4 border-b border-slate-200">
+                  <div>
+                    <p className="text-[11px] sm:text-[12px] font-bold tracking-[0.18em] uppercase text-[#f27a1a]">
+                      WhatsApp
+                    </p>
+                    <h3 className="mt-2 text-[22px] sm:text-[26px] font-extrabold text-[#1c1f2e] leading-tight">
+                      Quick enquiry
+                    </h3>
+                    <p className="mt-1.5 text-[13.5px] text-slate-500 leading-relaxed">
+                      Drop your name and number — we&apos;ll call you back on
+                      WhatsApp.
+                    </p>
+                  </div>
+                  <div className="flex h-11 w-11 items-center justify-center rounded-full bg-[#25D366] text-white shadow-lg shadow-[#25D366]/30 shrink-0">
+                    <svg className="h-5 w-5 fill-current" viewBox="0 0 24 24">
+                      <path d="M12 2a10 10 0 0 0-8.6 15.06L2 22l5.06-1.32A10 10 0 1 0 12 2Zm5.3 14.1c-.22.62-1.3 1.2-1.8 1.24-.46.05-1.03.07-1.66-.1a13.6 13.6 0 0 1-5.9-4.53c-.44-.58-1.1-1.56-1.1-2.98 0-1.42.75-2.12 1.02-2.4a1.05 1.05 0 0 1 .77-.36c.19 0 .38 0 .55.01.18.01.42-.07.65.5.24.6.8 2.02.87 2.16.07.15.12.32.02.5-.1.19-.15.3-.3.47-.15.18-.3.4-.44.53-.15.15-.3.3-.13.6.18.3.8 1.3 1.7 2.1 1.18 1.05 2.16 1.37 2.47 1.53.3.15.48.12.65-.08.18-.2.75-.87.95-1.17.2-.3.4-.25.66-.15.27.1 1.7.8 2 .95.3.15.5.22.57.34.07.13.07.72-.15 1.34Z" />
+                    </svg>
+                  </div>
+                </div>
+
+                <div className="pt-5 flex-1">
+                  <div
+                    className="relative z-10 font-sans [&_.zcwf_title]:!hidden [&_.zcwf_lblLeft]:!w-full [&_.zcwf_lblLeft]:!max-w-none [&_.zcwf_lblLeft]:!p-0 [&_.zcwf_lblLeft]:!bg-transparent [&_.zcwf_lblLeft]:!text-slate-900 [&_.zcwf_row]:!mt-4 [&_.zcwf_row:first-child]:!mt-0 [&_.zcwf_col_lab]:!w-full [&_.zcwf_col_lab]:!float-none [&_.zcwf_col_lab]:!font-sans [&_.zcwf_col_lab]:!text-[11px] [&_.zcwf_col_lab]:!font-bold [&_.zcwf_col_lab]:!tracking-[0.12em] [&_.zcwf_col_lab]:!uppercase [&_.zcwf_col_lab]:!text-slate-500 [&_.zcwf_col_lab]:!mb-1.5 [&_.zcwf_col_fld]:!w-full [&_.zcwf_col_fld]:!float-none [&_.zcwf_col_fld]:!p-0 [&_input[type='text']]:!font-sans [&_input[type='text']]:!w-full [&_input[type='text']]:!rounded-xl [&_input[type='text']]:!border [&_input[type='text']]:!border-slate-300 [&_input[type='text']]:!bg-white [&_input[type='text']]:!px-3.5 [&_input[type='text']]:!py-3 [&_input[type='text']]:!text-slate-900 [&_input[type='text']]:!text-[14.5px] [&_input[type='text']]:focus:!border-[#f27a1a] [&_input[type='text']]:focus:!ring-2 [&_input[type='text']]:focus:!ring-[#f27a1a]/20 [&_input[type='text']]:!transition-all [&_#formsubmit]:!mt-5 [&_#formsubmit]:!w-full [&_#formsubmit]:!bg-[#f27a1a] [&_#formsubmit]:!bg-none [&_#formsubmit]:!text-white [&_#formsubmit]:!rounded-xl [&_#formsubmit]:!border-0 [&_#formsubmit]:!px-6 [&_#formsubmit]:!py-3.5 [&_#formsubmit]:!font-bold [&_#formsubmit]:!font-sans [&_#formsubmit]:!text-[14px] [&_#formsubmit]:!tracking-wide [&_#formsubmit]:!cursor-pointer [&_#formsubmit]:hover:!bg-[#d96d12] [&_#formsubmit]:!transition-all [&_input[type='reset']]:!hidden"
+                    style={{
+                      fontFamily:
+                        "var(--font-sans), system-ui, -apple-system, sans-serif",
+                    }}
+                    dangerouslySetInnerHTML={{
+                      __html: stripScriptTags(zohoFormHtml),
+                    }}
+                  />
+                </div>
+              </div>
+
+              {/* ── Instant Rate Calculator (Hero-style, orange card) ── */}
+              <QuoteCalculator
+                onApplyQuote={(data) => {
+                  setApplyModalData(data);
+                  setApplyModalOpen(true);
+                }}
+              />
+            </div>
+
+            <div className="max-w-3xl mt-8 sm:mt-10">
+              <div className="inline-flex items-center gap-2 text-[11px] sm:text-[12px] font-bold tracking-wider uppercase text-[#f27a1a] mb-2.5 sm:mb-3">
+                <span className="w-5 sm:w-6 h-[2px] bg-[#f27a1a] rounded-full" />
                 Get your quote
               </div>
               <h2 className="text-[24px] sm:text-[32px] lg:text-[38px] font-extrabold text-white leading-tight">
                 Tell us what you ship.{" "}
-                <span className="text-[#ff7a00]">
+                <span className="text-[#f27a1a]">
                   Get a rate that beats your current one.
                 </span>
               </h2>
@@ -1764,56 +1810,13 @@ export default function ShopkeeperPage() {
                     key={i}
                     className="flex items-center gap-3 text-[14px] sm:text-[15px] text-slate-200 font-medium"
                   >
-                    <span className="w-5 h-5 rounded-full bg-[#ff7a00]/20 text-[#ff7a00] flex items-center justify-center font-bold text-[12px] shrink-0">
+                    <span className="w-5 h-5 rounded-full bg-[#f27a1a]/20 text-[#f27a1a] flex items-center justify-center font-bold text-[12px] shrink-0">
                       ✓
                     </span>
                     {item}
                   </li>
                 ))}
               </ul>
-            </div>
-
-            <div className="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-stretch">
-              {/* WhatsApp form (form 1 — unchanged logic, restyled shell) */}
-              <div className="bg-white text-slate-900 rounded-[22px] p-5 sm:p-6 shadow-[0_18px_45px_-22px_rgba(15,23,42,0.55)] border border-slate-200 flex flex-col">
-                <div className="flex items-center justify-between gap-3 pb-4 border-b border-slate-200">
-                  <div>
-                    <p className="text-[11px] sm:text-[12px] font-bold tracking-[0.18em] uppercase text-[#ff7a00]">
-                      WhatsApp
-                    </p>
-                    <h3 className="mt-2 text-[22px] sm:text-[26px] font-extrabold text-[#0f172a] leading-tight">
-                      Quick enquiry
-                    </h3>
-                    <p className="mt-1.5 text-[13.5px] text-slate-500 leading-relaxed">
-                      Drop your name and number — we&apos;ll call you back on
-                      WhatsApp.
-                    </p>
-                  </div>
-                  <div className="flex h-11 w-11 items-center justify-center rounded-full bg-[#25D366] text-white shadow-lg shadow-[#25D366]/30 shrink-0">
-                    <svg className="h-5 w-5 fill-current" viewBox="0 0 24 24">
-                      <path d="M12 2a10 10 0 0 0-8.6 15.06L2 22l5.06-1.32A10 10 0 1 0 12 2Zm5.3 14.1c-.22.62-1.3 1.2-1.8 1.24-.46.05-1.03.07-1.66-.1a13.6 13.6 0 0 1-5.9-4.53c-.44-.58-1.1-1.56-1.1-2.98 0-1.42.75-2.12 1.02-2.4a1.05 1.05 0 0 1 .77-.36c.19 0 .38 0 .55.01.18.01.42-.07.65.5.24.6.8 2.02.87 2.16.07.15.12.32.02.5-.1.19-.15.3-.3.47-.15.18-.3.4-.44.53-.15.15-.3.3-.13.6.18.3.8 1.3 1.7 2.1 1.18 1.05 2.16 1.37 2.47 1.53.3.15.48.12.65-.08.18-.2.75-.87.95-1.17.2-.3.4-.25.66-.15.27.1 1.7.8 2 .95.3.15.5.22.57.34.07.13.07.72-.15 1.34Z" />
-                    </svg>
-                  </div>
-                </div>
-
-                <div className="pt-5 flex-1">
-                  <div
-                    className="relative z-10 [&_.zcwf_title]:!hidden [&_.zcwf_lblLeft]:!w-full [&_.zcwf_lblLeft]:!max-w-none [&_.zcwf_lblLeft]:!p-0 [&_.zcwf_lblLeft]:!bg-transparent [&_.zcwf_lblLeft]:!text-slate-900 [&_.zcwf_row]:!mt-4 [&_.zcwf_row:first-child]:!mt-0 [&_.zcwf_col_lab]:!w-full [&_.zcwf_col_lab]:!float-none [&_.zcwf_col_lab]:!text-[11px] [&_.zcwf_col_lab]:!font-bold [&_.zcwf_col_lab]:!tracking-[0.12em] [&_.zcwf_col_lab]:!uppercase [&_.zcwf_col_lab]:!text-slate-500 [&_.zcwf_col_lab]:!mb-1.5 [&_.zcwf_col_fld]:!w-full [&_.zcwf_col_fld]:!float-none [&_.zcwf_col_fld]:!p-0 [&_input[type='text']]:!w-full [&_input[type='text']]:!rounded-xl [&_input[type='text']]:!border [&_input[type='text']]:!border-slate-300 [&_input[type='text']]:!bg-white [&_input[type='text']]:!px-3.5 [&_input[type='text']]:!py-3 [&_input[type='text']]:!text-slate-900 [&_input[type='text']]:!text-[14.5px] [&_input[type='text']]:focus:!border-[#ff7a00] [&_input[type='text']]:focus:!ring-2 [&_input[type='text']]:focus:!ring-[#ff7a00]/20 [&_input[type='text']]:!transition-all [&_#formsubmit]:!mt-5 [&_#formsubmit]:!w-full [&_#formsubmit]:!bg-[#f27a1a] [&_#formsubmit]:!bg-none [&_#formsubmit]:!text-white [&_#formsubmit]:!rounded-xl [&_#formsubmit]:!border-0 [&_#formsubmit]:!px-6 [&_#formsubmit]:!py-3.5 [&_#formsubmit]:!font-bold [&_#formsubmit]:!text-[14px] [&_#formsubmit]:!tracking-wide [&_#formsubmit]:!cursor-pointer [&_#formsubmit]:hover:!bg-[#e66c00] [&_#formsubmit]:!transition-all [&_input[type='reset']]:!hidden"
-                    style={{ fontFamily: "var(--font-sans), system-ui, -apple-system, sans-serif" }}
-                    dangerouslySetInnerHTML={{
-                      __html: stripScriptTags(zohoFormHtml),
-                    }}
-                  />
-                </div>
-              </div>
-
-              {/* ── Instant Rate Calculator (Hero-style, orange card) ── */}
-              <QuoteCalculator
-                onApplyQuote={(data) => {
-                  setApplyModalData(data);
-                  setApplyModalOpen(true);
-                }}
-              />
             </div>
           </div>
         </div>
@@ -1822,14 +1825,14 @@ export default function ShopkeeperPage() {
       {/* ── 3. WHAT WE SHIP ── */}
       <section className="w-full max-w-[1400px] mx-auto px-3.5 sm:px-6 py-10 sm:py-16">
         <div className="max-w-2xl mb-8 sm:mb-12">
-          <div className="inline-flex items-center gap-2 text-[11px] sm:text-[12px] font-bold tracking-wider uppercase text-[#ff7a00] mb-2.5 sm:mb-3">
-            <span className="w-5 sm:w-6 h-[2px] bg-[#ff7a00] rounded-full" />
+          <div className="inline-flex items-center gap-2 text-[11px] sm:text-[12px] font-bold tracking-wider uppercase text-[#f27a1a] mb-2.5 sm:mb-3">
+            <span className="w-5 sm:w-6 h-[2px] bg-[#f27a1a] rounded-full" />
             Whatever you export
           </div>
-          <h2 className="text-[24px] sm:text-[34px] lg:text-[42px] font-extrabold text-[#0f172a] leading-tight">
+          <h2 className="text-[24px] sm:text-[34px] lg:text-[42px] font-extrabold text-[#1c1f2e] leading-tight">
             If you send it abroad, we move it.
           </h2>
-          <p className="mt-2.5 sm:mt-3 text-[14.5px] sm:text-[16px] md:text-[17px] text-[#555555] leading-relaxed">
+          <p className="mt-2.5 sm:mt-3 text-[14.5px] sm:text-[16px] md:text-[17px] text-[#5d6472] leading-relaxed">
             No matter what you sell, we can ship it. From a single sample to a
             full bulk consignment- packed export-ready and delivered worldwide.
           </p>
@@ -1871,20 +1874,20 @@ export default function ShopkeeperPage() {
           ].map((c, i) => (
             <div
               key={i}
-              className="bg-white border border-slate-200 rounded-[18px] sm:rounded-[20px] p-5 sm:p-8 relative overflow-hidden shadow-sm hover:shadow-lg hover:-translate-y-1 hover:border-slate-300 transition-all"
+              className="bg-[#eef0f5] border border-gray-200/60 rounded-[18px] sm:rounded-[20px] p-5 sm:p-8 relative overflow-hidden shadow-sm hover:shadow-lg hover:-translate-y-1 hover:border-slate-300 transition-all"
             >
               {c.tag && (
-                <span className="absolute top-3.5 right-3.5 sm:top-4 sm:right-4 text-[10px] sm:text-[10.5px] font-bold uppercase tracking-wider text-[#ff7a00] bg-[#fff5ed] border border-orange-200 px-2.5 py-1 rounded-full">
+                <span className="absolute top-3.5 right-3.5 sm:top-4 sm:right-4 text-[10px] sm:text-[10.5px] font-bold uppercase tracking-wider text-[#f27a1a] bg-[#fff5ed] border border-orange-200 px-2.5 py-1 rounded-full">
                   {c.tag}
                 </span>
               )}
               <span className="text-[28px] sm:text-[32px] leading-none mb-3 sm:mb-4 block">
                 {c.icon}
               </span>
-              <h3 className="text-[18px] sm:text-[20px] font-bold text-[#0f172a]">
+              <h3 className="text-[18px] sm:text-[20px] font-bold text-[#1c1f2e]">
                 {c.title}
               </h3>
-              <p className="mt-2 text-[14px] sm:text-[15px] text-[#555555] leading-relaxed">
+              <p className="mt-2 text-[14px] sm:text-[15px] text-[#5d6472] leading-relaxed">
                 {c.desc}
               </p>
             </div>
@@ -1894,16 +1897,16 @@ export default function ShopkeeperPage() {
 
       {/* ── 4. HOW IT WORKS ── */}
       <section className="w-full max-w-[1400px] mx-auto px-3.5 sm:px-6 py-4 sm:py-6">
-        <div className="bg-[#0f172a] text-white rounded-[20px] sm:rounded-[28px] lg:rounded-[32px] p-5 sm:p-10 lg:p-14 border border-white/10 shadow-2xl">
+        <div className="bg-[#eef0f5] text-[#1c1f2e] rounded-[20px] sm:rounded-[28px] lg:rounded-[32px] p-5 sm:p-10 lg:p-14 border border-gray-200/60 shadow-sm">
           <div className="max-w-2xl mb-8 sm:mb-12">
-            <div className="inline-flex items-center gap-2 text-[11px] sm:text-[12px] font-bold tracking-wider uppercase text-[#ff7a00] mb-2.5 sm:mb-3">
-              <span className="w-5 sm:w-6 h-[2px] bg-[#ff7a00] rounded-full" />
+            <div className="inline-flex items-center gap-2 text-[11px] sm:text-[12px] font-bold tracking-wider uppercase text-[#f27a1a] mb-2.5 sm:mb-3">
+              <span className="w-5 sm:w-6 h-[2px] bg-[#f27a1a] rounded-full" />
               How it works
             </div>
-            <h2 className="text-[24px] sm:text-[34px] lg:text-[42px] font-extrabold text-white leading-tight">
+            <h2 className="text-[24px] sm:text-[34px] lg:text-[42px] font-extrabold text-[#1c1f2e] leading-tight">
               You run the business. We run the logistics.
             </h2>
-            <p className="mt-2.5 sm:mt-3 text-[14px] sm:text-[16px] text-slate-300 leading-relaxed">
+            <p className="mt-2.5 sm:mt-3 text-[14px] sm:text-[16px] text-[#5d6472] leading-relaxed">
               No juggling carriers and no customs forms to fill. Send your
               shipment details on WhatsApp and we handle it end to end.
             </p>
@@ -1934,15 +1937,15 @@ export default function ShopkeeperPage() {
             ].map((s) => (
               <div
                 key={s.n}
-                className="relative p-4 sm:p-0 bg-white/5 sm:bg-transparent rounded-xl sm:rounded-none border border-white/10 sm:border-0"
+                className="relative p-4 sm:p-0 bg-white/60 sm:bg-transparent rounded-xl sm:rounded-none border border-slate-200 sm:border-0"
               >
-                <div className="w-11 h-11 sm:w-[52px] sm:h-[52px] rounded-xl sm:rounded-2xl bg-[#1e293b] border border-[#ff7a00]/50 text-[#ff7a00] font-extrabold text-[18px] sm:text-[20px] grid place-items-center mb-4 sm:mb-5">
+                <div className="w-11 h-11 sm:w-[52px] sm:h-[52px] rounded-xl sm:rounded-2xl bg-[#f7efe7] border border-[#f27a1a]/50 text-[#f27a1a] font-extrabold text-[18px] sm:text-[20px] grid place-items-center mb-4 sm:mb-5">
                   {s.n}
                 </div>
-                <h3 className="text-[17px] sm:text-[19px] font-bold text-white mb-1.5 sm:mb-2">
+                <h3 className="text-[17px] sm:text-[19px] font-bold text-[#1c1f2e] mb-1.5 sm:mb-2">
                   {s.title}
                 </h3>
-                <p className="text-[13.5px] sm:text-[15px] text-slate-300 leading-relaxed">
+                <p className="text-[13.5px] sm:text-[15px] text-[#5d6472] leading-relaxed">
                   {s.desc}
                 </p>
               </div>
@@ -1953,15 +1956,15 @@ export default function ShopkeeperPage() {
 
       {/* ── 5. RATE COMPARE HIGHLIGHT BOX ── */}
       <section className="w-full max-w-[1400px] mx-auto px-3.5 sm:px-6 py-8 sm:py-12">
-        <div className="relative overflow-hidden rounded-[20px] sm:rounded-[28px] lg:rounded-[32px] bg-[#0f172a] text-white p-5 sm:p-10 lg:p-14 border border-white/10 shadow-2xl">
-          <div className="absolute -right-10 -top-10 w-64 h-64 rounded-full bg-[radial-gradient(circle,rgba(255,122,0,0.25),transparent_70%)] pointer-events-none" />
+        <div className="relative overflow-hidden rounded-[20px] sm:rounded-[28px] lg:rounded-[32px] bg-[#eef0f5] text-[#1c1f2e] p-5 sm:p-10 lg:p-14 border border-gray-200/60 shadow-sm">
+          <div className="absolute -right-10 -top-10 w-64 h-64 rounded-full bg-[radial-gradient(circle,rgba(242,122,26,0.12),transparent_70%)] pointer-events-none" />
 
           <div className="relative z-10 grid grid-cols-1 lg:grid-cols-[1.2fr_0.8fr] gap-6 lg:gap-12 items-center">
             <div>
-              <h2 className="text-[22px] sm:text-[30px] lg:text-[36px] font-extrabold text-white leading-tight">
+              <h2 className="text-[22px] sm:text-[30px] lg:text-[36px] font-extrabold text-[#1c1f2e] leading-tight">
                 Already paying for shipping? Let&apos;s beat it.
               </h2>
-              <p className="mt-2.5 sm:mt-3.5 text-[14px] sm:text-[16px] text-slate-300 leading-relaxed max-w-xl">
+              <p className="mt-2.5 sm:mt-3.5 text-[14px] sm:text-[16px] text-[#5d6472] leading-relaxed max-w-xl">
                 Send us a recent invoice or your typical weight, destination and
                 volume. We will come back with a quote and show you the
                 difference, with no obligation and no switching hassle.
@@ -1969,7 +1972,7 @@ export default function ShopkeeperPage() {
             </div>
 
             <div className="flex flex-col gap-3 sm:gap-3.5">
-              <span className="text-[11px] sm:text-[12px] font-bold tracking-wider uppercase text-[#ff7a00]">
+              <span className="text-[11px] sm:text-[12px] font-bold tracking-wider uppercase text-[#f27a1a]">
                 Free rate comparison
               </span>
               <a
@@ -1988,7 +1991,7 @@ export default function ShopkeeperPage() {
               </a>
               <a
                 href="tel:+917070506070"
-                className="inline-flex items-center justify-center gap-2.5 font-bold text-[14px] sm:text-[16px] px-6 sm:px-7 py-3.5 sm:py-4 rounded-full bg-transparent text-white border border-white/30 hover:border-white hover:bg-white/10 hover:-translate-y-0.5 transition-all text-center"
+                className="inline-flex items-center justify-center gap-2.5 font-bold text-[14px] sm:text-[16px] px-6 sm:px-7 py-3.5 sm:py-4 rounded-full bg-transparent text-[#1c1f2e] border border-[#1c1f2e]/20 hover:border-[#1c1f2e] hover:bg-white/60 hover:-translate-y-0.5 transition-all text-center"
               >
                 Call +91 70 70 50 60 70
               </a>
@@ -2000,8 +2003,8 @@ export default function ShopkeeperPage() {
       {/* ── 6. WHY EXPORTERS SWITCH ── */}
       <section className="w-full max-w-[1400px] mx-auto px-3.5 sm:px-6 py-8 sm:py-12">
         <div className="max-w-2xl mb-8 sm:mb-12">
-          <div className="inline-flex items-center gap-2 text-[11px] sm:text-[12px] font-bold tracking-wider uppercase text-[#ff7a00] mb-2.5 sm:mb-3">
-            <span className="w-5 sm:w-6 h-[2px] bg-[#ff7a00] rounded-full" />
+          <div className="inline-flex items-center gap-2 text-[11px] sm:text-[12px] font-bold tracking-wider uppercase text-[#f27a1a] mb-2.5 sm:mb-3">
+            <span className="w-5 sm:w-6 h-[2px] bg-[#f27a1a] rounded-full" />
             Why exporters switch to Manvi
           </div>
           <h2 className="text-[24px] sm:text-[34px] lg:text-[42px] font-extrabold text-[#0f172a] leading-tight">
@@ -2044,16 +2047,16 @@ export default function ShopkeeperPage() {
           ].map((c) => (
             <div
               key={c.n}
-              className="bg-white p-5 sm:p-8 flex flex-col justify-between"
+              className="bg-[#eef0f5] p-5 sm:p-8 flex flex-col justify-between"
             >
               <div>
-                <div className="text-[13px] sm:text-[14px] font-extrabold text-[#ff7a00] tracking-wide mb-2 sm:mb-2.5">
+                <div className="text-[13px] sm:text-[14px] font-extrabold text-[#f27a1a] tracking-wide mb-2 sm:mb-2.5">
                   {c.n}
                 </div>
-                <h3 className="text-[17px] sm:text-[19px] font-bold text-[#0f172a] mb-1.5 sm:mb-2">
+                <h3 className="text-[17px] sm:text-[19px] font-bold text-[#1c1f2e] mb-1.5 sm:mb-2">
                   {c.t}
                 </h3>
-                <p className="text-[14px] sm:text-[15px] text-[#555555] leading-relaxed">
+                <p className="text-[14px] sm:text-[15px] text-[#5d6472] leading-relaxed">
                   {c.d}
                 </p>
               </div>
@@ -2064,16 +2067,16 @@ export default function ShopkeeperPage() {
 
       {/* ── 7. WHO IT'S FOR ── */}
       <section className="w-full max-w-[1400px] mx-auto px-3.5 sm:px-6 py-8 sm:py-12">
-        <div className="bg-white border border-slate-200 rounded-[20px] sm:rounded-[28px] lg:rounded-[32px] p-5 sm:p-10 lg:p-12 shadow-sm">
+        <div className="bg-[#eef0f5] border border-gray-200/60 rounded-[20px] sm:rounded-[28px] lg:rounded-[32px] p-5 sm:p-10 lg:p-12 shadow-sm">
           <div className="max-w-2xl mb-6 sm:mb-8">
-            <div className="inline-flex items-center gap-2 text-[11px] sm:text-[12px] font-bold tracking-wider uppercase text-[#ff7a00] mb-2.5 sm:mb-3">
-              <span className="w-5 sm:w-6 h-[2px] bg-[#ff7a00] rounded-full" />
+            <div className="inline-flex items-center gap-2 text-[11px] sm:text-[12px] font-bold tracking-wider uppercase text-[#f27a1a] mb-2.5 sm:mb-3">
+              <span className="w-5 sm:w-6 h-[2px] bg-[#f27a1a] rounded-full" />
               Built for exporters like you
             </div>
-            <h2 className="text-[22px] sm:text-[30px] lg:text-[34px] font-extrabold text-[#0f172a] leading-tight">
+            <h2 className="text-[22px] sm:text-[30px] lg:text-[34px] font-extrabold text-[#1c1f2e] leading-tight">
               If you are already shipping out of India, this is for you.
             </h2>
-            <p className="mt-2 sm:mt-2.5 text-[14px] sm:text-[16px] text-[#555555] leading-relaxed">
+            <p className="mt-2 sm:mt-2.5 text-[14px] sm:text-[16px] text-[#5d6472] leading-relaxed">
               Whatever your product and whatever your consignment volume, we
               have moved similar goods across global borders.
             </p>
@@ -2093,7 +2096,7 @@ export default function ShopkeeperPage() {
                 key={idx}
                 className="inline-flex items-center gap-2 bg-[#f8f9fa] border border-slate-200 rounded-full px-3.5 sm:px-5 py-2 sm:py-2.5 text-[13px] sm:text-[15px] font-semibold text-[#0f172a] shadow-sm hover:border-[#ff7a00] transition-colors"
               >
-                <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-[#ff7a00]" />
+                <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-[#f27a1a]" />
                 {chip}
               </span>
             ))}
@@ -2104,8 +2107,8 @@ export default function ShopkeeperPage() {
       {/* ── 8. FAQ ── */}
       <section className="w-full max-w-[1000px] mx-auto px-3.5 sm:px-6 py-8 sm:py-12">
         <div className="max-w-2xl mb-6 sm:mb-10">
-          <div className="inline-flex items-center gap-2 text-[11px] sm:text-[12px] font-bold tracking-wider uppercase text-[#ff7a00] mb-2.5 sm:mb-3">
-            <span className="w-5 sm:w-6 h-[2px] bg-[#ff7a00] rounded-full" />
+          <div className="inline-flex items-center gap-2 text-[11px] sm:text-[12px] font-bold tracking-wider uppercase text-[#f27a1a] mb-2.5 sm:mb-3">
+            <span className="w-5 sm:w-6 h-[2px] bg-[#f27a1a] rounded-full" />
             Questions? Glad you asked
           </div>
           <h2 className="text-[24px] sm:text-[32px] lg:text-[36px] font-extrabold text-[#0f172a] leading-tight">
@@ -2156,7 +2159,7 @@ export default function ShopkeeperPage() {
             >
               <summary className="list-none cursor-pointer flex items-center justify-between text-[15.5px] sm:text-[18px] md:text-[19px] font-bold text-[#0f172a] select-none gap-2">
                 <span>{faq.q}</span>
-                <span className="text-[#ff7a00] font-bold text-[20px] sm:text-[24px] ml-2 shrink-0 transition-transform group-open:rotate-45">
+                <span className="text-[#f27a1a] font-bold text-[20px] sm:text-[24px] ml-2 shrink-0 transition-transform group-open:rotate-45">
                   +
                 </span>
               </summary>
@@ -2170,9 +2173,9 @@ export default function ShopkeeperPage() {
 
       {/* ── 9. FINAL CTA ── */}
       <section className="w-full max-w-[1400px] mx-auto px-3.5 sm:px-6 pt-4 pb-12 sm:pb-16">
-        <div className="rounded-[20px] sm:rounded-[28px] lg:rounded-[32px] bg-[radial-gradient(120%_130%_at_15%_0%,#1e293b_0%,#0f172a_60%)] text-white text-center p-6 sm:p-10 lg:p-16 border border-white/10 shadow-2xl">
-          <div className="inline-flex items-center gap-2 text-[11px] sm:text-[12px] font-bold tracking-wider uppercase text-[#ff7a00] mb-2.5 sm:mb-3">
-            <span className="w-5 sm:w-6 h-[2px] bg-[#ff7a00] rounded-full" />
+        <div className="rounded-[20px] sm:rounded-[28px] lg:rounded-[32px] bg-[radial-gradient(120%_130%_at_15%_0%,#1e293b_0%,#0D1527_60%)] text-white text-center p-6 sm:p-10 lg:p-16 border border-white/10 shadow-2xl">
+          <div className="inline-flex items-center gap-2 text-[11px] sm:text-[12px] font-bold tracking-wider uppercase text-[#f27a1a] mb-2.5 sm:mb-3">
+            <span className="w-5 sm:w-6 h-[2px] bg-[#f27a1a] rounded-full" />
             Ready when you are
           </div>
 
@@ -2180,7 +2183,7 @@ export default function ShopkeeperPage() {
             Get a quote before your next shipment goes out.
           </h2>
 
-          <p className="mt-3.5 sm:mt-4 text-[16px] sm:text-[19px] md:text-[20px] text-[#ff7a00] italic font-medium">
+          <p className="mt-3.5 sm:mt-4 text-[16px] sm:text-[19px] md:text-[20px] text-[#f27a1a] italic font-medium">
             &ldquo;Aap export karo, pickup, customs aur delivery hum sambhaal
             lenge.&rdquo;
           </p>
