@@ -50,7 +50,7 @@ const zohoFormHtml = `
     </div>
     <div class='zcwf_row'>
       <div class='zcwf_col_lab' style='font-size:12px; font-family: inherit;'><label for='Mobile'>Mobile</label></div>
-      <div class='zcwf_col_fld'><input type='text' id='Mobile' aria-required='false' aria-label='Mobile' name='Mobile' aria-valuemax='30' maxlength='30'><div class='zcwf_col_help'></div></div>
+      <div class='zcwf_col_fld'><input type='tel' id='Mobile' inputmode='numeric' pattern='[0-9]*' aria-required='false' aria-label='Mobile' name='Mobile' aria-valuemax='30' maxlength='30' oninput="this.value = this.value.replace(/[^0-9]/g, '')"><div class='zcwf_col_help'></div></div>
     </div>
     <input type='text' type='hidden' style='display: none;' name='aG9uZXlwb3Q' value='' />
     <div class='zcwf_row'>
@@ -601,11 +601,13 @@ function ApplyModal({
                 />
                 <input
                   type="tel"
+                  inputMode="numeric"
+                  pattern="[0-9]*"
                   name="Phone"
                   required
                   placeholder="Phone Number"
                   value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
+                  onChange={(e) => setPhone(e.target.value.replace(/\D/g, ""))}
                   className="w-full bg-[#f8f9fa] text-[#333] text-sm font-medium rounded-xl pl-10 pr-4 py-3.5 focus:outline-none border border-gray-200 placeholder:text-gray-400 focus:border-orange-300 transition-colors"
                 />
               </div>
@@ -1762,7 +1764,7 @@ export default function ShopkeeperPage() {
 
                 <div className="pt-5 flex-1">
                   <div
-                    className="relative z-10 font-sans [&_.zcwf_title]:!hidden [&_.zcwf_lblLeft]:!w-full [&_.zcwf_lblLeft]:!max-w-none [&_.zcwf_lblLeft]:!p-0 [&_.zcwf_lblLeft]:!bg-transparent [&_.zcwf_lblLeft]:!text-slate-900 [&_.zcwf_row]:!mt-4 [&_.zcwf_row:first-child]:!mt-0 [&_.zcwf_col_lab]:!w-full [&_.zcwf_col_lab]:!float-none [&_.zcwf_col_lab]:!font-sans [&_.zcwf_col_lab]:!text-[11px] [&_.zcwf_col_lab]:!font-bold [&_.zcwf_col_lab]:!tracking-[0.12em] [&_.zcwf_col_lab]:!uppercase [&_.zcwf_col_lab]:!text-slate-500 [&_.zcwf_col_lab]:!mb-1.5 [&_.zcwf_col_fld]:!w-full [&_.zcwf_col_fld]:!float-none [&_.zcwf_col_fld]:!p-0 [&_input[type='text']]:!font-sans [&_input[type='text']]:!w-full [&_input[type='text']]:!rounded-xl [&_input[type='text']]:!border [&_input[type='text']]:!border-slate-300 [&_input[type='text']]:!bg-white [&_input[type='text']]:!px-3.5 [&_input[type='text']]:!py-3 [&_input[type='text']]:!text-slate-900 [&_input[type='text']]:!text-[14.5px] [&_input[type='text']]:focus:!border-[#f27a1a] [&_input[type='text']]:focus:!ring-2 [&_input[type='text']]:focus:!ring-[#f27a1a]/20 [&_input[type='text']]:!transition-all [&_#formsubmit]:!mt-5 [&_#formsubmit]:!w-full [&_#formsubmit]:!bg-[#f27a1a] [&_#formsubmit]:!bg-none [&_#formsubmit]:!text-white [&_#formsubmit]:!rounded-xl [&_#formsubmit]:!border-0 [&_#formsubmit]:!px-6 [&_#formsubmit]:!py-3.5 [&_#formsubmit]:!font-bold [&_#formsubmit]:!font-sans [&_#formsubmit]:!text-[14px] [&_#formsubmit]:!tracking-wide [&_#formsubmit]:!cursor-pointer [&_#formsubmit]:hover:!bg-[#d96d12] [&_#formsubmit]:!transition-all [&_input[type='reset']]:!hidden"
+                    className="relative z-10 font-sans [&_.zcwf_title]:!hidden [&_.zcwf_lblLeft]:!w-full [&_.zcwf_lblLeft]:!max-w-none [&_.zcwf_lblLeft]:!p-0 [&_.zcwf_lblLeft]:!bg-transparent [&_.zcwf_lblLeft]:!text-slate-900 [&_.zcwf_row]:!mt-4 [&_.zcwf_row:first-child]:!mt-0 [&_.zcwf_col_lab]:!w-full [&_.zcwf_col_lab]:!float-none [&_.zcwf_col_lab]:!font-sans [&_.zcwf_col_lab]:!text-[11px] [&_.zcwf_col_lab]:!font-bold [&_.zcwf_col_lab]:!tracking-[0.12em] [&_.zcwf_col_lab]:!uppercase [&_.zcwf_col_lab]:!text-slate-500 [&_.zcwf_col_lab]:!mb-1.5 [&_.zcwf_col_fld]:!w-full [&_.zcwf_col_fld]:!float-none [&_.zcwf_col_fld]:!p-0 [&_input[type='text']]:!font-sans [&_input[type='text']]:!w-full [&_input[type='text']]:!rounded-xl [&_input[type='text']]:!border [&_input[type='text']]:!border-slate-300 [&_input[type='text']]:!bg-white [&_input[type='text']]:!px-3.5 [&_input[type='text']]:!py-3 [&_input[type='text']]:!text-slate-900 [&_input[type='text']]:!text-[14.5px] [&_input[type='text']]:focus:!border-[#f27a1a] [&_input[type='text']]:focus:!ring-2 [&_input[type='text']]:focus:!ring-[#f27a1a]/20 [&_input[type='text']]:!transition-all [&_input[type='tel']]:!font-sans [&_input[type='tel']]:!w-full [&_input[type='tel']]:!rounded-xl [&_input[type='tel']]:!border [&_input[type='tel']]:!border-slate-300 [&_input[type='tel']]:!bg-white [&_input[type='tel']]:!px-3.5 [&_input[type='tel']]:!py-3 [&_input[type='tel']]:!text-slate-900 [&_input[type='tel']]:!text-[14.5px] [&_input[type='tel']]:focus:!border-[#f27a1a] [&_input[type='tel']]:focus:!ring-2 [&_input[type='tel']]:focus:!ring-[#f27a1a]/20 [&_input[type='tel']]:!transition-all [&_#formsubmit]:!mt-5 [&_#formsubmit]:!w-full [&_#formsubmit]:!bg-[#f27a1a] [&_#formsubmit]:!bg-none [&_#formsubmit]:!text-white [&_#formsubmit]:!rounded-xl [&_#formsubmit]:!border-0 [&_#formsubmit]:!px-6 [&_#formsubmit]:!py-3.5 [&_#formsubmit]:!font-bold [&_#formsubmit]:!font-sans [&_#formsubmit]:!text-[14px] [&_#formsubmit]:!tracking-wide [&_#formsubmit]:!cursor-pointer [&_#formsubmit]:hover:!bg-[#d96d12] [&_#formsubmit]:!transition-all [&_input[type='reset']]:!hidden"
                     style={{
                       fontFamily:
                         "var(--font-sans), system-ui, -apple-system, sans-serif",
