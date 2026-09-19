@@ -7,6 +7,7 @@ import Footer from "@/components/Footer";
 import ApplyModal from "./ApplyModal";
 import SpeculativeApplyModal from "./SpeculativeApplyModal";
 import { useLanguage, Language } from "@/context/LanguageContext";
+import { trackEvent } from "@/lib/fpixel";
 
 interface StatItem {
   label: string;
@@ -368,6 +369,17 @@ const careerTranslations: Record<Language, CareerTranslations> = {
 
 const API_URL = process.env.NEXT_API_URL || "http://localhost:5000";
 
+const trackCareerContact = (
+  method: string,
+  details: Record<string, string> = {},
+) => {
+  trackEvent("Contact", {
+    method,
+    location: "career_page",
+    ...details,
+  });
+};
+
 export default function CareerPage(): React.ReactElement {
   const { language } = useLanguage();
   const t = careerTranslations[language] || careerTranslations.en;
@@ -434,11 +446,33 @@ export default function CareerPage(): React.ReactElement {
   }, [loading]);
 
   const handleApply = (job: RoleItem) => {
+    trackCareerContact("Apply", {
+      job_title: job.title,
+      department: job.department,
+      location: job.location,
+    });
+    trackEvent("Lead", {
+      content_name: job.title,
+      content_category: "career_application",
+      department: job.department,
+      location: job.location,
+      page: "career",
+    });
     setSelectedJob(job);
     setShowApplyModal(true);
   };
 
   const handleSpeculativeApply = () => {
+    trackCareerContact("Email", {
+      method: "Email",
+      page: "career",
+      action: "speculative_cv",
+    });
+    trackEvent("Lead", {
+      content_name: "Career page",
+      content_category: "speculative_cv",
+      page: "career",
+    });
     setShowSpeculativeModal(true);
   };
 
@@ -997,7 +1031,20 @@ export default function CareerPage(): React.ReactElement {
                 </h1>
                 <p className="subtitle">{t.subtitle}</p>
                 <div className="hero-buttons">
-                  <a href="#openings" className="btn btn-primary">
+                  <a
+                    href="#openings"
+                    className="btn btn-primary"
+                    onClick={() => {
+                      trackCareerContact("ViewRoles", {
+                        section: "openings",
+                      });
+                      trackEvent("ViewContent", {
+                        content_name: "Career roles",
+                        content_category: "career_page",
+                        page: "career",
+                      });
+                    }}
+                  >
                     {t.viewRoles}
                   </a>
                   <button

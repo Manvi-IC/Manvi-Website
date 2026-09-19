@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useLanguage, Language } from "@/context/LanguageContext";
-
+import Link from "next/link";
 // ── Icon helpers ────────────────────────────────────────────────────
 const OrangeCircleIcon = ({ children }: { children: React.ReactNode }) => (
   <span className="inline-flex items-center justify-center w-7 h-7 rounded-full bg-[#f27a1a] text-white text-xs font-bold shrink-0">
@@ -536,9 +536,12 @@ export default function AboutUs() {
               <p className="text-[13px] text-gray-500 font-semibold leading-relaxed">
                 {t.ready_desc}
               </p>
-              <button className="border-2 border-[#f27a1a] text-[#f27a1a] hover:bg-[#f27a1a] hover:text-white transition-colors duration-300 rounded-xl px-6 py-3 text-[14px] font-bold flex items-center gap-1.5 mt-2">
+              <Link
+                href="/contact"
+                className="border-2 border-[#f27a1a] text-[#f27a1a] hover:bg-[#f27a1a] hover:text-white transition-colors duration-300 rounded-xl px-6 py-3 text-[14px] font-bold flex items-center gap-1.5 mt-2"
+              >
                 {t.btn_contact}
-              </button>
+              </Link>
             </div>
           </aside>
 

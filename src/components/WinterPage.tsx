@@ -1,6 +1,12 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { trackEvent } from "@/lib/fpixel";
+
+const trackWhatsApp = (location: string) =>
+  trackEvent("Contact", { method: "WhatsApp", location });
+const trackPhone = (location: string) =>
+  trackEvent("Contact", { method: "Phone", location });
 
 export default function WinterPage() {
   const [formState, setFormState] = useState({
@@ -45,6 +51,7 @@ export default function WinterPage() {
     if (formState.msg.trim()) parts.push(`Notes: ${formState.msg.trim()}`);
 
     const text = encodeURIComponent(parts.join("\n"));
+    trackWhatsApp("winter_form");
     setShowOk(true);
     window.open(`https://wa.me/917070506070?text=${text}`, "_blank");
   };
@@ -175,6 +182,7 @@ export default function WinterPage() {
                 </a>
                 <a
                   href="tel:+917070506070"
+                  onClick={() => trackPhone("winter_hero")}
                   className="inline-flex items-center justify-center gap-2.5 font-bold text-[15px] sm:text-[16px] px-6 sm:px-7 py-3.5 sm:py-4 rounded-full bg-transparent text-white border border-white/30 hover:border-white hover:bg-white/10 hover:-translate-y-0.5 transition-all text-center"
                 >
                   Call +91 70 70 50 60 70
@@ -529,7 +537,11 @@ export default function WinterPage() {
                 {showOk && (
                   <div className="mt-2.5 p-3 bg-emerald-50 border border-emerald-200 text-emerald-900 rounded-xl text-[13px] text-center leading-relaxed shadow-xs">
                     Opening WhatsApp with your details... If it doesn&apos;t open, message us at{" "}
-                    <a href="tel:+917070506070" className="font-bold underline text-emerald-950">
+                    <a
+                      href="tel:+917070506070"
+                      onClick={() => trackPhone("winter_fallback")}
+                      className="font-bold underline text-emerald-950"
+                    >
                       +91 70 70 50 60 70
                     </a>
                     .
@@ -872,6 +884,7 @@ export default function WinterPage() {
             <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4 mt-6 sm:mt-8">
               <a
                 href="#book"
+                onClick={() => trackWhatsApp("winter_bottom_cta")}
                 className="inline-flex items-center justify-center gap-2.5 font-bold text-[14px] sm:text-[16px] px-6 sm:px-7 py-3.5 sm:py-4 rounded-full bg-[#23c961] text-[#0a111e] shadow-[0_8px_22px_-8px_rgba(35,201,97,0.6)] hover:bg-[#1fb855] hover:-translate-y-0.5 transition-all text-center"
               >
                 <svg className="w-5 h-5 fill-current shrink-0" viewBox="0 0 24 24">
@@ -881,6 +894,7 @@ export default function WinterPage() {
               </a>
               <a
                 href="tel:+917070506070"
+                onClick={() => trackPhone("winter_bottom_cta")}
                 className="inline-flex items-center justify-center gap-2.5 font-bold text-[14px] sm:text-[16px] px-6 sm:px-7 py-3.5 sm:py-4 rounded-full bg-transparent text-white border border-white/30 hover:border-white hover:bg-white/10 hover:-translate-y-0.5 transition-all text-center"
               >
                 Call +91 70 70 50 60 70

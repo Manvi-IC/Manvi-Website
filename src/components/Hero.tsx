@@ -27,6 +27,7 @@ import {
 import Link from "next/link";
 import Image from "next/image";
 import { useLanguage } from "@/context/LanguageContext";
+import { trackEvent, trackCustom } from "@/lib/fpixel";
 
 const API_URL = process.env.NEXT_API_URL || "http://localhost:5000";
 const DB_NAME = process.env.NEXT_PUBLIC_X_DATABASE || "manvi";
@@ -337,9 +338,13 @@ function ApplyModal({
     setSubmitting(true);
     try {
       const formData = new FormData(e.currentTarget);
-      
+
       // Inject standard Zoho expected fields if they aren't captured by the form automatically
-      if (typeof window !== "undefined" && (window as any)._wfa_track && (window as any)._wfa_track.wfa_submit) {
+      if (
+        typeof window !== "undefined" &&
+        (window as any)._wfa_track &&
+        (window as any)._wfa_track.wfa_submit
+      ) {
         (window as any)._wfa_track.wfa_submit(e);
       }
 
@@ -356,19 +361,30 @@ function ApplyModal({
           : await res.text();
 
       if (typeof data === "object") {
-        if (data.actionsubmit === "error_msg" || data.actionsubmit === "captcha_error") {
+        if (
+          data.actionsubmit === "error_msg" ||
+          data.actionsubmit === "captcha_error"
+        ) {
           throw new Error(data.message || "Submission failed");
         }
       }
 
       setSubmitted(true);
+      // Meta Pixel: enquiry submitted successfully
+      trackEvent("Lead", {
+        content_name: quote.service,
+        content_category: destination,
+        destination_country: zoningCountry || destination,
+      });
       if (typeof window !== "undefined") {
         window.dataLayer = window.dataLayer || [];
         window.dataLayer.push({
           event: "form_enquiry_success",
         });
         if (typeof (window as any).gtag === "function") {
-          (window as any).gtag("event", "conversion", { "send_to": "AW-16880308122/jB3TCL-RwNccEJqflPE-" });
+          (window as any).gtag("event", "conversion", {
+            send_to: "AW-16880308122/jB3TCL-RwNccEJqflPE-",
+          });
         }
       }
     } catch (err: any) {
@@ -476,13 +492,33 @@ function ApplyModal({
               onSubmit={handleSubmit}
               className="px-6 py-5 flex flex-col gap-4"
             >
-              <input type="hidden" name="xnQsjsdp" value="3469cc92f353f141a975c84fed6da89424f1095353c0090e640e892f8f1ae05c" readOnly />
+              <input
+                type="hidden"
+                name="xnQsjsdp"
+                value="3469cc92f353f141a975c84fed6da89424f1095353c0090e640e892f8f1ae05c"
+                readOnly
+              />
               <input type="hidden" name="zc_gad" value="" readOnly />
-              <input type="hidden" name="xmIwtLD" value="2b1f8115908998ce3f2920a24b04f5580069559bde7bd38e39a6aad3eeb09e1746a031c38fbcb9ee32b83cd1f6946796" readOnly />
-              <input type="hidden" name="actionType" value="TGVhZHM=" readOnly />
+              <input
+                type="hidden"
+                name="xmIwtLD"
+                value="2b1f8115908998ce3f2920a24b04f5580069559bde7bd38e39a6aad3eeb09e1746a031c38fbcb9ee32b83cd1f6946796"
+                readOnly
+              />
+              <input
+                type="hidden"
+                name="actionType"
+                value="TGVhZHM="
+                readOnly
+              />
               <input type="hidden" name="returnURL" value="null" readOnly />
               <input type="hidden" name="aG9uZXlwb3Q" value="" readOnly />
-              <input type="hidden" name="Designation" value={quote.totalPrice} readOnly />
+              <input
+                type="hidden"
+                name="Designation"
+                value={quote.totalPrice}
+                readOnly
+              />
               <input type="hidden" name="Fax" value={quote.service} readOnly />
 
               <p className="text-sm text-gray-500 font-medium">
@@ -1415,6 +1451,7 @@ export default function Hero() {
                   href="https://wa.me/917070506070"
                   target="_blank"
                   rel="noopener noreferrer"
+                  onClick={() => trackEvent("Contact", { method: "WhatsApp", location: "hero_circle" })}
                   aria-label="WhatsApp Us - Manvi International Courier"
                   className="w-20 h-20 sm:w-28 sm:h-28 bg-[#23c961] rounded-full relative flex items-center justify-center shadow-lg pointer-events-auto cursor-pointer hover:scale-105 transition-transform duration-300 z-50"
                 >

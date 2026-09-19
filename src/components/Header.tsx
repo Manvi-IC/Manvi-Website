@@ -4,6 +4,7 @@ import { Phone, ChevronDown, ChevronRight, X, Mail, Globe } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useLanguage, Language } from "@/context/LanguageContext";
+import { trackEvent } from "@/lib/fpixel";
 
 const LANGUAGES: {
   code: Language;
@@ -75,11 +76,18 @@ export default function Header() {
         <div className="bg-[#0D1527] text-zinc-300 text-[12px] font-semibold py-3.5 px-4 sm:px-6 border-b border-white/5 relative z-50">
           <div className="max-w-425 mx-auto flex flex-col md:flex-row justify-between items-center gap-2.5 md:gap-0">
             <div className="flex items-center justify-between sm:justify-start gap-4 w-full md:w-auto">
+              {/* Phone: Meta "Contact" event + Google Ads conversion */}
               <a
                 href="tel:+917070506070"
                 onClick={() => {
-                  if (typeof window !== "undefined" && typeof (window as any).gtag === "function") {
-                    (window as any).gtag("event", "conversion", { "send_to": "AW-16880308122/aoaYCMbx5dccEJqflPE-" });
+                  trackEvent("Contact", { method: "Phone", location: "header" });
+                  if (
+                    typeof window !== "undefined" &&
+                    typeof (window as any).gtag === "function"
+                  ) {
+                    (window as any).gtag("event", "conversion", {
+                      send_to: "AW-16880308122/aoaYCMbx5dccEJqflPE-",
+                    });
                   }
                 }}
                 className="flex items-center gap-1.5 sm:gap-2 hover:text-white transition-colors"
@@ -89,8 +97,13 @@ export default function Header() {
                   +91 70 70 50 60 70
                 </span>
               </a>
+
+              {/* Email: Meta "Contact" event */}
               <a
                 href="mailto:Info@manvicourier.com"
+                onClick={() =>
+                  trackEvent("Contact", { method: "Email", location: "header" })
+                }
                 className="flex items-center gap-1.5 sm:gap-2 hover:text-white transition-colors"
               >
                 <Mail className="h-3.5 w-3.5 text-white shrink-0" />
@@ -258,8 +271,13 @@ export default function Header() {
                 <Link
                   href="/quote"
                   onClick={() => {
-                    if (typeof window !== "undefined" && typeof (window as any).gtag === "function") {
-                      (window as any).gtag("event", "conversion", { "send_to": "AW-16880308122/iOWzCJbhrtccEJqflPE-" });
+                    if (
+                      typeof window !== "undefined" &&
+                      typeof (window as any).gtag === "function"
+                    ) {
+                      (window as any).gtag("event", "conversion", {
+                        send_to: "AW-16880308122/iOWzCJbhrtccEJqflPE-",
+                      });
                     }
                   }}
                   className={`transition-colors ${pathname?.startsWith("/quote") ? "text-[#f27a1a]" : "hover:text-[#f27a1a]"}`}
@@ -373,8 +391,13 @@ export default function Header() {
               href="/quote"
               onClick={() => {
                 setIsMobileMenuOpen(false);
-                if (typeof window !== "undefined" && typeof (window as any).gtag === "function") {
-                  (window as any).gtag("event", "conversion", { "send_to": "AW-16880308122/iOWzCJbhrtccEJqflPE-" });
+                if (
+                  typeof window !== "undefined" &&
+                  typeof (window as any).gtag === "function"
+                ) {
+                  (window as any).gtag("event", "conversion", {
+                    send_to: "AW-16880308122/iOWzCJbhrtccEJqflPE-",
+                  });
                 }
               }}
               className={`pb-2 border-b border-gray-100 ${pathname?.startsWith("/quote") ? "text-[#f27a1a]" : ""}`}
@@ -467,7 +490,8 @@ export default function Header() {
                 {pathname === "/faq" && t.bc_faq}
                 {pathname === "/services" && t.bc_services}
                 {pathname === "/business-campaign" && t.bc_business_campaign}
-                {(pathname === "/shopkeeper" || pathname === "/shopkeepers") && "Shopkeeper's Page"}
+                {(pathname === "/shopkeeper" || pathname === "/shopkeepers") &&
+                  "Shopkeeper's Page"}
                 {pathname === "/blog" && "Blog"}
                 {pathname === "/career" && "Careers"}
                 {pathname === "/pickup-availability" && "Pickup Availability"}
