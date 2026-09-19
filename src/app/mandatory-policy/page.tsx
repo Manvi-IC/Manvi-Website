@@ -5,6 +5,12 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import PolicySidebar from "@/components/PolicySidebar";
 import { ShieldCheck, AlertOctagon, FileCheck2, FileText, Phone, Mail, MapPin, CheckSquare, XSquare } from "lucide-react";
+import { trackEvent } from "@/lib/fpixel";
+
+const trackWhatsApp = (location: string) =>
+  trackEvent("Contact", { method: "WhatsApp", location });
+const trackPhone = (location: string) =>
+  trackEvent("Contact", { method: "Phone", location });
 
 const sidebarItems = [
   { id: "statutory", label: "Statutory Aviation Compliance", num: "1" },
@@ -161,7 +167,7 @@ export default function MandatoryPolicyPage() {
                 <Phone className="w-5 h-5 text-[#f27a1a] shrink-0 mt-0.5" />
                 <div>
                   <div className="font-bold text-white mb-0.5">Compliance Phone</div>
-                  <a href="tel:+917070506070" className="hover:text-white transition-colors">+91 7070506070</a>
+                  <a href="tel:+917070506070" onClick={() => trackPhone("mandatory_policy_contact")} className="hover:text-white transition-colors">+91 7070506070</a>
                 </div>
               </div>
 

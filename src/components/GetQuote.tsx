@@ -17,7 +17,7 @@ import {
   Phone,
   Mail,
 } from "lucide-react";
-
+import { trackEvent, trackCustom } from "@/lib/fpixel";
 const API_URL = process.env.NEXT_API_URL || "http://localhost:5000";
 const DB_NAME = process.env.NEXT_PUBLIC_X_DATABASE || "manvi";
 
@@ -265,6 +265,12 @@ function ApplyModal({
       }
 
       setSubmitted(true);
+      // Meta Pixel: enquiry submitted successfully
+      trackEvent("Lead", {
+        content_name: quote.service,
+        content_category: destination,
+        destination_country: zoningCountry || destination,
+      });
       if (typeof window !== "undefined") {
         window.dataLayer = window.dataLayer || [];
         window.dataLayer.push({

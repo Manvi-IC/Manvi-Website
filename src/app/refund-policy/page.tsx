@@ -5,6 +5,10 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import PolicySidebar from "@/components/PolicySidebar";
 import { RotateCcw, ShieldCheck, Clock, AlertCircle, FileText, Phone, Mail, MapPin, CheckCircle2, XCircle } from "lucide-react";
+import { trackEvent } from "@/lib/fpixel";
+
+const trackPhone = (location: string) =>
+  trackEvent("Contact", { method: "Phone", location });
 
 const sidebarItems = [
   { id: "overview", label: "Policy Overview", num: "1" },
@@ -195,7 +199,7 @@ export default function RefundPolicyPage() {
                 <Phone className="w-5 h-5 text-[#f27a1a] shrink-0 mt-0.5" />
                 <div>
                   <div className="font-bold text-white mb-0.5">Customer Support Phone</div>
-                  <a href="tel:+917070506070" className="hover:text-white transition-colors">+91 7070506070</a>
+                  <a href="tel:+917070506070" onClick={() => trackPhone("refund_policy_contact")} className="hover:text-white transition-colors">+91 7070506070</a>
                 </div>
               </div>
 

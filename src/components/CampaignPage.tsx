@@ -27,9 +27,16 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useLanguage } from "@/context/LanguageContext";
+import { trackEvent, trackCustom } from "@/lib/fpixel";
 
 const API_URL = process.env.NEXT_API_URL || "http://localhost:5000";
 const DB_NAME = process.env.NEXT_PUBLIC_X_DATABASE || "manvi";
+
+// ─── META PIXEL HELPERS ──────────────────────────────────────────────────────
+const trackWhatsApp = (location: string) =>
+  trackEvent("Contact", { method: "WhatsApp", location });
+const trackPhone = (location: string) =>
+  trackEvent("Contact", { method: "Phone", location });
 
 // ─── DATA ────────────────────────────────────────────────────────────────────
 const STEPS = [
@@ -443,6 +450,7 @@ function CompactTimer({
           href="https://wa.me/917070506070"
           target="_blank"
           rel="noopener noreferrer"
+          onClick={() => trackWhatsApp("campaign_timer")}
           className="flex items-center gap-1.5 text-base md:text-2xl font-medium px-6 py-3 md:px-8 md:py-4 rounded-2xl tracking-wide text-white no-underline transition-transform hover:scale-105 shrink-0"
           style={{ background: "#e77419" }}
         >
@@ -532,6 +540,15 @@ function ApplyModal({
       const data = await res.json();
       if (!data.success) throw new Error(data.message || "Submission failed");
       setSubmitted(true);
+
+      // Meta Pixel: enquiry submitted successfully
+      trackEvent("Lead", {
+        content_name: quote.service,
+        content_category: destination,
+        destination_country: zoningCountry || destination,
+        source: "campaign_page",
+      });
+
       window.dataLayer = window.dataLayer || [];
       window.dataLayer.push({
         event: "form_enquiry_success",
@@ -867,10 +884,11 @@ function QuotesModal({
                   setIsManualSelection(false);
                   setFilter("all");
                 }}
-                className={`px-2.5 sm:px-3 py-1.5 rounded-lg text-[10px] sm:text-[11px] font-semibold transition-all ${filter === "all"
-                  ? "bg-[#e77419] text-white"
-                  : "bg-white/10 text-zinc-400 hover:bg-white/20 hover:text-white"
-                  }`}
+                className={`px-2.5 sm:px-3 py-1.5 rounded-lg text-[10px] sm:text-[11px] font-semibold transition-all ${
+                  filter === "all"
+                    ? "bg-[#e77419] text-white"
+                    : "bg-white/10 text-zinc-400 hover:bg-white/20 hover:text-white"
+                }`}
               >
                 Default
               </button>
@@ -879,10 +897,11 @@ function QuotesModal({
                   setIsManualSelection(false);
                   setFilter("cheapest");
                 }}
-                className={`px-2.5 sm:px-3 py-1.5 rounded-lg text-[10px] sm:text-[11px] font-semibold transition-all flex items-center gap-1 ${filter === "cheapest"
-                  ? "bg-[#e77419] text-white"
-                  : "bg-white/10 text-zinc-400 hover:bg-white/20 hover:text-white"
-                  }`}
+                className={`px-2.5 sm:px-3 py-1.5 rounded-lg text-[10px] sm:text-[11px] font-semibold transition-all flex items-center gap-1 ${
+                  filter === "cheapest"
+                    ? "bg-[#e77419] text-white"
+                    : "bg-white/10 text-zinc-400 hover:bg-white/20 hover:text-white"
+                }`}
               >
                 <TrendingDown size={12} />
                 <span className="hidden xs:inline">Most Affordable</span>
@@ -893,10 +912,11 @@ function QuotesModal({
                   setIsManualSelection(false);
                   setFilter("fastest");
                 }}
-                className={`px-2.5 sm:px-3 py-1.5 rounded-lg text-[10px] sm:text-[11px] font-semibold transition-all flex items-center gap-1 ${filter === "fastest"
-                  ? "bg-[#e77419] text-white"
-                  : "bg-white/10 text-zinc-400 hover:bg-white/20 hover:text-white"
-                  }`}
+                className={`px-2.5 sm:px-3 py-1.5 rounded-lg text-[10px] sm:text-[11px] font-semibold transition-all flex items-center gap-1 ${
+                  filter === "fastest"
+                    ? "bg-[#e77419] text-white"
+                    : "bg-white/10 text-zinc-400 hover:bg-white/20 hover:text-white"
+                }`}
               >
                 <Clock size={12} />
                 Fastest
@@ -949,10 +969,11 @@ function QuotesModal({
                 key={key}
                 data-service-key={key}
                 onClick={() => handleServiceSelect(key)}
-                className={`relative rounded-xl border-2 cursor-pointer transition-all min-w-[82vw] xs:min-w-[300px] sm:min-w-[300px] max-w-[340px] flex-shrink-0 flex flex-col max-h-full ${isSelected
-                  ? "border-[#e77419] bg-[#e77419]/10"
-                  : "border-zinc-700 bg-zinc-800/60 hover:border-zinc-500"
-                  }`}
+                className={`relative rounded-xl border-2 cursor-pointer transition-all min-w-[82vw] xs:min-w-[300px] sm:min-w-[300px] max-w-[340px] flex-shrink-0 flex flex-col max-h-full ${
+                  isSelected
+                    ? "border-[#e77419] bg-[#e77419]/10"
+                    : "border-zinc-700 bg-zinc-800/60 hover:border-zinc-500"
+                }`}
               >
                 {isSelected && (
                   <div className="absolute -top-2.5 left-3 z-10 bg-[#e77419] text-white text-[9px] font-bold px-2 py-0.5 rounded-full shadow-sm">
@@ -1019,8 +1040,9 @@ function QuotesModal({
                       </span>
                       <ChevronDown
                         size={15}
-                        className={`ml-auto shrink-0 transition-transform duration-300 ${isExpanded ? "rotate-180" : ""
-                          }`}
+                        className={`ml-auto shrink-0 transition-transform duration-300 ${
+                          isExpanded ? "rotate-180" : ""
+                        }`}
                       />
                     </button>
 
@@ -1186,9 +1208,9 @@ export default function CampaignPage() {
   const volWt =
     parseFloat(length) && parseFloat(breadth) && parseFloat(height)
       ? (
-        (parseFloat(length) * parseFloat(breadth) * parseFloat(height)) /
-        5000
-      ).toFixed(2)
+          (parseFloat(length) * parseFloat(breadth) * parseFloat(height)) /
+          5000
+        ).toFixed(2)
       : null;
   const chargeableWt = volWt
     ? Math.ceil(Math.max(parseFloat(actualWt) || 0, parseFloat(volWt)))
@@ -1232,10 +1254,17 @@ export default function CampaignPage() {
           `${data.quotes[0].service}__${data.quotes[0].rateType}`,
         );
         setShowQuoteModal(true);
+
+        // Meta Pixel: quote calculated
+        trackCustom("GetQuote", {
+          destination,
+          country: zoningCountry || destination,
+          source: "campaign_page",
+        });
       } else {
         alert(
           data.message ||
-          "No services available for this destination/weight combination.",
+            "No services available for this destination/weight combination.",
         );
       }
     } catch (err: any) {
@@ -1346,7 +1375,11 @@ export default function CampaignPage() {
                 </p>
                 <div className="flex items-center gap-2 my-1.5 w-fit max-w-[200px]">
                   <div className="h-[1.5px] w-12 bg-gradient-to-r from-transparent via-[#0a111e]/70 to-[#0a111e]" />
-                  <svg className="w-3 h-3 text-[#0a111e]" viewBox="0 0 24 24" fill="currentColor">
+                  <svg
+                    className="w-3 h-3 text-[#0a111e]"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                  >
                     <path d="M12 2L14.2 9.8L22 12L14.2 14.2L12 22L9.8 14.2L2 12L9.8 9.8L12 2Z" />
                   </svg>
                   <div className="h-[1.5px] w-12 bg-gradient-to-l from-transparent via-[#0a111e]/70 to-[#0a111e]" />
@@ -1398,6 +1431,7 @@ export default function CampaignPage() {
                       href="https://wa.me/917070506070"
                       target="_blank"
                       rel="noopener noreferrer"
+                      onClick={() => trackWhatsApp("campaign_hero_mobile")}
                       className="flex items-center justify-center gap-1 font-bold text-[12px] px-4 py-2.5 rounded-full no-underline transition-transform hover:scale-105 shadow-md flex-1 text-center"
                       style={{
                         background: "#23c961",
@@ -1415,7 +1449,6 @@ export default function CampaignPage() {
                       {t.contact_whatsapp}
                     </a>
                   </div>
-
                 </div>
               </div>
             </div>
@@ -1436,10 +1469,13 @@ export default function CampaignPage() {
 
           <div className="absolute inset-0 z-10 flex flex-col justify-between p-6 lg:pl-10 pointer-events-none">
             <div className="p-0">
-              <img src="/logo-png.png" className="h-24 object-cover w-64" alt="" />
+              <img
+                src="/logo-png.png"
+                className="h-24 object-cover w-64"
+                alt=""
+              />
             </div>
             <div className="flex flex-col max-w-xl lg:max-w-2xl pt-14 sm:pt-0 justify-center items-center">
-
               {/* Top line: THIS RAKSHA BANDHAN */}
               <span className="text-[18px] md:text-2xl font-black tracking-[0.14em] text-[#0a111e] uppercase font-sans leading-none">
                 THIS RAKSHA BANDHAN
@@ -1458,7 +1494,11 @@ export default function CampaignPage() {
               {/* Ornamental Flourish Divider Line */}
               <div className="flex items-center gap-2 my-2 w-fit max-w-[260px] ">
                 <div className="h-[1.5px] w-20 bg-gradient-to-r from-transparent via-[#0a111e]/70 to-[#0a111e]" />
-                <svg className="w-5 h-5 text-[#0a111e]" viewBox="0 0 24 24" fill="currentColor">
+                <svg
+                  className="w-5 h-5 text-[#0a111e]"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
                   <path d="M12 2L14.2 9.8L22 12L14.2 14.2L12 22L9.8 14.2L2 12L9.8 9.8L12 2Z" />
                 </svg>
                 <div className="h-[1.5px] w-20 bg-gradient-to-l from-transparent via-[#0a111e]/70 to-[#0a111e]" />
@@ -1511,6 +1551,7 @@ export default function CampaignPage() {
                   href="https://wa.me/917070506070"
                   target="_blank"
                   rel="noopener noreferrer"
+                  onClick={() => trackWhatsApp("campaign_hero_desktop")}
                   className="flex items-center justify-center gap-1.5 font-bold text-[14px] md:text-[15px] px-6 py-3 md:px-7 md:py-3.5 rounded-full no-underline transition-transform hover:scale-105 shadow-md text-center"
                   style={{
                     background: "#23c961",
@@ -1708,8 +1749,9 @@ export default function CampaignPage() {
               <button
                 type="submit"
                 disabled={quoteLoading}
-                className={`bg-[#0D1527] hover:bg-slate-800 text-white font-bold text-[13px] py-3.5 px-8 rounded-xl transition-all active:scale-95 cursor-pointer flex items-center justify-center gap-1.5 disabled:opacity-70 ${actualWt || volWt ? "sm:w-auto" : "w-full"
-                  }`}
+                className={`bg-[#0D1527] hover:bg-slate-800 text-white font-bold text-[13px] py-3.5 px-8 rounded-xl transition-all active:scale-95 cursor-pointer flex items-center justify-center gap-1.5 disabled:opacity-70 ${
+                  actualWt || volWt ? "sm:w-auto" : "w-full"
+                }`}
               >
                 {quoteLoading ? t.form_calculating : t.hero_get_quote}{" "}
                 {!quoteLoading && (
@@ -1737,17 +1779,28 @@ export default function CampaignPage() {
 
             {/* Paragraph 1 */}
             <p className="text-[15px] sm:text-[17px] md:text-[18px] font-semibold text-[#0a111e] leading-relaxed">
-              This Rakhi don’t worry about collecting enough weight to ship abroad. With Manvi International, send just a Rakhi anywhere in the world. And don’t worry about higher charges or extra costs.
+              This Rakhi don’t worry about collecting enough weight to ship
+              abroad. With Manvi International, send just a Rakhi anywhere in
+              the world. And don’t worry about higher charges or extra costs.
             </p>
 
             {/* Paragraph 2 */}
             <p className="text-[14px] sm:text-[16px] text-[#444] leading-relaxed">
-              <strong className="text-[#e77419] font-bold">Weight less pay less!</strong> When your shipment contains less than hundred grams, you can avail special prices for international shipping. Because why pay more when you’re shipping less? Send Rakhis and shipments up to hundred grams with special rates, anywhere in the world. Larger shipments? Don’t worry, Manvi has got you! Ship with no limit with Manvi. Avail special discounts for bulk and business shipping.
+              <strong className="text-[#e77419] font-bold">
+                Weight less pay less!
+              </strong>{" "}
+              When your shipment contains less than hundred grams, you can avail
+              special prices for international shipping. Because why pay more
+              when you’re shipping less? Send Rakhis and shipments up to hundred
+              grams with special rates, anywhere in the world. Larger shipments?
+              Don’t worry, Manvi has got you! Ship with no limit with Manvi.
+              Avail special discounts for bulk and business shipping.
             </p>
 
             {/* Paragraph 3 */}
             <p className="text-[14px] sm:text-[16px] text-[#444] leading-relaxed italic border-l-4 border-[#e77419] pl-4 py-1.5 bg-orange-100/50 rounded-r-xl">
-              Manvi has got something for everyone. Because milestone matter at Manvi, but your smiles do.
+              Manvi has got something for everyone. Because milestone matter at
+              Manvi, but your smiles do.
             </p>
 
             {/* Clickable Actions */}
@@ -1760,6 +1813,7 @@ export default function CampaignPage() {
                     href="https://wa.me/917070506070"
                     target="_blank"
                     rel="noopener noreferrer"
+                    onClick={() => trackWhatsApp("campaign_offer_box")}
                     className="inline-flex items-center gap-1 text-[#23c961] font-bold hover:underline"
                   >
                     WhatsApp
@@ -1767,6 +1821,7 @@ export default function CampaignPage() {
                   <span>or call us on</span>
                   <a
                     href="tel:+917070506070"
+                    onClick={() => trackPhone("campaign_offer_box")}
                     className="inline-flex items-center gap-1 text-[#e77419] font-extrabold hover:underline bg-orange-100/90 px-2.5 py-0.5 rounded-full border border-[#e77419]/30"
                   >
                     <Phone size={14} className="shrink-0" />
@@ -1803,6 +1858,7 @@ export default function CampaignPage() {
                   href="https://wa.me/917070506070"
                   target="_blank"
                   rel="noopener noreferrer"
+                  onClick={() => trackWhatsApp("campaign_offer_box_button")}
                   className="flex items-center justify-center gap-2 text-xs sm:text-sm font-bold px-5 py-3 rounded-xl bg-[#23c961] text-[#0a111e] no-underline hover:scale-105 transition-transform shadow-sm flex-1 sm:flex-none"
                 >
                   <Send size={15} /> WhatsApp Us
@@ -1959,6 +2015,7 @@ export default function CampaignPage() {
                 href="https://wa.me/917070506070"
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => trackWhatsApp("campaign_what_ship")}
                 className="text-[#e77419] font-bold underline"
               >
                 {t.campaign_what_ship_ask}
@@ -2195,8 +2252,9 @@ export default function CampaignPage() {
                     >
                       <span>{t[f.qKey as keyof typeof t]}</span>
                       <ChevronDown
-                        className={`w-5 h-5 text-[#e77419] shrink-0 mt-0.5 transition-transform duration-300 ${isActive ? "rotate-180" : ""
-                          }`}
+                        className={`w-5 h-5 text-[#e77419] shrink-0 mt-0.5 transition-transform duration-300 ${
+                          isActive ? "rotate-180" : ""
+                        }`}
                       />
                     </h3>
                   </div>
@@ -2229,7 +2287,10 @@ export default function CampaignPage() {
                               target="_blank"
                               rel="noopener noreferrer"
                               className="text-[#23c961] font-bold underline ml-0.5"
-                              onClick={(e) => e.stopPropagation()}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                trackWhatsApp("campaign_faq");
+                              }}
                             >
                               WhatsApp
                             </a>
@@ -2275,6 +2336,7 @@ export default function CampaignPage() {
               href="https://wa.me/917070506070"
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => trackWhatsApp("campaign_bottom_cta")}
               className="flex items-center gap-2 font-bold text-[13px] md:text-[15px] px-6 py-3 md:px-8 md:py-4 rounded-full text-[#0a111e] no-underline transition-transform hover:scale-105"
               style={{
                 background: "#23c961",
@@ -2292,6 +2354,7 @@ export default function CampaignPage() {
             </a>
             <a
               href="tel:+917070506070"
+              onClick={() => trackPhone("campaign_bottom_cta")}
               className="flex items-center gap-2 font-bold text-[13px] md:text-[15px] px-6 py-3 md:px-8 md:py-4 rounded-full no-underline transition-transform hover:scale-105"
               style={{
                 background: "transparent",
