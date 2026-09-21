@@ -33,6 +33,43 @@ const DB_NAME = process.env.NEXT_PUBLIC_X_DATABASE || "manvi";
 
 const WHATSAPP_NUMBER = "917070506070";
 
+/* ── Zoho lead submitter (used by "Compare your rate" hero buttons) ── */
+async function submitZohoLead(payload: {
+  firstName?: string;
+  lastName?: string;
+  mobile?: string;
+  description?: string;
+}) {
+  const formData = new FormData();
+  formData.append(
+    "xnQsjsdp",
+    "5d36fe4ccf2211a95a323ac159955263068b8121667a6497bffb393b6173e11b",
+  );
+  formData.append("zc_gad", "");
+  formData.append(
+    "xmIwtLD",
+    "f02ff563ef0a153f6056f8c0fa24d1af0d4ee55f0c9366b73786d5d47923b9417d30878160ae6a4ce3a766b78f2f5d78",
+  );
+  formData.append("actionType", "TGVhZHM=");
+  formData.append("returnURL", "null");
+  formData.append("First Name", payload.firstName || "");
+  formData.append("Last Name", payload.lastName || "");
+  formData.append("Mobile", payload.mobile || "");
+  formData.append("Description", payload.description || "");
+  formData.append("aG9uZXlwb3Q", "");
+
+  try {
+    await fetch("https://crm.zoho.in/crm/WebToLeadForm", {
+      method: "POST",
+      body: formData,
+      mode: "no-cors",
+      cache: "no-cache",
+    });
+  } catch (err) {
+    console.warn("Zoho lead submit:", err);
+  }
+}
+
 /* ── Destination / network data ── */
 const DESTINATIONS = [
   {
@@ -298,35 +335,12 @@ function WhatsAppEnquiryForm() {
 
     setSubmitting(true);
 
-    // Build FormData using Zoho Web-to-Lead field names
-    const formData = new FormData();
-    formData.append(
-      "xnQsjsdp",
-      "5d36fe4ccf2211a95a323ac159955263068b8121667a6497bffb393b6173e11b",
-    );
-    formData.append("zc_gad", "");
-    formData.append(
-      "xmIwtLD",
-      "f02ff563ef0a153f6056f8c0fa24d1af0d4ee55f0c9366b73786d5d47923b9417d30878160ae6a4ce3a766b78f2f5d78",
-    );
-    formData.append("actionType", "TGVhZHM=");
-    formData.append("returnURL", "null");
-    formData.append("First Name", firstName.trim());
-    formData.append("Last Name", lastName.trim());
-    formData.append("Mobile", mobile.trim());
-    formData.append("aG9uZXlwb3Q", "");
-
-    try {
-      await fetch("https://crm.zoho.in/crm/WebToLeadForm", {
-        method: "POST",
-        body: formData,
-        mode: "no-cors",
-        cache: "no-cache",
-      });
-    } catch (err) {
-      // no-cors response is opaque — safe to ignore.
-      console.warn("Zoho submit:", err);
-    }
+    await submitZohoLead({
+      firstName: firstName.trim(),
+      lastName: lastName.trim(),
+      mobile: mobile.trim(),
+      description: "WhatsApp Quick Enquiry (shopkeeper page)",
+    });
 
     // Analytics
     if (typeof window !== "undefined") {
@@ -417,7 +431,7 @@ function WhatsAppEnquiryForm() {
       </div>
 
       <div>
-       <label className={labelCls}>
+        <label className={labelCls}>
           Mobile <span className="text-red-500">*</span>
         </label>
         <input
@@ -1465,6 +1479,40 @@ export default function ShopkeeperPage() {
   } | null>(null);
   const [applyModalOpen, setApplyModalOpen] = useState(false);
 
+  /* ── "Compare your rate" handler: sends a Zoho lead, then opens WhatsApp ── */
+  const handleCompareRate = async (location: string) => {
+    trackWhatsApp(location);
+
+    // Fire the lead to Zoho CRM
+    await submitZohoLead({
+      firstName: "",
+      lastName: "",
+      mobile: "",
+      description: "Clicked 'Compare your rate' on shopkeeper hero",
+    });
+
+    // Analytics
+    if (typeof window !== "undefined") {
+      (window as any).dataLayer = (window as any).dataLayer || [];
+      (window as any).dataLayer.push({
+        event: "compare_rate_click",
+        form: "shopkeeper_hero",
+        location,
+      });
+      if (typeof (window as any).gtag === "function") {
+        (window as any).gtag("event", "conversion", {
+          send_to: "AW-16880308122/jB3TCL-RwNccEJqflPE-",
+        });
+      }
+    }
+
+    // Open WhatsApp
+    const waUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
+      "Hi Manvi, I export from India and want to compare my shipping rates.",
+    )}`;
+    window.open(waUrl, "_blank", "noopener,noreferrer");
+  };
+
   return (
     <div className="w-full font-sans bg-[#f4f5f7] text-[#1c1f2e] antialiased overflow-x-hidden">
       {/* Keyframe animation helpers */}
@@ -1549,12 +1597,10 @@ export default function ShopkeeperPage() {
             </p>
 
             <div className="flex flex-row gap-4 mt-7 lg:mt-8">
-              <a
-                href="https://wa.me/917070506070?text=Hi%20Manvi%2C%20I%20export%20from%20India%20and%20want%20to%20compare%20my%20shipping%20rates."
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={() => trackWhatsApp("shopkeeper_hero_desktop")}
-                className="inline-flex items-center justify-center gap-2.5 font-bold text-[15px] lg:text-[16px] px-7 py-3.5 lg:py-4 rounded-full bg-[#23c961] text-[#0a111e] shadow-[0_8px_22px_-8px_rgba(35,201,97,0.6)] hover:bg-[#1fb855] hover:-translate-y-0.5 transition-all"
+              <button
+                type="button"
+                onClick={() => handleCompareRate("shopkeeper_hero_desktop")}
+                className="inline-flex items-center justify-center gap-2.5 font-bold text-[15px] lg:text-[16px] px-7 py-3.5 lg:py-4 rounded-full bg-[#23c961] text-[#0a111e] shadow-[0_8px_22px_-8px_rgba(35,201,97,0.6)] hover:bg-[#1fb855] hover:-translate-y-0.5 transition-all cursor-pointer"
               >
                 <svg
                   className="w-5 h-5 fill-current shrink-0"
@@ -1563,7 +1609,7 @@ export default function ShopkeeperPage() {
                   <path d="M12 2a10 10 0 0 0-8.6 15.06L2 22l5.06-1.32A10 10 0 1 0 12 2Zm5.3 14.1c-.22.62-1.3 1.2-1.8 1.24-.46.05-1.03.07-1.66-.1a13.6 13.6 0 0 1-5.9-4.53c-.44-.58-1.1-1.56-1.1-2.98 0-1.42.75-2.12 1.02-2.4a1.05 1.05 0 0 1 .77-.36c.19 0 .38 0 .55.01.18.01.42-.07.65.5.24.6.8 2.02.87 2.16.07.15.12.32.02.5-.1.19-.15.3-.3.47-.15.18-.3.4-.44.53-.15.15-.3.3-.13.6.18.3.8 1.3 1.7 2.1 1.18 1.05 2.16 1.37 2.47 1.53.3.15.48.12.65-.08.18-.2.75-.87.95-1.17.2-.3.4-.25.66-.15.27.1 1.7.8 2 .95.3.15.5.22.57.34.07.13.07.72-.15 1.34Z" />
                 </svg>
                 <span>Compare your rate</span>
-              </a>
+              </button>
               <a
                 href="tel:+917070506070"
                 onClick={() => trackPhone("shopkeeper_hero_desktop")}
@@ -1645,12 +1691,10 @@ export default function ShopkeeperPage() {
 
             <div className="flex flex-col gap-3 mt-6">
               <div className="flex flex-col gap-2.5">
-                <a
-                  href="https://wa.me/917070506070?text=Hi%20Manvi%2C%20I%20export%20from%20India%20and%20want%20to%20compare%20my%20shipping%20rates."
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={() => trackWhatsApp("shopkeeper_hero_mobile")}
-                  className="inline-flex items-center justify-center gap-2 font-bold text-[14px] px-5 py-2.5 rounded-full bg-[#23c961]/90 text-[#0a111e] shadow-[0_8px_22px_-8px_rgba(35,201,97,0.6)] hover:bg-[#1fb855] transition-all text-center"
+                <button
+                  type="button"
+                  onClick={() => handleCompareRate("shopkeeper_hero_mobile")}
+                  className="inline-flex items-center justify-center gap-2 font-bold text-[14px] px-5 py-2.5 rounded-full bg-[#23c961]/90 text-[#0a111e] shadow-[0_8px_22px_-8px_rgba(35,201,97,0.6)] hover:bg-[#1fb855] transition-all text-center cursor-pointer"
                 >
                   <svg
                     className="w-4 h-4 fill-current shrink-0"
@@ -1659,7 +1703,7 @@ export default function ShopkeeperPage() {
                     <path d="M12 2a10 10 0 0 0-8.6 15.06L2 22l5.06-1.32A10 10 0 1 0 12 2Zm5.3 14.1c-.22.62-1.3 1.2-1.8 1.24-.46.05-1.03.07-1.66-.1a13.6 13.6 0 0 1-5.9-4.53c-.44-.58-1.1-1.56-1.1-2.98 0-1.42.75-2.12 1.02-2.4a1.05 1.05 0 0 1 .77-.36c.19 0 .38 0 .55.01.18.01.42-.07.65.5.24.6.8 2.02.87 2.16.07.15.12.32.02.5-.1.19-.15.3-.3.47-.15.18-.3.4-.44.53-.15.15-.3.3-.13.6.18.3.8 1.3 1.7 2.1 1.18 1.05 2.16 1.37 2.47 1.53.3.15.48.12.65-.08.18-.2.75-.87.95-1.17.2-.3.4-.25.66-.15.27.1 1.7.8 2 .95.3.15.5.22.57.34.07.13.07.72-.15 1.34Z" />
                   </svg>
                   <span>Compare your rate on WhatsApp</span>
-                </a>
+                </button>
                 <a
                   href="tel:+917070506070"
                   onClick={() => trackPhone("shopkeeper_hero_mobile")}
@@ -1954,11 +1998,10 @@ export default function ShopkeeperPage() {
               <span className="text-[11px] sm:text-[12px] font-bold tracking-wider uppercase text-[#f27a1a]">
                 Free rate comparison
               </span>
-              <a
-                href="https://wa.me/917070506070?text=Hi%20Manvi%2C%20here%20are%20my%20current%20export%20shipping%20details%20to%20compare%20rates."
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2.5 font-bold text-[14px] sm:text-[16px] px-6 sm:px-7 py-3.5 sm:py-4 rounded-full bg-[#23c961] text-[#0a111e] shadow-[0_8px_22px_-8px_rgba(35,201,97,0.6)] hover:bg-[#1fb855] hover:-translate-y-0.5 transition-all text-center"
+              <button
+                type="button"
+                onClick={() => handleCompareRate("shopkeeper_rate_compare_box")}
+                className="inline-flex items-center justify-center gap-2.5 font-bold text-[14px] sm:text-[16px] px-6 sm:px-7 py-3.5 sm:py-4 rounded-full bg-[#23c961] text-[#0a111e] shadow-[0_8px_22px_-8px_rgba(35,201,97,0.6)] hover:bg-[#1fb855] hover:-translate-y-0.5 transition-all text-center cursor-pointer"
               >
                 <svg
                   className="w-5 h-5 fill-current shrink-0"
@@ -1967,7 +2010,7 @@ export default function ShopkeeperPage() {
                   <path d="M12 2a10 10 0 0 0-8.6 15.06L2 22l5.06-1.32A10 10 0 1 0 12 2Zm5.3 14.1c-.22.62-1.3 1.2-1.8 1.24-.46.05-1.03.07-1.66-.1a13.6 13.6 0 0 1-5.9-4.53c-.44-.58-1.1-1.56-1.1-2.98 0-1.42.75-2.12 1.02-2.4a1.05 1.05 0 0 1 .77-.36c.19 0 .38 0 .55.01.18.01.42-.07.65.5.24.6.8 2.02.87 2.16.07.15.12.32.02.5-.1.19-.15.3-.3.47-.15.18-.3.4-.44.53-.15.15-.3.3-.13.6.18.3.8 1.3 1.7 2.1 1.18 1.05 2.16 1.37 2.47 1.53.3.15.48.12.65-.08.18-.2.75-.87.95-1.17.2-.3.4-.25.66-.15.27.1 1.7.8 2 .95.3.15.5.22.57.34.07.13.07.72-.15 1.34Z" />
                 </svg>
                 <span>Send my details</span>
-              </a>
+              </button>
               <a
                 href="tel:+917070506070"
                 className="inline-flex items-center justify-center gap-2.5 font-bold text-[14px] sm:text-[16px] px-6 sm:px-7 py-3.5 sm:py-4 rounded-full bg-transparent text-[#1c1f2e] border border-[#1c1f2e]/20 hover:border-[#1c1f2e] hover:bg-white/60 hover:-translate-y-0.5 transition-all text-center"
@@ -2168,11 +2211,10 @@ export default function ShopkeeperPage() {
           </p>
 
           <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4 mt-6 sm:mt-8">
-            <a
-              href="https://wa.me/917070506070?text=Hi%20Manvi%2C%20I%20export%20from%20India%20and%20want%20a%20shipping%20quote."
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2.5 font-bold text-[14px] sm:text-[16px] px-6 sm:px-7 py-3.5 sm:py-4 rounded-full bg-[#23c961] text-[#0a111e] shadow-[0_8px_22px_-8px_rgba(35,201,97,0.6)] hover:bg-[#1fb855] hover:-translate-y-0.5 transition-all text-center"
+            <button
+              type="button"
+              onClick={() => handleCompareRate("shopkeeper_final_cta")}
+              className="inline-flex items-center justify-center gap-2.5 font-bold text-[14px] sm:text-[16px] px-6 sm:px-7 py-3.5 sm:py-4 rounded-full bg-[#23c961] text-[#0a111e] shadow-[0_8px_22px_-8px_rgba(35,201,97,0.6)] hover:bg-[#1fb855] hover:-translate-y-0.5 transition-all text-center cursor-pointer"
             >
               <svg
                 className="w-5 h-5 fill-current shrink-0"
@@ -2181,7 +2223,7 @@ export default function ShopkeeperPage() {
                 <path d="M12 2a10 10 0 0 0-8.6 15.06L2 22l5.06-1.32A10 10 0 1 0 12 2Zm5.3 14.1c-.22.62-1.3 1.2-1.8 1.24-.46.05-1.03.07-1.66-.1a13.6 13.6 0 0 1-5.9-4.53c-.44-.58-1.1-1.56-1.1-2.98 0-1.42.75-2.12 1.02-2.4a1.05 1.05 0 0 1 .77-.36c.19 0 .38 0 .55.01.18.01.42-.07.65.5.24.6.8 2.02.87 2.16.07.15.12.32.02.5-.1.19-.15.3-.3.47-.15.18-.3.4-.44.53-.15.15-.3.3-.13.6.18.3.8 1.3 1.7 2.1 1.18 1.05 2.16 1.37 2.47 1.53.3.15.48.12.65-.08.18-.2.75-.87.95-1.17.2-.3.4-.25.66-.15.27.1 1.7.8 2 .95.3.15.5.22.57.34.07.13.07.72-.15 1.34Z" />
               </svg>
               <span>WhatsApp us your details</span>
-            </a>
+            </button>
             <a
               href="tel:+917070506070"
               className="inline-flex items-center justify-center gap-2.5 font-bold text-[14px] sm:text-[16px] px-6 sm:px-7 py-3.5 sm:py-4 rounded-full bg-transparent text-white border border-white/30 hover:border-white hover:bg-white/10 hover:-translate-y-0.5 transition-all text-center"
