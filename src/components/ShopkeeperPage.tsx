@@ -31,111 +31,7 @@ const trackPhone = (location: string) =>
 const API_URL = process.env.NEXT_API_URL || "http://localhost:5000";
 const DB_NAME = process.env.NEXT_PUBLIC_X_DATABASE || "manvi";
 
-/* ── WhatsApp form HTML (unchanged) ── */
-const zohoFormHtml = `
-<div id='crmWebToEntityForm' class='zcwf_lblLeft crmWebToEntityForm' style='background-color: white;color: black;max-width: 600px;font-family: var(--font-sans), system-ui, -apple-system, sans-serif;'>
-  <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-  <META HTTP-EQUIV='content-type' CONTENT='text/html;charset=UTF-8'>
-  <form id='webform1394241000000604320' action='https://crm.zoho.in/crm/WebToLeadForm' name='WebToLeads1394241000000604320' method='POST' onSubmit='javascript:document.charset="UTF-8"; return checkMandatory1394241000000604320()' accept-charset='UTF-8'>
-    <input type='text' style='display:none;' name='xnQsjsdp' value='5d36fe4ccf2211a95a323ac159955263068b8121667a6497bffb393b6173e11b'>
-    <input type='hidden' name='zc_gad' id='zc_gad' value=''>
-    <input type='text' style='display:none;' name='xmIwtLD' value='f02ff563ef0a153f6056f8c0fa24d1af0d4ee55f0c9366b73786d5d47923b9417d30878160ae6a4ce3a766b78f2f5d78'>
-    <input type='text' style='display:none;' name='actionType' value='TGVhZHM='>
-    <input type='text' style='display:none;' name='returnURL' value='null'>
-    <style>
-      html,body{margin:0px;} .formsubmit.zcwf_button{color:white !important;background:transparent linear-gradient(0deg, #0279FF 0%, #00A3F3 100%);} #crmWebToEntityForm.zcwf_lblLeft{width:100%;padding:25px;margin:0 auto;box-sizing:border-box;font-family: inherit;} #crmWebToEntityForm.zcwf_lblLeft *{box-sizing:border-box;} #crmWebToEntityForm{text-align:left;font-family: inherit;} #crmWebToEntityForm *{direction:ltr;font-family: inherit;} .zcwf_lblLeft .zcwf_title{word-wrap:break-word;padding:0px 6px 10px;font-weight:bold;font-family: inherit;} .zcwf_lblLeft.cpT_primaryBtn:hover{background:linear-gradient(#02acff 0,#006be4 100%)no-repeat padding-box !important;box-shadow:0 -2px 0 0 #0159b9 inset !important;border:0 !important;color:#fff !important;outline:0 !important;} .zcwf_lblLeft .zcwf_col_fld input[ type = text], input[ type = password], .zcwf_lblLeft .zcwf_col_fld textarea{width:60%;border:1px solid #c0c6cc !important;resize:vertical;border-radius:2px;float:left;} .zcwf_lblLeft .zcwf_col_lab{width:30%;word-break:break-word;padding:0px 6px 0px;margin-right:10px;margin-top:5px;float:left;min-height:1px;font-family: inherit;} .zcwf_lblLeft .zcwf_col_fld{float:left;width:68%;padding:0px 6px 0px;position:relative;margin-top:5px;font-family: inherit;} .zcwf_lblLeft .zcwf_privacy{padding:6px;} .zcwf_lblLeft .wfrm_fld_dpNn{display:none;} .dIB{display:inline-block;} .zcwf_lblLeft .zcwf_col_fld_slt{width:60%;border:1px solid #ccc;background:#fff;border-radius:4px;font-size:12px;float:left;resize:vertical;padding:2px 5px;} .zcwf_lblLeft .zcwf_row:after, .zcwf_lblLeft .zcwf_col_fld:after{content:'';display:table;clear:both;} .zcwf_lblLeft .zcwf_col_help{float:left;margin-left:7px;font-size:12px;max-width:35%;word-break:break-word;} .zcwf_lblLeft .zcwf_help_icon{cursor:pointer;width:16px;height:16px;display:inline-block;background:#fff;border:1px solid #c0c6cc;color:#c1c1c1;text-align:center;font-size:11px;line-height:16px;font-weight:bold;border-radius:50%;} .zcwf_lblLeft .zcwf_row{margin:15px 0px;} .zcwf_lblLeft .formsubmit{margin-right:5px;cursor:pointer;color:#313949;font-size:12px;font-family: inherit;} .zcwf_lblLeft .zcwf_privacy_txt{width:90%;color:rgb(0, 0, 0);font-size:12px;font-family:Arial;display:inline-block;vertical-align:top;color:#313949;padding-top:2px;margin-left:6px;} .zcwf_lblLeft .zcwf_button{font-size:12px;color:#313949;border:1px solid #c0c6cc;padding:3px 9px;border-radius:4px;cursor:pointer;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;} .zcwf_lblLeft .zcwf_tooltip_over{position:relative;} .zcwf_lblLeft .zcwf_tooltip_ctn{position:absolute;background:#dedede;padding:3px 6px;top:3px;border-radius:4px;word-break:break-word;min-width:100px;max-width:150px;color:#313949;z-index:100;} .zcwf_lblLeft .zcwf_ckbox{float:left;} .zcwf_lblLeft .zcwf_file{width:55%;box-sizing:border-box;float:left;} .cBoth:after{content:'';display:block;clear:both;} @media all and (max-width: 600px){ .zcwf_lblLeft .zcwf_col_lab, .zcwf_lblLeft .zcwf_col_fld{width:auto;float:none !important;} .zcwf_lblLeft .zcwf_col_help{width:40%;} }
-    </style>
-    <div class='zcwf_title' style='max-width: 600px;color: black; font-family: inherit;'>WhatsApp Redirect Form</div>
-    <div class='zcwf_row'>
-      <div class='zcwf_col_lab' style='font-size:12px; font-family: inherit;'><label for='First_Name'>First Name</label></div>
-      <div class='zcwf_col_fld'><input type='text' id='First_Name' aria-required='false' aria-label='First Name' name='First Name' aria-valuemax='40' maxlength='40'><div class='zcwf_col_help'></div></div>
-    </div>
-    <div class='zcwf_row'>
-      <div class='zcwf_col_lab' style='font-size:12px; font-family: inherit;'><label for='Last_Name'>Last Name <span style='color:red;'>*</span></label></div>
-      <div class='zcwf_col_fld'><input type='text' id='Last_Name' aria-required='true' aria-label='Last Name' name='Last Name' aria-valuemax='80' maxlength='80'><div class='zcwf_col_help'></div></div>
-    </div>
-    <div class='zcwf_row'>
-      <div class='zcwf_col_lab' style='font-size:12px; font-family: inherit;'><label for='Mobile'>Mobile</label></div>
-      <div class='zcwf_col_fld'><input type='tel' id='Mobile' inputmode='numeric' pattern='[0-9]*' aria-required='false' aria-label='Mobile' name='Mobile' aria-valuemax='30' maxlength='30' oninput="this.value = this.value.replace(/[^0-9]/g, '')"><div class='zcwf_col_help'></div></div>
-    </div>
-    <input type='text' type='hidden' style='display: none;' name='aG9uZXlwb3Q' value='' />
-    <div class='zcwf_row'>
-      <div class='zcwf_col_lab'></div>
-      <div class='zcwf_col_fld'><input type='submit' id='formsubmit' role='button' class='formsubmit zcwf_button' value='Submit' aria-label='Submit' title='Submit'><input type='reset' class='zcwf_button' role='button' name='reset' value='Reset' aria-label='Reset' title='Reset'></div>
-    </div>
-    <script>
-      function checkMandatory1394241000000604320(isAjax){
-        var mndFileds = new Array('Last Name');
-        var fldLangVal = new Array('Last Name');
-        for (i = 0; i < mndFileds.length; i++ ) {
-          var fieldObj = document.forms['WebToLeads1394241000000604320'] [mndFileds[i]];
-          if (fieldObj) {
-            if(((fieldObj.value) .replace (/^\s+|\s+$/g,'') ) .length == 0) {
-              if (fieldObj.type == 'file') {
-                alert('Please select a file to upload.');
-                fieldObj.focus();
-                return false;
-              }
-              alert(fldLangVal[i] + ' cannot be empty.');
-              fieldObj.focus();
-              return false;
-            } else if (fieldObj.nodeName == 'SELECT') {
-              if (fieldObj.options[fieldObj.selectedIndex].value == '-None-') {
-                alert(fldLangVal[i] + ' cannot be none.');
-                fieldObj.focus();
-                return false;
-              }
-            } else if (fieldObj.type == 'checkbox') {
-              if (fieldObj.checked == false) {
-                alert('Please accept ' + fldLangVal[i]);
-                fieldObj.focus();
-                return false;
-              }
-            }
-            try{
-              if (fieldObj.name == 'Last Name') { name = fieldObj.value; }
-            } catch (e){}
-          }
-        }
-        var urlparams = new URLSearchParams(window.location.search);
-        if (urlparams.has ('service') && (urlparams.get ('service') === 'smarturl') ) {
-          var webform = document.getElementById('webform1394241000000604320');
-          var service = urlparams.get('service');
-          var smarturlfield = document.createElement('input');
-          smarturlfield.setAttribute('type', 'hidden');
-          smarturlfield.setAttribute('value', service);
-          smarturlfield.setAttribute('name', 'service');
-          webform.appendChild(smarturlfield);
-        }
-        document.querySelector('.crmWebToEntityForm .formsubmit').setAttribute('disabled', true);
-      }
-      _wFa_ajax_will_be_replaced = false;
-      if (typeof _wfa_fstprtcken == 'undefined') {
-        _wfa_fstprtcken = {};
-      }
-      _wfa_fstprtcken[1394241000000604320] = true;
-      function tooltipShow1394241000000604320(el){
-        var tooltip = el.nextElementSibling;
-        var tooltipDisplay = tooltip.style.display;
-        if (tooltipDisplay == 'none') {
-          var allTooltip = document.getElementsByClassName('zcwf_tooltip_over');
-          for (i = 0; i < allTooltip.length; i++ ) {
-            allTooltip[i].style.display = 'none';
-          }
-          tooltip.style.display = 'block';
-        } else {
-          tooltip.style.display = 'none';
-        }
-      }
-    </script>
-    <script id='wf_anal' src='https://crm.zohopublic.in/crm/WebFormAnalyticsServeServlet?rid=d023568e1e3e6fa18f4c65deedbaf5bc7f1cd4b152b8e5a19ab6edcaef23b301e62ee712edde36cec4caa7ba4154a584gidacef6996ea9494b52c0598738546e612e2a0a5be6351888a2c61d75436d46e2dgidf646a7fe147ef8abef157542804ad5353ed0c88259c12374e1616665bee5deddgid9df265a27c59cea1a3209824dffe14bf32108b2470f9382cadb7d7c87376883a&tw=71ad78d900e1d4b8b9fc1253be7bad177119792698b6ee802bfee724b6dad136&version=v2'></script>
-  </form>
-</div>`;
-
-const stripScriptTags = (html: string) =>
-  html
-    .replace(/<script[\s\S]*?<\/script>/gi, "")
-    .replace(/<style[\s\S]*?<\/style>/gi, "");
+const WHATSAPP_NUMBER = "917070506070";
 
 /* ── Destination / network data ── */
 const DESTINATIONS = [
@@ -368,6 +264,197 @@ interface Quote {
 
 type FilterType = "all" | "cheapest" | "fastest";
 
+/* ────────────────────────────────────────────────────────────── */
+/* ── WhatsApp Enquiry Form (React-controlled, replaces Zoho embed) ── */
+/* ────────────────────────────────────────────────────────────── */
+function WhatsAppEnquiryForm() {
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [mobile, setMobile] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState("");
+
+  const buildWhatsAppUrl = (name: string) =>
+    `https://wa.me/${WHATSAPP_NUMBER}?text=` +
+    encodeURIComponent(
+      `Hi Manvi, I just submitted my export shipping enquiry on your website.${
+        name ? ` My name is ${name}.` : ""
+      } Please share a quote.`,
+    );
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setError("");
+
+    if (!lastName.trim()) {
+      setError("Last Name is required.");
+      return;
+    }
+    if (!mobile.trim()) {
+      setError("Mobile number is required.");
+      return;
+    }
+
+    setSubmitting(true);
+
+    // Build FormData using Zoho Web-to-Lead field names
+    const formData = new FormData();
+    formData.append(
+      "xnQsjsdp",
+      "5d36fe4ccf2211a95a323ac159955263068b8121667a6497bffb393b6173e11b",
+    );
+    formData.append("zc_gad", "");
+    formData.append(
+      "xmIwtLD",
+      "f02ff563ef0a153f6056f8c0fa24d1af0d4ee55f0c9366b73786d5d47923b9417d30878160ae6a4ce3a766b78f2f5d78",
+    );
+    formData.append("actionType", "TGVhZHM=");
+    formData.append("returnURL", "null");
+    formData.append("First Name", firstName.trim());
+    formData.append("Last Name", lastName.trim());
+    formData.append("Mobile", mobile.trim());
+    formData.append("aG9uZXlwb3Q", "");
+
+    try {
+      await fetch("https://crm.zoho.in/crm/WebToLeadForm", {
+        method: "POST",
+        body: formData,
+        mode: "no-cors",
+        cache: "no-cache",
+      });
+    } catch (err) {
+      // no-cors response is opaque — safe to ignore.
+      console.warn("Zoho submit:", err);
+    }
+
+    // Analytics
+    if (typeof window !== "undefined") {
+      (window as any).dataLayer = (window as any).dataLayer || [];
+      (window as any).dataLayer.push({
+        event: "form_enquiry_success",
+        form: "whatsapp_quick_enquiry",
+      });
+      if (typeof (window as any).gtag === "function") {
+        (window as any).gtag("event", "conversion", {
+          send_to: "AW-16880308122/jB3TCL-RwNccEJqflPE-",
+        });
+      }
+    }
+
+    setSubmitting(false);
+    setSubmitted(true);
+  };
+
+  /* ── Success state ── */
+  if (submitted) {
+    const waUrl = buildWhatsAppUrl(lastName.trim());
+    return (
+      <div className="pt-6 pb-4 flex-1 flex flex-col items-center justify-center text-center gap-5">
+        <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center">
+          <CheckCircle2 size={32} className="text-green-600" />
+        </div>
+        <div>
+          <p className="font-extrabold text-[#1c1f2e] text-[18px]">
+            Enquiry submitted!
+          </p>
+          <p className="text-slate-500 text-[13.5px] mt-1.5 max-w-[260px] mx-auto leading-relaxed">
+            Tap below to continue the conversation on WhatsApp for a faster
+            reply.
+          </p>
+        </div>
+        <a
+          href={waUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={() => trackWhatsApp("shopkeeper_form_success")}
+          className="inline-flex items-center justify-center gap-2 font-bold text-[14px] px-6 py-3 rounded-full bg-[#23c961] text-[#0a111e] shadow-[0_8px_22px_-8px_rgba(35,201,97,0.6)] hover:bg-[#1fb855] hover:-translate-y-0.5 transition-all"
+        >
+          <svg className="w-5 h-5 fill-current shrink-0" viewBox="0 0 24 24">
+            <path d="M12 2a10 10 0 0 0-8.6 15.06L2 22l5.06-1.32A10 10 0 1 0 12 2Zm5.3 14.1c-.22.62-1.3 1.2-1.8 1.24-.46.05-1.03.07-1.66-.1a13.6 13.6 0 0 1-5.9-4.53c-.44-.58-1.1-1.56-1.1-2.98 0-1.42.75-2.12 1.02-2.4a1.05 1.05 0 0 1 .77-.36c.19 0 .38 0 .55.01.18.01.42-.07.65.5.24.6.8 2.02.87 2.16.07.15.12.32.02.5-.1.19-.15.3-.3.47-.15.18-.3.4-.44.53-.15.15-.3.3-.13.6.18.3.8 1.3 1.7 2.1 1.18 1.05 2.16 1.37 2.47 1.53.3.15.48.12.65-.08.18-.2.75-.87.95-1.17.2-.3.4-.25.66-.15.27.1 1.7.8 2 .95.3.15.5.22.57.34.07.13.07.72-.15 1.34Z" />
+          </svg>
+          <span>Open WhatsApp</span>
+        </a>
+      </div>
+    );
+  }
+
+  /* ── Form state ── */
+  const inputCls =
+    "w-full bg-white text-slate-900 text-[14.5px] rounded-xl border border-slate-300 px-3.5 py-3 focus:outline-none focus:border-[#f27a1a] focus:ring-2 focus:ring-[#f27a1a]/20 transition-all placeholder:text-gray-400";
+  const labelCls =
+    "block font-sans text-slate-500 text-[11px] font-bold tracking-[0.12em] uppercase mb-1.5";
+
+  return (
+    <form onSubmit={handleSubmit} className="pt-5 flex-1 flex flex-col gap-4">
+      <div>
+        <label className={labelCls}>
+          First Name <span className="text-red-500">*</span>
+        </label>
+        <input
+          type="text"
+          value={firstName}
+          onChange={(e) => setFirstName(e.target.value)}
+          placeholder="First name"
+          maxLength={40}
+          className={inputCls}
+        />
+      </div>
+
+      <div>
+        <label className={labelCls}>
+          Last Name <span className="text-red-500">*</span>
+        </label>
+        <input
+          type="text"
+          required
+          value={lastName}
+          onChange={(e) => setLastName(e.target.value)}
+          placeholder="Last name"
+          maxLength={80}
+          className={inputCls}
+        />
+      </div>
+
+      <div>
+       <label className={labelCls}>
+          Mobile <span className="text-red-500">*</span>
+        </label>
+        <input
+          type="tel"
+          inputMode="numeric"
+          pattern="[0-9]*"
+          value={mobile}
+          onChange={(e) => setMobile(e.target.value.replace(/\D/g, ""))}
+          placeholder="Phone number"
+          maxLength={30}
+          className={inputCls}
+        />
+      </div>
+
+      {error && (
+        <div className="bg-red-50 border border-red-200 text-red-600 rounded-xl px-4 py-3 text-xs font-semibold flex items-center gap-2">
+          <span>⚠️</span> {error}
+        </div>
+      )}
+
+      <button
+        type="submit"
+        disabled={submitting}
+        className="mt-auto bg-[#f27a1a] hover:bg-[#d96d12] disabled:opacity-60 text-white font-bold text-[14px] tracking-wide py-3.5 px-6 rounded-xl transition-all active:scale-[0.98] flex items-center justify-center gap-2"
+      >
+        {submitting ? (
+          <>
+            <Loader2 size={16} className="animate-spin" /> Submitting…
+          </>
+        ) : (
+          <>Submit</>
+        )}
+      </button>
+    </form>
+  );
+}
+
 /* ── Apply Now Modal ── */
 function ApplyModal({
   open,
@@ -417,13 +504,6 @@ function ApplyModal({
     setSubmitting(true);
     try {
       const formData = new FormData(e.currentTarget);
-      if (
-        typeof window !== "undefined" &&
-        (window as any)._wfa_track &&
-        (window as any)._wfa_track.wfa_submit
-      ) {
-        (window as any)._wfa_track.wfa_submit(e);
-      }
       const res = await fetch("https://crm.zoho.in/crm/WebToLeadForm", {
         method: "POST",
         body: formData,
@@ -470,11 +550,6 @@ function ApplyModal({
 
   return (
     <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
-      <script
-        id="wf_anal"
-        src="https://crm.zohopublic.in/crm/WebFormAnalyticsServeServlet?rid=35f6149cd4f21e4a45325993c4badb496bbff539e80a590d876efcc0473696f60c2ec3e80d2110a98e2dcc635ca8aeddgid14c49147eca089aa13008d713fef50e6c20e786337446d3f4e26d826b72f26e3gid977b9ca74605539e64e70acb1f8f2ab744682e0ee4dd585040a014e20cb32f55gide95ceeeacfd3215343280dd1fffc20591e601b303c86ab08381dd51ea75c3240&tw=eec3b02e1df12dbc38ecb4c4546e48954c77ac0a1744f3d5cc68d3bca26e4c9f&version=v2"
-        async
-      ></script>
       <div
         className="absolute inset-0 bg-black/60 backdrop-blur-sm"
         onClick={handleClose}
@@ -1062,7 +1137,7 @@ function QuotesModal({
   );
 }
 
-/* ── Quote Calculator — now styled to match Hero's orange form card ── */
+/* ── Quote Calculator ── */
 function QuoteCalculator({
   onApplyQuote,
 }: {
@@ -1179,7 +1254,6 @@ function QuoteCalculator({
     });
   };
 
-  // White inputs on the orange card — matching Hero's form styling
   const inputCls =
     "w-full bg-white text-[#333] text-[13.5px] font-sans font-medium rounded-xl px-3.5 py-3 border border-transparent focus:outline-none placeholder:text-gray-400 focus:ring-2 focus:ring-white/60 transition-all";
   const labelCls =
@@ -1199,9 +1273,7 @@ function QuoteCalculator({
         />
       )}
 
-      {/* Orange form card — matches Hero page's left card */}
       <div className="bg-[#f27a1a] rounded-[22px] p-5 sm:p-6 shadow-[0_18px_45px_-18px_rgba(242,122,26,0.55)] flex flex-col">
-        {/* Header — mirrors the WhatsApp card's header structure */}
         <div className="flex items-center justify-between gap-3 pb-4 border-b border-white/25">
           <div>
             <p className="text-[11px] sm:text-[12px] font-bold tracking-[0.18em] uppercase text-white/90">
@@ -1224,7 +1296,6 @@ function QuoteCalculator({
           onSubmit={handleSubmit}
           className="pt-5 flex-1 flex flex-col gap-4"
         >
-          {/* Destination */}
           <div>
             <label className={labelCls}>Destination Country</label>
             <div className="relative">
@@ -1255,7 +1326,6 @@ function QuoteCalculator({
             </div>
           </div>
 
-          {/* Sub-country (Europe / International) */}
           {requiresSubCountry && (
             <div>
               <label className={labelCls}>
@@ -1298,7 +1368,6 @@ function QuoteCalculator({
             </div>
           )}
 
-          {/* Zipcode (Australia / Canada) */}
           {requiresZip && (
             <div>
               <label className={labelCls}>Zipcode / Postcode</label>
@@ -1313,7 +1382,6 @@ function QuoteCalculator({
             </div>
           )}
 
-          {/* Actual weight */}
           <div>
             <label className={labelCls}>Actual Weight (kg)</label>
             <input
@@ -1328,7 +1396,6 @@ function QuoteCalculator({
             />
           </div>
 
-          {/* Volume dimensions */}
           <div>
             <label className={labelCls}>
               Volume Weight Dimensions (cm) — Optional
@@ -1353,7 +1420,6 @@ function QuoteCalculator({
             </div>
           </div>
 
-          {/* Calculated weights strip */}
           {(actualWt || volWt) && (
             <div className="bg-white/20 rounded-xl px-4 py-3 flex justify-between text-white text-xs font-bold">
               {volWt && <span>Vol. weight: {volWt} kg</span>}
@@ -1361,7 +1427,6 @@ function QuoteCalculator({
             </div>
           )}
 
-          {/* Submit — orange-tinted button matching site theme (dark on orange, same as Hero's) */}
           <button
             type="submit"
             disabled={loading}
@@ -1399,93 +1464,6 @@ export default function ShopkeeperPage() {
     chargeableWt: number;
   } | null>(null);
   const [applyModalOpen, setApplyModalOpen] = useState(false);
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-
-    const scriptText = `
-      function checkMandatory1394241000000604320(isAjax){
-        var mndFileds = new Array('Last Name');
-        var fldLangVal = new Array('Last Name');
-        for (i = 0; i < mndFileds.length; i++ ) {
-          var fieldObj = document.forms['WebToLeads1394241000000604320'] [mndFileds[i]];
-          if (fieldObj) {
-            if(((fieldObj.value) .replace (/^\\s+|\\s+$/g,'') ) .length == 0) {
-              if (fieldObj.type == 'file') {
-                alert('Please select a file to upload.');
-                fieldObj.focus();
-                return false;
-              }
-              alert(fldLangVal[i] + ' cannot be empty.');
-              fieldObj.focus();
-              return false;
-            } else if (fieldObj.nodeName == 'SELECT') {
-              if (fieldObj.options[fieldObj.selectedIndex].value == '-None-') {
-                alert(fldLangVal[i] + ' cannot be none.');
-                fieldObj.focus();
-                return false;
-              }
-            } else if (fieldObj.type == 'checkbox') {
-              if (fieldObj.checked == false) {
-                alert('Please accept ' + fldLangVal[i]);
-                fieldObj.focus();
-                return false;
-              }
-            }
-            try{
-              if (fieldObj.name == 'Last Name') { name = fieldObj.value; }
-            } catch (e){}
-          }
-        }
-        var urlparams = new URLSearchParams(window.location.search);
-        if (urlparams.has ('service') && (urlparams.get ('service') === 'smarturl') ) {
-          var webform = document.getElementById('webform1394241000000604320');
-          var service = urlparams.get('service');
-          var smarturlfield = document.createElement('input');
-          smarturlfield.setAttribute('type', 'hidden');
-          smarturlfield.setAttribute('value', service);
-          smarturlfield.setAttribute('name', 'service');
-          webform.appendChild(smarturlfield);
-        }
-        document.querySelector('.crmWebToEntityForm .formsubmit').setAttribute('disabled', true);
-      }
-      _wFa_ajax_will_be_replaced = false;
-      if (typeof _wfa_fstprtcken == 'undefined') {
-        _wfa_fstprtcken = {};
-      }
-      _wfa_fstprtcken[1394241000000604320] = true;
-      function tooltipShow1394241000000604320(el){
-        var tooltip = el.nextElementSibling;
-        var tooltipDisplay = tooltip.style.display;
-        if (tooltipDisplay == 'none') {
-          var allTooltip = document.getElementsByClassName('zcwf_tooltip_over');
-          for (i = 0; i < allTooltip.length; i++ ) {
-            allTooltip[i].style.display = 'none';
-          }
-          tooltip.style.display = 'block';
-        } else {
-          tooltip.style.display = 'none';
-        }
-      }
-    `;
-
-    const inlineScript = document.createElement("script");
-    inlineScript.type = "text/javascript";
-    inlineScript.textContent = scriptText;
-    document.body.appendChild(inlineScript);
-
-    const analyticsScript = document.createElement("script");
-    analyticsScript.id = "wf_anal_shopkeeper";
-    analyticsScript.src =
-      "https://crm.zohopublic.in/crm/WebFormAnalyticsServeServlet?rid=d023568e1e3e6fa18f4c65deedbaf5bc7f1cd4b152b8e5a19ab6edcaef23b301e62ee712edde36cec4caa7ba4154a584gidacef6996ea9494b52c0598738546e612e2a0a5be6351888a2c61d75436d46e2dgidf646a7fe147ef8abef157542804ad5353ed0c88259c12374e1616665bee5deddgid9df265a27c59cea1a3209824dffe14bf32108b2470f9382cadb7d7c87376883a&tw=71ad78d900e1d4b8b9fc1253be7bad177119792698b6ee802bfee724b6dad136&version=v2";
-    analyticsScript.async = true;
-    document.body.appendChild(analyticsScript);
-
-    return () => {
-      inlineScript.remove();
-      analyticsScript.remove();
-    };
-  }, []);
 
   return (
     <div className="w-full font-sans bg-[#f4f5f7] text-[#1c1f2e] antialiased overflow-x-hidden">
@@ -1750,7 +1728,7 @@ export default function ShopkeeperPage() {
 
           <div className="relative z-10">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-stretch">
-              {/* WhatsApp form (form 1 — unchanged logic, restyled shell) */}
+              {/* WhatsApp form (React-controlled) */}
               <div className="bg-white text-slate-900 rounded-[22px] p-5 sm:p-6 shadow-[0_18px_45px_-22px_rgba(15,23,42,0.55)] border border-slate-200 flex flex-col">
                 <div className="flex items-center justify-between gap-3 pb-4 border-b border-slate-200">
                   <div>
@@ -1772,21 +1750,10 @@ export default function ShopkeeperPage() {
                   </div>
                 </div>
 
-                <div className="pt-5 flex-1">
-                  <div
-                    className="relative z-10 font-sans [&_.zcwf_title]:!hidden [&_.zcwf_lblLeft]:!w-full [&_.zcwf_lblLeft]:!max-w-none [&_.zcwf_lblLeft]:!p-0 [&_.zcwf_lblLeft]:!bg-transparent [&_.zcwf_lblLeft]:!text-slate-900 [&_.zcwf_row]:!mt-4 [&_.zcwf_row:first-child]:!mt-0 [&_.zcwf_col_lab]:!w-full [&_.zcwf_col_lab]:!float-none [&_.zcwf_col_lab]:!font-sans [&_.zcwf_col_lab]:!text-[11px] [&_.zcwf_col_lab]:!font-bold [&_.zcwf_col_lab]:!tracking-[0.12em] [&_.zcwf_col_lab]:!uppercase [&_.zcwf_col_lab]:!text-slate-500 [&_.zcwf_col_lab]:!mb-1.5 [&_.zcwf_col_fld]:!w-full [&_.zcwf_col_fld]:!float-none [&_.zcwf_col_fld]:!p-0 [&_input[type='text']]:!font-sans [&_input[type='text']]:!w-full [&_input[type='text']]:!rounded-xl [&_input[type='text']]:!border [&_input[type='text']]:!border-slate-300 [&_input[type='text']]:!bg-white [&_input[type='text']]:!px-3.5 [&_input[type='text']]:!py-3 [&_input[type='text']]:!text-slate-900 [&_input[type='text']]:!text-[14.5px] [&_input[type='text']]:focus:!border-[#f27a1a] [&_input[type='text']]:focus:!ring-2 [&_input[type='text']]:focus:!ring-[#f27a1a]/20 [&_input[type='text']]:!transition-all [&_input[type='tel']]:!font-sans [&_input[type='tel']]:!w-full [&_input[type='tel']]:!rounded-xl [&_input[type='tel']]:!border [&_input[type='tel']]:!border-slate-300 [&_input[type='tel']]:!bg-white [&_input[type='tel']]:!px-3.5 [&_input[type='tel']]:!py-3 [&_input[type='tel']]:!text-slate-900 [&_input[type='tel']]:!text-[14.5px] [&_input[type='tel']]:focus:!border-[#f27a1a] [&_input[type='tel']]:focus:!ring-2 [&_input[type='tel']]:focus:!ring-[#f27a1a]/20 [&_input[type='tel']]:!transition-all [&_#formsubmit]:!mt-5 [&_#formsubmit]:!w-full [&_#formsubmit]:!bg-[#f27a1a] [&_#formsubmit]:!bg-none [&_#formsubmit]:!text-white [&_#formsubmit]:!rounded-xl [&_#formsubmit]:!border-0 [&_#formsubmit]:!px-6 [&_#formsubmit]:!py-3.5 [&_#formsubmit]:!font-bold [&_#formsubmit]:!font-sans [&_#formsubmit]:!text-[14px] [&_#formsubmit]:!tracking-wide [&_#formsubmit]:!cursor-pointer [&_#formsubmit]:hover:!bg-[#d96d12] [&_#formsubmit]:!transition-all [&_input[type='reset']]:!hidden"
-                    style={{
-                      fontFamily:
-                        "var(--font-sans), system-ui, -apple-system, sans-serif",
-                    }}
-                    dangerouslySetInnerHTML={{
-                      __html: stripScriptTags(zohoFormHtml),
-                    }}
-                  />
-                </div>
+                <WhatsAppEnquiryForm />
               </div>
 
-              {/* ── Instant Rate Calculator (Hero-style, orange card) ── */}
+              {/* Instant Rate Calculator */}
               <QuoteCalculator
                 onApplyQuote={(data) => {
                   setApplyModalData(data);
