@@ -21,6 +21,12 @@ import {
   Mail,
 } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
+import { trackEvent } from "@/lib/fpixel";
+
+const trackWhatsApp = (location: string) =>
+  trackEvent("Contact", { method: "WhatsApp", location });
+const trackPhone = (location: string) =>
+  trackEvent("Contact", { method: "Phone", location });
 
 const API_URL = process.env.NEXT_API_URL || "http://localhost:5000";
 const DB_NAME = process.env.NEXT_PUBLIC_X_DATABASE || "manvi";
@@ -1569,6 +1575,7 @@ export default function ShopkeeperPage() {
                 href="https://wa.me/917070506070?text=Hi%20Manvi%2C%20I%20export%20from%20India%20and%20want%20to%20compare%20my%20shipping%20rates."
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => trackWhatsApp("shopkeeper_hero_desktop")}
                 className="inline-flex items-center justify-center gap-2.5 font-bold text-[15px] lg:text-[16px] px-7 py-3.5 lg:py-4 rounded-full bg-[#23c961] text-[#0a111e] shadow-[0_8px_22px_-8px_rgba(35,201,97,0.6)] hover:bg-[#1fb855] hover:-translate-y-0.5 transition-all"
               >
                 <svg
@@ -1581,6 +1588,7 @@ export default function ShopkeeperPage() {
               </a>
               <a
                 href="tel:+917070506070"
+                onClick={() => trackPhone("shopkeeper_hero_desktop")}
                 className="inline-flex items-center justify-center gap-2.5 font-bold text-[15px] lg:text-[16px] px-7 py-3.5 lg:py-4 rounded-full bg-transparent text-white border border-white/30 hover:border-white hover:bg-white/10 hover:-translate-y-0.5 transition-all"
               >
                 Call +91 70 70 50 60 70
@@ -1663,6 +1671,7 @@ export default function ShopkeeperPage() {
                   href="https://wa.me/917070506070?text=Hi%20Manvi%2C%20I%20export%20from%20India%20and%20want%20to%20compare%20my%20shipping%20rates."
                   target="_blank"
                   rel="noopener noreferrer"
+                  onClick={() => trackWhatsApp("shopkeeper_hero_mobile")}
                   className="inline-flex items-center justify-center gap-2 font-bold text-[14px] px-5 py-2.5 rounded-full bg-[#23c961]/90 text-[#0a111e] shadow-[0_8px_22px_-8px_rgba(35,201,97,0.6)] hover:bg-[#1fb855] transition-all text-center"
                 >
                   <svg
@@ -1675,6 +1684,7 @@ export default function ShopkeeperPage() {
                 </a>
                 <a
                   href="tel:+917070506070"
+                  onClick={() => trackPhone("shopkeeper_hero_mobile")}
                   className="inline-flex items-center justify-center gap-2 font-bold text-[14px] px-5 py-2.5 rounded-full bg-black/45 text-white border border-white/30 hover:border-white hover:bg-white/10 transition-all text-center"
                 >
                   Call +91 70 70 50 60 70
