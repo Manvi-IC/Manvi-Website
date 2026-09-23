@@ -1,15 +1,19 @@
-'use client';
+"use client";
 
-import { useActionState } from 'react';
-import { loginAction } from '../actions';
-import { Lock, User } from 'lucide-react';
+import { useActionState, useState } from "react";
+import { loginAction } from "../actions";
+import { Lock, User, Eye, EyeOff } from "lucide-react";
 
 const initialState = {
-  error: '',
+  error: "",
 };
 
 export default function AdminLoginPage() {
-  const [state, formAction, isPending] = useActionState(loginAction, initialState);
+  const [state, formAction, isPending] = useActionState(
+    loginAction,
+    initialState,
+  );
+  const [showPassword, setShowPassword] = useState(false);
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
@@ -30,9 +34,12 @@ export default function AdminLoginPage() {
                 {state.error}
               </div>
             )}
-            
+
             <div>
-              <label htmlFor="username" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="username"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Username
               </label>
               <div className="mt-1 relative rounded-md shadow-sm">
@@ -44,6 +51,7 @@ export default function AdminLoginPage() {
                   name="username"
                   type="text"
                   required
+                  autoComplete="username"
                   className="focus:ring-[#e77419] focus:border-[#e77419] block w-full pl-10 sm:text-sm border-gray-300 rounded-md py-2 border"
                   placeholder="admin"
                 />
@@ -51,7 +59,10 @@ export default function AdminLoginPage() {
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Password
               </label>
               <div className="mt-1 relative rounded-md shadow-sm">
@@ -61,11 +72,21 @@ export default function AdminLoginPage() {
                 <input
                   id="password"
                   name="password"
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   required
-                  className="focus:ring-[#e77419] focus:border-[#e77419] block w-full pl-10 sm:text-sm border-gray-300 rounded-md py-2 border"
+                  autoComplete="current-password"
+                  className="focus:ring-[#e77419] focus:border-[#e77419] block w-full pl-10 pr-10 sm:text-sm border-gray-300 rounded-md py-2 border"
                   placeholder="••••••••"
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((s) => !s)}
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                  tabIndex={-1}
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 transition-colors"
+                >
+                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
               </div>
             </div>
 
@@ -75,7 +96,7 @@ export default function AdminLoginPage() {
                 disabled={isPending}
                 className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#e77419] hover:bg-[#d06817] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#e77419] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               >
-                {isPending ? 'Signing in...' : 'Sign in'}
+                {isPending ? "Signing in..." : "Sign in"}
               </button>
             </div>
           </form>
