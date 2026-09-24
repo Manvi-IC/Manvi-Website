@@ -55,6 +55,8 @@ export interface Translations {
   footer_winter_campaign: string;
   footer_diwali_campaign: string;
   footer_business_campaign: string;
+  footer_winter_campaign: string;
+  footer_shopkeepers_page: string;
   footer_blog: string;
   footer_career: string;
   b2b_hero_badge: string;
@@ -475,6 +477,8 @@ const translations: Record<Language, Translations> = {
     footer_winter_campaign: "Winter Campaign",
     footer_diwali_campaign: "Diwali Campaign",
     footer_business_campaign: "Business Campaign",
+    footer_winter_campaign: "Winter Campaign",
+    footer_shopkeepers_page: "Shopkeeper's Page",
     footer_blog: "Blogs",
     footer_career: "Career",
     b2b_hero_badge: "Bulk Sourcing For Indian Businesses",
@@ -955,6 +959,8 @@ const translations: Record<Language, Translations> = {
     footer_winter_campaign: "विंटर अभियान",
     footer_diwali_campaign: "दिवाली अभियान",
     footer_business_campaign: "व्यावसायिक अभियान",
+    footer_winter_campaign: "विंटर अभियान",
+    footer_shopkeepers_page: "दुकानदार पेज",
     footer_blog: "ब्लॉग",
     footer_career: "करियर",
     footer_privacy_policy: "गोपनीयता नीति",
@@ -1431,6 +1437,8 @@ const translations: Record<Language, Translations> = {
     footer_winter_campaign: "ਸਰਦੀਆਂ ਦੀ ਮੁਹਿੰਮ",
     footer_diwali_campaign: "ਦਿਵਾਲੀ ਮੁਹਿੰਮ",
     footer_business_campaign: "ਵਪਾਰਕ ਮੁਹਿੰਮ",
+    footer_winter_campaign: "ਵਿੰਟਰ ਮੁਹਿੰਮ",
+    footer_shopkeepers_page: "ਦੁਕਾਨਦਾਰ ਪੇਜ",
     footer_blog: "ਬਲੌਗ",
     footer_career: "ਕੈਰੀਅਰ",
     footer_privacy_policy: "ਗੋਪਨੀਯਤਾ ਨੀਤੀ",
@@ -1914,6 +1922,7 @@ const translations: Record<Language, Translations> = {
     footer_winter_campaign: "Campagne d'hiver",
     footer_diwali_campaign: "Campagne de Diwali",
     footer_business_campaign: "Campagne commerciale",
+    footer_shopkeepers_page: "Page des commerçants",
     footer_blog: "Blog",
     footer_career: "Carrière",
     footer_privacy_policy: "Politique de confidentialité",
@@ -2210,6 +2219,18 @@ const translations: Record<Language, Translations> = {
       "Approuvé par plus de 100K+ clients satisfaits et avec plus de 1M+ expéditions internationales réussies, nous livrons des solutions de messagerie et de fret rapides, sécurisées et transparentes sur lesquelles vous pouvez compter.",
     footer_social: "Réseau social",
     footer_quick_links: "Liens rapides",
+    footer_winter_campaign: "Campagne d'hiver",
+    footer_campaign: "Campagne",
+    footer_business_campaign: "Campagne commerciale",
+    footer_shopkeepers_page: "Page commerçants",
+    footer_blog: "Blog",
+    footer_career: "Carrière",
+    footer_privacy_policy: "Politique de confidentialité",
+    footer_refund_policy: "Politique de remboursement",
+    footer_terms: "Conditions générales",
+    footer_shipping_policy: "Politique d'expédition",
+    footer_mandatory_policy: "Politique obligatoire",
+    footer_policies_title: "Politiques",
     footer_office_info: "Infos bureau",
     footer_rights: "Tous droits réservés.",
     form_select_dest: "Sélectionnez le pays de destination",
@@ -2400,6 +2421,8 @@ const translations: Record<Language, Translations> = {
     footer_winter_campaign: "Campaña de invierno",
     footer_diwali_campaign: "Campaña de Diwali",
     footer_business_campaign: "Campaña comercial",
+    footer_winter_campaign: "Campaña de Invierno",
+    footer_shopkeepers_page: "Página de comerciantes",
     footer_blog: "Blog",
     footer_privacy_policy: "Política de privacidad",
     footer_refund_policy: "Política de reembolso y cancelación",

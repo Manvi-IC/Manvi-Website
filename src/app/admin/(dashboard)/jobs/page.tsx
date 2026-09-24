@@ -14,7 +14,7 @@ import {
 import Link from "next/link";
 import JobModal from "./JobModal";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+const API_URL = process.env.NEXT_API_URL || "http://localhost:5000";
 
 interface Job {
   _id: string;

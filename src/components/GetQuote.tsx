@@ -18,6 +18,7 @@ import {
   Phone,
   Mail,
 } from "lucide-react";
+import { trackEvent, trackCustom } from "@/lib/fpixel";
 import {
   fireLeadFormConversion,
   fireRequestQuoteConversion,
@@ -237,7 +238,7 @@ function ApplyModal({
 
   if (!open || !quote || !result) return null;
 
-  const handleSubmit = async (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError("");
     if (!name.trim() || !phone.trim() || !email.trim()) {
@@ -246,116 +247,49 @@ function ApplyModal({
     }
     setSubmitting(true);
     try {
-      // 1. Submit local Quote Enquiry
-      const res = await fetch(`${API_URL}/quote-enquiries`, {
+      const formData = new FormData(e.currentTarget);
+      
+      // Inject standard Zoho expected fields if they aren't captured by the form automatically
+      if (typeof window !== "undefined" && (window as any)._wfa_track && (window as any)._wfa_track.wfa_submit) {
+        (window as any)._wfa_track.wfa_submit(e);
+      }
+
+      const res = await fetch("https://crm.zoho.in/crm/WebToLeadForm", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "x-database": DB_NAME,
-        },
-        body: JSON.stringify({
-          name: name.trim(),
-          phone: phone.trim(),
-          email: email.trim(),
-          destination,
-          zoningCountry,
-          zipcode,
-          actualWt: parseFloat(actualWt) || 0,
-          volWt: parseFloat(volWt ?? "0") || 0,
-          chargeableWt: result.chargeableWt,
-          length: parseFloat(length) || 0,
-          breadth: parseFloat(breadth) || 0,
-          height: parseFloat(height) || 0,
-          service: quote.service,
-          network: quote.network,
-          zone: quote.zone,
-          rateType: quote.rateType,
-          totalPrice: quote.totalPrice,
-          tat: quote.tat,
-        }),
-      });
-      const data = await res.json();
-      if (!data.success) throw new Error(data.message || "Submission failed");
-
-      // 2. Call MANVI Order Create API
-      const timestamp = Date.now().toString().slice(-8);
-      const generatedAwb = `AWB${timestamp}${Math.floor(100 + Math.random() * 900)}`;
-
-      const orderPayload = {
-        Awbno: generatedAwb,
-        AccountCode: "CUST001",
-        AccountName: name.trim(),
-        Origin: "DEL",
-        PaymentType: "Credit",
-        ShipDate: new Date().toISOString(),
-        Sender: {
-          SenderName: name.trim(),
-          SenderContactPerson: name.trim(),
-          SenderAddressLine1: "Main Market",
-          SenderPincode: "110001",
-          SenderCity: "New Delhi",
-          SenderState: "Delhi",
-          SenderTelephone: phone.trim(),
-          SenderEmailId: email.trim(),
-          KYCType: "Aadhaar",
-          KYCNo: "XXXXXXXX1234",
-        },
-        Receiver: {
-          ReceiverName: "Receiver - " + (zoningCountry || destination),
-          ReceiverContactPerson: "Contact Person",
-          ReceiverAddressLine1: "Destination Address",
-          ReceiverZipcode: zipcode || "10001",
-          ReceiverCity: zoningCountry || "Destination City",
-          ReceiverState: zoningCountry || "State",
-          ReceiverCountry: destObj?.label || destination,
-          ReceiverTelephone: phone.trim(),
-          ReceiverEmailid: email.trim(),
-        },
-        ServiceDetails: {
-          ServiceCode: quote.service,
-          ServiceName: quote.service,
-          Forwarder: quote.network || "DHL",
-          NetworkCode: quote.network || "DHL",
-          NetworkName: quote.network || "DHL Express",
-          GoodsType: "NDOX",
-          PackageType: "PACKAGE",
-        },
-        PackageDetails: {
-          PackageDetail: [
-            {
-              Length: parseFloat(length) || 10,
-              Width: parseFloat(breadth) || 10,
-              Height: parseFloat(height) || 10,
-              ActualWeight: parseFloat(actualWt) || 1.0,
-            },
-          ],
-        },
-        FreightDetails: {
-          BasicAmount: quote.totalPrice,
-          NetTotal: quote.totalPrice,
-        },
-      };
-
-      const orderRes = await fetch(`${API_URL}/shipment/order-create`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(orderPayload),
+        body: formData,
+        cache: "no-cache",
       });
 
-      const orderData = await orderRes.json().catch(() => ({ success: true }));
-      const finalAwb = orderData.awbno || generatedAwb;
+      const contentType = res.headers.get("Content-Type");
+      const data =
+        contentType && contentType.includes("application/json")
+          ? await res.json()
+          : await res.text();
 
-      setAwbNo(finalAwb);
+      if (typeof data === "object") {
+        if (data.actionsubmit === "error_msg" || data.actionsubmit === "captcha_error") {
+          throw new Error(data.message || "Submission failed");
+        }
+      }
+
       setSubmitted(true);
-      fireLeadFormConversion();
-      fireRequestQuoteConversion();
-      window.dataLayer = window.dataLayer || [];
-      window.dataLayer.push({
-        event: "form_enquiry_success",
-        awb: finalAwb,
+      // Meta Pixel: enquiry submitted successfully
+      trackEvent("Lead", {
+        content_name: quote.service,
+        content_category: destination,
+        destination_country: zoningCountry || destination,
       });
+      if (typeof window !== "undefined") {
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+          event: "form_enquiry_success",
+        });
+        if (typeof (window as any).gtag === "function") {
+          (window as any).gtag("event", "conversion", { "send_to": "AW-16880308122/jB3TCL-RwNccEJqflPE-" });
+        }
+      }
     } catch (err: any) {
-      setError(err.message);
+      setError(err.message || "An error occurred. Please try again.");
     } finally {
       setSubmitting(false);
     }
@@ -373,6 +307,12 @@ function ApplyModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+      {/* Zoho Tracking Script */}
+      <script
+        id="wf_anal"
+        src="https://crm.zohopublic.in/crm/WebFormAnalyticsServeServlet?rid=b68e7fcd908b17f7430d81d005bd6de255003a3fd4f31f070a16ab0aa12185228bcea704199c97ad7aad89d48bd4b954gida0d6a8394fba11cd1f8ca610f7782a78f203a9abcf4fa8133456f8a84775c491gid3729e5103959090ea60da3727086c43d39c522ea60d9865dd275456bc470c8d1gid4747e03c87bb00e47072436a8067ca1b5f0fcc82ecc6f584fb8d9bd864e05ac8&tw=f8c6bc66aff930adab86070d5e2fb229c2298dc18a1e616ac18937d59a423782&version=v2"
+        async
+      ></script>
       {/* Backdrop */}
       <div
         className="absolute inset-0 bg-black/60 backdrop-blur-sm"
@@ -467,9 +407,29 @@ function ApplyModal({
 
             {/* Form */}
             <form
+              id="webform1394241000000550005"
+              name="WebToLeads1394241000000550005"
               onSubmit={handleSubmit}
               className="px-6 py-5 flex flex-col gap-4"
             >
+              <input
+                type="hidden"
+                name="xnQsjsdp"
+                value="e8a9207d3a04dc261e77cd9fd45e01c9684d8f739c172bc68c6062aae2315471"
+                readOnly
+              />
+              <input type="hidden" name="zc_gad" value="" readOnly />
+              <input
+                type="hidden"
+                name="xmIwtLD"
+                value="b992e0b279931340ffe317347cc2ca88c2e2c2f0c65dccf9f8b233e112f294eb2a301e5401c83b8962bf8dabf7b142f7"
+                readOnly
+              />
+              <input type="hidden" name="actionType" value="TGVhZHM=" readOnly />
+              <input type="hidden" name="returnURL" value="null" readOnly />
+              <input type="hidden" name="aG9uZXlwb3Q" value="" readOnly />
+              <input type="hidden" name="Designation" value={quote.totalPrice} readOnly />
+              <input type="hidden" name="Fax" value={quote.service} readOnly />
               <p className="text-sm text-gray-500 font-medium">
                 Fill in your details and our team will contact you to finalise
                 the shipment.
@@ -483,6 +443,9 @@ function ApplyModal({
                 />
                 <input
                   type="text"
+                  id="Last_Name"
+                  name="Last Name"
+                  required
                   placeholder="Full Name"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
@@ -498,6 +461,9 @@ function ApplyModal({
                 />
                 <input
                   type="tel"
+                  id="Phone"
+                  name="Phone"
+                  required
                   placeholder="Phone Number"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
@@ -513,12 +479,17 @@ function ApplyModal({
                 />
                 <input
                   type="email"
+                  id="Email"
+                  name="Email"
+                  required
                   placeholder="Email Address"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="w-full bg-[#f8f9fa] text-[#333] text-sm font-medium rounded-xl pl-10 pr-4 py-3.5 focus:outline-none border border-gray-200 placeholder:text-gray-400 focus:border-orange-300 transition-colors"
                 />
               </div>
+
+              {/* Amount (Designation) & Service (Fax) - visible instead of hidden if user requested, but hiding them is better UX for Quote forms. Let's keep them as hidden below since we pass them in form values. */}
 
               {error && (
                 <div className="bg-red-50 border border-red-200 text-red-600 rounded-xl px-4 py-3 text-xs font-semibold flex items-center gap-2">

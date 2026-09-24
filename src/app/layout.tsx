@@ -1,8 +1,10 @@
+// app/layout.tsx
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, League_Spartan } from "next/font/google";
 import "./globals.css";
 import { LanguageProvider } from "@/context/LanguageContext";
 import Script from "next/script";
+import { FB_PIXEL_ID } from "@/lib/fpixel";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -52,6 +54,48 @@ export const metadata: Metadata = {
   },
 };
 
+const localBusinessSchema = {
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  name: "Manvi International Courier",
+  image: "https://www.manvicourier.com/logo.png",
+  "@id": "https://www.manvicourier.com",
+  url: "https://www.manvicourier.com",
+  telephone: "+917070506070",
+  priceRange: "$$",
+  address: {
+    "@type": "PostalAddress",
+    streetAddress:
+      "C1034, A 2nd Floor, Harijan Basti, Palam Extn, Part-1 Ramphal Chowk",
+    addressLocality: "New Delhi",
+    addressRegion: "Delhi",
+    postalCode: "110045",
+    addressCountry: "IN",
+  },
+  geo: {
+    "@type": "GeoCoordinates",
+    latitude: 28.5355,
+    longitude: 77.391,
+  },
+  openingHoursSpecification: {
+    "@type": "OpeningHoursSpecification",
+    dayOfWeek: [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+    ],
+    opens: "10:00",
+    closes: "21:00",
+  },
+  sameAs: [
+    "https://www.facebook.com/p/Manvi-International-Courier-61575480958807/",
+    "https://www.instagram.com/manviinternational/",
+  ],
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -70,53 +114,32 @@ export default function RootLayout({
       <head>
         <link rel="preconnect" href="https://www.googletagmanager.com" />
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+        <link rel="preconnect" href="https://connect.facebook.net" />
+        <link rel="dns-prefetch" href="https://connect.facebook.net" />
+
+        {/* Structured data (SEO) */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "LocalBusiness",
-              "name": "Manvi International Courier",
-              "image": "https://www.manvicourier.com/logo.png",
-              "@id": "https://www.manvicourier.com",
-              "url": "https://www.manvicourier.com",
-              "telephone": "+917070506070",
-              "priceRange": "$$",
-              "address": {
-                "@type": "PostalAddress",
-                "streetAddress": "C1034, A 2nd Floor, Harijan Basti, Palam Extn, Part-1 Ramphal Chowk",
-                "addressLocality": "New Delhi",
-                "addressRegion": "Delhi",
-                "postalCode": "110045",
-                "addressCountry": "IN"
-              },
-              "geo": {
-                "@type": "GeoCoordinates",
-                "latitude": 28.5355,
-                "longitude": 77.391
-              },
-              "openingHoursSpecification": {
-                "@type": "OpeningHoursSpecification",
-                "dayOfWeek": [
-                  "Monday",
-                  "Tuesday",
-                  "Wednesday",
-                  "Thursday",
-                  "Friday",
-                  "Saturday"
-                ],
-                "opens": "10:00",
-                "closes": "21:00"
-              },
-              "sameAs": [
-                "https://www.facebook.com/p/Manvi-International-Courier-61575480958807/",
-                "https://www.instagram.com/manviinternational/"
-              ]
-            })
+            __html: JSON.stringify(localBusinessSchema),
           }}
         />
       </head>
+
       <body className="min-h-full flex flex-col" suppressHydrationWarning>
+        {/* ── Meta Pixel: noscript fallback (must be in <body>) ── */}
+        <noscript>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            height="1"
+            width="1"
+            style={{ display: "none" }}
+            src={`https://www.facebook.com/tr?id=${FB_PIXEL_ID}&ev=PageView&noscript=1`}
+            alt=""
+          />
+        </noscript>
+
+        {/* ── Google Tag Manager: noscript fallback ── */}
         <noscript>
           <iframe
             src={`https://www.googletagmanager.com/ns.html?id=${gtmId}`}
@@ -125,12 +148,34 @@ export default function RootLayout({
             style={{ display: "none", visibility: "hidden" }}
           />
         </noscript>
+
+        {/* ── Meta Pixel: base code (PageView fires on load + route changes) ── */}
+        <Script id="meta-pixel" strategy="afterInteractive">
+          {`
+            !function(f,b,e,v,n,t,s)
+            {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+            n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+            if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+            n.queue=[];t=b.createElement(e);t.async=!0;
+            t.src=v;s=b.getElementsByTagName(e)[0];
+            s.parentNode.insertBefore(t,s)}(window,document,'script',
+            'https://connect.facebook.net/en_US/fbevents.js');
+
+            fbq('init', '${FB_PIXEL_ID}');
+            fbq('track', 'PageView');
+          `}
+        </Script>
+
+        {/* ── Google Tag Manager ── */}
         <Script id="google-tag-manager" strategy="lazyOnload">
           {`
             (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start': new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','${gtmId}');
           `}
         </Script>
+
         <LanguageProvider>{children}</LanguageProvider>
+
+        {/* ── Google Analytics + Google Ads ── */}
         <Script
           src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}
           strategy="lazyOnload"
@@ -142,10 +187,13 @@ export default function RootLayout({
             gtag('js', new Date());
 
             gtag('config', '${gaId}');
+            gtag('config', 'AW-16880308122');
+            gtag('config', 'AW-16880308122/Ek21CIif9tccEJqflPE-', {
+              'phone_conversion_number': '7070506070'
+            });
           `}
         </Script>
       </body>
     </html>
   );
 }
-

@@ -8,7 +8,7 @@ export async function loginAction(prevState: unknown, formData: FormData) {
   const password = formData.get('password');
 
   try {
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+    const apiUrl = process.env.NEXT_API_URL || 'http://localhost:5000';
     const dbName = process.env.NEXT_PUBLIC_X_DATABASE || 'manvi';
     
     const response = await fetch(`${apiUrl}/admin/login`, {

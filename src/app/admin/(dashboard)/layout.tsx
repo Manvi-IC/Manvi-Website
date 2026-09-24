@@ -12,13 +12,14 @@ import {
   MessageSquareQuote,
   MapPinned,
   Mail,
+  ShieldCheck,
   Truck,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+const API_URL = process.env.NEXT_API_URL || "http://localhost:5000";
 
 export default function AdminLayout({
   children,
@@ -133,7 +134,7 @@ export default function AdminLayout({
         <div className="h-16 flex items-center px-6 bg-[#050914] font-bold text-xl tracking-wider">
           Manvi Admin Panel
         </div>
-        <nav className="flex-1 px-4 py-6 space-y-2">
+        <nav className="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
           {navLink("/admin", <LayoutDashboard size={20} />, "Dashboard")}
           {navLink(
             "/admin/upload-rates",
@@ -170,6 +171,11 @@ export default function AdminLayout({
             "/admin/settings",
             <Settings size={20} />,
             "Profile Settings",
+          )}
+          {navLink(
+            "/admin/settings/credentials",
+            <ShieldCheck size={20} />,
+            "Admin Credentials",
           )}
           {navLink(
             "/admin/service-areas",
