@@ -13,6 +13,7 @@ import {
   MapPinned,
   Mail,
   ShieldCheck,
+  Truck,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -33,7 +34,7 @@ export default function AdminLayout({
   useEffect(() => {
     const fetchCounts = async () => {
       try {
-        const [appRes, enquiryRes] = await Promise.all([
+        const [appRes, enquiryRes, custRes] = await Promise.all([
           fetch(`${API_URL}/admin/applications/stats`, {
             method: "GET",
             headers: {
@@ -43,6 +44,13 @@ export default function AdminLayout({
             credentials: "include",
           }),
           fetch(`${API_URL}/admin/quote-enquiries/stats`, {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            credentials: "include",
+          }),
+          fetch(`${API_URL}/admin/customers/stats`, {
             method: "GET",
             headers: {
               "Content-Type": "application/json",
@@ -72,6 +80,7 @@ export default function AdminLayout({
           console.warn(`Enquiries stats API returned ${enquiryRes.status}`);
           // Keep default value (0) if API fails
         }
+
       } catch (error) {
         // Network error or server not running
         console.error("Failed to fetch counts:", error);
@@ -138,6 +147,7 @@ export default function AdminLayout({
             "Serviceable Zipcode Mapping",
           )}
           {navLink("/admin/jobs", <Briefcase size={20} />, "Jobs")}
+          {navLink("/admin/shipments", <Truck size={20} />, "Shipments")}
           {navLink(
             "/admin/applications",
             <FileText size={20} />,

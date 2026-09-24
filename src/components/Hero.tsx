@@ -28,6 +28,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useLanguage } from "@/context/LanguageContext";
 import { trackEvent, trackCustom } from "@/lib/fpixel";
+import { fireLeadFormConversion, fireRequestQuoteConversion } from "@/lib/ads";
 
 const API_URL = process.env.NEXT_API_URL || "http://localhost:5000";
 const DB_NAME = process.env.NEXT_PUBLIC_X_DATABASE || "manvi";
@@ -375,6 +376,11 @@ function ApplyModal({
         content_name: quote.service,
         content_category: destination,
         destination_country: zoningCountry || destination,
+      fireLeadFormConversion();
+      fireRequestQuoteConversion();
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({
+        event: "form_enquiry_success",
       });
       if (typeof window !== "undefined") {
         window.dataLayer = window.dataLayer || [];

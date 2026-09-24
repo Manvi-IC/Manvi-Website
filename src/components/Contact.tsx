@@ -2,6 +2,7 @@
 import { Phone, MessageSquare } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
 import { trackEvent } from "@/lib/fpixel";
+import { fireClickToCallConversion, fireWhatsappConversion } from "@/lib/ads";
 
 const WhatsAppIcon = ({
   width = 16,
