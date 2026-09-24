@@ -558,7 +558,7 @@ export default function AboutUs() {
             <SectionCard
               id="mission"
               title={t.nav_mission}
-              image="/our-mission.png"
+              image="/edge.png"
             >
               <ul className="list-disc pl-5 space-y-1">
                 <li>{t.mission_1}</li>

@@ -240,7 +240,7 @@ export default function WinterCampaignPage() {
       <section className="w-full max-w-[1400px] mx-auto px-3 sm:px-6 pt-4 sm:pt-8 pb-6 sm:pb-12">
         <div className="relative w-full overflow-hidden rounded-[20px] sm:rounded-[32px] bg-[#0c182c] shadow-2xl flex flex-col justify-center">
           <Image
-            src="/winter-banner.jpg"
+            src="/winter-banner.webp"
             alt="Winter Courier Campaign"
             fill
             sizes="100vw"
