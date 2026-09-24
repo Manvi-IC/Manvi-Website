@@ -332,6 +332,10 @@ function WhatsAppEnquiryForm() {
       setError("Mobile number is required.");
       return;
     }
+    if (!/^\d{10}$/.test(mobile.trim())) {
+      setError("Mobile number must be exactly 10 digits.");
+      return;
+    }
 
     setSubmitting(true);
 
@@ -441,7 +445,7 @@ function WhatsAppEnquiryForm() {
           value={mobile}
           onChange={(e) => setMobile(e.target.value.replace(/\D/g, ""))}
           placeholder="Phone number"
-          maxLength={30}
+          maxLength={10}
           className={inputCls}
         />
       </div>
