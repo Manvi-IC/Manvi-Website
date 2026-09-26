@@ -75,7 +75,7 @@ export interface ProposalRecord {
   selectedQuotes: Quote[];
   recommendedKey: string | null;
   lowestPrice: number;
-  customRestrictions?: Record<string, { allowed: string[]; blocked: string[] }>;
+  customRestrictions?: Record<string, { allowed: string[]; blocked: string[]; note?: string }>;
   status: "Proposal Sent" | "Draft" | "Confirmed";
   savedAt: string;
 }
@@ -621,26 +621,34 @@ export default function ProposalPage() {
 
   /* ── Custom Permitted & Prohibited Items Per Service ── */
   const [customRestrictions, setCustomRestrictions] = useState<
-    Record<string, { allowed: string[]; blocked: string[] }>
+    Record<string, { allowed: string[]; blocked: string[]; note?: string }>
   >({});
   const [editingRestrictionsQuote, setEditingRestrictionsQuote] =
     useState<Quote | null>(null);
   const [modalAllowedItems, setModalAllowedItems] = useState<string[]>([]);
   const [modalBlockedItems, setModalBlockedItems] = useState<string[]>([]);
 
-  const getServiceRestrictions = (q: Quote) => {
+  const getServiceRestrictions = (
+    q: Quote,
+  ): { allowed: string[]; blocked: string[]; note?: string } => {
     const serviceKey = `${q.service}__${q.rateType}`;
-    if (customRestrictions[serviceKey]) {
-      return customRestrictions[serviceKey];
-    }
     const defaultMeta = SHIPPING_RESTRICTIONS[q.network] || {
       blocked: [],
       warning: [],
       allowed: [],
+      note: undefined,
     };
+    if (customRestrictions[serviceKey]) {
+      return {
+        allowed: customRestrictions[serviceKey].allowed,
+        blocked: customRestrictions[serviceKey].blocked,
+        note: customRestrictions[serviceKey].note ?? defaultMeta.note,
+      };
+    }
     return {
       allowed: defaultMeta.allowed || [],
       blocked: defaultMeta.blocked || [],
+      note: defaultMeta.note,
     };
   };
 
@@ -662,11 +670,13 @@ export default function ProposalPage() {
     const serviceKey = `${editingRestrictionsQuote.service}__${editingRestrictionsQuote.rateType}`;
     const cleanAllowed = modalAllowedItems.map((s) => s.trim()).filter(Boolean);
     const cleanBlocked = modalBlockedItems.map((s) => s.trim()).filter(Boolean);
+    const defaultMeta = SHIPPING_RESTRICTIONS[editingRestrictionsQuote.network];
     setCustomRestrictions((prev) => ({
       ...prev,
       [serviceKey]: {
         allowed: cleanAllowed,
         blocked: cleanBlocked,
+        note: defaultMeta?.note,
       },
     }));
     setEditingRestrictionsQuote(null);
