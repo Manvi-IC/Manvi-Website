@@ -29,7 +29,7 @@ import Image from "next/image";
 import { useLanguage } from "@/context/LanguageContext";
 import { trackEvent, trackCustom } from "@/lib/fpixel";
 
-const API_URL = process.env.NEXT_API_URL || "http://localhost:5000";
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 const DB_NAME = process.env.NEXT_PUBLIC_X_DATABASE || "manvi";
 
 /* ── Carousel Slides Configuration ── */
@@ -329,70 +329,112 @@ function ApplyModal({
   if (!open || !quote) return null;
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setError("");
-    if (!name.trim() || !phone.trim() || !email.trim()) {
-      setError("All fields are required.");
-      return;
-    }
-    setSubmitting(true);
-    try {
-      const formData = new FormData(e.currentTarget);
+  e.preventDefault();
+  setError("");
+  if (!name.trim() || !phone.trim() || !email.trim()) {
+    setError("All fields are required.");
+    return;
+  }
+  setSubmitting(true);
+  try {
+    const formData = new FormData(e.currentTarget);
 
-      // Inject standard Zoho expected fields if they aren't captured by the form automatically
+    // Inject standard Zoho expected fields if they aren't captured by the form automatically
+    if (
+      typeof window !== "undefined" &&
+      (window as any)._wfa_track &&
+      (window as any)._wfa_track.wfa_submit
+    ) {
+      (window as any)._wfa_track.wfa_submit(e);
+    }
+
+    // ── 1. Send to Zoho CRM (existing behavior, unchanged) ──────────────
+    const res = await fetch("https://crm.zoho.in/crm/WebToLeadForm", {
+      method: "POST",
+      body: formData,
+      cache: "no-cache",
+    });
+
+    const contentType = res.headers.get("Content-Type");
+    const data =
+      contentType && contentType.includes("application/json")
+        ? await res.json()
+        : await res.text();
+
+    if (typeof data === "object") {
       if (
-        typeof window !== "undefined" &&
-        (window as any)._wfa_track &&
-        (window as any)._wfa_track.wfa_submit
+        data.actionsubmit === "error_msg" ||
+        data.actionsubmit === "captcha_error"
       ) {
-        (window as any)._wfa_track.wfa_submit(e);
+        throw new Error(data.message || "Submission failed");
       }
-
-      const res = await fetch("https://crm.zoho.in/crm/WebToLeadForm", {
-        method: "POST",
-        body: formData,
-        cache: "no-cache",
-      });
-
-      const contentType = res.headers.get("Content-Type");
-      const data =
-        contentType && contentType.includes("application/json")
-          ? await res.json()
-          : await res.text();
-
-      if (typeof data === "object") {
-        if (
-          data.actionsubmit === "error_msg" ||
-          data.actionsubmit === "captcha_error"
-        ) {
-          throw new Error(data.message || "Submission failed");
-        }
-      }
-
-      setSubmitted(true);
-      // Meta Pixel: enquiry submitted successfully
-      trackEvent("Lead", {
-        content_name: quote.service,
-        content_category: destination,
-        destination_country: zoningCountry || destination,
-      });
-      if (typeof window !== "undefined") {
-        window.dataLayer = window.dataLayer || [];
-        window.dataLayer.push({
-          event: "form_enquiry_success",
-        });
-        if (typeof (window as any).gtag === "function") {
-          (window as any).gtag("event", "conversion", {
-            send_to: "AW-16880308122/jB3TCL-RwNccEJqflPE-",
-          });
-        }
-      }
-    } catch (err: any) {
-      setError(err.message || "An error occurred. Please try again.");
-    } finally {
-      setSubmitting(false);
     }
-  };
+
+    // ── 2. Also save to MongoDB via your backend (NEW) ──────────────────
+    try {
+      const backendRes = await fetch(`${API_URL}/quote-enquiries`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-database": DB_NAME,
+        },
+        body: JSON.stringify({
+          name: name.trim(),
+          phone: phone.trim(),
+          email: email.trim(),
+          destination,
+          zoningCountry: zoningCountry || "",
+          zipcode: zipcode || "",
+          actualWt: parseFloat(actualWt) || 0,
+          volWt: volWt ? parseFloat(volWt) : 0,
+          chargeableWt: chargeableWt || 0,
+          length: parseFloat(length) || 0,
+          breadth: parseFloat(breadth) || 0,
+          height: parseFloat(height) || 0,
+          service: quote.service,
+          network: quote.network || "",
+          zone: quote.zone || "",
+          rateType: quote.rateType || "",
+          totalPrice: quote.totalPrice || 0,
+          tat: quote.tat || "",
+        }),
+      });
+
+      if (!backendRes.ok) {
+        const errText = await backendRes.text().catch(() => "");
+        console.warn("[Hero Quote Enquiry] Backend save failed:", errText);
+      } else {
+        console.log("[Hero Quote Enquiry] Saved to MongoDB successfully");
+      }
+    } catch (backendErr) {
+      // Never block the user — Zoho already accepted the lead
+      console.warn("[Hero Quote Enquiry] Backend save error:", backendErr);
+    }
+
+    setSubmitted(true);
+    // Meta Pixel: enquiry submitted successfully
+    trackEvent("Lead", {
+      content_name: quote.service,
+      content_category: destination,
+      destination_country: zoningCountry || destination,
+    });
+    if (typeof window !== "undefined") {
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({
+        event: "form_enquiry_success",
+      });
+      if (typeof (window as any).gtag === "function") {
+        (window as any).gtag("event", "conversion", {
+          send_to: "AW-16880308122/jB3TCL-RwNccEJqflPE-",
+        });
+      }
+    }
+  } catch (err: any) {
+    setError(err.message || "An error occurred. Please try again.");
+  } finally {
+    setSubmitting(false);
+  }
+};
 
   const handleClose = () => {
     setName("");
