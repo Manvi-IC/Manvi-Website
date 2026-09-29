@@ -27,6 +27,7 @@ import {
 import Link from "next/link";
 import Image from "next/image";
 import { useLanguage } from "@/context/LanguageContext";
+import { trackEvent, trackCustom } from "@/lib/fpixel";
 import { fireLeadFormConversion, fireRequestQuoteConversion } from "@/lib/ads";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
@@ -328,16 +329,51 @@ function ApplyModal({
 
   if (!open || !quote) return null;
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError("");
-    if (!name.trim() || !phone.trim() || !email.trim()) {
-      setError("All fields are required.");
-      return;
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  e.preventDefault();
+  setError("");
+  if (!name.trim() || !phone.trim() || !email.trim()) {
+    setError("All fields are required.");
+    return;
+  }
+  setSubmitting(true);
+  try {
+    const formData = new FormData(e.currentTarget);
+
+    // Inject standard Zoho expected fields if they aren't captured by the form automatically
+    if (
+      typeof window !== "undefined" &&
+      (window as any)._wfa_track &&
+      (window as any)._wfa_track.wfa_submit
+    ) {
+      (window as any)._wfa_track.wfa_submit(e);
     }
-    setSubmitting(true);
+
+    // ── 1. Send to Zoho CRM (existing behavior, unchanged) ──────────────
+    const res = await fetch("https://crm.zoho.in/crm/WebToLeadForm", {
+      method: "POST",
+      body: formData,
+      cache: "no-cache",
+    });
+
+    const contentType = res.headers.get("Content-Type");
+    const data =
+      contentType && contentType.includes("application/json")
+        ? await res.json()
+        : await res.text();
+
+    if (typeof data === "object") {
+      if (
+        data.actionsubmit === "error_msg" ||
+        data.actionsubmit === "captcha_error"
+      ) {
+        throw new Error(data.message || "Submission failed");
+      }
+    }
+
+    // ── 2. Also save to MongoDB via your backend (NEW) ──────────────────
     try {
-      const res = await fetch(`${API_URL}/quote-enquiries`, {
+      const backendRes = await fetch(`${API_URL}/quote-enquiries`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -348,37 +384,67 @@ function ApplyModal({
           phone: phone.trim(),
           email: email.trim(),
           destination,
-          zoningCountry,
-          zipcode,
+          zoningCountry: zoningCountry || "",
+          zipcode: zipcode || "",
           actualWt: parseFloat(actualWt) || 0,
-          volWt: parseFloat(volWt ?? "0") || 0,
-          chargeableWt,
+          volWt: volWt ? parseFloat(volWt) : 0,
+          chargeableWt: chargeableWt || 0,
           length: parseFloat(length) || 0,
           breadth: parseFloat(breadth) || 0,
           height: parseFloat(height) || 0,
           service: quote.service,
-          network: quote.network,
-          zone: quote.zone,
-          rateType: quote.rateType,
-          totalPrice: quote.totalPrice,
-          tat: quote.tat,
+          network: quote.network || "",
+          zone: quote.zone || "",
+          rateType: quote.rateType || "",
+          totalPrice: quote.totalPrice || 0,
+          tat: quote.tat || "",
         }),
       });
-      const data = await res.json();
-      if (!data.success) throw new Error(data.message || "Submission failed");
-      setSubmitted(true);
+
+      if (!backendRes.ok) {
+        const errText = await backendRes.text().catch(() => "");
+        console.warn("[Hero Quote Enquiry] Backend save failed:", errText);
+      } else {
+        console.log("[Hero Quote Enquiry] Saved to MongoDB successfully");
+      }
+    } catch (backendErr) {
+      // Never block the user — Zoho already accepted the lead
+      console.warn("[Hero Quote Enquiry] Backend save error:", backendErr);
+    }
+
+    setSubmitted(true);
+    // Meta Pixel: enquiry submitted successfully
+    trackEvent("Lead", {
+      content_name: quote.service,
+      content_category: destination,
+      destination_country: zoningCountry || destination,
+    });
+    if (typeof window !== "undefined") {
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({
+        event: "form_enquiry_success",
+      });
       fireLeadFormConversion();
       fireRequestQuoteConversion();
       window.dataLayer = window.dataLayer || [];
       window.dataLayer.push({
         event: "form_enquiry_success",
       });
-    } catch (err: any) {
-      setError(err.message);
-    } finally {
-      setSubmitting(false);
+      if (typeof window !== "undefined") {
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+          event: "form_enquiry_success",
+      if (typeof (window as any).gtag === "function") {
+        (window as any).gtag("event", "conversion", {
+          send_to: "AW-16880308122/jB3TCL-RwNccEJqflPE-",        });
+      }
     }
-  };
+  } catch (err: any) {
+    setError(err.message || "An error occurred. Please try again.");
+  } finally {
+    setSubmitting(false);
+  }
+};
 
   const handleClose = () => {
     setName("");
@@ -391,6 +457,12 @@ function ApplyModal({
 
   return (
     <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
+      {/* Zoho Tracking Script */}
+      <script
+        id="wf_anal"
+        src="https://crm.zohopublic.in/crm/WebFormAnalyticsServeServlet?rid=35f6149cd4f21e4a45325993c4badb496bbff539e80a590d876efcc0473696f60c2ec3e80d2110a98e2dcc635ca8aeddgid14c49147eca089aa13008d713fef50e6c20e786337446d3f4e26d826b72f26e3gid977b9ca74605539e64e70acb1f8f2ab744682e0ee4dd585040a014e20cb32f55gide95ceeeacfd3215343280dd1fffc20591e601b303c86ab08381dd51ea75c3240&tw=eec3b02e1df12dbc38ecb4c4546e48954c77ac0a1744f3d5cc68d3bca26e4c9f&version=v2"
+        async
+      ></script>
       {/* Backdrop */}
       <div
         className="absolute inset-0 bg-black/60 backdrop-blur-sm"
@@ -472,6 +544,35 @@ function ApplyModal({
               onSubmit={handleSubmit}
               className="px-6 py-5 flex flex-col gap-4"
             >
+              <input
+                type="hidden"
+                name="xnQsjsdp"
+                value="3469cc92f353f141a975c84fed6da89424f1095353c0090e640e892f8f1ae05c"
+                readOnly
+              />
+              <input type="hidden" name="zc_gad" value="" readOnly />
+              <input
+                type="hidden"
+                name="xmIwtLD"
+                value="2b1f8115908998ce3f2920a24b04f5580069559bde7bd38e39a6aad3eeb09e1746a031c38fbcb9ee32b83cd1f6946796"
+                readOnly
+              />
+              <input
+                type="hidden"
+                name="actionType"
+                value="TGVhZHM="
+                readOnly
+              />
+              <input type="hidden" name="returnURL" value="null" readOnly />
+              <input type="hidden" name="aG9uZXlwb3Q" value="" readOnly />
+              <input
+                type="hidden"
+                name="Designation"
+                value={quote.totalPrice}
+                readOnly
+              />
+              <input type="hidden" name="Fax" value={quote.service} readOnly />
+
               <p className="text-sm text-gray-500 font-medium">
                 Fill in your details and our team will contact you to finalise
                 the shipment.
@@ -485,6 +586,8 @@ function ApplyModal({
                 />
                 <input
                   type="text"
+                  name="Last Name"
+                  required
                   placeholder="Full Name"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
@@ -500,6 +603,8 @@ function ApplyModal({
                 />
                 <input
                   type="tel"
+                  name="Phone"
+                  required
                   placeholder="Phone Number"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
@@ -515,6 +620,8 @@ function ApplyModal({
                 />
                 <input
                   type="email"
+                  name="Email"
+                  required
                   placeholder="Email Address"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -1396,6 +1503,7 @@ export default function Hero() {
                   href="https://wa.me/917070506070"
                   target="_blank"
                   rel="noopener noreferrer"
+                  onClick={() => trackEvent("Contact", { method: "WhatsApp", location: "hero_circle" })}
                   aria-label="WhatsApp Us - Manvi International Courier"
                   className="w-20 h-20 sm:w-28 sm:h-28 bg-[#23c961] rounded-full relative flex items-center justify-center shadow-lg pointer-events-auto cursor-pointer hover:scale-105 transition-transform duration-300 z-50"
                 >

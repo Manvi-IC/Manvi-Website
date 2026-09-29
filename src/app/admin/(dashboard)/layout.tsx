@@ -79,7 +79,6 @@ export default function AdminLayout({
           console.warn(`Enquiries stats API returned ${enquiryRes.status}`);
           // Keep default value (0) if API fails
         }
-
       } catch (error) {
         // Network error or server not running
         console.error("Failed to fetch counts:", error);
@@ -125,6 +124,10 @@ export default function AdminLayout({
       </Link>
     );
   };
+
+  if (pathname?.startsWith("/admin/proposal")) {
+    return <main className="min-h-screen bg-white">{children}</main>;
+  }
 
   return (
     <div className="min-h-screen bg-gray-100 flex">

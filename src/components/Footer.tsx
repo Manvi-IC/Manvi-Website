@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Phone, Mail, MapPin, ChevronDown } from "lucide-react";
 import Link from "next/link";
 import { useLanguage } from "@/context/LanguageContext";
+import { trackEvent } from "@/lib/fpixel";
 
 export default function Footer() {
   const { t } = useLanguage();
@@ -180,7 +181,7 @@ export default function Footer() {
                 <span className="text-xs font-bold uppercase tracking-wider text-white/60 mb-0.5">
                   Explore
                 </span>
-                <Link
+                {/* <Link
                   href="/campaign"
                   className="hover:text-white transition-colors font-semibold py-0.5"
                 >
@@ -191,6 +192,18 @@ export default function Footer() {
                   className="hover:text-white transition-colors font-semibold py-0.5"
                 >
                   {t.footer_business_campaign}
+                </Link> */}
+                {/* <Link
+                  href="/winter"
+                  className="hover:text-white transition-colors font-semibold py-0.5"
+                >
+                  {t.footer_winter_campaign}
+                </Link> */}
+                <Link
+                  href="/shopkeeper"
+                  className="hover:text-white transition-colors font-semibold py-0.5"
+                >
+                  {t.footer_shopkeepers_page}
                 </Link>
                 <Link href="/blog" className="hover:text-white transition-colors py-0.5">
                   {t.footer_blog}
@@ -249,8 +262,9 @@ export default function Footer() {
                 >
                   <span>{t.footer_quick_links}</span>
                   <ChevronDown
-                    className={`w-4 h-4 transition-transform duration-200 ${openSections.quick ? "rotate-180" : ""
-                      }`}
+                    className={`w-4 h-4 transition-transform duration-200 ${
+                      openSections.quick ? "rotate-180" : ""
+                    }`}
                   />
                 </button>
                 {openSections.quick && (
@@ -289,13 +303,14 @@ export default function Footer() {
                 >
                   <span>Explore & Programs</span>
                   <ChevronDown
-                    className={`w-4 h-4 transition-transform duration-200 ${openSections.campaigns ? "rotate-180" : ""
-                      }`}
+                    className={`w-4 h-4 transition-transform duration-200 ${
+                      openSections.campaigns ? "rotate-180" : ""
+                    }`}
                   />
                 </button>
                 {openSections.campaigns && (
                   <div className="px-4 pb-4 pt-1 border-t border-white/10 flex flex-col gap-1.5 text-[13.5px] text-white/90">
-                    <Link
+                    {/* <Link
                       href="/campaign"
                       className="py-1.5 hover:text-white transition-colors font-semibold"
                     >
@@ -306,6 +321,18 @@ export default function Footer() {
                       className="py-1.5 hover:text-white transition-colors font-semibold"
                     >
                       {t.footer_business_campaign}
+                    </Link> */}
+                    {/* <Link
+                      href="/winter"
+                      className="py-1.5 hover:text-white transition-colors font-semibold"
+                    >
+                      {t.footer_winter_campaign}
+                    </Link> */}
+                    <Link
+                      href="/shopkeeper"
+                      className="py-1.5 hover:text-white transition-colors font-semibold"
+                    >
+                      {t.footer_shopkeepers_page}
                     </Link>
                     <Link href="/blog" className="py-1.5 hover:text-white transition-colors">
                       {t.footer_blog}
@@ -326,8 +353,9 @@ export default function Footer() {
                 >
                   <span>Legal & Policies</span>
                   <ChevronDown
-                    className={`w-4 h-4 transition-transform duration-200 ${openSections.policies ? "rotate-180" : ""
-                      }`}
+                    className={`w-4 h-4 transition-transform duration-200 ${
+                      openSections.policies ? "rotate-180" : ""
+                    }`}
                   />
                 </button>
                 {openSections.policies && (
@@ -377,21 +405,27 @@ export default function Footer() {
               <div className="w-full h-[1px] bg-white/30" />
             </div>
             <div className="flex flex-col gap-3">
-              {/* Phone */}
+              {/* Phone: Meta "Contact" event */}
               <div className="flex items-center gap-3">
                 <Phone className="w-[16px] h-[16px] text-white shrink-0" />
                 <a
                   href="tel:+917070506070"
+                  onClick={() =>
+                    trackEvent("Contact", { method: "Phone", location: "footer" })
+                  }
                   className="text-[14px] text-white/90 font-medium hover:text-white transition-colors py-0.5"
                 >
                   +91 70 70 50 60 70
                 </a>
               </div>
-              {/* Email */}
+              {/* Email: Meta "Contact" event */}
               <div className="flex items-center gap-3">
                 <Mail className="w-[16px] h-[16px] text-white shrink-0" />
                 <a
                   href="mailto:info@manvicourier.com"
+                  onClick={() =>
+                    trackEvent("Contact", { method: "Email", location: "footer" })
+                  }
                   className="text-[14px] text-white/90 font-medium hover:text-white transition-colors py-0.5 break-all sm:break-normal"
                 >
                   info@manvicourier.com

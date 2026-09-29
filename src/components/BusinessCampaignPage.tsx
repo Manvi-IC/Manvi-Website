@@ -15,6 +15,13 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useLanguage } from "@/context/LanguageContext";
+import { trackEvent } from "@/lib/fpixel";
+
+// ─── META PIXEL HELPERS ──────────────────────────────────────────────────────
+const trackWhatsApp = (location: string) =>
+  trackEvent("Contact", { method: "WhatsApp", location });
+const trackPhone = (location: string) =>
+  trackEvent("Contact", { method: "Phone", location });
 
 // ─── DATA ────────────────────────────────────────────────────────────────────
 // These will be translated via the LanguageContext
@@ -233,6 +240,7 @@ export default function BusinessCampaignPage() {
                 {/* Call Now Button */}
                 <a
                   href="tel:+917070506070"
+                  onClick={() => trackPhone("b2b_hero")}
                   className="flex items-center justify-center gap-2 font-bold text-[14px] md:text-[16px] px-6 py-3.5 sm:px-8 sm:py-4 rounded-full text-white no-underline transition-transform hover:scale-105 shadow-md bg-[#ff7a00] w-full sm:w-auto"
                 >
                   <svg className="w-5 h-5 fill-white" viewBox="0 0 24 24">
@@ -246,6 +254,7 @@ export default function BusinessCampaignPage() {
                   href="https://wa.me/917070506070"
                   target="_blank"
                   rel="noopener noreferrer"
+                  onClick={() => trackWhatsApp("b2b_hero")}
                   className="flex items-center justify-center gap-2 font-bold text-[14px] md:text-[16px] px-6 py-3.5 sm:px-8 sm:py-4 rounded-full text-[#0a111e] no-underline transition-transform hover:scale-105 shadow-md bg-[#23c961] w-full sm:w-auto"
                 >
                   <svg className="w-5 h-5 fill-[#0a111e]" viewBox="0 0 24 24">
@@ -705,8 +714,9 @@ export default function BusinessCampaignPage() {
                     >
                       <span>{t[f.qKey as keyof typeof t]}</span>
                       <ChevronDown
-                        className={`w-5 h-5 text-[#ff7a00] shrink-0 mt-0.5 transition-transform duration-300 ${isActive ? "rotate-180" : ""
-                          }`}
+                        className={`w-5 h-5 text-[#ff7a00] shrink-0 mt-0.5 transition-transform duration-300 ${
+                          isActive ? "rotate-180" : ""
+                        }`}
                       />
                     </h3>
                   </div>
@@ -747,6 +757,7 @@ export default function BusinessCampaignPage() {
               href="https://wa.me/917070506070"
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => trackWhatsApp("b2b_bottom_cta")}
               className="flex items-center justify-center gap-2 font-bold text-[15px] px-8 py-4 rounded-full text-[#0a111e] no-underline transition-transform hover:scale-105 w-full sm:w-auto"
               style={{ background: "#23c961" }}
             >
@@ -757,6 +768,7 @@ export default function BusinessCampaignPage() {
             </a>
             <a
               href="tel:+917070506070"
+              onClick={() => trackPhone("b2b_bottom_cta")}
               className="flex items-center justify-center gap-2 font-bold text-[15px] px-8 py-4 rounded-full text-white no-underline transition-transform hover:scale-105 w-full sm:w-auto"
               style={{ background: "#e77419" }}
             >

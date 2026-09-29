@@ -15,7 +15,7 @@ import {
   CATEGORIES,
 } from "./data";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+const API_URL = process.env.NEXT_API_URL || "http://localhost:5000";
 
 export default function BlogPage(): React.ReactElement {
   const [filter, setFilter] = useState<FilterCategory>("all");
