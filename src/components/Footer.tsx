@@ -181,7 +181,7 @@ export default function Footer() {
                 <span className="text-xs font-bold uppercase tracking-wider text-white/60 mb-0.5">
                   Explore
                 </span>
-                <Link
+                {/* <Link
                   href="/campaign"
                   className="hover:text-white transition-colors font-semibold py-0.5"
                 >
@@ -192,7 +192,7 @@ export default function Footer() {
                   className="hover:text-white transition-colors font-semibold py-0.5"
                 >
                   {t.footer_business_campaign}
-                </Link>
+                </Link> */}
                 {/* <Link
                   href="/winter"
                   className="hover:text-white transition-colors font-semibold py-0.5"
@@ -310,7 +310,7 @@ export default function Footer() {
                 </button>
                 {openSections.campaigns && (
                   <div className="px-4 pb-4 pt-1 border-t border-white/10 flex flex-col gap-1.5 text-[13.5px] text-white/90">
-                    <Link
+                    {/* <Link
                       href="/campaign"
                       className="py-1.5 hover:text-white transition-colors font-semibold"
                     >
@@ -321,7 +321,7 @@ export default function Footer() {
                       className="py-1.5 hover:text-white transition-colors font-semibold"
                     >
                       {t.footer_business_campaign}
-                    </Link>
+                    </Link> */}
                     {/* <Link
                       href="/winter"
                       className="py-1.5 hover:text-white transition-colors font-semibold"

@@ -28,7 +28,8 @@ const trackWhatsApp = (location: string) =>
 const trackPhone = (location: string) =>
   trackEvent("Contact", { method: "Phone", location });
 
-const API_URL = process.env.NEXT_API_URL || "http://localhost:5000";
+// ✅ CHANGED: use NEXT_PUBLIC_API_URL (browser-readable)
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 const DB_NAME = process.env.NEXT_PUBLIC_X_DATABASE || "manvi";
 
 const WHATSAPP_NUMBER = "917070506070";
@@ -339,12 +340,57 @@ function WhatsAppEnquiryForm() {
 
     setSubmitting(true);
 
+    // ── 1. Send to Zoho CRM (existing behavior, unchanged) ──────────────
     await submitZohoLead({
       firstName: firstName.trim(),
       lastName: lastName.trim(),
       mobile: mobile.trim(),
       description: "WhatsApp Quick Enquiry (shopkeeper page)",
     });
+
+    // ── 2. Also save to MongoDB via your backend (NEW) ──────────────────
+    try {
+      const fullName =
+        `${firstName.trim()} ${lastName.trim()}`.trim() || lastName.trim();
+      const backendRes = await fetch(`${API_URL}/quote-enquiries`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-database": DB_NAME,
+        },
+        body: JSON.stringify({
+          name: fullName,
+          phone: mobile.trim(),
+          email: "not-provided@whatsapp-lead.local", // placeholder — schema requires email
+          destination: "WHATSAPP_LEAD",
+          zoningCountry: "",
+          zipcode: "",
+          actualWt: 0,
+          volWt: 0,
+          chargeableWt: 0,
+          length: 0,
+          breadth: 0,
+          height: 0,
+          service: "WhatsApp Quick Enquiry",
+          network: "",
+          zone: "",
+          rateType: "",
+          totalPrice: 0,
+          tat: "",
+          notes: "Submitted via Shopkeeper WhatsApp quick enquiry form",
+        }),
+      });
+
+      if (!backendRes.ok) {
+        const errText = await backendRes.text().catch(() => "");
+        console.warn("[WhatsApp Enquiry] Backend save failed:", errText);
+      } else {
+        console.log("[WhatsApp Enquiry] Saved to MongoDB successfully");
+      }
+    } catch (backendErr) {
+      // Never block the user — Zoho already accepted the lead
+      console.warn("[WhatsApp Enquiry] Backend save error:", backendErr);
+    }
 
     // Analytics
     if (typeof window !== "undefined") {
@@ -522,6 +568,8 @@ function ApplyModal({
     setSubmitting(true);
     try {
       const formData = new FormData(e.currentTarget);
+
+      // ── 1. Send to Zoho CRM (existing behavior, unchanged) ──────────────
       const res = await fetch("https://crm.zoho.in/crm/WebToLeadForm", {
         method: "POST",
         body: formData,
@@ -540,6 +588,48 @@ function ApplyModal({
           throw new Error(data.message || "Submission failed");
         }
       }
+
+      // ── 2. Also save to MongoDB via your backend (NEW) ──────────────────
+      try {
+        const backendRes = await fetch(`${API_URL}/quote-enquiries`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "x-database": DB_NAME,
+          },
+          body: JSON.stringify({
+            name: name.trim(),
+            phone: phone.trim(),
+            email: email.trim(),
+            destination,
+            zoningCountry: zoningCountry || "",
+            zipcode: zipcode || "",
+            actualWt: parseFloat(actualWt) || 0,
+            volWt: volWt ? parseFloat(volWt) : 0,
+            chargeableWt: chargeableWt || 0,
+            length: parseFloat(length) || 0,
+            breadth: parseFloat(breadth) || 0,
+            height: parseFloat(height) || 0,
+            service: quote.service,
+            network: quote.network || "",
+            zone: quote.zone || "",
+            rateType: quote.rateType || "",
+            totalPrice: quote.totalPrice || 0,
+            tat: quote.tat || "",
+          }),
+        });
+
+        if (!backendRes.ok) {
+          const errText = await backendRes.text().catch(() => "");
+          console.warn("[Shopkeeper Apply] Backend save failed:", errText);
+        } else {
+          console.log("[Shopkeeper Apply] Saved to MongoDB successfully");
+        }
+      } catch (backendErr) {
+        // Never block the user — Zoho already accepted the lead
+        console.warn("[Shopkeeper Apply] Backend save error:", backendErr);
+      }
+
       setSubmitted(true);
       if (typeof window !== "undefined") {
         window.dataLayer = window.dataLayer || [];
