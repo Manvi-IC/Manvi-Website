@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useLanguage, Language } from "@/context/LanguageContext";
 import { trackEvent } from "@/lib/fpixel";
+import { fireWhatsappConversion } from "@/lib/ads";
 
 const WhatsAppIcon = ({ width = 16, height = 16, fill = "currentColor", className = "" }) => (
   <svg 
@@ -73,6 +74,7 @@ export default function ManviWhatsApp() {
     if (typeof window !== "undefined" && typeof (window as any).gtag === "function") {
       (window as any).gtag("event", "conversion", { "send_to": "AW-16880308122/9ekfCIS399ccEJqflPE-" });
     }
+    fireWhatsappConversion();
     window.open(`https://wa.me/917070506070?text=${encodeURIComponent(t.prefill_text)}`, "_blank");
   };
 

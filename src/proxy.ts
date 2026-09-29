@@ -4,16 +4,28 @@ import type { NextRequest } from 'next/server';
 export function proxy(request: NextRequest) {
   // 1. Admin Auth Logic
   const isAdmin = request.cookies.get('admin_auth')?.value === 'true';
-  const isLoginPage = request.nextUrl.pathname.startsWith('/admin/login');
+  const role = request.cookies.get('admin_role')?.value;
+  const pathname = request.nextUrl.pathname;
+  const isLoginPage = pathname.startsWith('/admin/login');
 
-  if (request.nextUrl.pathname.startsWith('/admin')) {
+  if (pathname.startsWith('/admin')) {
     if (!isAdmin && !isLoginPage) {
       return NextResponse.redirect(new URL('/admin/login', request.url));
     }
     
     if (isAdmin && isLoginPage) {
-      return NextResponse.redirect(new URL('/admin', request.url));
+      const destination = role === 'salesperson' ? '/admin/proposal' : '/admin';
+      return NextResponse.redirect(new URL(destination, request.url));
     }
+
+    // Role-based restrictions: salesperson can only access /admin/proposal
+    if (isAdmin && role === 'salesperson' && !pathname.startsWith('/admin/proposal')) {
+      return NextResponse.redirect(new URL('/admin/proposal', request.url));
+    }
+  }
+
+  if (pathname === '/proposal') {
+    return NextResponse.redirect(new URL('/admin/proposal', request.url));
   }
 
   // 2. API Header Injection Logic
@@ -32,5 +44,5 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/admin/:path*', '/api/:path*'],
+  matcher: ['/admin/:path*', '/api/:path*', '/proposal'],
 };

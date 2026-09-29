@@ -10,7 +10,8 @@ declare namespace JSX {
 
 declare global {
   interface Window {
-    dataLayer?: Array<Record<string, unknown>>;
+    dataLayer?: any[];
+    gtag?: (...args: any[]) => void;
   }
 }
 

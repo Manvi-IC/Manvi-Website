@@ -12,13 +12,13 @@ import {
   MessageSquareQuote,
   MapPinned,
   Mail,
-  ShieldCheck,
+  Truck,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
-const API_URL = process.env.NEXT_API_URL || "http://localhost:5000";
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
 export default function AdminLayout({
   children,
@@ -33,7 +33,7 @@ export default function AdminLayout({
   useEffect(() => {
     const fetchCounts = async () => {
       try {
-        const [appRes, enquiryRes] = await Promise.all([
+        const [appRes, enquiryRes, custRes] = await Promise.all([
           fetch(`${API_URL}/admin/applications/stats`, {
             method: "GET",
             headers: {
@@ -43,6 +43,13 @@ export default function AdminLayout({
             credentials: "include",
           }),
           fetch(`${API_URL}/admin/quote-enquiries/stats`, {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            credentials: "include",
+          }),
+          fetch(`${API_URL}/admin/customers/stats`, {
             method: "GET",
             headers: {
               "Content-Type": "application/json",
@@ -118,6 +125,10 @@ export default function AdminLayout({
     );
   };
 
+  if (pathname?.startsWith("/admin/proposal")) {
+    return <main className="min-h-screen bg-white">{children}</main>;
+  }
+
   return (
     <div className="min-h-screen bg-gray-100 flex">
       {/* Sidebar */}
@@ -125,7 +136,7 @@ export default function AdminLayout({
         <div className="h-16 flex items-center px-6 bg-[#050914] font-bold text-xl tracking-wider">
           Manvi Admin Panel
         </div>
-        <nav className="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
+        <nav className="flex-1 px-4 py-6 space-y-2">
           {navLink("/admin", <LayoutDashboard size={20} />, "Dashboard")}
           {navLink(
             "/admin/upload-rates",
@@ -138,6 +149,7 @@ export default function AdminLayout({
             "Serviceable Zipcode Mapping",
           )}
           {navLink("/admin/jobs", <Briefcase size={20} />, "Jobs")}
+          {navLink("/admin/shipments", <Truck size={20} />, "Shipments")}
           {navLink(
             "/admin/applications",
             <FileText size={20} />,
@@ -161,11 +173,6 @@ export default function AdminLayout({
             "/admin/settings",
             <Settings size={20} />,
             "Profile Settings",
-          )}
-          {navLink(
-            "/admin/settings/credentials",
-            <ShieldCheck size={20} />,
-            "Admin Credentials",
           )}
           {navLink(
             "/admin/service-areas",
