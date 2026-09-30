@@ -19,22 +19,52 @@ import {
   User,
   Phone,
   Mail,
+  Lock,
 } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
 import { trackEvent } from "@/lib/fpixel";
+import ShopkeeperLoginModal, {
+  SHOPKEEPER_SESSION_KEY,
+} from "@/components/ShopkeeperLoginModal";
 
 const trackWhatsApp = (location: string) =>
   trackEvent("Contact", { method: "WhatsApp", location });
 const trackPhone = (location: string) =>
   trackEvent("Contact", { method: "Phone", location });
 
-// ✅ CHANGED: use NEXT_PUBLIC_API_URL (browser-readable)
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 const DB_NAME = process.env.NEXT_PUBLIC_X_DATABASE || "manvi";
 
 const WHATSAPP_NUMBER = "917070506070";
 
-/* ── Zoho lead submitter (used by "Compare your rate" hero buttons) ── */
+/* ── Persist customer contact details across modal opens ── */
+const CONTACT_STORAGE_KEY = "manvi_shopkeeper_contact";
+type StoredContact = { name: string; phone: string; email: string };
+
+function loadStoredContact(): StoredContact {
+  if (typeof window === "undefined") return { name: "", phone: "", email: "" };
+  try {
+    const raw = window.localStorage.getItem(CONTACT_STORAGE_KEY);
+    if (!raw) return { name: "", phone: "", email: "" };
+    const parsed = JSON.parse(raw);
+    return {
+      name: typeof parsed?.name === "string" ? parsed.name : "",
+      phone: typeof parsed?.phone === "string" ? parsed.phone : "",
+      email: typeof parsed?.email === "string" ? parsed.email : "",
+    };
+  } catch {
+    return { name: "", phone: "", email: "" };
+  }
+}
+
+function saveStoredContact(contact: StoredContact) {
+  if (typeof window === "undefined") return;
+  try {
+    window.localStorage.setItem(CONTACT_STORAGE_KEY, JSON.stringify(contact));
+  } catch {}
+}
+
+/* ── Zoho lead submitter ── */
 async function submitZohoLead(payload: {
   firstName?: string;
   lastName?: string;
@@ -68,6 +98,119 @@ async function submitZohoLead(payload: {
     });
   } catch (err) {
     console.warn("Zoho lead submit:", err);
+  }
+}
+
+/* ── Submit quote enquiry ── */
+async function submitQuoteEnquiry({
+  contact,
+  quote,
+  destination,
+  zoningCountry,
+  zipcode,
+  actualWt,
+  volWt,
+  length,
+  breadth,
+  height,
+  chargeableWt,
+}: {
+  contact: StoredContact;
+  quote: Quote;
+  destination: string;
+  zoningCountry: string;
+  zipcode: string;
+  actualWt: string;
+  volWt: string | null;
+  length: string;
+  breadth: string;
+  height: string;
+  chargeableWt: number;
+}) {
+  const formData = new FormData();
+  formData.append(
+    "xnQsjsdp",
+    "3469cc92f353f141a975c84fed6da89424f1095353c0090e640e892f8f1ae05c",
+  );
+  formData.append("zc_gad", "");
+  formData.append(
+    "xmIwtLD",
+    "2b1f8115908998ce3f2920a24b04f5580069559bde7bd38e39a6aad3eeb09e1746a031c38fbcb9ee32b83cd1f6946796",
+  );
+  formData.append("actionType", "TGVhZHM=");
+  formData.append("returnURL", "null");
+  formData.append("aG9uZXlwb3Q", "");
+  formData.append("Last Name", contact.name.trim() || "Not Provided");
+  formData.append("Phone", contact.phone.trim() || "");
+  formData.append(
+    "Email",
+    contact.email.trim() || "not-provided@no-email.local",
+  );
+  formData.append("Designation", String(quote.totalPrice || 0));
+  formData.append("Fax", quote.service || "");
+  formData.append(
+    "Description",
+    `Quote enquiry — ${quote.service} to ${destination}${
+      zoningCountry ? ` (${zoningCountry})` : ""
+    }${zipcode ? ` ${zipcode}` : ""} — ₹${Math.round(quote.totalPrice)}`,
+  );
+
+  try {
+    await fetch("https://crm.zoho.in/crm/WebToLeadForm", {
+      method: "POST",
+      body: formData,
+      mode: "no-cors",
+      cache: "no-cache",
+    });
+  } catch (err) {
+    console.warn("[Quote Enquiry] Zoho submit error:", err);
+  }
+
+  try {
+    const backendRes = await fetch(`${API_URL}/quote-enquiries`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-database": DB_NAME,
+      },
+      body: JSON.stringify({
+        name: contact.name.trim(),
+        phone: contact.phone.trim(),
+        email: contact.email.trim() || "not-provided@no-email.local",
+        destination,
+        zoningCountry: zoningCountry || "",
+        zipcode: zipcode || "",
+        actualWt: parseFloat(actualWt) || 0,
+        volWt: volWt ? parseFloat(volWt) : 0,
+        chargeableWt: chargeableWt || 0,
+        length: parseFloat(length) || 0,
+        breadth: parseFloat(breadth) || 0,
+        height: parseFloat(height) || 0,
+        service: quote.service,
+        network: quote.network || "",
+        zone: quote.zone || "",
+        rateType: quote.rateType || "",
+        totalPrice: quote.totalPrice || 0,
+        tat: quote.tat || "",
+      }),
+    });
+
+    if (!backendRes.ok) {
+      const errText = await backendRes.text().catch(() => "");
+      console.warn("[Quote Enquiry] Backend save failed:", errText);
+    }
+  } catch (backendErr) {
+    console.warn("[Quote Enquiry] Backend save error:", backendErr);
+  }
+
+  if (typeof window !== "undefined") {
+    (window as any).dataLayer = (window as any).dataLayer || [];
+    (window as any).dataLayer.push({ event: "form_enquiry_success" });
+    if (typeof (window as any).gtag === "function") {
+      (window as any).gtag("event", "conversion", {
+        send_to: "AW-16880308122/jB3TCL-RwNccEJqflPE-",
+      });
+    }
   }
 }
 
@@ -303,7 +446,7 @@ interface Quote {
 type FilterType = "all" | "cheapest" | "fastest";
 
 /* ────────────────────────────────────────────────────────────── */
-/* ── WhatsApp Enquiry Form (React-controlled, replaces Zoho embed) ── */
+/* ── WhatsApp Enquiry Form ── */
 /* ────────────────────────────────────────────────────────────── */
 function WhatsAppEnquiryForm() {
   const [firstName, setFirstName] = useState("");
@@ -340,7 +483,6 @@ function WhatsAppEnquiryForm() {
 
     setSubmitting(true);
 
-    // ── 1. Send to Zoho CRM (existing behavior, unchanged) ──────────────
     await submitZohoLead({
       firstName: firstName.trim(),
       lastName: lastName.trim(),
@@ -348,7 +490,6 @@ function WhatsAppEnquiryForm() {
       description: "WhatsApp Quick Enquiry (shopkeeper page)",
     });
 
-    // ── 2. Also save to MongoDB via your backend (NEW) ──────────────────
     try {
       const fullName =
         `${firstName.trim()} ${lastName.trim()}`.trim() || lastName.trim();
@@ -361,7 +502,7 @@ function WhatsAppEnquiryForm() {
         body: JSON.stringify({
           name: fullName,
           phone: mobile.trim(),
-          email: "not-provided@whatsapp-lead.local", // placeholder — schema requires email
+          email: "not-provided@whatsapp-lead.local",
           destination: "WHATSAPP_LEAD",
           zoningCountry: "",
           zipcode: "",
@@ -384,15 +525,11 @@ function WhatsAppEnquiryForm() {
       if (!backendRes.ok) {
         const errText = await backendRes.text().catch(() => "");
         console.warn("[WhatsApp Enquiry] Backend save failed:", errText);
-      } else {
-        console.log("[WhatsApp Enquiry] Saved to MongoDB successfully");
       }
     } catch (backendErr) {
-      // Never block the user — Zoho already accepted the lead
       console.warn("[WhatsApp Enquiry] Backend save error:", backendErr);
     }
 
-    // Analytics
     if (typeof window !== "undefined") {
       (window as any).dataLayer = (window as any).dataLayer || [];
       (window as any).dataLayer.push({
@@ -410,11 +547,10 @@ function WhatsAppEnquiryForm() {
     setSubmitted(true);
   };
 
-  /* ── Success state ── */
   if (submitted) {
     const waUrl = buildWhatsAppUrl(lastName.trim());
     return (
-      <div className="pt-6 pb-4 flex-1 flex flex-col items-center justify-center text-center gap-5">
+      <div className="pt-6 pb-4 flex flex-col items-center justify-center text-center gap-5">
         <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center">
           <CheckCircle2 size={32} className="text-green-600" />
         </div>
@@ -443,57 +579,58 @@ function WhatsAppEnquiryForm() {
     );
   }
 
-  /* ── Form state ── */
   const inputCls =
-    "w-full bg-white text-slate-900 text-[14.5px] rounded-xl border border-slate-300 px-3.5 py-3 focus:outline-none focus:border-[#f27a1a] focus:ring-2 focus:ring-[#f27a1a]/20 transition-all placeholder:text-gray-400";
+    "w-full bg-slate-50 text-slate-900 text-[14px] font-medium rounded-xl border border-slate-200 px-3.5 py-3.5 focus:outline-none focus:bg-white focus:border-[#f27a1a] focus:ring-2 focus:ring-[#f27a1a]/20 transition-all placeholder:text-slate-400";
   const labelCls =
-    "block font-sans text-slate-500 text-[11px] font-bold tracking-[0.12em] uppercase mb-1.5";
+    "block font-sans text-slate-500 text-[11px] font-bold tracking-[0.12em] uppercase mb-2";
 
   return (
-    <form onSubmit={handleSubmit} className="pt-5 flex-1 flex flex-col gap-4">
-      <div>
-        <label className={labelCls}>
-          First Name <span className="text-red-500">*</span>
-        </label>
-        <input
-          type="text"
-          value={firstName}
-          onChange={(e) => setFirstName(e.target.value)}
-          placeholder="First name"
-          maxLength={40}
-          className={inputCls}
-        />
-      </div>
+    <form onSubmit={handleSubmit} className="pt-5 flex flex-col gap-4">
+      <div className="space-y-4">
+        <div>
+          <label className={labelCls}>
+            First Name <span className="text-red-500">*</span>
+          </label>
+          <input
+            type="text"
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+            placeholder="First name"
+            maxLength={40}
+            className={inputCls}
+          />
+        </div>
 
-      <div>
-        <label className={labelCls}>
-          Last Name <span className="text-red-500">*</span>
-        </label>
-        <input
-          type="text"
-          required
-          value={lastName}
-          onChange={(e) => setLastName(e.target.value)}
-          placeholder="Last name"
-          maxLength={80}
-          className={inputCls}
-        />
-      </div>
+        <div>
+          <label className={labelCls}>
+            Last Name <span className="text-red-500">*</span>
+          </label>
+          <input
+            type="text"
+            required
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
+            placeholder="Last name"
+            maxLength={80}
+            className={inputCls}
+          />
+        </div>
 
-      <div>
-        <label className={labelCls}>
-          Mobile <span className="text-red-500">*</span>
-        </label>
-        <input
-          type="tel"
-          inputMode="numeric"
-          pattern="[0-9]*"
-          value={mobile}
-          onChange={(e) => setMobile(e.target.value.replace(/\D/g, ""))}
-          placeholder="Phone number"
-          maxLength={10}
-          className={inputCls}
-        />
+        <div>
+          <label className={labelCls}>
+            Mobile <span className="text-red-500">*</span>
+          </label>
+          <input
+            type="tel"
+            inputMode="numeric"
+            pattern="[0-9]*"
+            value={mobile}
+            onChange={(e) => setMobile(e.target.value.replace(/\D/g, ""))}
+            placeholder="Phone number"
+            maxLength={10}
+            className={inputCls}
+          />
+        </div>
       </div>
 
       {error && (
@@ -505,344 +642,23 @@ function WhatsAppEnquiryForm() {
       <button
         type="submit"
         disabled={submitting}
-        className="mt-auto bg-[#f27a1a] hover:bg-[#d96d12] disabled:opacity-60 text-white font-bold text-[14px] tracking-wide py-3.5 px-6 rounded-xl transition-all active:scale-[0.98] flex items-center justify-center gap-2"
+        className="bg-[#f27a1a] hover:bg-[#d96d12] disabled:opacity-60 text-white font-bold text-[14px] tracking-wide py-3.5 px-6 rounded-xl transition-all active:scale-[0.98] flex items-center justify-center gap-2 shadow-[0_8px_22px_-8px_rgba(242,122,26,0.6)]"
       >
         {submitting ? (
           <>
             <Loader2 size={16} className="animate-spin" /> Submitting…
           </>
         ) : (
-          <>Submit</>
-        )}
-      </button>
-    </form>
-  );
-}
-
-/* ── Apply Now Modal ── */
-function ApplyModal({
-  open,
-  onClose,
-  quote,
-  destination,
-  destLabel,
-  zoningCountry,
-  zipcode,
-  actualWt,
-  volWt,
-  length,
-  breadth,
-  height,
-  chargeableWt,
-}: {
-  open: boolean;
-  onClose: () => void;
-  quote: Quote | null;
-  destination: string;
-  destLabel: string;
-  zoningCountry: string;
-  zipcode: string;
-  actualWt: string;
-  volWt: string | null;
-  length: string;
-  breadth: string;
-  height: string;
-  chargeableWt: number;
-}) {
-  const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
-  const [email, setEmail] = useState("");
-  const [submitting, setSubmitting] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
-  const [error, setError] = useState("");
-
-  if (!open || !quote) return null;
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setError("");
-    if (!name.trim() || !phone.trim() || !email.trim()) {
-      setError("All fields are required.");
-      return;
-    }
-    setSubmitting(true);
-    try {
-      const formData = new FormData(e.currentTarget);
-
-      // ── 1. Send to Zoho CRM (existing behavior, unchanged) ──────────────
-      const res = await fetch("https://crm.zoho.in/crm/WebToLeadForm", {
-        method: "POST",
-        body: formData,
-        cache: "no-cache",
-      });
-      const contentType = res.headers.get("Content-Type");
-      const data =
-        contentType && contentType.includes("application/json")
-          ? await res.json()
-          : await res.text();
-      if (typeof data === "object") {
-        if (
-          data.actionsubmit === "error_msg" ||
-          data.actionsubmit === "captcha_error"
-        ) {
-          throw new Error(data.message || "Submission failed");
-        }
-      }
-
-      // ── 2. Also save to MongoDB via your backend (NEW) ──────────────────
-      try {
-        const backendRes = await fetch(`${API_URL}/quote-enquiries`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "x-database": DB_NAME,
-          },
-          body: JSON.stringify({
-            name: name.trim(),
-            phone: phone.trim(),
-            email: email.trim(),
-            destination,
-            zoningCountry: zoningCountry || "",
-            zipcode: zipcode || "",
-            actualWt: parseFloat(actualWt) || 0,
-            volWt: volWt ? parseFloat(volWt) : 0,
-            chargeableWt: chargeableWt || 0,
-            length: parseFloat(length) || 0,
-            breadth: parseFloat(breadth) || 0,
-            height: parseFloat(height) || 0,
-            service: quote.service,
-            network: quote.network || "",
-            zone: quote.zone || "",
-            rateType: quote.rateType || "",
-            totalPrice: quote.totalPrice || 0,
-            tat: quote.tat || "",
-          }),
-        });
-
-        if (!backendRes.ok) {
-          const errText = await backendRes.text().catch(() => "");
-          console.warn("[Shopkeeper Apply] Backend save failed:", errText);
-        } else {
-          console.log("[Shopkeeper Apply] Saved to MongoDB successfully");
-        }
-      } catch (backendErr) {
-        // Never block the user — Zoho already accepted the lead
-        console.warn("[Shopkeeper Apply] Backend save error:", backendErr);
-      }
-
-      setSubmitted(true);
-      if (typeof window !== "undefined") {
-        window.dataLayer = window.dataLayer || [];
-        window.dataLayer.push({ event: "form_enquiry_success" });
-        if (typeof (window as any).gtag === "function") {
-          (window as any).gtag("event", "conversion", {
-            send_to: "AW-16880308122/jB3TCL-RwNccEJqflPE-",
-          });
-        }
-      }
-    } catch (err: any) {
-      setError(err.message || "An error occurred. Please try again.");
-    } finally {
-      setSubmitting(false);
-    }
-  };
-
-  const handleClose = () => {
-    setName("");
-    setPhone("");
-    setEmail("");
-    setError("");
-    setSubmitted(false);
-    onClose();
-  };
-
-  return (
-    <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
-      <div
-        className="absolute inset-0 bg-black/60 backdrop-blur-sm"
-        onClick={handleClose}
-      />
-      <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden">
-        <div className="bg-[#0D1527] px-6 py-5 flex items-start justify-between">
-          <div>
-            <p className="text-[#f27a1a] text-[11px] font-extrabold tracking-widest uppercase mb-1">
-              Confirm Your Interest
-            </p>
-            <h3 className="text-white font-extrabold text-lg leading-tight">
-              Apply Now
-            </h3>
-          </div>
-          <button
-            onClick={handleClose}
-            className="text-white/50 hover:text-white transition-colors mt-0.5"
-          >
-            <X size={20} />
-          </button>
-        </div>
-
-        {submitted ? (
-          <div className="px-6 py-12 flex flex-col items-center text-center gap-4">
-            <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center">
-              <CheckCircle2 size={32} className="text-green-600" />
-            </div>
-            <div>
-              <p className="font-extrabold text-[#1c1f2e] text-lg">
-                Enquiry Submitted!
-              </p>
-              <p className="text-gray-500 text-sm mt-1">
-                Our team will reach out to you shortly.
-              </p>
-            </div>
-            <button
-              onClick={handleClose}
-              className="mt-2 bg-[#f27a1a] hover:bg-orange-600 text-white font-bold text-sm py-3 px-8 rounded-xl transition-colors"
-            >
-              Done
-            </button>
-          </div>
-        ) : (
           <>
-            <div className="bg-orange-50 border-b border-orange-100 px-6 py-4">
-              <p className="text-[10px] text-gray-400 uppercase tracking-wider font-bold mb-2">
-                Selected Service
-              </p>
-              <div className="flex items-center justify-between gap-4">
-                <div>
-                  <p className="text-sm font-bold text-[#1c1f2e]">
-                    {quote.service}
-                  </p>
-                  <p className="text-xs text-gray-500 mt-0.5">
-                    {destLabel}
-                    {zoningCountry && ` — ${zoningCountry}`}
-                    {zipcode && ` · ${zipcode}`}
-                  </p>
-                  <p className="text-xs text-gray-400 mt-0.5">{quote.tat}</p>
-                </div>
-                <div className="text-right shrink-0">
-                  <p className="text-xl font-extrabold text-[#f27a1a]">
-                    ₹{Math.round(quote.totalPrice).toLocaleString("en-IN")}
-                  </p>
-                  <p className="text-[10px] text-gray-400">
-                    {chargeableWt} kg chargeable
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <form
-              onSubmit={handleSubmit}
-              className="px-6 py-5 flex flex-col gap-4"
-            >
-              <input
-                type="hidden"
-                name="xnQsjsdp"
-                value="3469cc92f353f141a975c84fed6da89424f1095353c0090e640e892f8f1ae05c"
-                readOnly
-              />
-              <input type="hidden" name="zc_gad" value="" readOnly />
-              <input
-                type="hidden"
-                name="xmIwtLD"
-                value="2b1f8115908998ce3f2920a24b04f5580069559bde7bd38e39a6aad3eeb09e1746a031c38fbcb9ee32b83cd1f6946796"
-                readOnly
-              />
-              <input
-                type="hidden"
-                name="actionType"
-                value="TGVhZHM="
-                readOnly
-              />
-              <input type="hidden" name="returnURL" value="null" readOnly />
-              <input type="hidden" name="aG9uZXlwb3Q" value="" readOnly />
-              <input
-                type="hidden"
-                name="Designation"
-                value={quote.totalPrice}
-                readOnly
-              />
-              <input type="hidden" name="Fax" value={quote.service} readOnly />
-
-              <p className="text-sm text-gray-500 font-medium">
-                Fill in your details and our team will contact you to finalise
-                the shipment.
-              </p>
-
-              <div className="relative">
-                <User
-                  size={15}
-                  className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
-                />
-                <input
-                  type="text"
-                  name="Last Name"
-                  required
-                  placeholder="Full Name"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  className="w-full bg-[#f8f9fa] text-[#333] text-sm font-medium rounded-xl pl-10 pr-4 py-3.5 focus:outline-none border border-gray-200 placeholder:text-gray-400 focus:border-orange-300 transition-colors"
-                />
-              </div>
-
-              <div className="relative">
-                <Phone
-                  size={15}
-                  className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
-                />
-                <input
-                  type="tel"
-                  inputMode="numeric"
-                  pattern="[0-9]*"
-                  name="Phone"
-                  required
-                  placeholder="Phone Number"
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value.replace(/\D/g, ""))}
-                  className="w-full bg-[#f8f9fa] text-[#333] text-sm font-medium rounded-xl pl-10 pr-4 py-3.5 focus:outline-none border border-gray-200 placeholder:text-gray-400 focus:border-orange-300 transition-colors"
-                />
-              </div>
-
-              <div className="relative">
-                <Mail
-                  size={15}
-                  className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
-                />
-                <input
-                  type="email"
-                  name="Email"
-                  required
-                  placeholder="Email Address"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="w-full bg-[#f8f9fa] text-[#333] text-sm font-medium rounded-xl pl-10 pr-4 py-3.5 focus:outline-none border border-gray-200 placeholder:text-gray-400 focus:border-orange-300 transition-colors"
-                />
-              </div>
-
-              {error && (
-                <div className="bg-red-50 border border-red-200 text-red-600 rounded-xl px-4 py-3 text-xs font-semibold flex items-center gap-2">
-                  <span>⚠️</span> {error}
-                </div>
-              )}
-
-              <button
-                type="submit"
-                disabled={submitting}
-                className="bg-[#f27a1a] hover:bg-orange-600 disabled:opacity-60 text-white font-bold text-sm py-3.5 px-6 rounded-xl transition-all active:scale-98 flex items-center justify-center gap-2 mt-1"
-              >
-                {submitting ? (
-                  <>
-                    <Loader2 size={16} className="animate-spin" /> Submitting…
-                  </>
-                ) : (
-                  <>
-                    Submit Enquiry <Send size={15} strokeWidth={2.5} />
-                  </>
-                )}
-              </button>
-            </form>
+            Submit enquiry <Send size={15} strokeWidth={2.5} />
           </>
         )}
-      </div>
-    </div>
+      </button>
+
+      <p className="text-[11px] text-slate-400 text-center leading-relaxed">
+        We&apos;ll reach out on WhatsApp to confirm your shipment details.
+      </p>
+    </form>
   );
 }
 
@@ -854,7 +670,6 @@ function QuotesModal({
   selectedService,
   onSelect,
   onClose,
-  onApplyNow,
 }: {
   quotes: Quote[];
   destLabel: string;
@@ -862,7 +677,6 @@ function QuotesModal({
   selectedService: string | null;
   onSelect: (key: string) => void;
   onClose: () => void;
-  onApplyNow: () => void;
 }) {
   const { t } = useLanguage();
   const [filter, setFilter] = useState<FilterType>("all");
@@ -942,20 +756,16 @@ function QuotesModal({
     setExpandedRestrictions(expandedRestrictions === key ? null : key);
   };
 
-  const selectedQuote =
-    quotes.find((q) => `${q.service}__${q.rateType}` === selectedService) ??
-    null;
-
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4"
-      style={{ background: "rgba(0,0,0,0.65)" }}
+      style={{ background: "rgba(0,0,0,0.7)" }}
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose();
       }}
     >
-      <div className="bg-[#0D1527] rounded-2xl w-full max-w-7xl max-h-[95vh] sm:max-h-[90vh] min-h-[380px] flex flex-col shadow-2xl border border-white/10">
-        <div className="flex items-start justify-between gap-3 p-4 sm:p-5 border-b border-white/10 shrink-0">
+      <div className="bg-[#0D1527] rounded-2xl w-full max-w-7xl max-h-[95vh] sm:max-h-[92vh] min-h-[420px] flex flex-col shadow-2xl border border-white/10 overflow-hidden">
+        <div className="flex items-start justify-between gap-3 px-4 sm:px-6 py-4 border-b border-white/10 shrink-0">
           <div className="min-w-0">
             <p className="text-white font-bold text-sm sm:text-base truncate">
               {destLabel}
@@ -967,278 +777,266 @@ function QuotesModal({
           </div>
           <button
             onClick={onClose}
-            className="text-zinc-500 hover:text-white transition-colors p-1 mt-0.5 shrink-0"
+            className="text-zinc-500 hover:text-white transition-colors p-1 mt-0.5 shrink-0 rounded-lg hover:bg-white/10"
           >
             <X size={18} />
           </button>
         </div>
 
-        <div className="px-4 sm:px-5 py-3 border-b border-white/10 flex items-center justify-between flex-wrap gap-2 shrink-0">
-          <div className="flex items-center gap-2 flex-wrap">
-            <Filter size={14} className="text-zinc-400 shrink-0" />
-            <span className="text-zinc-400 text-[10px] sm:text-[11px] font-medium uppercase tracking-wider">
-              Sort by:
-            </span>
-            <div className="flex gap-1.5 ml-1 flex-wrap">
+        <div className="flex-1 min-h-0 flex flex-col overflow-hidden">
+          <div className="px-4 sm:px-6 py-3 border-b border-white/10 flex items-center justify-between flex-wrap gap-2 shrink-0">
+            <div className="flex items-center gap-2 flex-wrap">
+              <Filter
+                size={14}
+                className="text-zinc-400 shrink-0 hidden sm:block"
+              />
+              <span className="text-zinc-400 text-[10px] sm:text-[11px] font-medium uppercase tracking-wider">
+                Sort by:
+              </span>
+              <div className="flex gap-1.5 ml-1 flex-wrap">
+                <button
+                  onClick={() => {
+                    setIsManualSelection(false);
+                    setFilter("all");
+                  }}
+                  className={`px-2.5 sm:px-3 py-1.5 rounded-lg text-[10px] sm:text-[11px] font-semibold transition-all ${
+                    filter === "all"
+                      ? "bg-[#f27a1a] text-white"
+                      : "bg-white/10 text-zinc-400 hover:bg-white/20 hover:text-white"
+                  }`}
+                >
+                  Default
+                </button>
+                <button
+                  onClick={() => {
+                    setIsManualSelection(false);
+                    setFilter("cheapest");
+                  }}
+                  className={`px-2.5 sm:px-3 py-1.5 rounded-lg text-[10px] sm:text-[11px] font-semibold transition-all flex items-center gap-1 ${
+                    filter === "cheapest"
+                      ? "bg-[#f27a1a] text-white"
+                      : "bg-white/10 text-zinc-400 hover:bg-white/20 hover:text-white"
+                  }`}
+                >
+                  <TrendingDown size={12} />
+                  <span className="hidden xs:inline">Most Affordable</span>
+                  <span className="xs:hidden">Cheapest</span>
+                </button>
+                <button
+                  onClick={() => {
+                    setIsManualSelection(false);
+                    setFilter("fastest");
+                  }}
+                  className={`px-2.5 sm:px-3 py-1.5 rounded-lg text-[10px] sm:text-[11px] font-semibold transition-all flex items-center gap-1 ${
+                    filter === "fastest"
+                      ? "bg-[#f27a1a] text-white"
+                      : "bg-white/10 text-zinc-400 hover:bg-white/20 hover:text-white"
+                  }`}
+                >
+                  <Clock size={12} /> Fastest
+                </button>
+              </div>
+            </div>
+            <div className="flex gap-1">
               <button
-                onClick={() => {
-                  setIsManualSelection(false);
-                  setFilter("all");
-                }}
-                className={`px-2.5 sm:px-3 py-1.5 rounded-lg text-[10px] sm:text-[11px] font-semibold transition-all ${
-                  filter === "all"
-                    ? "bg-[#f27a1a] text-white"
-                    : "bg-white/10 text-zinc-400 hover:bg-white/20 hover:text-white"
-                }`}
+                onClick={() => scroll("left")}
+                className="p-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-zinc-400 hover:text-white transition-all"
               >
-                Default
+                <ChevronLeft size={16} />
               </button>
               <button
-                onClick={() => {
-                  setIsManualSelection(false);
-                  setFilter("cheapest");
-                }}
-                className={`px-2.5 sm:px-3 py-1.5 rounded-lg text-[10px] sm:text-[11px] font-semibold transition-all flex items-center gap-1 ${
-                  filter === "cheapest"
-                    ? "bg-[#f27a1a] text-white"
-                    : "bg-white/10 text-zinc-400 hover:bg-white/20 hover:text-white"
-                }`}
+                onClick={() => scroll("right")}
+                className="p-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-zinc-400 hover:text-white transition-all"
               >
-                <TrendingDown size={12} />
-                <span className="hidden xs:inline">Most Affordable</span>
-                <span className="xs:hidden">Cheapest</span>
-              </button>
-              <button
-                onClick={() => {
-                  setIsManualSelection(false);
-                  setFilter("fastest");
-                }}
-                className={`px-2.5 sm:px-3 py-1.5 rounded-lg text-[10px] sm:text-[11px] font-semibold transition-all flex items-center gap-1 ${
-                  filter === "fastest"
-                    ? "bg-[#f27a1a] text-white"
-                    : "bg-white/10 text-zinc-400 hover:bg-white/20 hover:text-white"
-                }`}
-              >
-                <Clock size={12} /> Fastest
+                <ChevronRight size={16} />
               </button>
             </div>
           </div>
-          <div className="flex gap-1">
-            <button
-              onClick={() => scroll("left")}
-              className="p-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-zinc-400 hover:text-white transition-all"
-            >
-              <ChevronLeft size={16} />
-            </button>
-            <button
-              onClick={() => scroll("right")}
-              className="p-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-zinc-400 hover:text-white transition-all"
-            >
-              <ChevronRight size={16} />
-            </button>
-          </div>
-        </div>
 
-        <div
-          ref={scrollContainerRef}
-          className="flex-1 min-h-0 overflow-x-auto overflow-y-auto p-3 sm:p-5 gap-3 sm:gap-5 flex items-start scrollbar-thin scrollbar-thumb-zinc-600 scrollbar-track-transparent"
-          style={{
-            scrollbarWidth: "thin",
-            scrollbarColor: "#3f3f46 transparent",
-          }}
-        >
-          {displayedQuotes.map((q, index) => {
-            const key = `${q.service}__${q.rateType}`;
-            const isSelected = selectedService === key;
-            const networkColor =
-              NETWORK_COLORS[q.network] ?? "bg-gray-100 text-gray-700";
-            const networkLabel = NETWORK_LABELS[q.network] ?? q.network;
-            const dutyPaid = q.network === "SELF";
-            const restrictions = getShippingRestrictions(q.network, t);
-            const isExpanded = expandedRestrictions === key;
+          <div
+            ref={scrollContainerRef}
+            className="flex-1 min-h-0 overflow-x-auto overflow-y-auto p-3 sm:p-5 gap-3 sm:gap-4 flex items-start scrollbar-thin scrollbar-thumb-zinc-600 scrollbar-track-transparent"
+            style={{
+              scrollbarWidth: "thin",
+              scrollbarColor: "#3f3f46 transparent",
+            }}
+          >
+            {displayedQuotes.map((q, index) => {
+              const key = `${q.service}__${q.rateType}`;
+              const isSelected = selectedService === key;
+              const networkColor =
+                NETWORK_COLORS[q.network] ?? "bg-gray-100 text-gray-700";
+              const networkLabel = NETWORK_LABELS[q.network] ?? q.network;
+              const dutyPaid = q.network === "SELF";
+              const restrictions = getShippingRestrictions(q.network, t);
+              const isExpanded = expandedRestrictions === key;
 
-            let badge = "";
-            if (filter === "cheapest" && index === 0) badge = "🏆 Best Price";
-            else if (filter === "fastest" && index === 0) badge = "⚡ Fastest";
+              let badge = "";
+              if (filter === "cheapest" && index === 0) badge = "🏆 Best Price";
+              else if (filter === "fastest" && index === 0)
+                badge = "⚡ Fastest";
 
-            return (
-              <div
-                key={key}
-                data-service-key={key}
-                onClick={() => handleServiceSelect(key)}
-                className={`relative rounded-xl border-2 cursor-pointer transition-all min-w-[82vw] xs:min-w-[300px] sm:min-w-[300px] max-w-[340px] flex-shrink-0 flex flex-col max-h-full ${
-                  isSelected
-                    ? "border-[#f27a1a] bg-[#f27a1a]/10"
-                    : "border-zinc-700 bg-zinc-800/60 hover:border-zinc-500"
-                }`}
-              >
-                {isSelected && (
-                  <div className="absolute -top-2.5 left-3 z-10 bg-[#f27a1a] text-white text-[9px] font-bold px-2 py-0.5 rounded-full shadow-sm">
-                    {t.form_selected}
-                  </div>
-                )}
-                {badge && (
-                  <div className="absolute -top-2.5 right-3 z-10 bg-emerald-500 text-white text-[9px] font-bold px-2 py-0.5 rounded-full shadow-sm">
-                    {badge}
-                  </div>
-                )}
+              return (
+                <div
+                  key={key}
+                  data-service-key={key}
+                  onClick={() => handleServiceSelect(key)}
+                  className={`relative rounded-xl border-2 cursor-pointer transition-all min-w-[82vw] xs:min-w-[280px] sm:min-w-[280px] max-w-[320px] flex-shrink-0 flex flex-col max-h-full ${
+                    isSelected
+                      ? "border-[#f27a1a] bg-[#f27a1a]/10 shadow-[0_0_0_1px_rgba(242,122,26,0.3)]"
+                      : "border-zinc-700 bg-zinc-800/60 hover:border-zinc-500"
+                  }`}
+                >
+                  {isSelected && (
+                    <div className="absolute -top-2.5 left-3 z-10 bg-[#f27a1a] text-white text-[9px] font-bold px-2 py-0.5 rounded-full shadow-sm">
+                      {t.form_selected}
+                    </div>
+                  )}
+                  {badge && (
+                    <div className="absolute -top-2.5 right-3 z-10 bg-emerald-500 text-white text-[9px] font-bold px-2 py-0.5 rounded-full shadow-sm">
+                      {badge}
+                    </div>
+                  )}
 
-                <div className="flex flex-col gap-3 h-full p-4 sm:p-5 overflow-y-auto rounded-xl">
-                  <div className="flex items-center gap-1.5 flex-wrap">
-                    <span
-                      className={`text-[10px] font-semibold px-2.5 py-0.5 rounded-full ${networkColor}`}
-                    >
-                      {q.service}
-                    </span>
-                    {q.zone && (
-                      <span className="text-[10px] bg-white/10 text-zinc-300 px-2.5 py-0.5 rounded-full font-mono">
-                        {t.form_zone} {q.zone}
+                  <div className="flex flex-col gap-3 h-full p-4 sm:p-5 overflow-y-auto rounded-xl">
+                    <div className="flex items-center gap-1.5 flex-wrap">
+                      <span
+                        className={`text-[10px] font-semibold px-2.5 py-0.5 rounded-full ${networkColor}`}
+                      >
+                        {q.service}
                       </span>
-                    )}
-                    <span className="text-[10px] bg-white/10 text-zinc-300 px-2.5 py-0.5 rounded-full">
-                      {q.rateType === "S" ? t.form_slab : t.form_per_kg}
-                    </span>
-                    {dutyPaid ? (
-                      <span className="inline-flex items-center gap-1 text-[10px] font-medium px-2.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/20">
-                        <CheckCircle2 size={10} strokeWidth={2} />{" "}
-                        {t.form_duty_paid}
+                      {q.zone && (
+                        <span className="text-[10px] bg-white/10 text-zinc-300 px-2.5 py-0.5 rounded-full font-mono">
+                          {t.form_zone} {q.zone}
+                        </span>
+                      )}
+                      <span className="text-[10px] bg-white/10 text-zinc-300 px-2.5 py-0.5 rounded-full">
+                        {q.rateType === "S" ? t.form_slab : t.form_per_kg}
                       </span>
-                    ) : (
-                      <span className="inline-flex items-center gap-1 text-[10px] font-medium px-2.5 py-0.5 rounded-full bg-rose-500/15 text-rose-400 border border-rose-500/20">
-                        <AlertCircle size={10} strokeWidth={2} />{" "}
-                        {t.form_duty_unpaid}
-                      </span>
-                    )}
-                  </div>
+                      {dutyPaid ? (
+                        <span className="inline-flex items-center gap-1 text-[10px] font-medium px-2.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/20">
+                          <CheckCircle2 size={10} strokeWidth={2} />{" "}
+                          {t.form_duty_paid}
+                        </span>
+                      ) : (
+                        <span className="inline-flex items-center gap-1 text-[10px] font-medium px-2.5 py-0.5 rounded-full bg-rose-500/15 text-rose-400 border border-rose-500/20">
+                          <AlertCircle size={10} strokeWidth={2} />{" "}
+                          {t.form_duty_unpaid}
+                        </span>
+                      )}
+                    </div>
 
-                  <div className="flex">
-                    <p className="text-[18px] sm:text-[20px] font-semibold text-white leading-snug tracking-wide">
-                      {networkLabel}
-                    </p>
-                  </div>
+                    <div className="flex">
+                      <p className="text-[18px] sm:text-[20px] font-semibold text-white leading-snug tracking-wide">
+                        {networkLabel}
+                      </p>
+                    </div>
 
-                  <div className="flex-1 border-t border-white/10 pt-2">
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        toggleRestrictions(key);
-                      }}
-                      className="flex items-center gap-2 text-[11px] sm:text-[12px] text-zinc-400 hover:text-white transition-colors font-medium group w-full"
-                    >
-                      <Info
-                        size={15}
-                        className="text-zinc-500 group-hover:text-white transition-colors shrink-0"
-                      />
-                      <span className="truncate">
-                        {t.restriction_view_details}
-                      </span>
-                      <ChevronDown
-                        size={15}
-                        className={`ml-auto shrink-0 transition-transform duration-300 ${isExpanded ? "rotate-180" : ""}`}
-                      />
-                    </button>
+                    <div className="flex-1 border-t border-white/10 pt-2">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          toggleRestrictions(key);
+                        }}
+                        className="flex items-center gap-2 text-[11px] sm:text-[12px] text-zinc-400 hover:text-white transition-colors font-medium group w-full"
+                      >
+                        <Info
+                          size={15}
+                          className="text-zinc-500 group-hover:text-white transition-colors shrink-0"
+                        />
+                        <span className="truncate">
+                          {t.restriction_view_details}
+                        </span>
+                        <ChevronDown
+                          size={15}
+                          className={`ml-auto shrink-0 transition-transform duration-300 ${
+                            isExpanded ? "rotate-180" : ""
+                          }`}
+                        />
+                      </button>
 
-                    {isExpanded && (
-                      <div className="mt-3 space-y-2.5 text-[10.5px] sm:text-[11px] bg-white/5 rounded-lg p-3 sm:p-3.5 border border-white/10">
-                        {restrictions.blocked.length > 0 && (
-                          <div>
-                            <p className="text-rose-400 font-semibold flex items-center gap-2 text-[11px] sm:text-[12px]">
-                              <span>❌</span> {t.restriction_blocked}:
+                      {isExpanded && (
+                        <div className="mt-3 space-y-2.5 text-[10.5px] sm:text-[11px] bg-white/5 rounded-lg p-3 sm:p-3.5 border border-white/10">
+                          {restrictions.blocked.length > 0 && (
+                            <div>
+                              <p className="text-rose-400 font-semibold flex items-center gap-2 text-[11px] sm:text-[12px]">
+                                <span>❌</span> {t.restriction_blocked}:
+                              </p>
+                              <ul className="text-zinc-300 ml-6 sm:ml-7 list-disc space-y-0.5 mt-1">
+                                {restrictions.blocked.map((item, i) => (
+                                  <li key={i} className="leading-relaxed">
+                                    {item}
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          )}
+                          {restrictions.warning.length > 0 && (
+                            <div>
+                              <p className="text-amber-400 font-semibold flex items-center gap-2 text-[11px] sm:text-[12px]">
+                                <span>⚠️</span> {t.restriction_warning}:
+                              </p>
+                              <ul className="text-zinc-300 ml-6 sm:ml-7 list-disc space-y-0.5 mt-1">
+                                {restrictions.warning.map((item, i) => (
+                                  <li key={i} className="leading-relaxed">
+                                    {item}
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          )}
+                          {restrictions.allowed.length > 0 && (
+                            <div>
+                              <p className="text-emerald-400 font-semibold flex items-center gap-2 text-[11px] sm:text-[12px]">
+                                <span>✅</span> {t.restriction_allowed}:
+                              </p>
+                              <ul className="text-zinc-300 ml-6 sm:ml-7 list-disc space-y-0.5 mt-1">
+                                {restrictions.allowed.map((item, i) => (
+                                  <li key={i} className="leading-relaxed">
+                                    {item}
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          )}
+                          {restrictions.note && (
+                            <p className="text-zinc-400 italic mt-2 text-[10px] sm:text-[10.5px] border-t border-white/5 pt-2">
+                              {restrictions.note}
                             </p>
-                            <ul className="text-zinc-300 ml-6 sm:ml-7 list-disc space-y-0.5 mt-1">
-                              {restrictions.blocked.map((item, i) => (
-                                <li key={i} className="leading-relaxed">
-                                  {item}
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                        )}
-                        {restrictions.warning.length > 0 && (
-                          <div>
-                            <p className="text-amber-400 font-semibold flex items-center gap-2 text-[11px] sm:text-[12px]">
-                              <span>⚠️</span> {t.restriction_warning}:
-                            </p>
-                            <ul className="text-zinc-300 ml-6 sm:ml-7 list-disc space-y-0.5 mt-1">
-                              {restrictions.warning.map((item, i) => (
-                                <li key={i} className="leading-relaxed">
-                                  {item}
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                        )}
-                        {restrictions.allowed.length > 0 && (
-                          <div>
-                            <p className="text-emerald-400 font-semibold flex items-center gap-2 text-[11px] sm:text-[12px]">
-                              <span>✅</span> {t.restriction_allowed}:
-                            </p>
-                            <ul className="text-zinc-300 ml-6 sm:ml-7 list-disc space-y-0.5 mt-1">
-                              {restrictions.allowed.map((item, i) => (
-                                <li key={i} className="leading-relaxed">
-                                  {item}
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                        )}
-                        {restrictions.note && (
-                          <p className="text-zinc-400 italic mt-2 text-[10px] sm:text-[10.5px] border-t border-white/5 pt-2">
-                            {restrictions.note}
-                          </p>
-                        )}
+                          )}
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="flex items-center justify-between pt-2 border-t border-white/5">
+                      <p className="text-[11px] sm:text-[12px] text-zinc-400 font-medium">
+                        {q.tat}
+                      </p>
+                      <div className="text-right">
+                        <p className="text-[20px] sm:text-[22px] font-extrabold text-[#f27a1a] leading-none tracking-tight">
+                          ₹{Math.round(q.totalPrice).toLocaleString("en-IN")}
+                        </p>
+                        <p className="text-[9px] sm:text-[10px] text-zinc-500 mt-0.5 font-medium tracking-wide uppercase">
+                          {t.form_gst_inc}
+                        </p>
                       </div>
-                    )}
-                  </div>
-
-                  <div className="flex items-center justify-between pt-2 border-t border-white/5">
-                    <p className="text-[11px] sm:text-[12px] text-zinc-400 font-medium">
-                      {q.tat}
-                    </p>
-                    <div className="text-right">
-                      <p className="text-[20px] sm:text-[22px] font-extrabold text-[#f27a1a] leading-none tracking-tight">
-                        ₹{Math.round(q.totalPrice).toLocaleString("en-IN")}
-                      </p>
-                      <p className="text-[9px] sm:text-[10px] text-zinc-500 mt-0.5 font-medium tracking-wide uppercase">
-                        {t.form_gst_inc}
-                      </p>
                     </div>
                   </div>
                 </div>
-              </div>
-            );
-          })}
-        </div>
-
-        {selectedService && selectedQuote && (
-          <div className="px-4 sm:px-5 pt-3 shrink-0">
-            <div className="bg-white/5 rounded-2xl border-2 border-[#f27a1a] p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-              <div>
-                <p className="text-xs text-zinc-400 font-medium">
-                  Ready to ship with
-                </p>
-                <p className="text-sm font-extrabold text-white mt-0.5 leading-tight">
-                  {selectedQuote.service}
-                </p>
-                <p className="text-[#f27a1a] font-extrabold text-lg mt-0.5">
-                  ₹
-                  {Math.round(selectedQuote.totalPrice).toLocaleString("en-IN")}
-                </p>
-              </div>
-              <button
-                onClick={onApplyNow}
-                className="shrink-0 bg-[#f27a1a] hover:bg-[#d96d12] text-white font-extrabold text-sm py-3.5 px-7 rounded-xl transition-all active:scale-98 flex items-center gap-2 shadow-md shadow-orange-900/30 w-full sm:w-auto justify-center"
-              >
-                Enquire Now <ArrowUpRight size={16} strokeWidth={2.5} />
-              </button>
-            </div>
+              );
+            })}
           </div>
-        )}
 
-        <div className="px-4 sm:px-5 py-3 border-t border-white/10 text-center shrink-0">
-          <p className="text-[10px] sm:text-[11px] text-zinc-500">
-            {t.form_final_rates_msg}
-          </p>
+          <div className="px-4 sm:px-6 py-3 border-t border-white/10 text-center shrink-0 bg-[#0D1527]">
+            <p className="text-base sm:text-sm text-zinc-300 font-semibold leading-relaxed">
+              <span className="mr-1">✅</span>
+              Your enquiry has been submitted. Our team will contact you
+              shortly.
+              <span className="mt-1 block sm:inline text-zinc-500">
+                {t.form_final_rates_msg}
+              </span>
+            </p>
+          </div>
         </div>
       </div>
     </div>
@@ -1247,21 +1045,13 @@ function QuotesModal({
 
 /* ── Quote Calculator ── */
 function QuoteCalculator({
-  onApplyQuote,
+  contact,
+  setContact,
+  onLoginRequest,
 }: {
-  onApplyQuote: (data: {
-    quote: Quote;
-    destination: string;
-    destLabel: string;
-    zoningCountry: string;
-    zipcode: string;
-    actualWt: string;
-    volWt: string | null;
-    length: string;
-    breadth: string;
-    height: string;
-    chargeableWt: number;
-  }) => void;
+  contact: StoredContact;
+  setContact: (c: StoredContact) => void;
+  onLoginRequest: () => void;
 }) {
   const { t } = useLanguage();
 
@@ -1276,6 +1066,7 @@ function QuoteCalculator({
   const [selectedService, setSelectedService] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [formError, setFormError] = useState("");
 
   const destObj = DESTINATIONS.find((d) => d.value === destination);
   const requiresZip = destObj?.requiresZip ?? false;
@@ -1294,24 +1085,36 @@ function QuoteCalculator({
     ? Math.ceil(Math.max(parseFloat(actualWt) || 0, parseFloat(volWt)))
     : Math.ceil(parseFloat(actualWt) || 0);
 
-  const selectedQuoteObj =
-    quotes.find((q) => `${q.service}__${q.rateType}` === selectedService) ??
-    null;
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setFormError("");
+
     if (!destination || !actualWt) {
-      alert("Please select a destination and enter actual weight");
+      setFormError("Please select a destination and enter actual weight");
       return;
     }
     if (requiresZip && !zipcode.trim()) {
-      alert("Please enter the zipcode/postcode for this destination.");
+      setFormError("Please enter the zipcode/postcode for this destination.");
       return;
     }
     if (requiresSubCountry && !zoningCountry) {
-      alert(`Please select a specific country within ${destObj?.label}.`);
+      setFormError(
+        `Please select a specific country within ${destObj?.label}.`,
+      );
       return;
     }
+
+    if (!contact.name.trim()) {
+      setFormError("Please enter your full name.");
+      return;
+    }
+    if (!/^\d{10}$/.test(contact.phone.trim())) {
+      setFormError("Please enter a valid 10-digit mobile number.");
+      return;
+    }
+
+    saveStoredContact(contact);
+
     setLoading(true);
     setQuotes([]);
     setSelectedService(null);
@@ -1327,39 +1130,39 @@ function QuoteCalculator({
       });
       const data = await res.json();
       if (data.success && data.quotes?.length > 0) {
-        setQuotes(data.quotes);
-        setSelectedService(
-          `${data.quotes[0].service}__${data.quotes[0].rateType}`,
+        const fetchedQuotes: Quote[] = data.quotes;
+        setQuotes(fetchedQuotes);
+        const firstKey = `${fetchedQuotes[0].service}__${fetchedQuotes[0].rateType}`;
+        setSelectedService(firstKey);
+
+        submitQuoteEnquiry({
+          contact,
+          quote: fetchedQuotes[0],
+          destination,
+          zoningCountry,
+          zipcode,
+          actualWt,
+          volWt,
+          length,
+          breadth,
+          height,
+          chargeableWt,
+        }).catch((err) =>
+          console.warn("[Quote Enquiry] Background submit error:", err),
         );
+
         setShowModal(true);
       } else {
-        alert(
+        setFormError(
           data.message ||
             "No services available for this destination/weight combination.",
         );
       }
     } catch (err: any) {
-      alert("Failed to get quote: " + err.message);
+      setFormError("Failed to get quote: " + err.message);
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleApplyNow = () => {
-    if (!selectedQuoteObj) return;
-    onApplyQuote({
-      quote: selectedQuoteObj,
-      destination,
-      destLabel: destObj?.label ?? destination,
-      zoningCountry,
-      zipcode,
-      actualWt,
-      volWt,
-      length,
-      breadth,
-      height,
-      chargeableWt,
-    });
   };
 
   const inputCls =
@@ -1377,11 +1180,10 @@ function QuoteCalculator({
           selectedService={selectedService}
           onSelect={setSelectedService}
           onClose={() => setShowModal(false)}
-          onApplyNow={handleApplyNow}
         />
       )}
 
-      <div className="bg-[#f27a1a] rounded-[22px] p-5 sm:p-6 shadow-[0_18px_45px_-18px_rgba(242,122,26,0.55)] flex flex-col">
+      <div className="bg-[#f27a1a] rounded-[22px] p-5 sm:p-6 shadow-[0_18px_45px_-18px_rgba(242,122,26,0.55)] flex flex-col h-full">
         <div className="flex items-center justify-between gap-3 pb-4 border-b border-white/25">
           <div>
             <p className="text-[11px] sm:text-[12px] font-bold tracking-[0.18em] uppercase text-white/90">
@@ -1404,6 +1206,77 @@ function QuoteCalculator({
           onSubmit={handleSubmit}
           className="pt-5 flex-1 flex flex-col gap-4"
         >
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label className={labelCls}>
+                Full Name <span className="text-red-200">*</span>
+              </label>
+              <div className="relative">
+                <User
+                  size={15}
+                  className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400"
+                />
+                <input
+                  type="text"
+                  placeholder="Your name"
+                  value={contact.name}
+                  onChange={(e) =>
+                    setContact({ ...contact, name: e.target.value })
+                  }
+                  className={`${inputCls} pl-10`}
+                />
+              </div>
+            </div>
+            <div>
+              <label className={labelCls}>
+                Phone <span className="text-red-200">*</span>
+              </label>
+              <div className="relative">
+                <Phone
+                  size={15}
+                  className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400"
+                />
+                <input
+                  type="tel"
+                  inputMode="numeric"
+                  pattern="[0-9]*"
+                  placeholder="10-digit mobile"
+                  value={contact.phone}
+                  onChange={(e) =>
+                    setContact({
+                      ...contact,
+                      phone: e.target.value.replace(/\D/g, "").slice(0, 10),
+                    })
+                  }
+                  maxLength={10}
+                  className={`${inputCls} pl-10`}
+                />
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <label className={labelCls}>
+              Email{" "}
+              <span className="text-white/60 text-[10px]">(optional)</span>
+            </label>
+            <div className="relative">
+              <Mail
+                size={15}
+                className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400"
+              />
+              <input
+                type="email"
+                placeholder="you@example.com"
+                value={contact.email}
+                onChange={(e) =>
+                  setContact({ ...contact, email: e.target.value })
+                }
+                className={`${inputCls} pl-10`}
+              />
+            </div>
+          </div>
+
           <div>
             <label className={labelCls}>Destination Country</label>
             <div className="relative">
@@ -1535,6 +1408,12 @@ function QuoteCalculator({
             </div>
           )}
 
+          {formError && (
+            <div className="bg-white/95 border border-red-200 text-red-600 rounded-xl px-4 py-2.5 text-xs font-semibold flex items-center gap-2">
+              <span>⚠️</span> {formError}
+            </div>
+          )}
+
           <button
             type="submit"
             disabled={loading}
@@ -1550,6 +1429,36 @@ function QuoteCalculator({
               </>
             )}
           </button>
+
+          <p className="text-[11px] text-white/70 text-center leading-relaxed">
+            Your details are submitted along with the quote request. We&apos;ll
+            reach out on WhatsApp / phone.
+          </p>
+
+          {/* ── Bulk rates login prompt ── */}
+          <div className="mt-1 rounded-xl bg-white/15 border border-white/30 px-4 py-3.5 flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
+            <div className="flex items-center gap-3 flex-1 min-w-0">
+              <div className="shrink-0 h-9 w-9 rounded-full bg-white/25 flex items-center justify-center">
+                <Lock size={16} className="text-white" strokeWidth={2.5} />
+              </div>
+              <div className="min-w-0">
+                <p className="text-white text-[13px] sm:text-[14px] font-bold leading-tight">
+                  Want bulk rates?
+                </p>
+                <p className="text-white/80 text-[11.5px] sm:text-[12.5px] leading-tight mt-0.5">
+                  Login to unlock your exclusive shopkeeper pricing.
+                </p>
+              </div>
+            </div>
+            <button
+              type="button"
+              onClick={onLoginRequest}
+              className="shrink-0 inline-flex items-center justify-center gap-1.5 bg-white text-[#f27a1a] hover:bg-white/90 font-extrabold text-[12.5px] sm:text-[13px] px-4 py-2.5 rounded-lg transition-all active:scale-[0.97] shadow-sm"
+            >
+              Login first
+              <ArrowUpRight size={14} strokeWidth={2.8} />
+            </button>
+          </div>
         </form>
       </div>
     </>
@@ -1558,26 +1467,26 @@ function QuoteCalculator({
 
 /* ── Shopkeeper Page ── */
 export default function ShopkeeperPage() {
-  const [applyModalData, setApplyModalData] = useState<{
-    quote: Quote;
-    destination: string;
-    destLabel: string;
-    zoningCountry: string;
-    zipcode: string;
-    actualWt: string;
-    volWt: string | null;
-    length: string;
-    breadth: string;
-    height: string;
-    chargeableWt: number;
-  } | null>(null);
-  const [applyModalOpen, setApplyModalOpen] = useState(false);
+  const [contact, setContact] = useState<StoredContact>({
+    name: "",
+    phone: "",
+    email: "",
+  });
+  const [contactLoaded, setContactLoaded] = useState(false);
+  const [showShopkeeperLogin, setShowShopkeeperLogin] = useState(false);
 
-  /* ── "Compare your rate" handler: sends a Zoho lead, then opens WhatsApp ── */
+  useEffect(() => {
+    setContact(loadStoredContact());
+    setContactLoaded(true);
+  }, []);
+
+  useEffect(() => {
+    if (contactLoaded) saveStoredContact(contact);
+  }, [contact, contactLoaded]);
+
   const handleCompareRate = async (location: string) => {
     trackWhatsApp(location);
 
-    // Fire the lead to Zoho CRM
     await submitZohoLead({
       firstName: "",
       lastName: "",
@@ -1585,7 +1494,6 @@ export default function ShopkeeperPage() {
       description: "Clicked 'Compare your rate' on shopkeeper hero",
     });
 
-    // Analytics
     if (typeof window !== "undefined") {
       (window as any).dataLayer = (window as any).dataLayer || [];
       (window as any).dataLayer.push({
@@ -1600,7 +1508,6 @@ export default function ShopkeeperPage() {
       }
     }
 
-    // Open WhatsApp
     const waUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
       "Hi Manvi, I export from India and want to compare my shipping rates.",
     )}`;
@@ -1609,7 +1516,6 @@ export default function ShopkeeperPage() {
 
   return (
     <div className="w-full font-sans bg-[#f4f5f7] text-[#1c1f2e] antialiased overflow-x-hidden">
-      {/* Keyframe animation helpers */}
       <style>{`
         @keyframes skDraw { to { stroke-dashoffset: 0; } }
         @keyframes skPop { from { opacity: 0; } to { opacity: 1; } }
@@ -1626,31 +1532,8 @@ export default function ShopkeeperPage() {
         details summary::-webkit-details-marker { display: none; }
       `}</style>
 
-      {/* Apply Modal */}
-      {applyModalData && (
-        <ApplyModal
-          open={applyModalOpen}
-          onClose={() => {
-            setApplyModalOpen(false);
-            setApplyModalData(null);
-          }}
-          quote={applyModalData.quote}
-          destination={applyModalData.destination}
-          destLabel={applyModalData.destLabel}
-          zoningCountry={applyModalData.zoningCountry}
-          zipcode={applyModalData.zipcode}
-          actualWt={applyModalData.actualWt}
-          volWt={applyModalData.volWt}
-          length={applyModalData.length}
-          breadth={applyModalData.breadth}
-          height={applyModalData.height}
-          chargeableWt={applyModalData.chargeableWt}
-        />
-      )}
-
-      {/* ── 1. HERO CONTAINER ── */}
+      {/* ── 1. HERO ── */}
       <section className="w-full max-w-[1400px] mx-auto px-3.5 sm:px-6 pt-4 sm:pt-6 pb-2">
-        {/* ── DESKTOP HERO ── */}
         <div className="hidden md:flex relative overflow-hidden rounded-[28px] lg:rounded-[32px] text-white border border-white/10 shadow-2xl min-h-[460px] lg:min-h-[500px] flex-col justify-center">
           <Image
             src="/laptop banner.webp"
@@ -1742,7 +1625,7 @@ export default function ShopkeeperPage() {
           </div>
         </div>
 
-        {/* ── MOBILE HERO ── */}
+        {/* Mobile hero */}
         <div className="md:hidden relative overflow-hidden rounded-[20px] text-white border border-white/10 shadow-2xl w-full aspect-[398/485] min-h-[485px] flex flex-col">
           <Image
             src="/shopkeeper-hero-mobile.jpg"
@@ -1865,8 +1748,7 @@ export default function ShopkeeperPage() {
           <div className="absolute -bottom-24 -right-24 w-72 h-72 rounded-full bg-[#f27a1a]/15 blur-3xl pointer-events-none" />
 
           <div className="relative z-10">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-stretch">
-              {/* WhatsApp form (React-controlled) */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-start">
               <div className="bg-white text-slate-900 rounded-[22px] p-5 sm:p-6 shadow-[0_18px_45px_-22px_rgba(15,23,42,0.55)] border border-slate-200 flex flex-col">
                 <div className="flex items-center justify-between gap-3 pb-4 border-b border-slate-200">
                   <div>
@@ -1891,49 +1773,74 @@ export default function ShopkeeperPage() {
                 <WhatsAppEnquiryForm />
               </div>
 
-              {/* Instant Rate Calculator */}
               <QuoteCalculator
-                onApplyQuote={(data) => {
-                  setApplyModalData(data);
-                  setApplyModalOpen(true);
-                }}
+                contact={contact}
+                setContact={setContact}
+                onLoginRequest={() => setShowShopkeeperLogin(true)}
               />
             </div>
 
-            <div className="max-w-3xl mt-8 sm:mt-10">
-              <div className="inline-flex items-center gap-2 text-[11px] sm:text-[12px] font-bold tracking-wider uppercase text-[#f27a1a] mb-2.5 sm:mb-3">
-                <span className="w-5 sm:w-6 h-[2px] bg-[#f27a1a] rounded-full" />
-                Get your quote
-              </div>
-              <h2 className="text-[24px] sm:text-[32px] lg:text-[38px] font-extrabold text-white leading-tight">
-                Tell us what you ship.{" "}
-                <span className="text-[#f27a1a]">
-                  Get a rate that beats your current one.
-                </span>
-              </h2>
-              <p className="mt-3 text-[14.5px] sm:text-[16px] text-slate-300 leading-relaxed">
-                Fill this in and we will send a clear quote on WhatsApp, usually
-                within a few hours. No obligation and no switching hassle.
-              </p>
-
-              <ul className="mt-6 sm:mt-8 space-y-3 sm:space-y-3.5">
-                {[
-                  "Free rate comparison against what you pay today",
-                  "Customs, packing and documentation handled for you",
-                  "Doorstep pickup across North and West India",
-                  "One dedicated logistics contact on WhatsApp",
-                ].map((item, i) => (
-                  <li
-                    key={i}
-                    className="flex items-center gap-3 text-[14px] sm:text-[15px] text-slate-200 font-medium"
-                  >
-                    <span className="w-5 h-5 rounded-full bg-[#f27a1a]/20 text-[#f27a1a] flex items-center justify-center font-bold text-[12px] shrink-0">
-                      ✓
+            {/* ── Trust / value-prop strip below the forms ── */}
+            <div className="mt-8 sm:mt-12 pt-8 sm:pt-10 border-t border-white/10">
+              <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_1fr] gap-8 lg:gap-12 items-start">
+                {/* Left: heading + description */}
+                <div>
+                  <div className="inline-flex items-center gap-2 text-[11px] sm:text-[12px] font-bold tracking-wider uppercase text-[#f27a1a] mb-3">
+                    <span className="w-5 sm:w-6 h-[2px] bg-[#f27a1a] rounded-full" />
+                    Get your quote
+                  </div>
+                  <h2 className="text-[26px] sm:text-[34px] lg:text-[40px] font-extrabold text-white leading-[1.15] tracking-tight">
+                    Tell us what you ship.{" "}
+                    <span className="text-[#f27a1a]">
+                      Get a rate that beats your current one.
                     </span>
-                    {item}
-                  </li>
-                ))}
-              </ul>
+                  </h2>
+                  <p className="mt-4 text-[14.5px] sm:text-[16px] text-slate-300 leading-relaxed max-w-lg">
+                    Fill this in and we&apos;ll send a clear quote on WhatsApp,
+                    usually within a few hours. No obligation and no switching
+                    hassle.
+                  </p>
+                </div>
+
+                {/* Right: benefit list as cards */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {[
+                    {
+                      title: "Free rate comparison",
+                      desc: "See how we stack up against what you pay today.",
+                    },
+                    {
+                      title: "Customs & paperwork",
+                      desc: "Documentation, packing and clearance all handled.",
+                    },
+                    {
+                      title: "Doorstep pickup",
+                      desc: "Across North & West India, pan-India on request.",
+                    },
+                    {
+                      title: "One dedicated contact",
+                      desc: "A real person on WhatsApp, not a call-center queue.",
+                    },
+                  ].map((item, i) => (
+                    <div
+                      key={i}
+                      className="rounded-2xl bg-white/5 border border-white/10 px-4 py-3.5 flex items-start gap-3 hover:bg-white/[0.08] hover:border-white/20 transition-all"
+                    >
+                      <span className="mt-0.5 shrink-0 w-6 h-6 rounded-full bg-[#f27a1a]/20 text-[#f27a1a] flex items-center justify-center font-bold text-[12px]">
+                        ✓
+                      </span>
+                      <div className="min-w-0">
+                        <p className="text-[13.5px] sm:text-[14px] font-bold text-white leading-tight">
+                          {item.title}
+                        </p>
+                        <p className="text-[12px] sm:text-[12.5px] text-slate-400 leading-snug mt-1">
+                          {item.desc}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -2319,7 +2226,7 @@ export default function ShopkeeperPage() {
               <span>WhatsApp us your details</span>
             </button>
             <a
-              href="tel:+917070506070"
+              href="tel:+91707050670"
               className="inline-flex items-center justify-center gap-2.5 font-bold text-[14px] sm:text-[16px] px-6 sm:px-7 py-3.5 sm:py-4 rounded-full bg-transparent text-white border border-white/30 hover:border-white hover:bg-white/10 hover:-translate-y-0.5 transition-all text-center"
             >
               Call +91 70 70 50 60 70
@@ -2333,6 +2240,23 @@ export default function ShopkeeperPage() {
           </p>
         </div>
       </section>
+
+      {/* ── Shopkeeper Bulk Rates Login Modal ── */}
+      {showShopkeeperLogin && (
+        <ShopkeeperLoginModal
+          onClose={() => setShowShopkeeperLogin(false)}
+          onSuccess={(shopkeeper) => {
+            try {
+              localStorage.setItem(
+                SHOPKEEPER_SESSION_KEY,
+                JSON.stringify(shopkeeper),
+              );
+            } catch {}
+            setShowShopkeeperLogin(false);
+            window.location.href = "/shopkeeper/bulk-rates";
+          }}
+        />
+      )}
     </div>
   );
 }

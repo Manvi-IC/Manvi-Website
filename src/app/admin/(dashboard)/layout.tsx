@@ -14,12 +14,15 @@ import {
   Mail,
   Truck,
   Layers,
+  ShieldCheck,
+  Store,
+  Users,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+const API_URL = process.env.NEXT_API_URL || "http://localhost:5000";
 
 export default function AdminLayout({
   children,
@@ -29,61 +32,52 @@ export default function AdminLayout({
   const pathname = usePathname();
   const [pendingCount, setPendingCount] = useState(0);
   const [newEnquiryCount, setNewEnquiryCount] = useState(0);
+  const [pendingShopkeepers, setPendingShopkeepers] = useState(0);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchCounts = async () => {
       try {
-        const [appRes, enquiryRes, custRes] = await Promise.all([
+        const [appRes, enquiryRes, shopRes] = await Promise.all([
           fetch(`${API_URL}/admin/applications/stats`, {
             method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              // Add any auth headers if needed
-            },
+            headers: { "Content-Type": "application/json" },
             credentials: "include",
           }),
           fetch(`${API_URL}/admin/quote-enquiries/stats`, {
             method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
+            headers: { "Content-Type": "application/json" },
             credentials: "include",
           }),
-          fetch(`${API_URL}/admin/customers/stats`, {
+          fetch(`${API_URL}/admin/shopkeepers/stats`, {
             method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
+            headers: { "Content-Type": "application/json" },
             credentials: "include",
           }),
         ]);
 
-        // Handle applications stats
         if (appRes.ok) {
           const data = await appRes.json();
-          if (data.success) {
-            setPendingCount(data.data.pending || 0);
-          }
+          if (data.success) setPendingCount(data.data.pending || 0);
         } else {
           console.warn(`Applications stats API returned ${appRes.status}`);
-          // Keep default value (0) if API fails
         }
 
-        // Handle enquiries stats
         if (enquiryRes.ok) {
           const data = await enquiryRes.json();
-          if (data.success) {
-            setNewEnquiryCount(data.data.new || 0);
-          }
+          if (data.success) setNewEnquiryCount(data.data.new || 0);
         } else {
           console.warn(`Enquiries stats API returned ${enquiryRes.status}`);
-          // Keep default value (0) if API fails
+        }
+
+        if (shopRes.ok) {
+          const data = await shopRes.json();
+          if (data.success) setPendingShopkeepers(data.data.pending || 0);
+        } else {
+          console.warn(`Shopkeeper stats API returned ${shopRes.status}`);
         }
       } catch (error) {
-        // Network error or server not running
         console.error("Failed to fetch counts:", error);
-        // Keep counts at 0 - don't show error to user
       } finally {
         setLoading(false);
       }
@@ -126,10 +120,6 @@ export default function AdminLayout({
     );
   };
 
-  if (pathname?.startsWith("/admin/proposal")) {
-    return <main className="min-h-screen bg-white">{children}</main>;
-  }
-
   return (
     <div className="min-h-screen bg-gray-100 flex">
       {/* Sidebar */}
@@ -137,7 +127,7 @@ export default function AdminLayout({
         <div className="h-16 flex items-center px-6 bg-[#050914] font-bold text-xl tracking-wider">
           Manvi Admin Panel
         </div>
-        <nav className="flex-1 px-4 py-6 space-y-2">
+        <nav className="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
           {navLink("/admin", <LayoutDashboard size={20} />, "Dashboard")}
           {navLink(
             "/admin/upload-rates",
@@ -148,6 +138,15 @@ export default function AdminLayout({
             "/admin/services",
             <Layers size={20} />,
             "Courier Services",
+            "/admin/shopkeeper-rates",
+            <Store size={20} />,
+            "Upload Bulk Rates",
+          )}
+          {navLink(
+            "/admin/shopkeepers",
+            <Users size={20} />,
+            "Shopkeepers",
+            pendingShopkeepers,
           )}
           {navLink(
             "/admin/service-mapping",
@@ -155,7 +154,6 @@ export default function AdminLayout({
             "Serviceable Zipcode Mapping",
           )}
           {navLink("/admin/jobs", <Briefcase size={20} />, "Jobs")}
-          {navLink("/admin/shipments", <Truck size={20} />, "Shipments")}
           {navLink(
             "/admin/applications",
             <FileText size={20} />,
@@ -179,6 +177,11 @@ export default function AdminLayout({
             "/admin/settings",
             <Settings size={20} />,
             "Profile Settings",
+          )}
+          {navLink(
+            "/admin/settings/credentials",
+            <ShieldCheck size={20} />,
+            "Admin Credentials",
           )}
           {navLink(
             "/admin/service-areas",
