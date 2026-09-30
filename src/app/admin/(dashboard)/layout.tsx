@@ -12,6 +12,8 @@ import {
   MessageSquareQuote,
   MapPinned,
   Mail,
+  Truck,
+  Layers,
   ShieldCheck,
   Store,
   Users,
@@ -133,6 +135,9 @@ export default function AdminLayout({
             "Upload Rates",
           )}
           {navLink(
+            "/admin/services",
+            <Layers size={20} />,
+            "Courier Services",
             "/admin/shopkeeper-rates",
             <Store size={20} />,
             "Upload Bulk Rates",
