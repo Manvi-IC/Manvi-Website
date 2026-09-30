@@ -13,6 +13,8 @@ import {
   MapPinned,
   Mail,
   ShieldCheck,
+  Store,
+  Users,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -28,54 +30,52 @@ export default function AdminLayout({
   const pathname = usePathname();
   const [pendingCount, setPendingCount] = useState(0);
   const [newEnquiryCount, setNewEnquiryCount] = useState(0);
+  const [pendingShopkeepers, setPendingShopkeepers] = useState(0);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchCounts = async () => {
       try {
-        const [appRes, enquiryRes] = await Promise.all([
+        const [appRes, enquiryRes, shopRes] = await Promise.all([
           fetch(`${API_URL}/admin/applications/stats`, {
             method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              // Add any auth headers if needed
-            },
+            headers: { "Content-Type": "application/json" },
             credentials: "include",
           }),
           fetch(`${API_URL}/admin/quote-enquiries/stats`, {
             method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
+            headers: { "Content-Type": "application/json" },
+            credentials: "include",
+          }),
+          fetch(`${API_URL}/admin/shopkeepers/stats`, {
+            method: "GET",
+            headers: { "Content-Type": "application/json" },
             credentials: "include",
           }),
         ]);
 
-        // Handle applications stats
         if (appRes.ok) {
           const data = await appRes.json();
-          if (data.success) {
-            setPendingCount(data.data.pending || 0);
-          }
+          if (data.success) setPendingCount(data.data.pending || 0);
         } else {
           console.warn(`Applications stats API returned ${appRes.status}`);
-          // Keep default value (0) if API fails
         }
 
-        // Handle enquiries stats
         if (enquiryRes.ok) {
           const data = await enquiryRes.json();
-          if (data.success) {
-            setNewEnquiryCount(data.data.new || 0);
-          }
+          if (data.success) setNewEnquiryCount(data.data.new || 0);
         } else {
           console.warn(`Enquiries stats API returned ${enquiryRes.status}`);
-          // Keep default value (0) if API fails
+        }
+
+        if (shopRes.ok) {
+          const data = await shopRes.json();
+          if (data.success) setPendingShopkeepers(data.data.pending || 0);
+        } else {
+          console.warn(`Shopkeeper stats API returned ${shopRes.status}`);
         }
       } catch (error) {
-        // Network error or server not running
         console.error("Failed to fetch counts:", error);
-        // Keep counts at 0 - don't show error to user
       } finally {
         setLoading(false);
       }
@@ -131,6 +131,17 @@ export default function AdminLayout({
             "/admin/upload-rates",
             <Package size={20} />,
             "Upload Rates",
+          )}
+          {navLink(
+            "/admin/shopkeeper-rates",
+            <Store size={20} />,
+            "Upload Bulk Rates",
+          )}
+          {navLink(
+            "/admin/shopkeepers",
+            <Users size={20} />,
+            "Shopkeepers",
+            pendingShopkeepers,
           )}
           {navLink(
             "/admin/service-mapping",
