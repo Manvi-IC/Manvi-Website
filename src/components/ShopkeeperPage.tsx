@@ -19,16 +19,19 @@ import {
   User,
   Phone,
   Mail,
+  Lock,
 } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
 import { trackEvent } from "@/lib/fpixel";
+import ShopkeeperLoginModal, {
+  SHOPKEEPER_SESSION_KEY,
+} from "@/components/ShopkeeperLoginModal";
 
 const trackWhatsApp = (location: string) =>
   trackEvent("Contact", { method: "WhatsApp", location });
 const trackPhone = (location: string) =>
   trackEvent("Contact", { method: "Phone", location });
 
-// ✅ CHANGED: use NEXT_PUBLIC_API_URL (browser-readable)
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 const DB_NAME = process.env.NEXT_PUBLIC_X_DATABASE || "manvi";
 
@@ -58,12 +61,10 @@ function saveStoredContact(contact: StoredContact) {
   if (typeof window === "undefined") return;
   try {
     window.localStorage.setItem(CONTACT_STORAGE_KEY, JSON.stringify(contact));
-  } catch {
-    /* ignore quota errors */
-  }
+  } catch {}
 }
 
-/* ── Zoho lead submitter (used by "Compare your rate" hero buttons) ── */
+/* ── Zoho lead submitter ── */
 async function submitZohoLead(payload: {
   firstName?: string;
   lastName?: string;
@@ -100,7 +101,7 @@ async function submitZohoLead(payload: {
   }
 }
 
-/* ── Submit the full quote enquiry to Zoho + MongoDB (fired on "Get quote") ── */
+/* ── Submit quote enquiry ── */
 async function submitQuoteEnquiry({
   contact,
   quote,
@@ -126,7 +127,6 @@ async function submitQuoteEnquiry({
   height: string;
   chargeableWt: number;
 }) {
-  // ── 1. Zoho CRM ──
   const formData = new FormData();
   formData.append(
     "xnQsjsdp",
@@ -166,7 +166,6 @@ async function submitQuoteEnquiry({
     console.warn("[Quote Enquiry] Zoho submit error:", err);
   }
 
-  // ── 2. MongoDB via backend ──
   try {
     const backendRes = await fetch(`${API_URL}/quote-enquiries`, {
       method: "POST",
@@ -199,14 +198,11 @@ async function submitQuoteEnquiry({
     if (!backendRes.ok) {
       const errText = await backendRes.text().catch(() => "");
       console.warn("[Quote Enquiry] Backend save failed:", errText);
-    } else {
-      console.log("[Quote Enquiry] Saved to MongoDB successfully");
     }
   } catch (backendErr) {
     console.warn("[Quote Enquiry] Backend save error:", backendErr);
   }
 
-  // ── 3. Analytics ──
   if (typeof window !== "undefined") {
     (window as any).dataLayer = (window as any).dataLayer || [];
     (window as any).dataLayer.push({ event: "form_enquiry_success" });
@@ -529,8 +525,6 @@ function WhatsAppEnquiryForm() {
       if (!backendRes.ok) {
         const errText = await backendRes.text().catch(() => "");
         console.warn("[WhatsApp Enquiry] Backend save failed:", errText);
-      } else {
-        console.log("[WhatsApp Enquiry] Saved to MongoDB successfully");
       }
     } catch (backendErr) {
       console.warn("[WhatsApp Enquiry] Backend save error:", backendErr);
@@ -556,7 +550,7 @@ function WhatsAppEnquiryForm() {
   if (submitted) {
     const waUrl = buildWhatsAppUrl(lastName.trim());
     return (
-      <div className="pt-6 pb-4 flex-1 flex flex-col items-center justify-center text-center gap-5">
+      <div className="pt-6 pb-4 flex flex-col items-center justify-center text-center gap-5">
         <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center">
           <CheckCircle2 size={32} className="text-green-600" />
         </div>
@@ -586,55 +580,57 @@ function WhatsAppEnquiryForm() {
   }
 
   const inputCls =
-    "w-full bg-white text-slate-900 text-[14.5px] rounded-xl border border-slate-300 px-3.5 py-3 focus:outline-none focus:border-[#f27a1a] focus:ring-2 focus:ring-[#f27a1a]/20 transition-all placeholder:text-gray-400";
+    "w-full bg-slate-50 text-slate-900 text-[14px] font-medium rounded-xl border border-slate-200 px-3.5 py-3.5 focus:outline-none focus:bg-white focus:border-[#f27a1a] focus:ring-2 focus:ring-[#f27a1a]/20 transition-all placeholder:text-slate-400";
   const labelCls =
-    "block font-sans text-slate-500 text-[11px] font-bold tracking-[0.12em] uppercase mb-1.5";
+    "block font-sans text-slate-500 text-[11px] font-bold tracking-[0.12em] uppercase mb-2";
 
   return (
-    <form onSubmit={handleSubmit} className="pt-5 flex-1 flex flex-col gap-4">
-      <div>
-        <label className={labelCls}>
-          First Name <span className="text-red-500">*</span>
-        </label>
-        <input
-          type="text"
-          value={firstName}
-          onChange={(e) => setFirstName(e.target.value)}
-          placeholder="First name"
-          maxLength={40}
-          className={inputCls}
-        />
-      </div>
+    <form onSubmit={handleSubmit} className="pt-5 flex flex-col gap-4">
+      <div className="space-y-4">
+        <div>
+          <label className={labelCls}>
+            First Name <span className="text-red-500">*</span>
+          </label>
+          <input
+            type="text"
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+            placeholder="First name"
+            maxLength={40}
+            className={inputCls}
+          />
+        </div>
 
-      <div>
-        <label className={labelCls}>
-          Last Name <span className="text-red-500">*</span>
-        </label>
-        <input
-          type="text"
-          required
-          value={lastName}
-          onChange={(e) => setLastName(e.target.value)}
-          placeholder="Last name"
-          maxLength={80}
-          className={inputCls}
-        />
-      </div>
+        <div>
+          <label className={labelCls}>
+            Last Name <span className="text-red-500">*</span>
+          </label>
+          <input
+            type="text"
+            required
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
+            placeholder="Last name"
+            maxLength={80}
+            className={inputCls}
+          />
+        </div>
 
-      <div>
-        <label className={labelCls}>
-          Mobile <span className="text-red-500">*</span>
-        </label>
-        <input
-          type="tel"
-          inputMode="numeric"
-          pattern="[0-9]*"
-          value={mobile}
-          onChange={(e) => setMobile(e.target.value.replace(/\D/g, ""))}
-          placeholder="Phone number"
-          maxLength={10}
-          className={inputCls}
-        />
+        <div>
+          <label className={labelCls}>
+            Mobile <span className="text-red-500">*</span>
+          </label>
+          <input
+            type="tel"
+            inputMode="numeric"
+            pattern="[0-9]*"
+            value={mobile}
+            onChange={(e) => setMobile(e.target.value.replace(/\D/g, ""))}
+            placeholder="Phone number"
+            maxLength={10}
+            className={inputCls}
+          />
+        </div>
       </div>
 
       {error && (
@@ -646,23 +642,27 @@ function WhatsAppEnquiryForm() {
       <button
         type="submit"
         disabled={submitting}
-        className="mt-auto bg-[#f27a1a] hover:bg-[#d96d12] disabled:opacity-60 text-white font-bold text-[14px] tracking-wide py-3.5 px-6 rounded-xl transition-all active:scale-[0.98] flex items-center justify-center gap-2"
+        className="bg-[#f27a1a] hover:bg-[#d96d12] disabled:opacity-60 text-white font-bold text-[14px] tracking-wide py-3.5 px-6 rounded-xl transition-all active:scale-[0.98] flex items-center justify-center gap-2 shadow-[0_8px_22px_-8px_rgba(242,122,26,0.6)]"
       >
         {submitting ? (
           <>
             <Loader2 size={16} className="animate-spin" /> Submitting…
           </>
         ) : (
-          <>Submit</>
+          <>
+            Submit enquiry <Send size={15} strokeWidth={2.5} />
+          </>
         )}
       </button>
+
+      <p className="text-[11px] text-slate-400 text-center leading-relaxed">
+        We&apos;ll reach out on WhatsApp to confirm your shipment details.
+      </p>
     </form>
   );
 }
 
-/* ────────────────────────────────────────────────────────────── */
-/* ── Quotes Modal (view-only — the enquiry was already sent) ── */
-/* ────────────────────────────────────────────────────────────── */
+/* ── Quotes Modal ── */
 function QuotesModal({
   quotes,
   destLabel,
@@ -765,7 +765,6 @@ function QuotesModal({
       }}
     >
       <div className="bg-[#0D1527] rounded-2xl w-full max-w-7xl max-h-[95vh] sm:max-h-[92vh] min-h-[420px] flex flex-col shadow-2xl border border-white/10 overflow-hidden">
-        {/* ── Header ── */}
         <div className="flex items-start justify-between gap-3 px-4 sm:px-6 py-4 border-b border-white/10 shrink-0">
           <div className="min-w-0">
             <p className="text-white font-bold text-sm sm:text-base truncate">
@@ -784,9 +783,7 @@ function QuotesModal({
           </button>
         </div>
 
-        {/* ── Body ── */}
         <div className="flex-1 min-h-0 flex flex-col overflow-hidden">
-          {/* Filter bar */}
           <div className="px-4 sm:px-6 py-3 border-b border-white/10 flex items-center justify-between flex-wrap gap-2 shrink-0">
             <div className="flex items-center gap-2 flex-wrap">
               <Filter
@@ -856,7 +853,6 @@ function QuotesModal({
             </div>
           </div>
 
-          {/* Quotes scroll area */}
           <div
             ref={scrollContainerRef}
             className="flex-1 min-h-0 overflow-x-auto overflow-y-auto p-3 sm:p-5 gap-3 sm:gap-4 flex items-start scrollbar-thin scrollbar-thumb-zinc-600 scrollbar-track-transparent"
@@ -1031,12 +1027,14 @@ function QuotesModal({
             })}
           </div>
 
-          {/* ── Footer note (already submitted notice) ── */}
           <div className="px-4 sm:px-6 py-3 border-t border-white/10 text-center shrink-0 bg-[#0D1527]">
-            <p className="text-[11px] sm:text-[12px] text-zinc-400">
-              ✅ Your enquiry has been submitted. Our team will contact you
-              shortly.{" "}
-              <span className="text-zinc-500">{t.form_final_rates_msg}</span>
+            <p className="text-base sm:text-sm text-zinc-300 font-semibold leading-relaxed">
+              <span className="mr-1">✅</span>
+              Your enquiry has been submitted. Our team will contact you
+              shortly.
+              <span className="mt-1 block sm:inline text-zinc-500">
+                {t.form_final_rates_msg}
+              </span>
             </p>
           </div>
         </div>
@@ -1045,13 +1043,15 @@ function QuotesModal({
   );
 }
 
-/* ── Quote Calculator (with customer contact capture; submits on "Get quote") ── */
+/* ── Quote Calculator ── */
 function QuoteCalculator({
   contact,
   setContact,
+  onLoginRequest,
 }: {
   contact: StoredContact;
   setContact: (c: StoredContact) => void;
+  onLoginRequest: () => void;
 }) {
   const { t } = useLanguage();
 
@@ -1104,7 +1104,6 @@ function QuoteCalculator({
       return;
     }
 
-    // ── Validate customer details (Name + Phone required) ──
     if (!contact.name.trim()) {
       setFormError("Please enter your full name.");
       return;
@@ -1114,7 +1113,6 @@ function QuoteCalculator({
       return;
     }
 
-    // Persist contact for next visit
     saveStoredContact(contact);
 
     setLoading(true);
@@ -1137,7 +1135,6 @@ function QuoteCalculator({
         const firstKey = `${fetchedQuotes[0].service}__${fetchedQuotes[0].rateType}`;
         setSelectedService(firstKey);
 
-        // ── SUBMIT ENQUIRY NOW (fire-and-forget, non-blocking) ──
         submitQuoteEnquiry({
           contact,
           quote: fetchedQuotes[0],
@@ -1154,7 +1151,6 @@ function QuoteCalculator({
           console.warn("[Quote Enquiry] Background submit error:", err),
         );
 
-        // Show the modal immediately — user can browse the other rates
         setShowModal(true);
       } else {
         setFormError(
@@ -1187,7 +1183,7 @@ function QuoteCalculator({
         />
       )}
 
-      <div className="bg-[#f27a1a] rounded-[22px] p-5 sm:p-6 shadow-[0_18px_45px_-18px_rgba(242,122,26,0.55)] flex flex-col">
+      <div className="bg-[#f27a1a] rounded-[22px] p-5 sm:p-6 shadow-[0_18px_45px_-18px_rgba(242,122,26,0.55)] flex flex-col h-full">
         <div className="flex items-center justify-between gap-3 pb-4 border-b border-white/25">
           <div>
             <p className="text-[11px] sm:text-[12px] font-bold tracking-[0.18em] uppercase text-white/90">
@@ -1210,7 +1206,6 @@ function QuoteCalculator({
           onSubmit={handleSubmit}
           className="pt-5 flex-1 flex flex-col gap-4"
         >
-          {/* ── Customer contact (captured at step 1) ── */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className={labelCls}>
@@ -1439,6 +1434,31 @@ function QuoteCalculator({
             Your details are submitted along with the quote request. We&apos;ll
             reach out on WhatsApp / phone.
           </p>
+
+          {/* ── Bulk rates login prompt ── */}
+          <div className="mt-1 rounded-xl bg-white/15 border border-white/30 px-4 py-3.5 flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
+            <div className="flex items-center gap-3 flex-1 min-w-0">
+              <div className="shrink-0 h-9 w-9 rounded-full bg-white/25 flex items-center justify-center">
+                <Lock size={16} className="text-white" strokeWidth={2.5} />
+              </div>
+              <div className="min-w-0">
+                <p className="text-white text-[13px] sm:text-[14px] font-bold leading-tight">
+                  Want bulk rates?
+                </p>
+                <p className="text-white/80 text-[11.5px] sm:text-[12.5px] leading-tight mt-0.5">
+                  Login to unlock your exclusive shopkeeper pricing.
+                </p>
+              </div>
+            </div>
+            <button
+              type="button"
+              onClick={onLoginRequest}
+              className="shrink-0 inline-flex items-center justify-center gap-1.5 bg-white text-[#f27a1a] hover:bg-white/90 font-extrabold text-[12.5px] sm:text-[13px] px-4 py-2.5 rounded-lg transition-all active:scale-[0.97] shadow-sm"
+            >
+              Login first
+              <ArrowUpRight size={14} strokeWidth={2.8} />
+            </button>
+          </div>
         </form>
       </div>
     </>
@@ -1453,6 +1473,7 @@ export default function ShopkeeperPage() {
     email: "",
   });
   const [contactLoaded, setContactLoaded] = useState(false);
+  const [showShopkeeperLogin, setShowShopkeeperLogin] = useState(false);
 
   useEffect(() => {
     setContact(loadStoredContact());
@@ -1727,7 +1748,7 @@ export default function ShopkeeperPage() {
           <div className="absolute -bottom-24 -right-24 w-72 h-72 rounded-full bg-[#f27a1a]/15 blur-3xl pointer-events-none" />
 
           <div className="relative z-10">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-stretch">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-start">
               <div className="bg-white text-slate-900 rounded-[22px] p-5 sm:p-6 shadow-[0_18px_45px_-22px_rgba(15,23,42,0.55)] border border-slate-200 flex flex-col">
                 <div className="flex items-center justify-between gap-3 pb-4 border-b border-slate-200">
                   <div>
@@ -1752,43 +1773,74 @@ export default function ShopkeeperPage() {
                 <WhatsAppEnquiryForm />
               </div>
 
-              <QuoteCalculator contact={contact} setContact={setContact} />
+              <QuoteCalculator
+                contact={contact}
+                setContact={setContact}
+                onLoginRequest={() => setShowShopkeeperLogin(true)}
+              />
             </div>
 
-            <div className="max-w-3xl mt-8 sm:mt-10">
-              <div className="inline-flex items-center gap-2 text-[11px] sm:text-[12px] font-bold tracking-wider uppercase text-[#f27a1a] mb-2.5 sm:mb-3">
-                <span className="w-5 sm:w-6 h-[2px] bg-[#f27a1a] rounded-full" />
-                Get your quote
-              </div>
-              <h2 className="text-[24px] sm:text-[32px] lg:text-[38px] font-extrabold text-white leading-tight">
-                Tell us what you ship.{" "}
-                <span className="text-[#f27a1a]">
-                  Get a rate that beats your current one.
-                </span>
-              </h2>
-              <p className="mt-3 text-[14.5px] sm:text-[16px] text-slate-300 leading-relaxed">
-                Fill this in and we will send a clear quote on WhatsApp, usually
-                within a few hours. No obligation and no switching hassle.
-              </p>
-
-              <ul className="mt-6 sm:mt-8 space-y-3 sm:space-y-3.5">
-                {[
-                  "Free rate comparison against what you pay today",
-                  "Customs, packing and documentation handled for you",
-                  "Doorstep pickup across North and West India",
-                  "One dedicated logistics contact on WhatsApp",
-                ].map((item, i) => (
-                  <li
-                    key={i}
-                    className="flex items-center gap-3 text-[14px] sm:text-[15px] text-slate-200 font-medium"
-                  >
-                    <span className="w-5 h-5 rounded-full bg-[#f27a1a]/20 text-[#f27a1a] flex items-center justify-center font-bold text-[12px] shrink-0">
-                      ✓
+            {/* ── Trust / value-prop strip below the forms ── */}
+            <div className="mt-8 sm:mt-12 pt-8 sm:pt-10 border-t border-white/10">
+              <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_1fr] gap-8 lg:gap-12 items-start">
+                {/* Left: heading + description */}
+                <div>
+                  <div className="inline-flex items-center gap-2 text-[11px] sm:text-[12px] font-bold tracking-wider uppercase text-[#f27a1a] mb-3">
+                    <span className="w-5 sm:w-6 h-[2px] bg-[#f27a1a] rounded-full" />
+                    Get your quote
+                  </div>
+                  <h2 className="text-[26px] sm:text-[34px] lg:text-[40px] font-extrabold text-white leading-[1.15] tracking-tight">
+                    Tell us what you ship.{" "}
+                    <span className="text-[#f27a1a]">
+                      Get a rate that beats your current one.
                     </span>
-                    {item}
-                  </li>
-                ))}
-              </ul>
+                  </h2>
+                  <p className="mt-4 text-[14.5px] sm:text-[16px] text-slate-300 leading-relaxed max-w-lg">
+                    Fill this in and we&apos;ll send a clear quote on WhatsApp,
+                    usually within a few hours. No obligation and no switching
+                    hassle.
+                  </p>
+                </div>
+
+                {/* Right: benefit list as cards */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {[
+                    {
+                      title: "Free rate comparison",
+                      desc: "See how we stack up against what you pay today.",
+                    },
+                    {
+                      title: "Customs & paperwork",
+                      desc: "Documentation, packing and clearance all handled.",
+                    },
+                    {
+                      title: "Doorstep pickup",
+                      desc: "Across North & West India, pan-India on request.",
+                    },
+                    {
+                      title: "One dedicated contact",
+                      desc: "A real person on WhatsApp, not a call-center queue.",
+                    },
+                  ].map((item, i) => (
+                    <div
+                      key={i}
+                      className="rounded-2xl bg-white/5 border border-white/10 px-4 py-3.5 flex items-start gap-3 hover:bg-white/[0.08] hover:border-white/20 transition-all"
+                    >
+                      <span className="mt-0.5 shrink-0 w-6 h-6 rounded-full bg-[#f27a1a]/20 text-[#f27a1a] flex items-center justify-center font-bold text-[12px]">
+                        ✓
+                      </span>
+                      <div className="min-w-0">
+                        <p className="text-[13.5px] sm:text-[14px] font-bold text-white leading-tight">
+                          {item.title}
+                        </p>
+                        <p className="text-[12px] sm:text-[12.5px] text-slate-400 leading-snug mt-1">
+                          {item.desc}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -2174,7 +2226,7 @@ export default function ShopkeeperPage() {
               <span>WhatsApp us your details</span>
             </button>
             <a
-              href="tel:+917070506070"
+              href="tel:+91707050670"
               className="inline-flex items-center justify-center gap-2.5 font-bold text-[14px] sm:text-[16px] px-6 sm:px-7 py-3.5 sm:py-4 rounded-full bg-transparent text-white border border-white/30 hover:border-white hover:bg-white/10 hover:-translate-y-0.5 transition-all text-center"
             >
               Call +91 70 70 50 60 70
@@ -2188,6 +2240,23 @@ export default function ShopkeeperPage() {
           </p>
         </div>
       </section>
+
+      {/* ── Shopkeeper Bulk Rates Login Modal ── */}
+      {showShopkeeperLogin && (
+        <ShopkeeperLoginModal
+          onClose={() => setShowShopkeeperLogin(false)}
+          onSuccess={(shopkeeper) => {
+            try {
+              localStorage.setItem(
+                SHOPKEEPER_SESSION_KEY,
+                JSON.stringify(shopkeeper),
+              );
+            } catch {}
+            setShowShopkeeperLogin(false);
+            window.location.href = "/shopkeeper/bulk-rates";
+          }}
+        />
+      )}
     </div>
   );
 }
