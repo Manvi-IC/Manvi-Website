@@ -13,6 +13,7 @@ import {
   MapPinned,
   Mail,
   Truck,
+  Layers,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -142,6 +143,11 @@ export default function AdminLayout({
             "/admin/upload-rates",
             <Package size={20} />,
             "Upload Rates",
+          )}
+          {navLink(
+            "/admin/services",
+            <Layers size={20} />,
+            "Courier Services",
           )}
           {navLink(
             "/admin/service-mapping",
