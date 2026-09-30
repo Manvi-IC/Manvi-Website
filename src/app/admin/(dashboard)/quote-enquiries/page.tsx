@@ -21,6 +21,7 @@ import {
   X,
   StickyNote,
   Download,
+  Globe,
 } from "lucide-react";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
@@ -46,6 +47,7 @@ interface Enquiry {
   rateType: string;
   totalPrice: number;
   tat: string;
+  sourcePage?: string;
   status: "new" | "contacted" | "converted" | "closed";
   notes: string;
   createdAt: string;
@@ -97,6 +99,26 @@ function fmtDate(s: string) {
   });
 }
 
+function getSourceBadgeStyle(source?: string) {
+  const s = (source || "Website").toLowerCase();
+  if (s.includes("home")) {
+    return "bg-indigo-50 text-indigo-700 border-indigo-200/80";
+  }
+  if (s.includes("quote")) {
+    return "bg-orange-50 text-orange-700 border-orange-200/80";
+  }
+  if (s.includes("campaign")) {
+    return "bg-purple-50 text-purple-700 border-purple-200/80";
+  }
+  if (s.includes("shopkeeper")) {
+    return "bg-teal-50 text-teal-700 border-teal-200/80";
+  }
+  if (s.includes("shipment") || s.includes("book")) {
+    return "bg-sky-50 text-sky-700 border-sky-200/80";
+  }
+  return "bg-slate-100 text-slate-700 border-slate-200/80";
+}
+
 // ─── Detail Drawer ────────────────────────────────────────────────────────────
 function DetailDrawer({
   enquiry,
@@ -133,9 +155,18 @@ function DetailDrawer({
         {/* Header */}
         <div className="bg-[#0D1527] px-6 py-5 flex items-start justify-between shrink-0">
           <div>
-            <p className="text-[#f27a1a] text-[10px] font-extrabold tracking-widest uppercase">
-              Quote Enquiry
-            </p>
+            <div className="flex items-center gap-2 flex-wrap">
+              <p className="text-[#f27a1a] text-[10px] font-extrabold tracking-widest uppercase">
+                Quote Enquiry
+              </p>
+              <span
+                className={`text-[10px] font-semibold px-2 py-0.5 rounded-full border ${getSourceBadgeStyle(
+                  enquiry.sourcePage,
+                )}`}
+              >
+                {enquiry.sourcePage || "Website"}
+              </span>
+            </div>
             <h3 className="text-white font-extrabold text-lg mt-1">
               {enquiry.name}
             </h3>
@@ -185,6 +216,15 @@ function DetailDrawer({
               Shipment Details
             </p>
             <div className="bg-gray-50 rounded-xl p-4 grid grid-cols-2 gap-3 text-sm">
+              <div>
+                <p className="text-[10px] text-gray-400 font-bold uppercase tracking-wide">
+                  Source Page
+                </p>
+                <p className="font-semibold text-[#1c1f2e] mt-0.5 flex items-center gap-1.5">
+                  <Globe size={13} className="text-gray-400 shrink-0" />
+                  {enquiry.sourcePage || "Website"}
+                </p>
+              </div>
               <div>
                 <p className="text-[10px] text-gray-400 font-bold uppercase tracking-wide">
                   Destination
@@ -354,6 +394,7 @@ export default function QuoteEnquiriesPage() {
   const [stats, setStats] = useState<Stats | null>(null);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState("all");
+  const [pageFilter, setPageFilter] = useState("all");
   const [search, setSearch] = useState("");
   const [selected, setSelected] = useState<Enquiry | null>(null);
   const [deleting, setDeleting] = useState<string | null>(null);
@@ -417,8 +458,14 @@ export default function QuoteEnquiriesPage() {
     fetchAll();
   };
 
+  const availablePages = Array.from(
+    new Set(enquiries.map((e) => e.sourcePage?.trim() || "Website")),
+  ).sort();
+
   const filtered = enquiries.filter((e) => {
     const matchStatus = filter === "all" || e.status === filter;
+    const src = e.sourcePage?.trim() || "Website";
+    const matchPage = pageFilter === "all" || src === pageFilter;
     const q = search.toLowerCase();
     const matchSearch =
       !q ||
@@ -426,8 +473,9 @@ export default function QuoteEnquiriesPage() {
       e.email.toLowerCase().includes(q) ||
       e.phone.includes(q) ||
       e.destination.toLowerCase().includes(q) ||
-      e.service.toLowerCase().includes(q);
-    return matchStatus && matchSearch;
+      e.service.toLowerCase().includes(q) ||
+      src.toLowerCase().includes(q);
+    return matchStatus && matchPage && matchSearch;
   });
 
   // ─── Excel Export ───────────────────────────────────────────────────────
@@ -439,6 +487,7 @@ export default function QuoteEnquiriesPage() {
         Name: e.name,
         Phone: e.phone,
         Email: e.email,
+        "Source Page": e.sourcePage || "Website",
         Destination: e.destination,
         "Zoning Country": e.zoningCountry,
         Zipcode: e.zipcode,
@@ -499,7 +548,7 @@ export default function QuoteEnquiriesPage() {
             Quote Enquiries
           </h1>
           <p className="text-sm text-gray-500 mt-0.5">
-            Leads submitted from the Get a Quote page
+            Leads and quote requests across all website pages
           </p>
         </div>
         <div className="flex items-center gap-4">
@@ -583,10 +632,29 @@ export default function QuoteEnquiriesPage() {
           />
           <input
             type="text"
-            placeholder="Search by name, email, phone, destination…"
+            placeholder="Search by name, email, phone, destination, source page…"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="w-full bg-white border border-gray-200 rounded-xl pl-9 pr-4 py-2.5 text-sm focus:outline-none focus:border-orange-300 placeholder:text-gray-400"
+          />
+        </div>
+        <div className="relative">
+          <select
+            aria-label="Filter by page"
+            value={pageFilter}
+            onChange={(e) => setPageFilter(e.target.value)}
+            className="bg-white border border-gray-200 rounded-xl pl-4 pr-8 py-2.5 text-sm font-medium focus:outline-none appearance-none"
+          >
+            <option value="all">All Pages</option>
+            {availablePages.map((p) => (
+              <option key={p} value={p}>
+                {p}
+              </option>
+            ))}
+          </select>
+          <ChevronDown
+            size={13}
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
           />
         </div>
         <div className="relative">
@@ -619,9 +687,9 @@ export default function QuoteEnquiriesPage() {
           <Package size={40} className="text-gray-300" />
           <p className="font-bold text-gray-500">No enquiries found</p>
           <p className="text-sm text-gray-400">
-            {search || filter !== "all"
+            {search || filter !== "all" || pageFilter !== "all"
               ? "Try adjusting your filters."
-              : "Enquiries submitted from the Get a Quote page will appear here."}
+              : "Enquiries submitted from quote forms across the website will appear here."}
           </p>
         </div>
       ) : (
@@ -632,6 +700,7 @@ export default function QuoteEnquiriesPage() {
                 <tr className="border-b border-gray-100 bg-gray-50">
                   {[
                     "Contact",
+                    "Source Page",
                     "Destination",
                     "Service",
                     "Price",
@@ -662,6 +731,16 @@ export default function QuoteEnquiriesPage() {
                           {e.phone}
                         </p>
                         <p className="text-xs text-gray-400">{e.email}</p>
+                      </td>
+                      <td className="px-5 py-4 whitespace-nowrap">
+                        <span
+                          className={`inline-flex items-center gap-1.5 text-[11px] font-semibold px-2.5 py-1 rounded-full border ${getSourceBadgeStyle(
+                            e.sourcePage,
+                          )}`}
+                        >
+                          <Globe size={11} className="shrink-0" />
+                          {e.sourcePage || "Website"}
+                        </span>
                       </td>
                       <td className="px-5 py-4">
                         <p className="font-semibold text-[#1c1f2e] whitespace-nowrap">
