@@ -8,6 +8,9 @@ import Script from "next/script";
 import { Phone, Mail, MapPin, Clock, Globe, ArrowUpRight } from "lucide-react";
 import { useLanguage, Language } from "@/context/LanguageContext";
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+const DB_NAME = process.env.NEXT_PUBLIC_X_DATABASE || "manvi";
+
 const localTranslations: Record<
   Language,
   {
@@ -318,6 +321,24 @@ export default function ContactPage() {
         },
         body: params.toString(),
       });
+
+      // Save to backend quote-enquiries for admin dashboard
+      fetch(`${API_URL}/quote-enquiries`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-database": DB_NAME,
+        },
+        body: JSON.stringify({
+          name: name.trim() || "Contact Enquiry",
+          phone: contact.trim(),
+          email: email.trim() || "not-provided@contact-form.local",
+          destination: destination.trim() || "N/A",
+          service: inquiryType || "General Contact Inquiry",
+          sourcePage: "Contact Page",
+          notes: `Company: ${companyName || "N/A"} | Query: ${queryText}`,
+        }),
+      }).catch((e) => console.warn("[Contact] Backend save error:", e));
 
       alert(t.success_alert);
       setName("");
