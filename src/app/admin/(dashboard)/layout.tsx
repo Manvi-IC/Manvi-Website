@@ -338,9 +338,10 @@ export default function AdminLayout({
               <button
                 type="submit"
                 title="Sign out of Admin Panel"
-                className="p-2 rounded-lg text-slate-400 hover:text-red-400 hover:bg-red-500/10 transition-colors cursor-pointer"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-red-400 hover:text-red-300 bg-red-500/10 hover:bg-red-500/20 border border-red-500/20 transition-all cursor-pointer"
               >
-                <LogOut size={16} />
+                <LogOut size={14} />
+                <span>Logout</span>
               </button>
             </form>
           </div>
@@ -400,10 +401,11 @@ export default function AdminLayout({
           <form action={logoutAction}>
             <button
               type="submit"
-              className="p-1.5 text-slate-500 hover:text-red-600 rounded-lg hover:bg-red-50 transition-colors"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold text-red-600 bg-red-50 hover:bg-red-100 hover:text-red-700 border border-red-200 hover:border-red-300 transition-all cursor-pointer shadow-2xs"
               title="Logout"
             >
-              <LogOut size={18} />
+              <LogOut size={13} />
+              <span>Logout</span>
             </button>
           </form>
         </header>

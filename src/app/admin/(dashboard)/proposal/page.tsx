@@ -1385,7 +1385,7 @@ export default function ProposalPage() {
             <form action={logoutAction}>
               <button
                 type="submit"
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-600 bg-slate-100 hover:bg-red-50 hover:text-red-600 border border-slate-200 hover:border-red-200 transition-all cursor-pointer"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold text-red-600 bg-red-50 hover:bg-red-100 hover:text-red-700 border border-red-200 hover:border-red-300 transition-all cursor-pointer shadow-2xs"
               >
                 <LogOut size={13} />
                 <span>Logout</span>
