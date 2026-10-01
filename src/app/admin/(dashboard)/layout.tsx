@@ -129,60 +129,74 @@ export default function AdminLayout({
         </div>
         <nav className="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
           {navLink("/admin", <LayoutDashboard size={20} />, "Dashboard")}
+
           {navLink(
             "/admin/upload-rates",
             <Package size={20} />,
             "Upload Rates",
           )}
+
+          {/* ✅ FIXED: was missing closing paren before next navLink */}
+          {navLink("/admin/services", <Layers size={20} />, "Courier Services")}
+
+          {/* ✅ FIXED: this link was swallowed as an argument previously */}
           {navLink(
-            "/admin/services",
-            <Layers size={20} />,
-            "Courier Services",
             "/admin/shopkeeper-rates",
             <Store size={20} />,
             "Upload Bulk Rates",
           )}
+
           {navLink(
             "/admin/shopkeepers",
             <Users size={20} />,
             "Shopkeepers",
             pendingShopkeepers,
           )}
+
           {navLink(
             "/admin/service-mapping",
             <Settings size={20} />,
             "Serviceable Zipcode Mapping",
           )}
+
           {navLink("/admin/jobs", <Briefcase size={20} />, "Jobs")}
+
           {navLink(
             "/admin/applications",
             <FileText size={20} />,
             "Applications",
             pendingCount,
           )}
+
           {navLink(
             "/admin/quote-enquiries",
             <MessageSquareQuote size={20} />,
             "Quote Enquiries",
             newEnquiryCount,
           )}
+
           {navLink(
             "/admin/site-settings",
             <Settings size={20} />,
             "Site Settings",
           )}
+
           {navLink("/admin/blog", <FileText size={20} />, "Blogs")}
+
           {navLink("/admin/newsletter", <Mail size={20} />, "Newsletter")}
+
           {navLink(
             "/admin/settings",
             <Settings size={20} />,
             "Profile Settings",
           )}
+
           {navLink(
             "/admin/settings/credentials",
             <ShieldCheck size={20} />,
             "Admin Credentials",
           )}
+
           {navLink(
             "/admin/service-areas",
             <MapPinned size={20} />,

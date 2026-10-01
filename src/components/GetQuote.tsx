@@ -1,6 +1,6 @@
 // app/get-quote/page.tsx
 "use client";
-import { useState, useEffect, FormEvent } from "react";
+import { useState, useEffect, useRef, FormEvent } from "react";
 import { useLanguage } from "@/context/LanguageContext";
 import Link from "next/link";
 import {
@@ -17,12 +17,11 @@ import {
   User,
   Phone,
   Mail,
+  Search,
 } from "lucide-react";
 import { trackEvent, trackCustom } from "@/lib/fpixel";
-import {
-  fireLeadFormConversion,
-  fireRequestQuoteConversion,
-} from "@/lib/ads";
+import { fireLeadFormConversion, fireRequestQuoteConversion } from "@/lib/ads";
+
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 const DB_NAME = process.env.NEXT_PUBLIC_X_DATABASE || "manvi";
 
@@ -190,8 +189,167 @@ interface QuoteResult {
   quotes: Quote[];
 }
 
+interface AustraliaCity {
+  city: string;
+  zipcode: string;
+}
+
 function fmtPrice(n: number): string {
   return Math.round(n).toLocaleString("en-IN");
+}
+
+// ─── Searchable City Dropdown (Australia) ─────────────────────────────────────
+function SearchableCityDropdown({
+  cities,
+  loading,
+  value,
+  onChange,
+  placeholder = "Select City (required for Australia)",
+}: {
+  cities: AustraliaCity[];
+  loading: boolean;
+  value: string;
+  onChange: (city: string) => void;
+  placeholder?: string;
+}) {
+  const [open, setOpen] = useState(false);
+  const [query, setQuery] = useState("");
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  // Close on outside click
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (
+        wrapperRef.current &&
+        !wrapperRef.current.contains(e.target as Node)
+      ) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
+
+  // Close on Escape
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    document.addEventListener("keydown", handler);
+    return () => document.removeEventListener("keydown", handler);
+  }, []);
+
+  // Reset query whenever dropdown closes
+  useEffect(() => {
+    if (!open) setQuery("");
+  }, [open]);
+
+  const filtered = query.trim()
+    ? cities.filter((c) =>
+        c.city.toLowerCase().includes(query.trim().toLowerCase()),
+      )
+    : cities;
+
+  const handleSelect = (city: string) => {
+    onChange(city);
+    setOpen(false);
+    setQuery("");
+  };
+
+  return (
+    <div className="relative" ref={wrapperRef}>
+      {/* Trigger / search input */}
+      <div
+        className={`w-full bg-white text-[#333] text-[14px] font-medium rounded-xl border border-gray-200 shadow-sm flex items-center gap-3 px-5 py-4 cursor-text ${
+          loading ? "opacity-60" : ""
+        }`}
+        onClick={() => {
+          if (loading) return;
+          setOpen(true);
+          setTimeout(() => inputRef.current?.focus(), 0);
+        }}
+      >
+        <Search size={15} className="text-gray-400 shrink-0" />
+        <input
+          ref={inputRef}
+          type="text"
+          value={open ? query : value}
+          placeholder={value || placeholder}
+          disabled={loading}
+          onChange={(e) => {
+            setQuery(e.target.value);
+            if (!open) setOpen(true);
+          }}
+          onFocus={() => setOpen(true)}
+          className="flex-1 bg-transparent outline-none placeholder:text-gray-400 disabled:cursor-not-allowed"
+        />
+        {loading ? (
+          <Loader2 size={15} className="text-[#f27a1a] animate-spin shrink-0" />
+        ) : value ? (
+          <button
+            type="button"
+            onMouseDown={(e) => e.preventDefault()}
+            onClick={(e) => {
+              e.stopPropagation();
+              onChange("");
+              setQuery("");
+            }}
+            className="text-gray-300 hover:text-gray-500 shrink-0"
+            aria-label="Clear city"
+          >
+            <X size={14} />
+          </button>
+        ) : (
+          <ChevronDown
+            size={16}
+            className={`text-gray-400 shrink-0 transition-transform ${
+              open ? "rotate-180" : ""
+            }`}
+          />
+        )}
+      </div>
+
+      {/* Dropdown list */}
+      {open && (
+        <div className="absolute z-30 mt-2 w-full bg-white border border-gray-200 rounded-xl shadow-lg max-h-72 overflow-y-auto">
+          {loading && (
+            <div className="flex items-center justify-center gap-2 px-5 py-4 text-sm text-gray-500">
+              <Loader2 size={15} className="animate-spin text-[#f27a1a]" />
+              Loading cities…
+            </div>
+          )}
+          {!loading && filtered.length === 0 && (
+            <div className="px-5 py-4 text-sm text-gray-400 text-center">
+              No cities found
+            </div>
+          )}
+          {!loading &&
+            filtered.map((c) => {
+              const isSelected = c.city === value;
+              return (
+                <button
+                  key={`${c.city}-${c.zipcode}`}
+                  type="button"
+                  onMouseDown={(e) => e.preventDefault()}
+                  onClick={() => handleSelect(c.city)}
+                  className={`w-full text-left px-5 py-3 text-sm flex items-center justify-between gap-3 transition-colors ${
+                    isSelected
+                      ? "bg-orange-50 text-[#f27a1a] font-semibold"
+                      : "text-gray-700 hover:bg-gray-50"
+                  }`}
+                >
+                  <span className="truncate">{c.city}</span>
+                  <span className="text-[11px] text-gray-400 font-mono shrink-0">
+                    {c.zipcode}
+                  </span>
+                </button>
+              );
+            })}
+        </div>
+      )}
+    </div>
+  );
 }
 
 // ─── Apply Now Modal ──────────────────────────────────────────────────────────
@@ -238,104 +396,108 @@ function ApplyModal({
   if (!open || !quote || !result) return null;
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-  e.preventDefault();
-  setError("");
-  if (!name.trim() || !phone.trim() || !email.trim()) {
-    setError("All fields are required.");
-    return;
-  }
-  setSubmitting(true);
-  try {
-    const formData = new FormData(e.currentTarget);
-    
-    // Inject standard Zoho expected fields if they aren't captured by the form automatically
-    if (typeof window !== "undefined" && (window as any)._wfa_track && (window as any)._wfa_track.wfa_submit) {
-      (window as any)._wfa_track.wfa_submit(e);
+    e.preventDefault();
+    setError("");
+    if (!name.trim() || !phone.trim() || !email.trim()) {
+      setError("All fields are required.");
+      return;
     }
-
-    // ── 1. Send to Zoho CRM (existing behavior) ──────────────────────────
-    const res = await fetch("https://crm.zoho.in/crm/WebToLeadForm", {
-      method: "POST",
-      body: formData,
-      cache: "no-cache",
-    });
-
-    const contentType = res.headers.get("Content-Type");
-    const data =
-      contentType && contentType.includes("application/json")
-        ? await res.json()
-        : await res.text();
-
-    if (typeof data === "object") {
-      if (data.actionsubmit === "error_msg" || data.actionsubmit === "captcha_error") {
-        throw new Error(data.message || "Submission failed");
-      }
-    }
-
-    // ── 2. ALSO save to your backend so it appears in the admin panel ────
+    setSubmitting(true);
     try {
-      const backendRes = await fetch(`${API_URL}/quote-enquiries`, {
+      const formData = new FormData(e.currentTarget);
+
+      if (
+        typeof window !== "undefined" &&
+        (window as any)._wfa_track &&
+        (window as any)._wfa_track.wfa_submit
+      ) {
+        (window as any)._wfa_track.wfa_submit(e);
+      }
+
+      const res = await fetch("https://crm.zoho.in/crm/WebToLeadForm", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "x-database": DB_NAME,
-        },
-        body: JSON.stringify({
-          name: name.trim(),
-          phone: phone.trim(),
-          email: email.trim(),
-          destination,
-          zoningCountry: zoningCountry || "",
-          zipcode: zipcode || "",
-          actualWt: parseFloat(actualWt) || 0,
-          volWt: volWt ? parseFloat(volWt) : 0,
-          chargeableWt: result?.chargeableWt ?? 0,
-          length: parseFloat(length) || 0,
-          breadth: parseFloat(breadth) || 0,
-          height: parseFloat(height) || 0,
-          service: quote.service,
-          network: quote.network || "",
-          zone: quote.zone || "",
-          rateType: quote.rateType || "",
-          totalPrice: quote.totalPrice || 0,
-          tat: quote.tat || "",
-          sourcePage: "Get Quote",
-        }),
+        body: formData,
+        cache: "no-cache",
       });
 
-      if (!backendRes.ok) {
-        // Log but don't fail the whole submission — Zoho already succeeded
-        console.warn(
-          "[Quote Enquiry] Failed to save to backend:",
-          await backendRes.text().catch(() => ""),
-        );
-      }
-    } catch (backendErr) {
-      console.warn("[Quote Enquiry] Backend save error:", backendErr);
-    }
+      const contentType = res.headers.get("Content-Type");
+      const data =
+        contentType && contentType.includes("application/json")
+          ? await res.json()
+          : await res.text();
 
-    setSubmitted(true);
-    // Meta Pixel: enquiry submitted successfully
-    trackEvent("Lead", {
-      content_name: quote.service,
-      content_category: destination,
-      destination_country: zoningCountry || destination,
-    });
-    if (typeof window !== "undefined") {
-      window.dataLayer = window.dataLayer || [];
-      window.dataLayer.push({
-        event: "form_enquiry_success",
-      });
-      if (typeof (window as any).gtag === "function") {
-        (window as any).gtag("event", "conversion", { "send_to": "AW-16880308122/jB3TCL-RwNccEJqflPE-" });
+      if (typeof data === "object") {
+        if (
+          data.actionsubmit === "error_msg" ||
+          data.actionsubmit === "captcha_error"
+        ) {
+          throw new Error(data.message || "Submission failed");
+        }
       }
+
+      try {
+        const backendRes = await fetch(`${API_URL}/quote-enquiries`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "x-database": DB_NAME,
+          },
+          body: JSON.stringify({
+            name: name.trim(),
+            phone: phone.trim(),
+            email: email.trim(),
+            destination,
+            zoningCountry: zoningCountry || "",
+            zipcode: zipcode || "",
+            actualWt: parseFloat(actualWt) || 0,
+            volWt: volWt ? parseFloat(volWt) : 0,
+            chargeableWt: result?.chargeableWt ?? 0,
+            length: parseFloat(length) || 0,
+            breadth: parseFloat(breadth) || 0,
+            height: parseFloat(height) || 0,
+            service: quote.service,
+            network: quote.network || "",
+            zone: quote.zone || "",
+            rateType: quote.rateType || "",
+            totalPrice: quote.totalPrice || 0,
+            tat: quote.tat || "",
+            sourcePage: "Get Quote",
+          }),
+        });
+
+        if (!backendRes.ok) {
+          console.warn(
+            "[Quote Enquiry] Failed to save to backend:",
+            await backendRes.text().catch(() => ""),
+          );
+        }
+      } catch (backendErr) {
+        console.warn("[Quote Enquiry] Backend save error:", backendErr);
+      }
+
+      setSubmitted(true);
+      trackEvent("Lead", {
+        content_name: quote.service,
+        content_category: destination,
+        destination_country: zoningCountry || destination,
+      });
+      if (typeof window !== "undefined") {
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+          event: "form_enquiry_success",
+        });
+        if (typeof (window as any).gtag === "function") {
+          (window as any).gtag("event", "conversion", {
+            send_to: "AW-W-16880308122/jB3TCL-RwNccEJqflPE-",
+          });
+        }
+      }
+    } catch (err: any) {
+      setError(err.message || "An error occurred. Please try again.");
+    } finally {
+      setSubmitting(false);
     }
-  } catch (err: any) {
-    setError(err.message || "An error occurred. Please try again.");
-  } finally {
-    setSubmitting(false);
-  }
-};
+  };
 
   const handleClose = () => {
     setName("");
@@ -349,21 +511,17 @@ function ApplyModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      {/* Zoho Tracking Script */}
       <script
         id="wf_anal"
         src="https://crm.zohopublic.in/crm/WebFormAnalyticsServeServlet?rid=b68e7fcd908b17f7430d81d005bd6de255003a3fd4f31f070a16ab0aa12185228bcea704199c97ad7aad89d48bd4b954gida0d6a8394fba11cd1f8ca610f7782a78f203a9abcf4fa8133456f8a84775c491gid3729e5103959090ea60da3727086c43d39c522ea60d9865dd275456bc470c8d1gid4747e03c87bb00e47072436a8067ca1b5f0fcc82ecc6f584fb8d9bd864e05ac8&tw=f8c6bc66aff930adab86070d5e2fb229c2298dc18a1e616ac18937d59a423782&version=v2"
         async
       ></script>
-      {/* Backdrop */}
       <div
         className="absolute inset-0 bg-black/60 backdrop-blur-sm"
         onClick={handleClose}
       />
 
-      {/* Modal */}
       <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden">
-        {/* Header */}
         <div className="bg-[#0D1527] px-6 py-5 flex items-start justify-between">
           <div>
             <p className="text-[#f27a1a] text-[11px] font-extrabold tracking-widest uppercase mb-1">
@@ -395,7 +553,9 @@ function ApplyModal({
               </p>
               {awbNo && (
                 <div className="mt-4 bg-orange-50 border border-orange-200 rounded-xl p-3 text-center">
-                  <p className="text-xs text-gray-500 font-medium">Your AWB Number</p>
+                  <p className="text-xs text-gray-500 font-medium">
+                    Your AWB Number
+                  </p>
                   <p className="text-lg font-black text-[#f27a1a] tracking-wider select-all mt-0.5">
                     {awbNo}
                   </p>
@@ -419,7 +579,6 @@ function ApplyModal({
           </div>
         ) : (
           <>
-            {/* Selected Service Summary */}
             <div className="bg-orange-50 border-b border-orange-100 px-6 py-4">
               <p className="text-[10px] text-gray-400 uppercase tracking-wider font-bold mb-2">
                 Selected Service
@@ -447,7 +606,6 @@ function ApplyModal({
               </div>
             </div>
 
-            {/* Form */}
             <form
               id="webform1394241000000550005"
               name="WebToLeads1394241000000550005"
@@ -467,17 +625,26 @@ function ApplyModal({
                 value="b992e0b279931340ffe317347cc2ca88c2e2c2f0c65dccf9f8b233e112f294eb2a301e5401c83b8962bf8dabf7b142f7"
                 readOnly
               />
-              <input type="hidden" name="actionType" value="TGVhZHM=" readOnly />
+              <input
+                type="hidden"
+                name="actionType"
+                value="TGVhZHM="
+                readOnly
+              />
               <input type="hidden" name="returnURL" value="null" readOnly />
               <input type="hidden" name="aG9uZXlwb3Q" value="" readOnly />
-              <input type="hidden" name="Designation" value={quote.totalPrice} readOnly />
+              <input
+                type="hidden"
+                name="Designation"
+                value={quote.totalPrice}
+                readOnly
+              />
               <input type="hidden" name="Fax" value={quote.service} readOnly />
               <p className="text-sm text-gray-500 font-medium">
                 Fill in your details and our team will contact you to finalise
                 the shipment.
               </p>
 
-              {/* Name */}
               <div className="relative">
                 <User
                   size={15}
@@ -495,7 +662,6 @@ function ApplyModal({
                 />
               </div>
 
-              {/* Phone */}
               <div className="relative">
                 <Phone
                   size={15}
@@ -513,7 +679,6 @@ function ApplyModal({
                 />
               </div>
 
-              {/* Email */}
               <div className="relative">
                 <Mail
                   size={15}
@@ -530,8 +695,6 @@ function ApplyModal({
                   className="w-full bg-[#f8f9fa] text-[#333] text-sm font-medium rounded-xl pl-10 pr-4 py-3.5 focus:outline-none border border-gray-200 placeholder:text-gray-400 focus:border-orange-300 transition-colors"
                 />
               </div>
-
-              {/* Amount (Designation) & Service (Fax) - visible instead of hidden if user requested, but hiding them is better UX for Quote forms. Let's keep them as hidden below since we pass them in form values. */}
 
               {error && (
                 <div className="bg-red-50 border border-red-200 text-red-600 rounded-xl px-4 py-3 text-xs font-semibold flex items-center gap-2">
@@ -672,6 +835,11 @@ export default function GetQuote() {
   const [openFaq, setOpenFaq] = useState<string | null>("01");
   const [applyModalOpen, setApplyModalOpen] = useState(false);
 
+  // ── Australia cities state ────────────────────────────────────────────────
+  const [australiaCities, setAustraliaCities] = useState<AustraliaCity[]>([]);
+  const [citiesLoading, setCitiesLoading] = useState(false);
+  const [selectedCity, setSelectedCity] = useState("");
+
   // ── Currency converter state ──────────────────────────────────────────────
   const [currency, setCurrency] = useState<SupportedCurrency>("INR");
   const [rates, setRates] = useState<Record<string, number>>({ INR: 1 });
@@ -686,6 +854,22 @@ export default function GetQuote() {
       .catch(() => {})
       .finally(() => setRatesLoading(false));
   }, [currency]);
+
+  // ── Fetch Australian cities when Australia is selected ────────────────────
+  useEffect(() => {
+    if (destination !== "AUSTRALIA") return;
+    if (australiaCities.length > 0) return; // already loaded
+    setCitiesLoading(true);
+    fetch(`${API_URL}/rates/australia-cities`, {
+      headers: { "x-database": DB_NAME },
+    })
+      .then((r) => r.json())
+      .then((d) => {
+        if (d.success) setAustraliaCities(d.data);
+      })
+      .catch(() => {})
+      .finally(() => setCitiesLoading(false));
+  }, [destination, australiaCities.length]);
 
   // ── Price conversion helper ───────────────────────────────────────────────
   function convertPrice(inrAmount: number): string {
@@ -731,7 +915,11 @@ export default function GetQuote() {
       setError("Please enter actual weight and select a destination.");
       return;
     }
-    if (requiresZip && !zipcode.trim()) {
+    if (destination === "AUSTRALIA" && !selectedCity) {
+      setError("Please select a city for Australia.");
+      return;
+    }
+    if (requiresZip && destination !== "AUSTRALIA" && !zipcode.trim()) {
       setError(`Please enter the zipcode / postcode for ${destObj?.label}.`);
       return;
     }
@@ -773,7 +961,6 @@ export default function GetQuote() {
 
   return (
     <div className="min-h-screen bg-[#f8f9fa] text-[#0f172a] font-sans flex flex-col antialiased">
-      {/* Apply Now Modal */}
       <ApplyModal
         open={applyModalOpen}
         onClose={() => setApplyModalOpen(false)}
@@ -791,7 +978,6 @@ export default function GetQuote() {
         convertPrice={convertPrice}
       />
 
-      {/* Banner Section */}
       <section className="relative bg-[#0D1527] overflow-hidden min-h-55 flex items-center py-12 px-6">
         <div
           className="absolute inset-0 z-0 opacity-20 bg-cover bg-center"
@@ -813,9 +999,7 @@ export default function GetQuote() {
       </section>
 
       <main className="flex-grow max-w-425 w-full mx-auto px-6 py-12">
-        {/* ── Two-column grid — items-stretch makes both panels equal height ── */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
-          {/* LEFT: Quote form */}
           <div className="lg:col-span-5 bg-[#eef0f5] rounded-4xl p-6 sm:p-8 lg:p-10 shadow-sm border border-gray-200/50 flex flex-col h-full">
             <div className="flex flex-col gap-5">
               <div className="border border-orange-300/80 text-[#f27a1a] bg-orange-50/50 rounded-full px-4 py-1 text-[11px] font-extrabold w-fit tracking-wide">
@@ -842,6 +1026,7 @@ export default function GetQuote() {
                     setDestination(e.target.value);
                     setZipcode("");
                     setZoningCountry("");
+                    setSelectedCity("");
                     setResult(null);
                     setError("");
                   }}
@@ -895,8 +1080,8 @@ export default function GetQuote() {
                 </div>
               )}
 
-              {/* Zipcode */}
-              {requiresZip && (
+              {/* Zipcode (non-Australia zip-based destinations) */}
+              {requiresZip && destination !== "AUSTRALIA" && (
                 <input
                   aria-label={`${t.form_zipcode} (required for ${destObj?.label})`}
                   type="text"
@@ -905,6 +1090,29 @@ export default function GetQuote() {
                   onChange={(e) => setZipcode(e.target.value.toUpperCase())}
                   className="w-full bg-white text-[#333] text-[14px] font-medium rounded-xl px-5 py-4 focus:outline-none placeholder:text-gray-400 border border-gray-200 shadow-sm"
                 />
+              )}
+
+              {/* Searchable City dropdown (Australia only) */}
+              {destination === "AUSTRALIA" && (
+                <SearchableCityDropdown
+                  cities={australiaCities}
+                  loading={citiesLoading}
+                  value={selectedCity}
+                  onChange={(city) => {
+                    setSelectedCity(city);
+                    const found = australiaCities.find((c) => c.city === city);
+                    setZipcode(found ? found.zipcode : "");
+                    setResult(null);
+                    setError("");
+                  }}
+                />
+              )}
+
+              {/* Derived zipcode note (Australia) */}
+              {destination === "AUSTRALIA" && zipcode && (
+                <p className="text-[11px] text-gray-400 -mt-2 pl-1">
+                  Zipcode: <strong className="text-gray-500">{zipcode}</strong>
+                </p>
               )}
 
               {/* Actual weight */}
@@ -990,7 +1198,7 @@ export default function GetQuote() {
             </form>
           </div>
 
-          {/* RIGHT: Results — h-full ensures it matches left panel height */}
+          {/* RIGHT: Results */}
           <div className="lg:col-span-7 flex flex-col gap-6 h-full">
             {!result && !loading && (
               <div className="bg-[#eef0f5] rounded-4xl p-6 sm:p-8 lg:p-14 flex flex-col items-center justify-center text-center gap-4 flex-1 shadow-sm border border-gray-200/50">
@@ -1017,7 +1225,6 @@ export default function GetQuote() {
 
             {result && (
               <>
-                {/* Summary Card */}
                 <div className="bg-[#0D1527] rounded-2xl px-6 py-5 flex flex-wrap gap-4 text-white shadow-sm">
                   <div className="flex-1 min-w-[120px]">
                     <p className="text-[10px] text-gray-400 uppercase tracking-wider font-bold">
@@ -1058,7 +1265,6 @@ export default function GetQuote() {
                   </div>
                 </div>
 
-                {/* ── Currency Converter ─────────────────────────────────────── */}
                 <div className="flex items-center justify-between bg-white border border-gray-200 rounded-2xl px-5 py-3 shadow-sm gap-3 flex-wrap">
                   <div className="flex items-center gap-2">
                     <span className="text-[11px] font-bold text-gray-400 uppercase tracking-wider whitespace-nowrap">
@@ -1088,7 +1294,6 @@ export default function GetQuote() {
                   </div>
                 </div>
 
-                {/* Service Cards */}
                 <div className="flex flex-col gap-3">
                   {result.quotes.map((quote) => {
                     const key = `${quote.service}__${quote.rateType}`;
@@ -1105,7 +1310,6 @@ export default function GetQuote() {
                   })}
                 </div>
 
-                {/* Apply Now Button — shown when a service is selected */}
                 {selectedService && selectedQuote && (
                   <div className="bg-white rounded-2xl border-2 border-[#f27a1a] p-5 flex items-center justify-between gap-4 shadow-sm">
                     <div>
@@ -1124,7 +1328,8 @@ export default function GetQuote() {
                         href="/book-shipment"
                         className="shrink-0 bg-[#0D1527] hover:bg-[#15223e] text-white font-extrabold text-xs sm:text-sm py-3.5 px-5 rounded-xl transition-all flex items-center gap-2 shadow-md"
                       >
-                        Book Shipment <ArrowUpRight size={16} strokeWidth={2.5} />
+                        Book Shipment{" "}
+                        <ArrowUpRight size={16} strokeWidth={2.5} />
                       </Link>
                       <button
                         onClick={() => setApplyModalOpen(true)}
@@ -1206,7 +1411,9 @@ export default function GetQuote() {
             ].map((faq, idx) => (
               <div
                 key={faq.id}
-                className={`border-b border-gray-200/80 ${idx === 0 ? "border-t" : ""}`}
+                className={`border-b border-gray-200/80 ${
+                  idx === 0 ? "border-t" : ""
+                }`}
               >
                 <button
                   onClick={() => setOpenFaq(openFaq === faq.id ? null : faq.id)}
