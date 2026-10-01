@@ -259,16 +259,16 @@ export default function Header() {
                 >
                   {t.footer_career}
                 </Link>
+                {/* Customer Login */}
+                <a
+                  href="https://portal.manvicourier.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-white transition-colors hover:text-[#f27a1a] whitespace-nowrap"
+                >
+                  Customer Login
+                </a>
               </nav>
-
-              <Link
-                href="/book-shipment"
-                className={`px-4 py-2 rounded-full text-[13px] font-bold border border-[#f27a1a] text-[#f27a1a] hover:bg-[#f27a1a] hover:text-white transition-colors whitespace-nowrap ${
-                  pathname?.startsWith("/book-shipment") ? "bg-[#f27a1a] text-white" : ""
-                }`}
-              >
-                Book Shipment
-              </Link>
               <Link
                 href="/track"
                 className={`px-5 py-2 rounded-full text-[13px] font-bold transition-colors whitespace-nowrap ${
@@ -376,13 +376,15 @@ export default function Header() {
             >
               {t.footer_career}
             </Link>
-            <Link
-              href="/book-shipment"
+            <a
+              href="https://portal.manvicourier.com"
+              target="_blank"
+              rel="noopener noreferrer"
               onClick={() => setIsMobileMenuOpen(false)}
-              className="pb-2 border-b border-gray-100 text-[#f27a1a]"
+              className="pb-2 border-b border-gray-100 hover:text-[#f27a1a] transition-colors"
             >
-              Book Shipment
-            </Link>
+              Customer Login
+            </a>
           </nav>
 
           <div className="border-t border-gray-100 pt-4">

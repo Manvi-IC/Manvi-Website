@@ -225,6 +225,27 @@ export default function WinterCampaignPage() {
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body: params.toString(),
       });
+
+      // Save to backend quote-enquiries for admin dashboard
+      fetch(`${API_URL}/quote-enquiries`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-database": DB_NAME,
+        },
+        body: JSON.stringify({
+          name: inqName.trim() || "Winter Customer",
+          phone: inqPhone.trim(),
+          email: inqEmail.trim() || "not-provided@winter-campaign.local",
+          destination: inqDest.trim() || "International",
+          actualWt: parseFloat(inqWeight) || 0,
+          chargeableWt: parseFloat(inqWeight) || 0,
+          service: "Winter Pickup Request",
+          sourcePage: "Winter Campaign",
+          notes: `Items: ${inqItems || "N/A"}`,
+        }),
+      }).catch((e) => console.warn("[Winter Campaign] Quote save error:", e));
+
       setInqSuccess(true);
     } catch (err) {
       console.error(err);

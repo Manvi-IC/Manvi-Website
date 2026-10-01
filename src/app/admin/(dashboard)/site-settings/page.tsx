@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Save } from "lucide-react";
+import { Save, Layers, ArrowRight } from "lucide-react";
+import Link from "next/link";
 
 export default function SiteSettingsPage() {
   const [loading, setLoading] = useState(true);
@@ -16,6 +17,7 @@ export default function SiteSettingsPage() {
     offerEndDate: "",
     showOffer: true,
     countryServiceMapping: [] as { country: string, services: string[] }[],
+    disabledServices: [] as string[],
   });
 
   useEffect(() => {
@@ -42,6 +44,7 @@ export default function SiteSettingsPage() {
             : "",
           showOffer: data.data.showOffer ?? true,
           countryServiceMapping: data.data.countryServiceMapping || [],
+          disabledServices: data.data.disabledServices || [],
         });
       }
     } catch (err) {
@@ -237,6 +240,32 @@ export default function SiteSettingsPage() {
                   className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-[#e77419] focus:border-[#e77419] sm:text-sm"
                 />
               </div>
+            </div>
+          </div>
+
+          {/* Courier Services Management Link */}
+          <div className="border-t border-gray-100 pt-6">
+            <div className="flex items-center justify-between p-4 bg-orange-50/60 border border-orange-200/80 rounded-xl">
+              <div className="flex items-center gap-3">
+                <div className="p-2.5 bg-[#e77419] text-white rounded-lg shadow-xs">
+                  <Layers className="h-5 w-5" />
+                </div>
+                <div>
+                  <h3 className="text-sm font-bold text-gray-900">
+                    Courier Service Enable / Disable Control
+                  </h3>
+                  <p className="text-xs text-gray-500 mt-0.5">
+                    Currently {formData.disabledServices.length} service(s) disabled. Control which carriers show up in Get Quote and Proposals.
+                  </p>
+                </div>
+              </div>
+              <Link
+                href="/admin/services"
+                className="inline-flex items-center gap-1.5 px-4 py-2 bg-white hover:bg-orange-50 text-[#e77419] border border-orange-300 text-xs font-bold rounded-lg transition-colors shadow-2xs"
+              >
+                <span>Manage Services</span>
+                <ArrowRight className="h-3.5 w-3.5" />
+              </Link>
             </div>
           </div>
 

@@ -129,45 +129,73 @@ const DESTINATIONS: Destination[] = [
 
 const EUROPE_COUNTRIES = [
   "GERMANY",
-  "FRANCE",
-  "ITALY",
-  "SPAIN",
-  "NETHERLANDS",
-  "BELGIUM",
   "AUSTRIA",
-  "SWITZERLAND",
+  "BELGIUM",
+  "LUXEMBOURGE",
+  "NETHERLANDS",
+  "CZECH REPUBLIC",
+  "DENMARK",
+  "LIECHTENSTEIN",
+  "FRANCE",
+  "MONACO",
+  "HUNGARY",
+  "ITALY",
   "POLAND",
-  "SWEDEN",
+  "SLOVAKIA",
+  "SLOVENIA",
+  "SPAIN",
   "IRELAND",
   "PORTUGAL",
-  "DENMARK",
-  "CZECH REPUBLIC",
-  "GREECE",
-  "HUNGARY",
-  "ROMANIA",
-  "NORWAY",
+  "SWEDEN",
+  "ESTONIA",
   "FINLAND",
+  "CROATIA",
+  "LATVIA",
+  "LITHUANIA",
+  "BULGARIA",
+  "ROMANIA",
+  "GREECE",
+  "ICELAND",
+  "SWITZERLAND",
+  "NORWAY",
 ];
 
 const INTERNATIONAL_COUNTRIES = [
   "USA",
-  "UNITED ARAB EMIRATES",
-  "SINGAPORE",
-  "MALAYSIA",
-  "SAUDI ARABIA",
-  "QATAR",
-  "NEW ZEALAND",
-  "HONG KONG",
-  "THAILAND",
-  "JAPAN",
-  "INDONESIA",
-  "PHILIPPINES",
-  "OMAN",
-  "BAHRAIN",
-  "KUWAIT",
-  "SOUTH AFRICA",
-  "NEPAL",
   "BANGLADESH",
+  "BHUTAN",
+  "MALDIVES",
+  "NEPAL",
+  "SRI LANKA",
+  "UNITED ARAB EMIRATES",
+  "HONG KONG",
+  "MALAYSIA",
+  "SINGAPORE",
+  "THAILAND",
+  "CHINA, PEOPLE'S REPUBLIC",
+  "BAHRAIN",
+  "JORDAN",
+  "KUWAIT",
+  "OMAN",
+  "PAKISTAN",
+  "QATAR",
+  "SAUDI ARABIA",
+  "BRUNEI",
+  "CAMBODIA",
+  "INDONESIA",
+  "JAPAN",
+  "KOREA, REPUBLIC OF",
+  "MACAU",
+  "MYANMAR",
+  "PHILIPPINES, THE",
+  "TAIWAN",
+  "VIETNAM",
+  "NEW ZEALAND",
+  "SOUTH AFRICA",
+  "NIGERIA",
+  "KENYA",
+  "EGYPT",
+  "GHANA",
 ];
 
 /* ── Box Interface for Multi-Box Consignment ─────────────────────────────── */
@@ -408,8 +436,18 @@ const getCarrierPrintTheme = (
       },
       headerClass: "text-white",
       carrierNameRender: (
-        <span className="text-xs font-black text-slate-900 uppercase tracking-tight">
-          {carrierName}
+        <span className="text-xs font-black tracking-tight inline-flex items-center">
+          <span className="text-white" style={{ color: "#FFFFFF" }}>
+            Fed
+          </span>
+          <span className="text-[#FF6600]" style={{ color: "#FF6600" }}>
+            Ex
+          </span>
+          {carrierName.replace(/^fedex\s*/i, "") ? (
+            <span className="text-white ml-1" style={{ color: "#FFFFFF" }}>
+              {carrierName.replace(/^fedex\s*/i, "")}
+            </span>
+          ) : null}
         </span>
       ),
       tatBadgeStyle: {
