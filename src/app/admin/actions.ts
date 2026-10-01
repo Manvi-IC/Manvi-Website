@@ -39,10 +39,6 @@ export async function loginAction(prevState: unknown, formData: FormData) {
     if (data.username) {
       cookieStore.set('admin_user', data.username, { path: '/' });
     }
-
-    if (role === 'salesperson') {
-      redirectTarget = '/admin/proposal';
-    }
   } catch (error) {
     console.error('Login error:', error);
     return { error: 'An error occurred during login. Please try again.' };
