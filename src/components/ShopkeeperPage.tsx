@@ -20,6 +20,7 @@ import {
   Phone,
   Mail,
   Lock,
+  Search,
 } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
 import { trackEvent } from "@/lib/fpixel";
@@ -444,7 +445,166 @@ interface Quote {
   tat: string;
 }
 
+interface AustraliaCity {
+  city: string;
+  zipcode: string;
+}
+
 type FilterType = "all" | "cheapest" | "fastest";
+
+/* ────────────────────────────────────────────────────────────── */
+/* ── Searchable City Dropdown (Australia) ── */
+/* ────────────────────────────────────────────────────────────── */
+function SearchableCityDropdown({
+  cities,
+  loading,
+  value,
+  onChange,
+  placeholder = "Select City (required for Australia)",
+}: {
+  cities: AustraliaCity[];
+  loading: boolean;
+  value: string;
+  onChange: (city: string) => void;
+  placeholder?: string;
+}) {
+  const [open, setOpen] = useState(false);
+  const [query, setQuery] = useState("");
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  // Close on outside click
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (
+        wrapperRef.current &&
+        !wrapperRef.current.contains(e.target as Node)
+      ) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
+
+  // Close on Escape
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    document.addEventListener("keydown", handler);
+    return () => document.removeEventListener("keydown", handler);
+  }, []);
+
+  // Reset query whenever dropdown closes
+  useEffect(() => {
+    if (!open) setQuery("");
+  }, [open]);
+
+  const filtered = query.trim()
+    ? cities.filter((c) =>
+        c.city.toLowerCase().includes(query.trim().toLowerCase()),
+      )
+    : cities;
+
+  const handleSelect = (city: string) => {
+    onChange(city);
+    setOpen(false);
+    setQuery("");
+  };
+
+  return (
+    <div className="relative" ref={wrapperRef}>
+      <div
+        className={`w-full bg-white text-[#333] text-[13.5px] font-sans font-medium rounded-xl px-3.5 py-3 border border-transparent focus-within:ring-2 focus-within:ring-white/60 flex items-center gap-2.5 ${
+          loading ? "opacity-60" : ""
+        }`}
+        onClick={() => {
+          if (loading) return;
+          setOpen(true);
+          setTimeout(() => inputRef.current?.focus(), 0);
+        }}
+      >
+        <Search size={15} className="text-gray-400 shrink-0" />
+        <input
+          ref={inputRef}
+          type="text"
+          value={open ? query : value}
+          placeholder={value || placeholder}
+          disabled={loading}
+          onChange={(e) => {
+            setQuery(e.target.value);
+            if (!open) setOpen(true);
+          }}
+          onFocus={() => setOpen(true)}
+          className="flex-1 bg-transparent outline-none placeholder:text-gray-400 disabled:cursor-not-allowed"
+        />
+        {loading ? (
+          <Loader2 size={15} className="text-[#f27a1a] animate-spin shrink-0" />
+        ) : value ? (
+          <button
+            type="button"
+            onMouseDown={(e) => e.preventDefault()}
+            onClick={(e) => {
+              e.stopPropagation();
+              onChange("");
+              setQuery("");
+            }}
+            className="text-gray-300 hover:text-gray-500 shrink-0"
+            aria-label="Clear city"
+          >
+            <X size={14} />
+          </button>
+        ) : (
+          <ChevronDown
+            size={16}
+            className={`text-gray-400 shrink-0 transition-transform ${
+              open ? "rotate-180" : ""
+            }`}
+          />
+        )}
+      </div>
+
+      {open && (
+        <div className="absolute z-30 mt-2 w-full bg-white border border-gray-200 rounded-xl shadow-lg max-h-72 overflow-y-auto">
+          {loading && (
+            <div className="flex items-center justify-center gap-2 px-5 py-4 text-sm text-gray-500">
+              <Loader2 size={15} className="animate-spin text-[#f27a1a]" />
+              Loading cities…
+            </div>
+          )}
+          {!loading && filtered.length === 0 && (
+            <div className="px-5 py-4 text-sm text-gray-400 text-center">
+              No cities found
+            </div>
+          )}
+          {!loading &&
+            filtered.map((c) => {
+              const isSelected = c.city === value;
+              return (
+                <button
+                  key={`${c.city}-${c.zipcode}`}
+                  type="button"
+                  onMouseDown={(e) => e.preventDefault()}
+                  onClick={() => handleSelect(c.city)}
+                  className={`w-full text-left px-5 py-3 text-sm flex items-center justify-between gap-3 transition-colors ${
+                    isSelected
+                      ? "bg-orange-50 text-[#f27a1a] font-semibold"
+                      : "text-gray-700 hover:bg-gray-50"
+                  }`}
+                >
+                  <span className="truncate">{c.city}</span>
+                  <span className="text-[11px] text-gray-400 font-mono shrink-0">
+                    {c.zipcode}
+                  </span>
+                </button>
+              );
+            })}
+        </div>
+      )}
+    </div>
+  );
+}
 
 /* ────────────────────────────────────────────────────────────── */
 /* ── WhatsApp Enquiry Form ── */
@@ -1070,11 +1230,33 @@ function QuoteCalculator({
   const [showModal, setShowModal] = useState(false);
   const [formError, setFormError] = useState("");
 
+  // ── Australia cities state ────────────────────────────────────────────────
+  const [australiaCities, setAustraliaCities] = useState<AustraliaCity[]>([]);
+  const [citiesLoading, setCitiesLoading] = useState(false);
+  const [selectedCity, setSelectedCity] = useState("");
+
   const destObj = DESTINATIONS.find((d) => d.value === destination);
   const requiresZip = destObj?.requiresZip ?? false;
   const requiresSubCountry = destObj?.requiresSubCountry ?? false;
+  const isAustralia = destination === "AUSTRALIA";
   const subCountryOptions =
     destination === "EUROPE" ? EUROPE_COUNTRIES : INTERNATIONAL_COUNTRIES;
+
+  // ── Fetch Australian cities when Australia is selected ────────────────────
+  useEffect(() => {
+    if (destination !== "AUSTRALIA") return;
+    if (australiaCities.length > 0) return; // already loaded
+    setCitiesLoading(true);
+    fetch(`${API_URL}/rates/australia-cities`, {
+      headers: { "x-database": DB_NAME },
+    })
+      .then((r) => r.json())
+      .then((d) => {
+        if (d.success) setAustraliaCities(d.data);
+      })
+      .catch(() => {})
+      .finally(() => setCitiesLoading(false));
+  }, [destination, australiaCities.length]);
 
   const volWt =
     parseFloat(length) && parseFloat(breadth) && parseFloat(height)
@@ -1095,7 +1277,11 @@ function QuoteCalculator({
       setFormError("Please select a destination and enter actual weight");
       return;
     }
-    if (requiresZip && !zipcode.trim()) {
+    if (isAustralia && !selectedCity) {
+      setFormError("Please select a city for Australia.");
+      return;
+    }
+    if (requiresZip && !isAustralia && !zipcode.trim()) {
       setFormError("Please enter the zipcode/postcode for this destination.");
       return;
     }
@@ -1289,6 +1475,7 @@ function QuoteCalculator({
                   setDestination(e.target.value);
                   setZipcode("");
                   setZoningCountry("");
+                  setSelectedCity("");
                   setQuotes([]);
                 }}
                 className={`${inputCls} appearance-none pr-10 cursor-pointer ${
@@ -1351,7 +1538,26 @@ function QuoteCalculator({
             </div>
           )}
 
-          {requiresZip && (
+          {/* ── Australia: Searchable city dropdown ── */}
+          {isAustralia && (
+            <div>
+              <label className={labelCls}>City (required for Australia)</label>
+              <SearchableCityDropdown
+                cities={australiaCities}
+                loading={citiesLoading}
+                value={selectedCity}
+                onChange={(city) => {
+                  setSelectedCity(city);
+                  const found = australiaCities.find((c) => c.city === city);
+                  setZipcode(found ? found.zipcode : "");
+                  setQuotes([]);
+                }}
+              />
+            </div>
+          )}
+
+          {/* ── Zipcode for non-Australia zip-based destinations ── */}
+          {requiresZip && !isAustralia && (
             <div>
               <label className={labelCls}>Zipcode / Postcode</label>
               <input
@@ -1363,6 +1569,13 @@ function QuoteCalculator({
                 className={inputCls}
               />
             </div>
+          )}
+
+          {/* Derived zipcode note (Australia) */}
+          {isAustralia && zipcode && (
+            <p className="text-[11px] text-white/80 -mt-2 pl-1">
+              Zipcode: <strong className="text-white">{zipcode}</strong>
+            </p>
           )}
 
           <div>
