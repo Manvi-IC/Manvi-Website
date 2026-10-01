@@ -121,9 +121,9 @@ export default function AdminLayout({
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex">
+    <div className="min-h-screen bg-gray-100 print:bg-white print:min-h-0 print:block flex">
       {/* Sidebar */}
-      <aside className="w-64 bg-[#0D1527] text-white flex flex-col hidden md:flex">
+      <aside className="w-64 bg-[#0D1527] text-white flex flex-col hidden md:flex print:hidden">
         <div className="h-16 flex items-center px-6 bg-[#050914] font-bold text-xl tracking-wider">
           Manvi Admin Panel
         </div>
@@ -138,6 +138,8 @@ export default function AdminLayout({
             "/admin/services",
             <Layers size={20} />,
             "Courier Services",
+          )}
+          {navLink(
             "/admin/shopkeeper-rates",
             <Store size={20} />,
             "Upload Bulk Rates",
@@ -203,10 +205,10 @@ export default function AdminLayout({
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 flex flex-col h-screen overflow-hidden">
-        {/* Mobile Header */}
-        <header className="h-16 bg-white border-b flex items-center justify-between px-4 md:hidden">
-          <div className="font-bold text-lg text-slate-900">M5C ADMIN</div>
+      <main className="flex-1 flex flex-col h-screen overflow-hidden print:h-auto print:overflow-visible print:bg-white print:block">
+        {/* Mobile Header - hidden on print */}
+        <header className="h-16 bg-white border-b flex items-center justify-between px-4 md:hidden print:hidden">
+          <div className="font-bold text-lg text-slate-900">Manvi Admin Panel</div>
           <form action={logoutAction}>
             <button type="submit" className="text-gray-500 hover:text-red-600">
               <LogOut size={24} />
@@ -215,7 +217,7 @@ export default function AdminLayout({
         </header>
 
         {/* Page Content */}
-        <div className="flex-1 overflow-auto p-4 md:p-8">{children}</div>
+        <div className="flex-1 overflow-auto p-4 md:p-8 print:p-0 print:overflow-visible print:bg-white print:block">{children}</div>
       </main>
     </div>
   );
