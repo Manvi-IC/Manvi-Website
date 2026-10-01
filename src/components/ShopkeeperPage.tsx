@@ -37,6 +37,9 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 const DB_NAME = process.env.NEXT_PUBLIC_X_DATABASE || "manvi";
 
 const WHATSAPP_NUMBER = "917070506070";
+const COMPARE_RATE_WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
+  "Hi Manvi, I export from India and want to compare my shipping rates.",
+)}`;
 
 /* ── Persist customer contact details across modal opens ── */
 const CONTACT_STORAGE_KEY = "manvi_shopkeeper_contact";
@@ -1723,10 +1726,6 @@ export default function ShopkeeperPage() {
       }
     }
 
-    const waUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
-      "Hi Manvi, I export from India and want to compare my shipping rates.",
-    )}`;
-    window.open(waUrl, "_blank", "noopener,noreferrer");
   };
 
   return (
@@ -1789,8 +1788,10 @@ export default function ShopkeeperPage() {
             </p>
 
             <div className="flex flex-row gap-4 mt-7 lg:mt-8">
-              <button
-                type="button"
+              <a
+                href={COMPARE_RATE_WHATSAPP_URL}
+                target="_blank"
+                rel="noopener noreferrer"
                 onClick={() => handleCompareRate("shopkeeper_hero_desktop")}
                 className="inline-flex items-center justify-center gap-2.5 font-bold text-[15px] lg:text-[16px] px-7 py-3.5 lg:py-4 rounded-full bg-[#23c961] text-[#0a111e] shadow-[0_8px_22px_-8px_rgba(35,201,97,0.6)] hover:bg-[#1fb855] hover:-translate-y-0.5 transition-all cursor-pointer"
               >
@@ -1801,7 +1802,7 @@ export default function ShopkeeperPage() {
                   <path d="M12 2a10 10 0 0 0-8.6 15.06L2 22l5.06-1.32A10 10 0 1 0 12 2Zm5.3 14.1c-.22.62-1.3 1.2-1.8 1.24-.46.05-1.03.07-1.66-.1a13.6 13.6 0 0 1-5.9-4.53c-.44-.58-1.1-1.56-1.1-2.98 0-1.42.75-2.12 1.02-2.4a1.05 1.05 0 0 1 .77-.36c.19 0 .38 0 .55.01.18.01.42-.07.65.5.24.6.8 2.02.87 2.16.07.15.12.32.02.5-.1.19-.15.3-.3.47-.15.18-.3.4-.44.53-.15.15-.3.3-.13.6.18.3.8 1.3 1.7 2.1 1.18 1.05 2.16 1.37 2.47 1.53.3.15.48.12.65-.08.18-.2.75-.87.95-1.17.2-.3.4-.25.66-.15.27.1 1.7.8 2 .95.3.15.5.22.57.34.07.13.07.72-.15 1.34Z" />
                 </svg>
                 <span>Compare your rate</span>
-              </button>
+              </a>
               <a
                 href="tel:+917070506070"
                 onClick={() => trackPhone("shopkeeper_hero_desktop")}
@@ -1883,8 +1884,10 @@ export default function ShopkeeperPage() {
 
             <div className="flex flex-col gap-3 mt-6">
               <div className="flex flex-col gap-2.5">
-                <button
-                  type="button"
+                <a
+                  href={COMPARE_RATE_WHATSAPP_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   onClick={() => handleCompareRate("shopkeeper_hero_mobile")}
                   className="inline-flex items-center justify-center gap-2 font-bold text-[14px] px-5 py-2.5 rounded-full bg-[#23c961]/90 text-[#0a111e] shadow-[0_8px_22px_-8px_rgba(35,201,97,0.6)] hover:bg-[#1fb855] transition-all text-center cursor-pointer"
                 >
@@ -1895,7 +1898,7 @@ export default function ShopkeeperPage() {
                     <path d="M12 2a10 10 0 0 0-8.6 15.06L2 22l5.06-1.32A10 10 0 1 0 12 2Zm5.3 14.1c-.22.62-1.3 1.2-1.8 1.24-.46.05-1.03.07-1.66-.1a13.6 13.6 0 0 1-5.9-4.53c-.44-.58-1.1-1.56-1.1-2.98 0-1.42.75-2.12 1.02-2.4a1.05 1.05 0 0 1 .77-.36c.19 0 .38 0 .55.01.18.01.42-.07.65.5.24.6.8 2.02.87 2.16.07.15.12.32.02.5-.1.19-.15.3-.3.47-.15.18-.3.4-.44.53-.15.15-.3.3-.13.6.18.3.8 1.3 1.7 2.1 1.18 1.05 2.16 1.37 2.47 1.53.3.15.48.12.65-.08.18-.2.75-.87.95-1.17.2-.3.4-.25.66-.15.27.1 1.7.8 2 .95.3.15.5.22.57.34.07.13.07.72-.15 1.34Z" />
                   </svg>
                   <span>Compare your rate on WhatsApp</span>
-                </button>
+                </a>
                 <a
                   href="tel:+917070506070"
                   onClick={() => trackPhone("shopkeeper_hero_mobile")}
@@ -2214,8 +2217,10 @@ export default function ShopkeeperPage() {
               <span className="text-[11px] sm:text-[12px] font-bold tracking-wider uppercase text-[#f27a1a]">
                 Free rate comparison
               </span>
-              <button
-                type="button"
+              <a
+                href={COMPARE_RATE_WHATSAPP_URL}
+                target="_blank"
+                rel="noopener noreferrer"
                 onClick={() => handleCompareRate("shopkeeper_rate_compare_box")}
                 className="inline-flex items-center justify-center gap-2.5 font-bold text-[14px] sm:text-[16px] px-6 sm:px-7 py-3.5 sm:py-4 rounded-full bg-[#23c961] text-[#0a111e] shadow-[0_8px_22px_-8px_rgba(35,201,97,0.6)] hover:bg-[#1fb855] hover:-translate-y-0.5 transition-all text-center cursor-pointer"
               >
@@ -2226,7 +2231,7 @@ export default function ShopkeeperPage() {
                   <path d="M12 2a10 10 0 0 0-8.6 15.06L2 22l5.06-1.32A10 10 0 1 0 12 2Zm5.3 14.1c-.22.62-1.3 1.2-1.8 1.24-.46.05-1.03.07-1.66-.1a13.6 13.6 0 0 1-5.9-4.53c-.44-.58-1.1-1.56-1.1-2.98 0-1.42.75-2.12 1.02-2.4a1.05 1.05 0 0 1 .77-.36c.19 0 .38 0 .55.01.18.01.42-.07.65.5.24.6.8 2.02.87 2.16.07.15.12.32.02.5-.1.19-.15.3-.3.47-.15.18-.3.4-.44.53-.15.15-.3.3-.13.6.18.3.8 1.3 1.7 2.1 1.18 1.05 2.16 1.37 2.47 1.53.3.15.48.12.65-.08.18-.2.75-.87.95-1.17.2-.3.4-.25.66-.15.27.1 1.7.8 2 .95.3.15.5.22.57.34.07.13.07.72-.15 1.34Z" />
                 </svg>
                 <span>Send my details</span>
-              </button>
+              </a>
               <a
                 href="tel:+917070506070"
                 className="inline-flex items-center justify-center gap-2.5 font-bold text-[14px] sm:text-[16px] px-6 sm:px-7 py-3.5 sm:py-4 rounded-full bg-transparent text-[#1c1f2e] border border-[#1c1f2e]/20 hover:border-[#1c1f2e] hover:bg-white/60 hover:-translate-y-0.5 transition-all text-center"
@@ -2427,8 +2432,10 @@ export default function ShopkeeperPage() {
           </p>
 
           <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4 mt-6 sm:mt-8">
-            <button
-              type="button"
+            <a
+              href={COMPARE_RATE_WHATSAPP_URL}
+              target="_blank"
+              rel="noopener noreferrer"
               onClick={() => handleCompareRate("shopkeeper_final_cta")}
               className="inline-flex items-center justify-center gap-2.5 font-bold text-[14px] sm:text-[16px] px-6 sm:px-7 py-3.5 sm:py-4 rounded-full bg-[#23c961] text-[#0a111e] shadow-[0_8px_22px_-8px_rgba(35,201,97,0.6)] hover:bg-[#1fb855] hover:-translate-y-0.5 transition-all text-center cursor-pointer"
             >
@@ -2439,7 +2446,7 @@ export default function ShopkeeperPage() {
                 <path d="M12 2a10 10 0 0 0-8.6 15.06L2 22l5.06-1.32A10 10 0 1 0 12 2Zm5.3 14.1c-.22.62-1.3 1.2-1.8 1.24-.46.05-1.03.07-1.66-.1a13.6 13.6 0 0 1-5.9-4.53c-.44-.58-1.1-1.56-1.1-2.98 0-1.42.75-2.12 1.02-2.4a1.05 1.05 0 0 1 .77-.36c.19 0 .38 0 .55.01.18.01.42-.07.65.5.24.6.8 2.02.87 2.16.07.15.12.32.02.5-.1.19-.15.3-.3.47-.15.18-.3.4-.44.53-.15.15-.3.3-.13.6.18.3.8 1.3 1.7 2.1 1.18 1.05 2.16 1.37 2.47 1.53.3.15.48.12.65-.08.18-.2.75-.87.95-1.17.2-.3.4-.25.66-.15.27.1 1.7.8 2 .95.3.15.5.22.57.34.07.13.07.72-.15 1.34Z" />
               </svg>
               <span>WhatsApp us your details</span>
-            </button>
+            </a>
             <a
               href="tel:+91707050670"
               className="inline-flex items-center justify-center gap-2.5 font-bold text-[14px] sm:text-[16px] px-6 sm:px-7 py-3.5 sm:py-4 rounded-full bg-transparent text-white border border-white/30 hover:border-white hover:bg-white/10 hover:-translate-y-0.5 transition-all text-center"
