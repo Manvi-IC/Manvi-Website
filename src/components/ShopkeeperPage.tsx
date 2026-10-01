@@ -192,6 +192,7 @@ async function submitQuoteEnquiry({
         rateType: quote.rateType || "",
         totalPrice: quote.totalPrice || 0,
         tat: quote.tat || "",
+        sourcePage: "Shopkeeper Page",
       }),
     });
 
@@ -518,6 +519,7 @@ function WhatsAppEnquiryForm() {
           rateType: "",
           totalPrice: 0,
           tat: "",
+          sourcePage: "Shopkeeper WhatsApp",
           notes: "Submitted via Shopkeeper WhatsApp quick enquiry form",
         }),
       });

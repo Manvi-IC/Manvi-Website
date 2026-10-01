@@ -535,6 +535,10 @@ function ApplyModal({
           rateType: quote.rateType,
           totalPrice: quote.totalPrice,
           tat: quote.tat,
+          sourcePage:
+            typeof window !== "undefined" && window.location.pathname.includes("business")
+              ? "Business Campaign"
+              : "Campaign Page",
         }),
       });
       const data = await res.json();

@@ -221,6 +221,27 @@ export default function DiwaliCampaignPage() {
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body: params.toString(),
       });
+
+      // Save to backend quote-enquiries for admin dashboard
+      fetch(`${API_URL}/quote-enquiries`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-database": DB_NAME,
+        },
+        body: JSON.stringify({
+          name: inqName.trim() || "Diwali Customer",
+          phone: inqPhone.trim(),
+          email: inqEmail.trim() || "not-provided@diwali-campaign.local",
+          destination: inqDest.trim() || "International",
+          actualWt: parseFloat(inqWeight) || 0,
+          chargeableWt: parseFloat(inqWeight) || 0,
+          service: "Diwali Pickup Request",
+          sourcePage: "Diwali Campaign",
+          notes: `Items: ${inqItems || "N/A"}`,
+        }),
+      }).catch((e) => console.warn("[Diwali Campaign] Quote save error:", e));
+
       setInqSuccess(true);
     } catch (err) {
       console.error(err);
@@ -234,82 +255,155 @@ export default function DiwaliCampaignPage() {
   return (
     <main className="w-full font-sans bg-[#faf5ea] text-[#1c1f2e] flex flex-col antialiased pb-24 sm:pb-28">
       {/* ── 1. HERO BANNER ── */}
-      <section className="w-full max-w-[1400px] mx-auto px-3 sm:px-6 pt-4 sm:pt-8 pb-6 sm:pb-12">
-        <div className="relative w-full overflow-hidden rounded-[20px] sm:rounded-[32px] bg-[#1a0c02] shadow-2xl flex flex-col justify-center">
-          <Image
-            src="/diwali-banner.jpg"
-            alt="Diwali International Courier Campaign"
-            fill
-            sizes="100vw"
-            className="object-cover object-center opacity-55 mix-blend-screen"
-            priority
-          />
-          {/* Overlays */}
-          <div className="absolute inset-0 bg-gradient-to-t from-[#1a0c02] via-[#1a0c02]/60 to-transparent" />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#1a0c02] via-[#1a0c02]/75 to-transparent" />
+      <section className="w-full max-w-[1352px] mx-auto px-3 sm:px-6 pt-4 sm:pt-6 pb-6 sm:pb-10">
+        <div className="relative w-full overflow-hidden rounded-[20px] sm:rounded-[32px] bg-[#1a0c02] shadow-2xl">
+          {/* Exact aspect ratio container (1352x486) ensures zero cutout */}
+          <div className="relative w-full aspect-[1352/486]">
+            <Image
+              src="/diwali-banner.webp"
+              alt="Diwali International Courier Campaign"
+              fill
+              sizes="(max-width: 1352px) 100vw, 1352px"
+              className="object-cover object-center"
+              priority
+            />
 
-          {/* Top Festive Badge */}
-          <div className="absolute top-5 right-5 hidden md:flex items-center gap-2 bg-amber-500/20 backdrop-blur-md border border-amber-400/40 text-amber-300 px-4 py-2 rounded-full text-xs font-bold tracking-wider uppercase shadow-lg">
-            <Sparkles className="w-4 h-4 text-yellow-300" />
-            Diwali Festive Special Edition · Guaranteed Delivery
-          </div>
+            {/* Soft, minimal scrim strictly on the left for text contrast — leaving the plane, skyline, boxes & diyas 100% uncovered */}
+            <div className="hidden md:block absolute inset-0 bg-gradient-to-r from-black/50 via-black/20 via-45% to-transparent pointer-events-none" />
 
-          {/* Hero Content Overlay */}
-          <div className="relative z-10 flex flex-col justify-center px-4 py-7 sm:px-10 sm:py-12 md:px-14 md:py-14 max-w-3xl">
-            <div className="inline-flex items-center gap-1.5 sm:gap-2 px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full bg-amber-500/25 border border-amber-400/50 text-amber-300 text-[10px] sm:text-[12px] font-extrabold w-fit mb-2.5 sm:mb-3 tracking-wide uppercase">
-              <Flame className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-amber-400 fill-amber-400" />
-              THIS DIWALI FESTIVAL
+            {/* Top Festive Badge */}
+            <div className="absolute top-4 right-4 hidden md:flex items-center gap-2 bg-amber-500/20 backdrop-blur-md border border-amber-400/40 text-amber-300 px-3.5 py-1.5 rounded-full text-[11px] font-bold tracking-wider uppercase shadow-lg">
+              <Sparkles className="w-3.5 h-3.5 text-yellow-300" />
+              Diwali Festive Special Edition · Guaranteed Delivery
             </div>
 
-            <h1 className="text-2xl sm:text-4xl lg:text-5xl font-black text-white leading-[1.2] sm:leading-[1.15] tracking-tight mb-3 sm:mb-4">
-              Send Diwali Sweets & <br />
+            {/* Desktop Hero Content Overlay */}
+            <div className="hidden md:flex absolute inset-0 z-10 flex-col justify-center px-6 lg:px-12 py-4 max-w-xl lg:max-w-2xl">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/25 backdrop-blur-sm border border-amber-400/40 text-amber-200 text-xs font-extrabold w-fit mb-2.5 tracking-wide uppercase shadow">
+                <Flame className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
+                DIWALI WITH MANVI
+              </div>
+
+              <h1 className="text-2xl lg:text-[36px] font-black text-white leading-[1.18] tracking-tight mb-2 drop-shadow-[0_2px_8px_rgba(0,0,0,0.85)]">
+                Can&apos;t be there to hug them this Diwali? <br />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-orange-300 to-yellow-200 drop-shadow">
+                  Send something that feels like one.
+                </span>
+              </h1>
+
+              <p className="text-amber-100/95 text-xs lg:text-[13px] font-semibold italic tracking-wide leading-relaxed mb-3.5 max-w-lg drop-shadow-[0_1px_4px_rgba(0,0,0,0.8)] flex items-center gap-2">
+                <span className="w-5 h-0.5 bg-gradient-to-r from-amber-400 to-transparent inline-block" />
+                Because miles don&apos;t matter at Manvi.
+              </p>
+
+              {/* Rate Highlight Pill (Compact) */}
+              <div className="bg-black/35 backdrop-blur-md border border-amber-400/30 rounded-xl p-2 max-w-lg mb-3 shadow-lg">
+                <div className="text-[10px] uppercase tracking-wider text-amber-300 font-extrabold mb-1.5 flex items-center justify-between">
+                  <span className="flex items-center gap-1.5">
+                    <Gift className="w-3 h-3" /> 🪔 Festive Sweets, Faral & Gift Rates
+                  </span>
+                  <span className="text-white/60 text-[9px] font-normal">Per Kg starting</span>
+                </div>
+                <div className="grid grid-cols-4 gap-1.5 text-center text-xs font-bold">
+                  <div className="bg-black/40 border border-amber-500/30 rounded-lg py-1 px-1.5">
+                    <span className="text-white block text-[10px] leading-tight">🇬🇧 UK</span>
+                    <span className="text-amber-300 font-extrabold text-xs">₹649/kg</span>
+                  </div>
+                  <div className="bg-black/40 border border-amber-500/30 rounded-lg py-1 px-1.5">
+                    <span className="text-white block text-[10px] leading-tight">🇺🇸 USA</span>
+                    <span className="text-amber-300 font-extrabold text-xs">₹679/kg</span>
+                  </div>
+                  <div className="bg-black/40 border border-amber-500/30 rounded-lg py-1 px-1.5">
+                    <span className="text-white block text-[10px] leading-tight">🇨🇦 Canada</span>
+                    <span className="text-amber-300 font-extrabold text-xs">₹749/kg</span>
+                  </div>
+                  <div className="bg-black/40 border border-cyan-500/30 rounded-lg py-1 px-1.5">
+                    <span className="text-white block text-[10px] leading-tight">🇦🇺 Australia</span>
+                    <span className="text-amber-300 font-extrabold text-xs">₹789/kg</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* CTA Buttons */}
+              <div className="flex items-center gap-2.5">
+                <a
+                  href="#diwali-calculator"
+                  className="bg-[#e77419] hover:bg-orange-600 text-white font-bold text-xs lg:text-sm px-5 py-2.5 rounded-full transition-all active:scale-95 shadow-lg flex items-center gap-1.5"
+                >
+                  {t.nav_quote} <ArrowUpRight className="w-3.5 h-3.5" />
+                </a>
+                <a
+                  href="https://wa.me/917070506070?text=Hi%2C%20I%20want%20to%20send%20a%20Diwali%20gift%20parcel%20abroad"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-[#23c961] hover:bg-[#1fb355] text-[#0a111e] font-extrabold text-xs lg:text-sm px-5 py-2.5 rounded-full transition-all active:scale-95 shadow-lg flex items-center gap-1.5"
+                >
+                  {t.contact_whatsapp}
+                </a>
+              </div>
+            </div>
+          </div>
+
+          {/* Mobile Content (Below banner on small screens so banner artwork is 100% visible with 0 cutout) */}
+          <div className="md:hidden px-4 py-5 bg-[#170a02] flex flex-col gap-3">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/20 border border-amber-400/40 text-amber-300 text-[11px] font-extrabold w-fit tracking-wide uppercase">
+              <Flame className="w-3 h-3 text-amber-400 fill-amber-400" />
+              DIWALI WITH MANVI
+            </div>
+
+            <h1 className="text-xl sm:text-2xl font-black text-white leading-tight tracking-tight">
+              Can&apos;t be there to hug them this Diwali? <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-orange-400 to-yellow-200">
-                Gifts to USA, UK & Worldwide
+                Send something that feels like one.
               </span>
             </h1>
 
-            <p className="text-amber-100/90 text-xs sm:text-base font-medium leading-relaxed mb-5 sm:mb-6 max-w-xl">
-              Deliver the authentic taste of home! Ship homemade Faral, sweets, diyas, dry fruits, and festive ethnic clothes to family across 200+ global destinations.
+            <p className="text-amber-200/90 text-xs font-semibold italic flex items-center gap-1.5">
+              <span className="w-4 h-0.5 bg-amber-400 inline-block" />
+              Because miles don&apos;t matter at Manvi.
             </p>
 
-            {/* Rate Highlight Pill */}
-            <div className="bg-white/10 backdrop-blur-md border border-amber-500/30 rounded-xl sm:rounded-2xl p-2.5 sm:p-4 max-w-xl mb-5 sm:mb-6 shadow-xl">
-              <div className="text-[10px] sm:text-[12px] uppercase tracking-wider text-amber-300 font-extrabold mb-2 flex items-center gap-1.5">
-                <Gift className="w-3 h-3 sm:w-3.5 sm:h-3.5" /> 🪔 Diwali Special Parcel Rates (Per Kg Starting)
+            {/* Rate Highlight Pill Mobile */}
+            <div className="bg-white/5 border border-amber-500/30 rounded-xl p-2.5 shadow-md">
+              <div className="text-[11px] uppercase tracking-wider text-amber-300 font-extrabold mb-1.5 flex items-center justify-between">
+                <span className="flex items-center gap-1">
+                  <Gift className="w-3 h-3" /> 🪔 Festive Sweets & Gift Rates
+                </span>
+                <span className="text-white/60 text-[10px] font-normal">Per Kg starting</span>
               </div>
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5 sm:gap-2 text-center text-xs font-bold">
-                <div className="bg-amber-950/80 border border-amber-500/40 rounded-lg sm:rounded-xl py-1.5 sm:py-2 px-1.5 sm:px-2">
-                  <span className="text-white block text-[11px] sm:text-xs mb-0.5">🇬🇧 UK</span>
-                  <span className="text-amber-300 font-extrabold text-xs sm:text-base">₹649/kg</span>
+              <div className="grid grid-cols-2 gap-1.5 text-center text-xs font-bold">
+                <div className="bg-amber-950/80 border border-amber-500/40 rounded-lg py-1.5 px-2">
+                  <span className="text-white block text-[11px] mb-0.5">🇬🇧 UK</span>
+                  <span className="text-amber-300 font-extrabold text-xs">₹649/kg</span>
                 </div>
-                <div className="bg-amber-950/80 border border-amber-500/40 rounded-lg sm:rounded-xl py-1.5 sm:py-2 px-1.5 sm:px-2">
-                  <span className="text-white block text-[11px] sm:text-xs mb-0.5">🇺🇸 USA</span>
-                  <span className="text-amber-300 font-extrabold text-xs sm:text-base">₹679/kg</span>
+                <div className="bg-amber-950/80 border border-amber-500/40 rounded-lg py-1.5 px-2">
+                  <span className="text-white block text-[11px] mb-0.5">🇺🇸 USA</span>
+                  <span className="text-amber-300 font-extrabold text-xs">₹679/kg</span>
                 </div>
-                <div className="bg-amber-950/80 border border-amber-500/40 rounded-lg sm:rounded-xl py-1.5 sm:py-2 px-1.5 sm:px-2">
-                  <span className="text-white block text-[11px] sm:text-xs mb-0.5">🇨🇦 Canada</span>
-                  <span className="text-amber-300 font-extrabold text-xs sm:text-base">₹749/kg</span>
+                <div className="bg-amber-950/80 border border-amber-500/40 rounded-lg py-1.5 px-2">
+                  <span className="text-white block text-[11px] mb-0.5">🇨🇦 Canada</span>
+                  <span className="text-amber-300 font-extrabold text-xs">₹749/kg</span>
                 </div>
-                <div className="bg-amber-950/80 border border-cyan-500/30 rounded-lg sm:rounded-xl py-1.5 sm:py-2 px-1.5 sm:px-2">
-                  <span className="text-white block text-[11px] sm:text-xs mb-0.5">🇦🇺 Australia</span>
-                  <span className="text-amber-300 font-extrabold text-xs sm:text-base">₹789/kg</span>
+                <div className="bg-amber-950/80 border border-cyan-500/30 rounded-lg py-1.5 px-2">
+                  <span className="text-white block text-[11px] mb-0.5">🇦🇺 Australia</span>
+                  <span className="text-amber-300 font-extrabold text-xs">₹789/kg</span>
                 </div>
               </div>
             </div>
 
-            {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-3 w-full sm:w-auto">
+            {/* CTA Buttons Mobile */}
+            <div className="grid grid-cols-2 gap-2 mt-1">
               <a
                 href="#diwali-calculator"
-                className="bg-[#e77419] hover:bg-orange-600 text-white font-bold text-xs sm:text-base px-6 py-3 sm:py-3.5 rounded-xl sm:rounded-full transition-all active:scale-95 shadow-lg flex items-center justify-center gap-2 text-center"
+                className="bg-[#e77419] hover:bg-orange-600 text-white font-bold text-xs py-3 rounded-xl transition-all shadow-md flex items-center justify-center gap-1.5 text-center"
               >
-                {t.nav_quote} <ArrowUpRight className="w-4 h-4" />
+                {t.nav_quote} <ArrowUpRight className="w-3.5 h-3.5" />
               </a>
               <a
                 href="https://wa.me/917070506070?text=Hi%2C%20I%20want%20to%20send%20a%20Diwali%20gift%20parcel%20abroad"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-[#23c961] hover:bg-[#1fb355] text-[#0a111e] font-extrabold text-xs sm:text-base px-6 py-3 sm:py-3.5 rounded-xl sm:rounded-full transition-all active:scale-95 shadow-lg flex items-center justify-center gap-2 text-center"
+                className="bg-[#23c961] hover:bg-[#1fb355] text-[#0a111e] font-extrabold text-xs py-3 rounded-xl transition-all shadow-md flex items-center justify-center gap-1.5 text-center"
               >
                 {t.contact_whatsapp}
               </a>
