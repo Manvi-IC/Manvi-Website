@@ -203,7 +203,9 @@ const DESTINATION_FLAGS: Record<string, string> = {
 export default function ServicesManagementPage() {
   const [services, setServices] = useState<ServiceItem[]>(DEFAULT_SERVICES);
   const [disabledServices, setDisabledServices] = useState<string[]>([]);
+  const [disabledShopkeeperServices, setDisabledShopkeeperServices] = useState<string[]>([]);
   const [initialDisabled, setInitialDisabled] = useState<string[]>([]);
+  const [initialShopkeeperDisabled, setInitialShopkeeperDisabled] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -222,10 +224,12 @@ export default function ServicesManagementPage() {
       // 1. Fetch site settings to retrieve currently disabled services
       const settingsRes = await fetch("/api/site-settings");
       let currentDisabled: string[] = [];
+      let currentShopkeeperDisabled: string[] = [];
       if (settingsRes.ok) {
         const settingsData = await settingsRes.json();
         if (settingsData.success && settingsData.data) {
           currentDisabled = settingsData.data.disabledServices || [];
+          currentShopkeeperDisabled = settingsData.data.disabledShopkeeperServices || [];
         }
       }
 
@@ -258,6 +262,8 @@ export default function ServicesManagementPage() {
       setServices(loadedServices);
       setDisabledServices(currentDisabled);
       setInitialDisabled(currentDisabled);
+      setDisabledShopkeeperServices(currentShopkeeperDisabled);
+      setInitialShopkeeperDisabled(currentShopkeeperDisabled);
     } catch (err: any) {
       console.warn("Failed to load services:", err.message);
       showToast("Notice: Using localized services list. Backend might be syncing.", "error");
@@ -274,17 +280,22 @@ export default function ServicesManagementPage() {
   const hasUnsavedChanges = useMemo(() => {
     if (disabledServices.length !== initialDisabled.length) return true;
     const setA = new Set(disabledServices);
-    return initialDisabled.some((s) => !setA.has(s));
-  }, [disabledServices, initialDisabled]);
+    if (initialDisabled.some((s) => !setA.has(s))) return true;
 
-  const toggleService = (serviceName: string) => {
-    setDisabledServices((prev) => {
+    if (disabledShopkeeperServices.length !== initialShopkeeperDisabled.length) return true;
+    const setB = new Set(disabledShopkeeperServices);
+    if (initialShopkeeperDisabled.some((s) => !setB.has(s))) return true;
+
+    return false;
+  }, [disabledServices, initialDisabled, disabledShopkeeperServices, initialShopkeeperDisabled]);
+
+  const toggleService = (serviceName: string, type: 'customer' | 'shopkeeper') => {
+    const setState = type === 'customer' ? setDisabledServices : setDisabledShopkeeperServices;
+    setState((prev) => {
       const isCurrentlyDisabled = prev.includes(serviceName);
       if (isCurrentlyDisabled) {
-        // Enable it (remove from disabledServices)
         return prev.filter((s) => s !== serviceName);
       } else {
-        // Disable it (add to disabledServices)
         return [...prev, serviceName];
       }
     });
@@ -292,49 +303,51 @@ export default function ServicesManagementPage() {
 
   const handleEnableAll = () => {
     setDisabledServices([]);
+    setDisabledShopkeeperServices([]);
   };
 
   const handleDisableFiltered = () => {
     const filteredNames = filteredServices.map((s) => s.service);
     setDisabledServices((prev) => Array.from(new Set([...prev, ...filteredNames])));
+    setDisabledShopkeeperServices((prev) => Array.from(new Set([...prev, ...filteredNames])));
   };
 
   const handleResetToSaved = () => {
     setDisabledServices(initialDisabled);
+    setDisabledShopkeeperServices(initialShopkeeperDisabled);
   };
 
   const handleSave = async () => {
     setSaving(true);
     try {
-      // 1. Try dedicated endpoint first
-      let res = await fetch(`${API_URL}/rates/services/status`, {
+      const settingsRes = await fetch("/api/site-settings");
+      let existingSettings = {};
+      if (settingsRes.ok) {
+        const sData = await settingsRes.json();
+        existingSettings = sData.data || {};
+      }
+
+      const res = await fetch("/api/site-settings", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ disabledServices }),
+        body: JSON.stringify({
+          ...existingSettings,
+          disabledServices,
+          disabledShopkeeperServices,
+        }),
       });
 
-      // 2. Fallback to /api/site-settings if dedicated route isn't available
-      if (!res.ok) {
-        const settingsRes = await fetch("/api/site-settings");
-        let existingSettings = {};
-        if (settingsRes.ok) {
-          const sData = await settingsRes.json();
-          existingSettings = sData.data || {};
-        }
-
-        res = await fetch("/api/site-settings", {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            ...existingSettings,
-            disabledServices,
-          }),
-        });
-      }
+      // Also update dedicated endpoint
+      fetch(`${API_URL}/rates/services/status`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ disabledServices, disabledShopkeeperServices }),
+      }).catch(() => {});
 
       const data = await res.json();
       if (data.success) {
         setInitialDisabled(disabledServices);
+        setInitialShopkeeperDisabled(disabledShopkeeperServices);
         showToast("Service statuses saved! Live quote engine & proposal updated successfully.");
       } else {
         showToast(data.message || "Failed to update service statuses", "error");
@@ -350,11 +363,12 @@ export default function ServicesManagementPage() {
   // Filtered and searched list
   const filteredServices = useMemo(() => {
     return services.filter((s) => {
-      const isEnabled = !disabledServices.includes(s.service);
+      const isCustomerEnabled = !disabledServices.includes(s.service);
+      const isShopkeeperEnabled = !disabledShopkeeperServices.includes(s.service);
 
       // Status filter
-      if (statusFilter === "ENABLED" && !isEnabled) return false;
-      if (statusFilter === "DISABLED" && isEnabled) return false;
+      if (statusFilter === "ENABLED" && !isCustomerEnabled && !isShopkeeperEnabled) return false;
+      if (statusFilter === "DISABLED" && isCustomerEnabled && isShopkeeperEnabled) return false;
 
       // Network filter
       if (selectedNetwork !== "ALL" && s.network !== selectedNetwork) return false;
@@ -671,13 +685,14 @@ export default function ServicesManagementPage() {
                 <th className="py-3.5 px-5 w-44">Carrier Network</th>
                 <th className="py-3.5 px-5">Service Name & Identifier</th>
                 <th className="py-3.5 px-5">Supported Destinations</th>
-                <th className="py-3.5 px-5 text-center w-36">Quoting Status</th>
-                <th className="py-3.5 px-5 text-right w-36">Toggle Option</th>
+                <th className="py-3.5 px-5 text-center">Customer Status</th>
+                <th className="py-3.5 px-5 text-center">Shopkeeper Status</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
               {filteredServices.map((s) => {
-                const isEnabled = !disabledServices.includes(s.service);
+                const isCustomerEnabled = !disabledServices.includes(s.service);
+                const isShopkeeperEnabled = !disabledShopkeeperServices.includes(s.service);
                 const meta = NETWORK_LABELS[s.network] || {
                   name: s.network,
                   badgeBg: "bg-slate-100",
@@ -690,7 +705,7 @@ export default function ServicesManagementPage() {
                   <tr
                     key={s.service}
                     className={`transition-colors ${
-                      isEnabled ? "hover:bg-slate-50/80 bg-white" : "bg-slate-50/60 opacity-80"
+                      isCustomerEnabled || isShopkeeperEnabled ? "hover:bg-slate-50/80 bg-white" : "bg-slate-50/60 opacity-80"
                     }`}
                   >
                     {/* Carrier Network Badge */}
@@ -708,7 +723,7 @@ export default function ServicesManagementPage() {
                       <div className="flex items-center gap-2">
                         <span
                           className={`font-mono text-xs font-extrabold ${
-                            isEnabled ? "text-slate-900" : "text-slate-500 line-through"
+                            isCustomerEnabled || isShopkeeperEnabled ? "text-slate-900" : "text-slate-500 line-through"
                           }`}
                         >
                           {s.service}
@@ -742,41 +757,56 @@ export default function ServicesManagementPage() {
                       </div>
                     </td>
 
-                    {/* Status Badge */}
-                    <td className="py-3.5 px-5 text-center whitespace-nowrap align-middle">
-                      {isEnabled ? (
-                        <span className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-full">
-                          <CheckCircle2 className="w-3 h-3 text-emerald-600" />
-                          <span>Active in Quotes</span>
+                    {/* Customer Toggle */}
+                    <td className="py-3.5 px-5 text-center whitespace-nowrap align-middle border-l border-slate-100">
+                      <div className="flex flex-col items-center gap-1.5">
+                        <button
+                          type="button"
+                          onClick={() => toggleService(s.service, 'customer')}
+                          className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-[#f27a1a] focus:ring-offset-2 ${
+                            isCustomerEnabled ? "bg-emerald-500" : "bg-slate-300"
+                          }`}
+                          role="switch"
+                          aria-checked={isCustomerEnabled}
+                          title={isCustomerEnabled ? "Click to Disable Customer Rates" : "Click to Enable Customer Rates"}
+                        >
+                          <span
+                            aria-hidden="true"
+                            className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow-md ring-0 transition duration-200 ease-in-out ${
+                              isCustomerEnabled ? "translate-x-5" : "translate-x-0"
+                            }`}
+                          />
+                        </button>
+                        <span className={`text-[10px] font-bold ${isCustomerEnabled ? "text-emerald-600" : "text-red-500"}`}>
+                          {isCustomerEnabled ? "Active" : "Disabled"}
                         </span>
-                      ) : (
-                        <span className="inline-flex items-center gap-1 text-[11px] font-bold text-red-700 bg-red-50 border border-red-200 px-2.5 py-1 rounded-full">
-                          <XCircle className="w-3 h-3 text-red-600" />
-                          <span>Disabled / Hidden</span>
-                        </span>
-                      )}
+                      </div>
                     </td>
 
-                    {/* Toggle Switch */}
-                    <td className="py-3.5 px-5 text-right whitespace-nowrap align-middle">
-                      <button
-                        type="button"
-                        onClick={() => toggleService(s.service)}
-                        className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-[#f27a1a] focus:ring-offset-2 ${
-                          isEnabled ? "bg-emerald-500" : "bg-slate-300"
-                        }`}
-                        role="switch"
-                        aria-checked={isEnabled}
-                        title={isEnabled ? "Click to Disable Service" : "Click to Enable Service"}
-                      >
-                        <span className="sr-only">Toggle Service</span>
-                        <span
-                          aria-hidden="true"
-                          className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow-md ring-0 transition duration-200 ease-in-out ${
-                            isEnabled ? "translate-x-5" : "translate-x-0"
+                    {/* Shopkeeper Toggle */}
+                    <td className="py-3.5 px-5 text-center whitespace-nowrap align-middle border-l border-slate-100">
+                      <div className="flex flex-col items-center gap-1.5">
+                        <button
+                          type="button"
+                          onClick={() => toggleService(s.service, 'shopkeeper')}
+                          className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-[#f27a1a] focus:ring-offset-2 ${
+                            isShopkeeperEnabled ? "bg-emerald-500" : "bg-slate-300"
                           }`}
-                        />
-                      </button>
+                          role="switch"
+                          aria-checked={isShopkeeperEnabled}
+                          title={isShopkeeperEnabled ? "Click to Disable Shopkeeper Rates" : "Click to Enable Shopkeeper Rates"}
+                        >
+                          <span
+                            aria-hidden="true"
+                            className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow-md ring-0 transition duration-200 ease-in-out ${
+                              isShopkeeperEnabled ? "translate-x-5" : "translate-x-0"
+                            }`}
+                          />
+                        </button>
+                        <span className={`text-[10px] font-bold ${isShopkeeperEnabled ? "text-emerald-600" : "text-red-500"}`}>
+                          {isShopkeeperEnabled ? "Active" : "Disabled"}
+                        </span>
+                      </div>
                     </td>
                   </tr>
                 );
