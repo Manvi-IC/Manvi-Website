@@ -4,7 +4,6 @@ import type { NextRequest } from 'next/server';
 export function proxy(request: NextRequest) {
   // 1. Admin Auth Logic
   const isAdmin = request.cookies.get('admin_auth')?.value === 'true';
-  const role = request.cookies.get('admin_role')?.value;
   const pathname = request.nextUrl.pathname;
   const isLoginPage = pathname.startsWith('/admin/login');
 
@@ -14,13 +13,7 @@ export function proxy(request: NextRequest) {
     }
     
     if (isAdmin && isLoginPage) {
-      const destination = role === 'salesperson' ? '/admin/proposal' : '/admin';
-      return NextResponse.redirect(new URL(destination, request.url));
-    }
-
-    // Role-based restrictions: salesperson can only access /admin/proposal
-    if (isAdmin && role === 'salesperson' && !pathname.startsWith('/admin/proposal')) {
-      return NextResponse.redirect(new URL('/admin/proposal', request.url));
+      return NextResponse.redirect(new URL('/admin', request.url));
     }
   }
 
