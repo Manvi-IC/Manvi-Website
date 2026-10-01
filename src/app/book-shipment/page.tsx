@@ -1321,6 +1321,7 @@ export default function BookShipmentPage() {
           sgstAmt,
           igstAmt,
           totalAmt: selectedQuote.totalPrice,
+          sourcePage: "Book Shipment",
         }),
       });
 
