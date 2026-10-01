@@ -99,6 +99,41 @@ function fmtDate(s: string) {
   });
 }
 
+export function resolveSourcePage(e: {
+  sourcePage?: string;
+  service?: string;
+  destination?: string;
+  notes?: string;
+}): string {
+  if (e.sourcePage && e.sourcePage.trim() && e.sourcePage !== "Website") {
+    return e.sourcePage.trim();
+  }
+  const s = (e.service || "").toLowerCase();
+  const n = (e.notes || "").toLowerCase();
+  const d = (e.destination || "").toLowerCase();
+
+  if (
+    s === "whatsapp quick enquiry" ||
+    d === "whatsapp_lead" ||
+    n.includes("whatsapp")
+  ) {
+    return "Shopkeeper WhatsApp";
+  }
+  if (s.includes("diwali") || n.includes("diwali")) {
+    return "Diwali Campaign";
+  }
+  if (s.includes("winter") || n.includes("winter")) {
+    return "Winter Campaign";
+  }
+  if (n.includes("business") || s.includes("business")) {
+    return "Business Campaign";
+  }
+  if (s.includes("contact") || n.includes("query:") || n.includes("company:")) {
+    return "Contact Page";
+  }
+  return e.sourcePage?.trim() || "Website";
+}
+
 function getSourceBadgeStyle(source?: string) {
   const s = (source || "Website").toLowerCase();
   if (s.includes("home")) {
@@ -106,6 +141,12 @@ function getSourceBadgeStyle(source?: string) {
   }
   if (s.includes("quote")) {
     return "bg-orange-50 text-orange-700 border-orange-200/80";
+  }
+  if (s.includes("diwali")) {
+    return "bg-amber-50 text-amber-800 border-amber-200/80";
+  }
+  if (s.includes("winter")) {
+    return "bg-cyan-50 text-cyan-800 border-cyan-200/80";
   }
   if (s.includes("campaign")) {
     return "bg-purple-50 text-purple-700 border-purple-200/80";
@@ -116,7 +157,25 @@ function getSourceBadgeStyle(source?: string) {
   if (s.includes("shipment") || s.includes("book")) {
     return "bg-sky-50 text-sky-700 border-sky-200/80";
   }
+  if (s.includes("contact")) {
+    return "bg-emerald-50 text-emerald-700 border-emerald-200/80";
+  }
   return "bg-slate-100 text-slate-700 border-slate-200/80";
+}
+
+export function getSourcePageUrl(source?: string): string {
+  const s = (source || "").toLowerCase();
+  if (s.includes("home")) return "/";
+  if (s.includes("quote")) return "/quote";
+  if (s.includes("diwali")) return "/diwali-campaign";
+  if (s.includes("winter")) return "/winter-campaign";
+  if (s.includes("business")) return "/business-campaign";
+  if (s.includes("campaign")) return "/campaign";
+  if (s.includes("whatsapp")) return "/shopkeeper#whatsapp";
+  if (s.includes("shopkeeper")) return "/shopkeeper";
+  if (s.includes("contact")) return "/contact";
+  if (s.includes("shipment") || s.includes("book")) return "/book-shipment";
+  return "/";
 }
 
 // ─── Detail Drawer ────────────────────────────────────────────────────────────
@@ -161,10 +220,10 @@ function DetailDrawer({
               </p>
               <span
                 className={`text-[10px] font-semibold px-2 py-0.5 rounded-full border ${getSourceBadgeStyle(
-                  enquiry.sourcePage,
+                  resolveSourcePage(enquiry),
                 )}`}
               >
-                {enquiry.sourcePage || "Website"}
+                {resolveSourcePage(enquiry)}
               </span>
             </div>
             <h3 className="text-white font-extrabold text-lg mt-1">
@@ -222,7 +281,10 @@ function DetailDrawer({
                 </p>
                 <p className="font-semibold text-[#1c1f2e] mt-0.5 flex items-center gap-1.5">
                   <Globe size={13} className="text-gray-400 shrink-0" />
-                  {enquiry.sourcePage || "Website"}
+                  {resolveSourcePage(enquiry)}
+                </p>
+                <p className="text-[10px] text-gray-400 font-normal mt-0.5 pl-4.5">
+                  {getSourcePageUrl(resolveSourcePage(enquiry))}
                 </p>
               </div>
               <div>
@@ -459,12 +521,12 @@ export default function QuoteEnquiriesPage() {
   };
 
   const availablePages = Array.from(
-    new Set(enquiries.map((e) => e.sourcePage?.trim() || "Website")),
+    new Set(enquiries.map(resolveSourcePage)),
   ).sort();
 
   const filtered = enquiries.filter((e) => {
     const matchStatus = filter === "all" || e.status === filter;
-    const src = e.sourcePage?.trim() || "Website";
+    const src = resolveSourcePage(e);
     const matchPage = pageFilter === "all" || src === pageFilter;
     const q = search.toLowerCase();
     const matchSearch =
@@ -487,7 +549,8 @@ export default function QuoteEnquiriesPage() {
         Name: e.name,
         Phone: e.phone,
         Email: e.email,
-        "Source Page": e.sourcePage || "Website",
+        "Source Page": resolveSourcePage(e),
+        "Source URL": getSourcePageUrl(resolveSourcePage(e)),
         Destination: e.destination,
         "Zoning Country": e.zoningCountry,
         Zipcode: e.zipcode,
@@ -733,14 +796,19 @@ export default function QuoteEnquiriesPage() {
                         <p className="text-xs text-gray-400">{e.email}</p>
                       </td>
                       <td className="px-5 py-4 whitespace-nowrap">
-                        <span
-                          className={`inline-flex items-center gap-1.5 text-[11px] font-semibold px-2.5 py-1 rounded-full border ${getSourceBadgeStyle(
-                            e.sourcePage,
-                          )}`}
-                        >
-                          <Globe size={11} className="shrink-0" />
-                          {e.sourcePage || "Website"}
-                        </span>
+                        <div className="flex flex-col items-start gap-1">
+                          <span
+                            className={`inline-flex items-center gap-1.5 text-[11px] font-semibold px-2.5 py-1 rounded-full border ${getSourceBadgeStyle(
+                              resolveSourcePage(e),
+                            )}`}
+                          >
+                            <Globe size={11} className="shrink-0" />
+                            {resolveSourcePage(e)}
+                          </span>
+                          <span className="text-[10px] text-gray-400 font-normal pl-1">
+                            {getSourcePageUrl(resolveSourcePage(e))}
+                          </span>
+                        </div>
                       </td>
                       <td className="px-5 py-4">
                         <p className="font-semibold text-[#1c1f2e] whitespace-nowrap">
