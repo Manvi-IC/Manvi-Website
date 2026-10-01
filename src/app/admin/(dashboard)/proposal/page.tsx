@@ -1293,7 +1293,7 @@ export default function ProposalPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] text-slate-800 flex flex-col font-sans selection:bg-[#f27a1a] selection:text-white">
+    <div className="proposal-page-root min-h-screen bg-[#F8FAFC] print:bg-white print:min-h-0 print:block text-slate-800 flex flex-col font-sans selection:bg-[#f27a1a] selection:text-white">
       {/* ── TOP NAV BAR (EXPANDED TO FULL WIDTH, HIDDEN IN PRINT) ── */}
       <header className="print:hidden sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200/80 px-4 sm:px-8 lg:px-12 py-3 shadow-xs">
         <div className="w-full max-w-[1800px] mx-auto flex items-center justify-between">
@@ -1361,16 +1361,18 @@ export default function ProposalPage() {
             size: A4 portrait;
             margin: 8mm 10mm 8mm 10mm;
           }
-          html, body {
+          html, body, #__next, body > div, main, .proposal-page-root {
             margin: 0 !important;
             padding: 0 !important;
             background: #ffffff !important;
+            background-color: #ffffff !important;
             color: #0f172a !important;
             -webkit-print-color-adjust: exact !important;
             print-color-adjust: exact !important;
           }
           .proposal-print-document {
             background: #ffffff !important;
+            background-color: #ffffff !important;
             width: 100% !important;
             color: #0f172a !important;
             display: block !important;
@@ -1401,40 +1403,33 @@ export default function ProposalPage() {
             </p>
           </div>
         ) : (
-          <div className="proposal-print-document space-y-3.5">
+          <div className="proposal-print-document space-y-3.5 bg-white">
             {/* 1. Official Letterhead (Printed ONCE at top) */}
-            <div className="border-b-2 border-[#0D1527] pb-3 mb-3 print-avoid-break">
-              <div className="flex justify-between items-start">
-                <div>
-                  {/* Company Logo using public/logo-png.png */}
-                  <div
-                    className="overflow-hidden mb-1.5"
-                    style={{ height: "36px", width: "220px" }}
-                  >
-                    <img
-                      src="/logo-png.png"
-                      alt="Manvi International Courier"
-                      style={{
-                        height: "135px",
-                        marginTop: "-50px",
-                        marginLeft: "-9px",
-                        width: "auto",
-                        maxWidth: "none",
-                        display: "block",
-                      }}
-                    />
-                  </div>
-                  <p className="text-[9.5px] text-slate-600 font-semibold mt-1">
+            <div className="border-b-2 border-[#0D1527] pb-3 mb-3 print-avoid-break bg-white">
+              <div className="flex justify-between items-start gap-4">
+                <div className="flex-1">
+                  {/* Official Company Logo */}
+                  <img
+                    src="/manvi-logo-full.png"
+                    alt="Manvi International Courier"
+                    style={{ height: "42px", width: "auto" }}
+                    className="object-contain block mb-1"
+                  />
+                  {/* Tagline */}
+                  <p className="text-[10px] text-slate-700 font-bold tracking-wide mt-1">
                     Door-to-Door Worldwide Air Express Courier Services
                   </p>
-                  <p className="text-[8.5px] text-slate-500 font-medium">
-                    Web: manvicourier.com | Email: info@manvicourier.com | Ph:
-                    +91 7070506070
+                  {/* Full Company Details */}
+                  <p className="text-[8.5px] text-slate-600 font-medium leading-snug mt-0.5">
+                    Head Office: C1034, A 2nd Floor, Harijan Basti, Palam Extn, Part-1 Ramphal Chowk, New Delhi, India - 110045
+                  </p>
+                  <p className="text-[8.5px] text-slate-600 font-medium leading-snug mt-0.5">
+                    Phone / WhatsApp: <strong className="text-slate-800 font-bold">+91 7070506070</strong> | Email: <strong className="text-slate-800 font-bold">info@manvicourier.com</strong> | Web: <strong className="text-slate-800 font-bold">manvicourier.com</strong>
                   </p>
                 </div>
 
-                <div className="text-right">
-                  <div className="inline-block bg-[#0D1527] text-white text-[9.5px] font-black uppercase px-2 py-0.5 rounded tracking-wide mb-1.5">
+                <div className="text-right shrink-0">
+                  <div className="inline-block bg-[#0D1527] text-white text-[9.5px] font-black uppercase px-2.5 py-1 rounded tracking-wide mb-1.5">
                     Official Courier Proposal
                   </div>
                   <div className="text-[9.5px] text-slate-600 font-semibold">
@@ -1464,7 +1459,7 @@ export default function ProposalPage() {
             </div>
 
             {/* 2. Routing & Customer Metadata (Printed ONCE) */}
-            <div className="bg-slate-50 rounded-xl p-3 border border-slate-200 grid grid-cols-4 gap-3 text-[9.5px] mb-3 print-avoid-break">
+            <div className="bg-white rounded-xl p-3 border border-slate-300 grid grid-cols-4 gap-3 text-[9.5px] mb-3 print-avoid-break">
               <div>
                 <span className="text-slate-400 uppercase text-[8px] font-bold block mb-0.5">
                   Consignor / Client
@@ -1557,9 +1552,9 @@ export default function ProposalPage() {
                 </span>
               </div>
 
-              <table className="w-full text-left text-[8.5px] border border-slate-200 rounded-lg overflow-hidden">
+              <table className="w-full text-left text-[8.5px] border border-slate-300 rounded-lg overflow-hidden bg-white">
                 <thead>
-                  <tr className="bg-slate-100 text-slate-700 font-bold border-b border-slate-200">
+                  <tr className="bg-white text-slate-800 font-bold border-b-2 border-slate-300">
                     <th className="py-1.5 px-2.5">Box #</th>
                     <th className="py-1.5 px-2.5">
                       Contents / Products in Box
@@ -1572,9 +1567,9 @@ export default function ProposalPage() {
                     <th className="py-1.5 px-2.5 text-right">Chargeable Wt</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-100">
+                <tbody className="divide-y divide-slate-200">
                   {boxCalculations.computedBoxes.map((b) => (
-                    <tr key={b.id} className="text-slate-800">
+                    <tr key={b.id} className="text-slate-800 bg-white">
                       <td className="py-1.5 px-2.5 font-bold">
                         {b.displayName}
                       </td>
@@ -1601,7 +1596,7 @@ export default function ProposalPage() {
                       </td>
                     </tr>
                   ))}
-                  <tr className="bg-slate-50 font-bold border-t border-slate-200 text-slate-900">
+                  <tr className="bg-white font-bold border-t-2 border-slate-300 text-slate-900">
                     <td
                       colSpan={2}
                       className="py-1.5 px-2.5 text-right uppercase text-[8px] tracking-wide"
@@ -1639,10 +1634,10 @@ export default function ProposalPage() {
 
               {/* Comparative Summary Table when multiple services are selected */}
               {selectedQuotes.length > 1 && (
-                <div className="mb-3 print-avoid-break border border-slate-200 rounded-lg overflow-hidden shadow-2xs">
+                <div className="mb-3 print-avoid-break border border-slate-300 rounded-lg overflow-hidden shadow-2xs bg-white">
                   <table className="w-full text-left text-[8.5px]">
                     <thead>
-                      <tr className="bg-slate-100 text-slate-700 font-bold border-b border-slate-200">
+                      <tr className="bg-white text-slate-800 font-bold border-b-2 border-slate-300">
                         <th className="py-1.5 px-2.5">Carrier</th>
                         <th className="py-1.5 px-2.5 text-center">
                           Transit Time (TAT)
@@ -1866,7 +1861,7 @@ export default function ProposalPage() {
                           </button>
                         </div>
                         <div className="grid grid-cols-2 gap-2.5 text-[8px]">
-                          <div className="bg-emerald-50/70 p-2 rounded-lg border border-emerald-100">
+                          <div className="bg-white p-2 rounded-lg border border-emerald-300">
                             <span className="font-bold text-emerald-900 block mb-1 text-[8.5px]">
                               ✓ Permitted Goods ({meta.shortName}):
                             </span>
@@ -1876,7 +1871,7 @@ export default function ProposalPage() {
                               ))}
                             </ul>
                           </div>
-                          <div className="bg-red-50/70 p-2 rounded-lg border border-red-100">
+                          <div className="bg-white p-2 rounded-lg border border-red-300">
                             <span className="font-bold text-red-900 block mb-1 text-[8.5px]">
                               ✕ Prohibited Goods ({meta.shortName}):
                             </span>
@@ -1922,9 +1917,9 @@ export default function ProposalPage() {
               </div>
 
               {/* Terms & Conditions Applied Notice with Website Link */}
-              <div className="bg-slate-50 border border-slate-200 rounded-lg px-2.5 py-1.5 flex items-center justify-between text-[7.5px] text-slate-600 mb-2.5">
+              <div className="bg-white border border-slate-300 rounded-lg px-2.5 py-1.5 flex items-center justify-between text-[7.5px] text-slate-700 mb-2.5">
                 <div>
-                  <span className="font-bold text-slate-800">
+                  <span className="font-bold text-slate-900">
                     * Terms & Conditions Applied:{" "}
                   </span>
                   <span>
