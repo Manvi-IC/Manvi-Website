@@ -47,6 +47,7 @@ import {
   History,
 } from "lucide-react";
 import { logoutAction } from "../../actions";
+import { AUSTRALIA_CITIES } from "@/lib/australiaCitiesList";
 
 /* ── Sales Agents List ────────────────────────────────────────────────────── */
 export const AGENTS = ["Dheeraj", "Shivam", "Varsha", "Khushi", "Neha"];
@@ -640,6 +641,7 @@ export default function ProposalPage() {
   const [destination, setDestination] = useState<string>("");
   const [zoningCountry, setZoningCountry] = useState<string>("");
   const [zipcode, setZipcode] = useState<string>("");
+  const [showSuggestions, setShowSuggestions] = useState(false);
 
   /* ── 4. Pickup & Handover Details ── */
   const [pickupRequired, setPickupRequired] = useState(false);
@@ -2214,23 +2216,57 @@ export default function ProposalPage() {
 
               {/* Zipcode Field (Australia, Canada) */}
               {requiresZip && (
-                <div className="space-y-1.5">
+                <div className="space-y-1.5 relative">
                   <label className="text-xs font-bold text-slate-700 flex items-center gap-1.5">
-                    <span>📮</span> Postal / Zip Code{" "}
+                    <span>📮</span> {destination === "AUSTRALIA" ? "Select City (or Enter Postal Code)" : "Postal / Zip Code"}{" "}
                     <span className="text-[#f27a1a]">*</span>
                   </label>
                   <input
                     type="text"
                     value={zipcode}
-                    onChange={(e) => setZipcode(e.target.value.toUpperCase())}
+                    onChange={(e) => {
+                      setZipcode(e.target.value.toUpperCase());
+                      if (destination === "AUSTRALIA") setShowSuggestions(true);
+                    }}
+                    onFocus={() => {
+                      if (destination === "AUSTRALIA") setShowSuggestions(true);
+                    }}
+                    onBlur={() => {
+                      if (destination === "AUSTRALIA") {
+                        setTimeout(() => setShowSuggestions(false), 200);
+                      }
+                    }}
                     placeholder={
                       destination === "AUSTRALIA"
-                        ? "e.g. 2000, 3000"
+                        ? "Search city..."
                         : "e.g. M5V, V6B"
                     }
                     required
-                    className="w-full bg-slate-50 text-slate-900 text-xs font-semibold rounded-xl px-3.5 py-2.5 border border-orange-300 focus:outline-none focus:border-[#f27a1a] focus:bg-white transition-colors placeholder:text-slate-400 font-mono"
+                    className="w-full bg-slate-50 text-slate-900 text-xs font-semibold rounded-xl px-3.5 py-2.5 border border-orange-300 focus:outline-none focus:border-[#f27a1a] focus:bg-white transition-colors placeholder:text-slate-400 font-mono uppercase"
                   />
+                  {showSuggestions && destination === "AUSTRALIA" && AUSTRALIA_CITIES.length > 0 && zipcode.trim() && (
+                    (() => {
+                      const filtered = AUSTRALIA_CITIES.filter(c => c.toLowerCase().includes(zipcode.toLowerCase())).slice(0, 50);
+                      if (filtered.length === 0) return null;
+                      return (
+                        <div className="absolute left-0 right-0 top-full mt-1 bg-white border border-slate-200 rounded-xl shadow-lg z-50 overflow-hidden max-h-60 overflow-y-auto">
+                          {filtered.map((s, idx) => (
+                            <button
+                              key={idx}
+                              type="button"
+                              onClick={() => {
+                                setZipcode(s);
+                                setShowSuggestions(false);
+                              }}
+                              className="w-full text-left px-4 py-2.5 hover:bg-slate-50 text-[12px] text-slate-700 font-semibold transition-colors border-b border-slate-100 last:border-0"
+                            >
+                              {s}
+                            </button>
+                          ))}
+                        </div>
+                      );
+                    })()
+                  )}
                 </div>
               )}
             </div>
