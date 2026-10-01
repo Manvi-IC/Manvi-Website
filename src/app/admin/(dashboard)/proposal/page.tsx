@@ -615,8 +615,10 @@ interface Quote {
 }
 
 export default function ProposalPage() {
-  /* ── 1. Salesperson Identity (Cookie Only, Form Inputs Start 100% Empty) ── */
-  const [salesUser, setSalesUser] = useState<string>("sales@manvi");
+  const [rateType, setRateType] = useState<"customer" | "shopkeeper">("customer");
+
+  /* ── 1. Admin Identity (Cookie Only, Form Inputs Start 100% Empty) ── */
+  const [salesUser, setSalesUser] = useState<string>("Admin");
 
   useEffect(() => {
     const match = document.cookie.match(/(?:^|;\s*)admin_user=([^;]*)/);
@@ -945,7 +947,12 @@ export default function ProposalPage() {
       if (zipcode) params.append("zipcode", zipcode.trim());
       if (zoningCountry) params.append("zoningCountry", zoningCountry.trim());
 
-      const res = await fetch(`/api/rates/quote?${params.toString()}`, {
+      const apiBaseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+      const endpoint = rateType === "shopkeeper" 
+        ? `${apiBaseUrl}/shopkeeper/rates/quote?${params.toString()}`
+        : `/api/rates/quote?${params.toString()}`;
+
+      const res = await fetch(endpoint, {
         headers: { "x-database": "manvi" },
       });
 
@@ -1317,6 +1324,42 @@ export default function ProposalPage() {
           </div>
 
           <div className="flex items-center gap-3">
+            {/* Rate Type Selector Tab */}
+            <div className="hidden sm:flex bg-slate-100 p-1 rounded-lg border border-slate-200">
+              <button
+                type="button"
+                onClick={() => {
+                  setRateType("customer");
+                  setQuotes([]);
+                  setSelectedServiceKeys([]);
+                  setHasSearched(false);
+                }}
+                className={`px-3 py-1 text-[11px] font-bold rounded-md transition-all ${
+                  rateType === "customer"
+                    ? "bg-white text-slate-800 shadow-sm border border-slate-200"
+                    : "text-slate-500 hover:text-slate-700"
+                }`}
+              >
+                Customer Rates
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setRateType("shopkeeper");
+                  setQuotes([]);
+                  setSelectedServiceKeys([]);
+                  setHasSearched(false);
+                }}
+                className={`px-3 py-1 text-[11px] font-bold rounded-md transition-all ${
+                  rateType === "shopkeeper"
+                    ? "bg-white text-[#f27a1a] shadow-sm border border-slate-200"
+                    : "text-slate-500 hover:text-slate-700"
+                }`}
+              >
+                Shopkeeper Rates
+              </button>
+            </div>
+
             {/* View Saved Records Button */}
             <button
               type="button"
