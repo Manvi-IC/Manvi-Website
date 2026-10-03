@@ -1,4 +1,5 @@
 "use client";
+import SearchableCountryDropdown from "@/components/SearchableCountryDropdown";
 
 import {
   ArrowUpRight,
@@ -90,10 +91,7 @@ const EUROPE_COUNTRIES = [
   "FINLAND", "GREECE", "ICELAND", "NORWAY", "SWITZERLAND",
 ];
 
-const INTERNATIONAL_COUNTRIES = [
-  "USA", "SINGAPORE", "UNITED ARAB EMIRATES", "MALAYSIA", "NEW ZEALAND", "THAILAND",
-  "HONG KONG", "QATAR", "SAUDI ARABIA", "KUWAIT", "OMAN", "BAHRAIN", "JAPAN", "SOUTH AFRICA",
-];
+import { INTERNATIONAL_COUNTRIES } from "@/lib/countries";
 
 const WINTER_FAQS = [
   {
@@ -410,34 +408,16 @@ export default function WinterCampaignPage() {
 
               {requiresSubCountry && (
                 <div className="relative flex-1 min-w-full sm:min-w-[220px]">
-                  <select
-                    aria-label={
-                      destination === "EUROPE"
-                        ? t.form_select_euro
-                        : t.form_select_country
-                    }
-                    value={zoningCountry}
-                    onChange={(e) => {
-                      setZoningCountry(e.target.value);
-                      setQuotes([]);
-                    }}
-                    className="w-full bg-white text-[#333] text-xs sm:text-[13px] font-medium rounded-lg sm:rounded-xl px-3.5 sm:px-4 py-3 sm:py-3.5 focus:outline-none appearance-none"
-                  >
-                    <option value="">
-                      {destination === "EUROPE"
+                  <SearchableCountryDropdown
+                  countries={subCountryOptions}
+                  value={zoningCountry}
+                  onChange={(val) => {
+                      setZoningCountry(val);
+                      setQuotes([]); }}
+                  placeholder={destination === "EUROPE"
                         ? t.form_select_euro
                         : t.form_select_country}
-                    </option>
-                    {subCountryOptions.map((c) => (
-                      <option key={c} value={c}>
-                        {c}
-                      </option>
-                    ))}
-                  </select>
-                  <ChevronDown
-                    size={14}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
-                  />
+                />
                 </div>
               )}
 
