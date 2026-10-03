@@ -1,4 +1,5 @@
 "use client";
+import SearchableCountryDropdown from "@/components/SearchableCountryDropdown";
 
 import { useEffect, useState, useRef, useMemo } from "react";
 import Image from "next/image";
@@ -289,43 +290,7 @@ const EUROPE_COUNTRIES = [
   "ICELAND",
 ];
 
-const INTERNATIONAL_COUNTRIES = [
-  "USA",
-  "BANGLADESH",
-  "BHUTAN",
-  "MALDIVES",
-  "NEPAL",
-  "SRI LANKA",
-  "UNITED ARAB EMIRATES",
-  "HONG KONG",
-  "MALAYSIA",
-  "SINGAPORE",
-  "THAILAND",
-  "CHINA, PEOPLE'S REPUBLIC",
-  "BAHRAIN",
-  "JORDAN",
-  "KUWAIT",
-  "OMAN",
-  "PAKISTAN",
-  "QATAR",
-  "SAUDI ARABIA",
-  "BRUNEI",
-  "CAMBODIA",
-  "INDONESIA",
-  "JAPAN",
-  "KOREA, REPUBLIC OF",
-  "MACAU",
-  "MYANMAR",
-  "PHILIPPINES, THE",
-  "TAIWAN",
-  "VIETNAM",
-  "NEW ZEALAND",
-  "SOUTH AFRICA",
-  "NIGERIA",
-  "KENYA",
-  "EGYPT",
-  "GHANA",
-];
+import { INTERNATIONAL_COUNTRIES } from "@/lib/countries";
 
 const NETWORK_LABELS: Record<string, string> = {
   SELF: "Self Network",
@@ -1507,35 +1472,15 @@ function QuoteCalculator({
                   : "Select country"}
               </label>
               <div className="relative">
-                <select
-                  aria-label={
-                    destination === "EUROPE"
-                      ? t.form_select_euro
-                      : t.form_select_country
-                  }
+                <SearchableCountryDropdown
+                  countries={subCountryOptions}
                   value={zoningCountry}
-                  onChange={(e) => {
-                    setZoningCountry(e.target.value);
-                    setQuotes([]);
-                  }}
-                  className={`${inputCls} appearance-none pr-10 cursor-pointer ${
-                    zoningCountry ? "" : "text-gray-400"
-                  }`}
-                >
-                  <option value="">
-                    {destination === "EUROPE"
+                  onChange={(val) => {
+                    setZoningCountry(val);
+                    setQuotes([]); }}
+                  placeholder={destination === "EUROPE"
                       ? "Select European country"
                       : "Select country"}
-                  </option>
-                  {subCountryOptions.map((c) => (
-                    <option key={c} value={c} className="text-[#333]">
-                      {c}
-                    </option>
-                  ))}
-                </select>
-                <ChevronDown
-                  size={16}
-                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
                 />
               </div>
             </div>
