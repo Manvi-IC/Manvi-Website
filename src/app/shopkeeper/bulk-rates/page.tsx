@@ -1,4 +1,5 @@
 "use client";
+import SearchableCountryDropdown from "@/components/SearchableCountryDropdown";
 
 import { useEffect, useState, useMemo } from "react";
 import {
@@ -33,13 +34,7 @@ const EUROPE_COUNTRIES = [
   "LITHUANIA","BULGARIA","ROMANIA","GREECE","ICELAND",
 ];
 
-const INTERNATIONAL_COUNTRIES = [
-  "USA","BANGLADESH","BHUTAN","MALDIVES","NEPAL","SRI LANKA","UNITED ARAB EMIRATES",
-  "HONG KONG","MALAYSIA","SINGAPORE","THAILAND","CHINA, PEOPLE'S REPUBLIC","BAHRAIN",
-  "JORDAN","KUWAIT","OMAN","PAKISTAN","QATAR","SAUDI ARABIA","BRUNEI","CAMBODIA",
-  "INDONESIA","JAPAN","KOREA, REPUBLIC OF","MACAU","MYANMAR","PHILIPPINES, THE",
-  "TAIWAN","VIETNAM","NEW ZEALAND","SOUTH AFRICA","NIGERIA","KENYA","EGYPT","GHANA",
-];
+import { INTERNATIONAL_COUNTRIES } from "@/lib/countries";
 
 const NETWORK_LABELS: Record<string, string> = {
   SELF: "Self Network", ARA: "Aramex", DHL: "DHL", UPS: "UPS", FED: "FedEx",
@@ -245,25 +240,15 @@ export default function ShopkeeperBulkRatesPage() {
 
               {requiresSubCountry && (
                 <div className="relative">
-                  <select
-                    value={zoningCountry}
-                    onChange={(e) => {
-                      setZoningCountry(e.target.value);
+                  <SearchableCountryDropdown
+                  countries={subCountryOptions}
+                  value={zoningCountry}
+                  onChange={(val) => {
+                      setZoningCountry(val);
                       setQuotes([]);
-                      setFormError("");
-                    }}
-                    className={`w-full bg-white text-[#333] text-[14px] font-medium rounded-xl px-5 py-4 focus:outline-none appearance-none border border-gray-200 shadow-sm cursor-pointer ${
-                      zoningCountry ? "" : "text-gray-400"
-                    }`}
-                  >
-                    <option value="">
-                      {destination === "EUROPE" ? "Select European country" : "Select country"}
-                    </option>
-                    {subCountryOptions.map((c) => (
-                      <option key={c} value={c}>{c}</option>
-                    ))}
-                  </select>
-                  <ChevronDown size={16} className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
+                      setFormError(""); }}
+                  placeholder={destination === "EUROPE" ? "Select European country" : "Select country"}
+                />
                 </div>
               )}
 
