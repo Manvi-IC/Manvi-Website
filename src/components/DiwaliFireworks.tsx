@@ -102,6 +102,7 @@ interface Rocket {
   palette: FireworkColor[];
   shellType: "peony" | "willow" | "strobe" | "ring";
   isGrand: boolean;
+  placement: "left" | "right" | "center";
 }
 
 export default function DiwaliFireworks() {
@@ -136,11 +137,23 @@ export default function DiwaliFireworks() {
     const particles: Particle[] = [];
     const rocketSparks: RocketSpark[] = [];
 
-    // Helper: Launch a firecracker rocket from a corner
-    const launchRocket = (side?: "left" | "right") => {
-      const chosenSide = side || (Math.random() < 0.5 ? "left" : "right");
+    // Helper: Launch a firecracker rocket
+    // Left & right go directly straight UP from the bottom margins so content in middle stays visible
+    // Only small subtle fireworks occasionally appear near upper middle
+    const launchRocket = (side?: "left" | "right" | "center") => {
+      if (document.hidden || !isVisible) return;
+
+      let placement = side;
+      if (!placement) {
+        const roll = Math.random();
+        if (roll < 0.43) placement = "left";
+        else if (roll < 0.86) placement = "right";
+        else placement = "center";
+      }
+
       const palette = PALETTES[Math.floor(Math.random() * PALETTES.length)];
-      const isGrand = Math.random() < 0.35; // 35% chance of a massive shell
+      // Center fireworks are strictly small so they do not overpower middle content
+      const isGrand = placement === "center" ? false : Math.random() < 0.32;
 
       const shellRoll = Math.random();
       let shellType: Rocket["shellType"] = "peony";
@@ -151,26 +164,33 @@ export default function DiwaliFireworks() {
 
       let startX: number;
       let targetX: number;
-      let vx: number;
+      let targetY: number;
 
-      // Realistic diagonal corner trajectory towards upper-center
-      if (chosenSide === "left") {
-        startX = 15 + Math.random() * (width * 0.12);
-        targetX = width * (0.28 + Math.random() * 0.42);
-        const dx = targetX - startX;
-        vx = (dx / 52) * (width < 640 ? 0.9 : 1.05);
+      if (placement === "left") {
+        // Shoots directly straight UP along the bottom-left margin
+        const sideMargin = Math.min(width * 0.2, 260);
+        startX = 20 + Math.random() * (sideMargin - 30);
+        // Very subtle drift (mostly straight up)
+        targetX = startX + (Math.random() - 0.5) * 35;
+        targetY = height * (0.14 + Math.random() * 0.28);
+      } else if (placement === "right") {
+        // Shoots directly straight UP along the bottom-right margin
+        const sideMargin = Math.min(width * 0.2, 260);
+        startX = width - 20 - Math.random() * (sideMargin - 30);
+        // Very subtle drift (mostly straight up)
+        targetX = startX + (Math.random() - 0.5) * 35;
+        targetY = height * (0.14 + Math.random() * 0.28);
       } else {
-        startX = width - (15 + Math.random() * (width * 0.12));
-        targetX = width * (0.3 + Math.random() * 0.42);
-        const dx = targetX - startX;
-        vx = (dx / 52) * (width < 640 ? 0.9 : 1.05);
+        // Center: small firecracker, higher apex so it doesn't obstruct central hero content
+        startX = width * (0.36 + Math.random() * 0.28);
+        targetX = startX + (Math.random() - 0.5) * 45;
+        targetY = height * (0.09 + Math.random() * 0.14);
       }
 
+      const dx = targetX - startX;
+      const vx = dx / 48;
       const startY = height + 10;
-      // Apex height: 12% to 40% of screen height
-      const targetY = height * (0.13 + Math.random() * 0.28);
-      // Upward launch speed calibrated so it arches naturally
-      const vy = -(15.5 + Math.random() * 4.0) * (height < 700 ? 0.85 : 1);
+      const vy = -(15.2 + Math.random() * 3.4) * (height < 700 ? 0.85 : 1);
 
       rockets.push({
         x: startX,
@@ -184,15 +204,24 @@ export default function DiwaliFireworks() {
         palette,
         shellType,
         isGrand,
+        placement,
       });
     };
 
     // Helper: Detonate a rocket into glowing realistic fireworks
     const explode = (rocket: Rocket) => {
       const isMobile = width < 640;
-      const count = rocket.isGrand
-        ? isMobile ? 95 : 160
-        : isMobile ? 65 : 105;
+      const isCenter = rocket.placement === "center";
+
+      // Small particle count for center fireworks to maintain legibility of page content
+      let count: number;
+      if (isCenter) {
+        count = isMobile ? 38 : 60;
+      } else if (rocket.isGrand) {
+        count = isMobile ? 140 : 230;
+      } else {
+        count = isMobile ? 85 : 130;
+      }
 
       const palette = rocket.palette;
       const shellType = rocket.shellType;
@@ -203,19 +232,21 @@ export default function DiwaliFireworks() {
         const color = palette[Math.floor(Math.random() * palette.length)];
 
         if (shellType === "ring") {
-          // Circular ring shell with occasional center core
+          // Circular ring shell
           if (i < count * 0.8) {
             angle = (i / (count * 0.8)) * Math.PI * 2 + (Math.random() - 0.5) * 0.15;
-            speed = 4.5 + Math.random() * 1.5;
+            speed = (isCenter ? 2.8 : 4.4) + Math.random() * (isCenter ? 1.0 : 1.5);
           } else {
             angle = Math.random() * Math.PI * 2;
-            speed = 1.2 + Math.random() * 2.2;
+            speed = 1.0 + Math.random() * (isCenter ? 1.5 : 2.0);
           }
         } else {
           // Spherical dispersion with cubic bias for uniform shell density
           angle = Math.random() * Math.PI * 2;
           const spreadFactor = Math.cbrt(Math.random());
-          speed = (rocket.isGrand ? 2.5 : 1.8) + spreadFactor * (rocket.isGrand ? 8.2 : 6.4);
+          const maxSpeed = isCenter ? 4.2 : rocket.isGrand ? 8.0 : 6.2;
+          const baseSpeed = isCenter ? 1.2 : rocket.isGrand ? 2.4 : 1.7;
+          speed = baseSpeed + spreadFactor * (maxSpeed - baseSpeed);
         }
 
         const vx = Math.cos(angle) * speed;
@@ -233,8 +264,12 @@ export default function DiwaliFireworks() {
           vy,
           color,
           alpha: 1.0,
-          decay: isWillow ? 0.009 + Math.random() * 0.008 : 0.013 + Math.random() * 0.015,
-          size: isWillow ? 2.2 : 2.6,
+          decay: isCenter
+            ? 0.022 + Math.random() * 0.018 // fades faster in center so text is crisp
+            : isWillow
+            ? 0.009 + Math.random() * 0.008
+            : 0.013 + Math.random() * 0.015,
+          size: isCenter ? (isWillow ? 2.0 : 2.5) : isWillow ? 2.8 : 3.4,
           gravity: isWillow ? 0.15 : 0.11,
           friction: isWillow ? 0.965 : 0.952,
           sparkle: isStrobe || Math.random() < 0.25,
@@ -244,14 +279,15 @@ export default function DiwaliFireworks() {
       }
     };
 
-    // ── 1. Opening Celebration Salvo (Staggered from both corners) ────────────
-    const initialDelays = [80, 350, 750, 1150, 1600, 1950, 2400];
+    // ── 1. Opening Celebration Salvo (Directly up left & right margins) ────────
+    const initialDelays = [80, 420, 880, 1350, 1850, 2350];
     const initialTimers: NodeJS.Timeout[] = [];
 
     initialDelays.forEach((delay, idx) => {
       const timer = setTimeout(() => {
-        // Alternate left and right
-        launchRocket(idx % 2 === 0 ? "left" : "right");
+        if (!document.hidden && isVisible) {
+          launchRocket(idx % 2 === 0 ? "left" : "right");
+        }
       }, delay);
       initialTimers.push(timer);
     });
@@ -259,25 +295,40 @@ export default function DiwaliFireworks() {
     // ── 2. Ambient Loop (Continuous celebratory fireworks) ────────────────────
     let ambientTimer: NodeJS.Timeout;
     const scheduleNextAmbient = () => {
-      const delay = 1600 + Math.random() * 2000;
+      const delay = 1100 + Math.random() * 1600;
       ambientTimer = setTimeout(() => {
-        // 30% chance of simultaneous double-launch from both corners!
-        if (Math.random() < 0.3) {
-          launchRocket("left");
-          setTimeout(() => launchRocket("right"), 120 + Math.random() * 180);
-        } else {
-          launchRocket();
+        if (!document.hidden && isVisible) {
+          // 28% chance of simultaneous double-launch from both sides!
+          if (Math.random() < 0.28) {
+            launchRocket("left");
+            setTimeout(() => {
+              if (!document.hidden && isVisible) {
+                launchRocket("right");
+              }
+            }, 120 + Math.random() * 180);
+          } else {
+            launchRocket();
+          }
         }
         scheduleNextAmbient();
       }, delay);
     };
 
-    const ambientStartTimer = setTimeout(scheduleNextAmbient, 2800);
+    const ambientStartTimer = setTimeout(scheduleNextAmbient, 2600);
 
-    // ── 3. Page Visibility (Pause on tab switch for buttery performance) ───────
-    let isVisible = true;
+    // ── 3. Page Visibility (Pause on tab switch, clear queue immediately) ──────
+    let isVisible = typeof document !== "undefined" ? !document.hidden : true;
     const handleVisibility = () => {
       isVisible = !document.hidden;
+      if (document.hidden) {
+        // Tab moved to background: immediately purge all active rockets & particles
+        // to prevent any backlog, waiting, or simultaneous burst upon returning!
+        rockets.length = 0;
+        particles.length = 0;
+        rocketSparks.length = 0;
+      } else {
+        lastTime = performance.now();
+      }
     };
     document.addEventListener("visibilitychange", handleVisibility);
 
@@ -287,11 +338,14 @@ export default function DiwaliFireworks() {
     const render = (now: number) => {
       animId = requestAnimationFrame(render);
 
+      if (!isVisible || document.hidden) {
+        lastTime = now;
+        return;
+      }
+
       // Clamp delta time to avoid huge physics jumps if frame drops
       const dt = Math.min((now - lastTime) / 16.666, 2.0);
       lastTime = now;
-
-      if (!isVisible) return;
 
       // ── Clean Clear for Ultra-Vivid Fireworks without Blurry Residue ────────
       ctx.clearRect(0, 0, width, height);

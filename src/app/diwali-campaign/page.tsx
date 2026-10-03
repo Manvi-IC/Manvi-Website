@@ -1,7 +1,4 @@
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
-import DiwaliCampaignPage from "@/components/DiwaliCampaignPage";
-import DiwaliFireworks from "@/components/DiwaliFireworks";
+import DiwaliPageContent from "@/components/DiwaliPageContent";
 
 export const metadata = {
   title: "Diwali Campaign | Manvi International Courier",
@@ -10,13 +7,5 @@ export const metadata = {
 };
 
 export default function DiwaliPage() {
-  return (
-    <div className="min-h-screen bg-[#faf5ea] text-[#0f172a] font-sans flex flex-col antialiased">
-      <Header />
-      <DiwaliCampaignPage />
-      <Footer />
-      {/* Frontmost Canvas Fireworks (z-[9999], pointer-events-none so it never blocks clicks/scrolls) */}
-      <DiwaliFireworks />
-    </div>
-  );
+  return <DiwaliPageContent />;
 }

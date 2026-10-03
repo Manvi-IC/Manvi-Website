@@ -6,7 +6,11 @@ import Link from "next/link";
 import { useLanguage } from "@/context/LanguageContext";
 import { trackEvent } from "@/lib/fpixel";
 
-export default function Footer() {
+interface FooterProps {
+  isDiwaliMode?: boolean;
+}
+
+export default function Footer({ isDiwaliMode = false }: FooterProps = {}) {
   const { t } = useLanguage();
 
   // Accordion state for mobile view
@@ -24,7 +28,13 @@ export default function Footer() {
   };
 
   return (
-    <footer className="bg-[#f27a1a] text-white pt-12 sm:pt-16 pb-8 px-4 sm:px-6 font-sans rounded-t-2xl sm:rounded-t-3xl shadow-inner">
+    <footer
+      className={`text-white pt-12 sm:pt-16 pb-8 px-4 sm:px-6 font-sans rounded-t-2xl sm:rounded-t-3xl shadow-inner transition-colors duration-300 ${
+        isDiwaliMode
+          ? "bg-[#1E1109] border-t border-amber-500/20"
+          : "bg-[#f27a1a]"
+      }`}
+    >
       <div className="max-w-[1650px] mx-auto flex flex-col gap-10 px-4 sm:px-8 lg:px-12">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-10 lg:gap-16">
           {/* Column 1: Brand */}
