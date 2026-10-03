@@ -22,6 +22,7 @@ import {
   User,
   Phone,
   Mail,
+  Search,
 } from "lucide-react";
 
 import Link from "next/link";
@@ -34,7 +35,6 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 const DB_NAME = process.env.NEXT_PUBLIC_X_DATABASE || "manvi";
 
 /* ── Carousel Slides Configuration ── */
-// Get slide data based on language
 const getSlides = (t: any) => [
   {
     src: "/hero-right.jpg",
@@ -288,7 +288,166 @@ interface Quote {
   tat: string;
 }
 
+interface AustraliaCity {
+  city: string;
+  zipcode: string;
+}
+
 type FilterType = "all" | "cheapest" | "fastest";
+
+/* ── Searchable City Dropdown (Australia) ────────────────────────────────── */
+function SearchableCityDropdown({
+  cities,
+  loading,
+  value,
+  onChange,
+  placeholder = "Select City (required for Australia)",
+}: {
+  cities: AustraliaCity[];
+  loading: boolean;
+  value: string;
+  onChange: (city: string) => void;
+  placeholder?: string;
+}) {
+  const [open, setOpen] = useState(false);
+  const [query, setQuery] = useState("");
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  // Close on outside click
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (
+        wrapperRef.current &&
+        !wrapperRef.current.contains(e.target as Node)
+      ) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
+
+  // Close on Escape
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    document.addEventListener("keydown", handler);
+    return () => document.removeEventListener("keydown", handler);
+  }, []);
+
+  // Reset query whenever dropdown closes
+  useEffect(() => {
+    if (!open) setQuery("");
+  }, [open]);
+
+  const filtered = query.trim()
+    ? cities.filter((c) =>
+        c.city.toLowerCase().includes(query.trim().toLowerCase()),
+      )
+    : cities;
+
+  const handleSelect = (city: string) => {
+    onChange(city);
+    setOpen(false);
+    setQuery("");
+  };
+
+  return (
+    <div className="relative" ref={wrapperRef}>
+      {/* Trigger / search input */}
+      <div
+        className={`w-full bg-white text-[#333] text-[13px] font-medium rounded-xl border border-gray-200 shadow-sm flex items-center gap-3 px-4 py-3 cursor-text ${
+          loading ? "opacity-60" : ""
+        }`}
+        onClick={() => {
+          if (loading) return;
+          setOpen(true);
+          setTimeout(() => inputRef.current?.focus(), 0);
+        }}
+      >
+        <Search size={14} className="text-gray-400 shrink-0" />
+        <input
+          ref={inputRef}
+          type="text"
+          value={open ? query : value}
+          placeholder={value || placeholder}
+          disabled={loading}
+          onChange={(e) => {
+            setQuery(e.target.value);
+            if (!open) setOpen(true);
+          }}
+          onFocus={() => setOpen(true)}
+          className="flex-1 bg-transparent outline-none placeholder:text-gray-400 disabled:cursor-not-allowed text-[13px]"
+        />
+        {loading ? (
+          <Loader2 size={14} className="text-[#f27a1a] animate-spin shrink-0" />
+        ) : value ? (
+          <button
+            type="button"
+            onMouseDown={(e) => e.preventDefault()}
+            onClick={(e) => {
+              e.stopPropagation();
+              onChange("");
+              setQuery("");
+            }}
+            className="text-gray-300 hover:text-gray-500 shrink-0"
+            aria-label="Clear city"
+          >
+            <X size={13} />
+          </button>
+        ) : (
+          <ChevronDown
+            size={14}
+            className={`text-gray-400 shrink-0 transition-transform ${
+              open ? "rotate-180" : ""
+            }`}
+          />
+        )}
+      </div>
+
+      {/* Dropdown list */}
+      {open && (
+        <div className="absolute z-40 mt-2 w-full bg-white border border-gray-200 rounded-xl shadow-lg max-h-72 overflow-y-auto">
+          {loading && (
+            <div className="flex items-center justify-center gap-2 px-4 py-4 text-sm text-gray-500">
+              <Loader2 size={14} className="animate-spin text-[#f27a1a]" />
+              Loading cities…
+            </div>
+          )}
+          {!loading && filtered.length === 0 && (
+            <div className="px-4 py-4 text-sm text-gray-400 text-center">
+              No cities found
+            </div>
+          )}
+          {!loading &&
+            filtered.map((c) => {
+              const isSelected = c.city === value;
+              return (
+                <button
+                  key={`${c.city}-${c.zipcode}`}
+                  type="button"
+                  onMouseDown={(e) => e.preventDefault()}
+                  onClick={() => handleSelect(c.city)}
+                  className={`w-full text-left px-4 py-2.5 text-sm flex items-center justify-between gap-3 transition-colors ${
+                    isSelected
+                      ? "bg-orange-50 text-[#f27a1a] font-semibold"
+                      : "text-gray-700 hover:bg-gray-50"
+                  }`}
+                >
+                  <span className="truncate">{c.city}</span>
+                  <span className="text-[11px] text-gray-400 font-mono shrink-0">
+                    {c.zipcode}
+                  </span>
+                </button>
+              );
+            })}
+        </div>
+      )}
+    </div>
+  );
+}
 
 /* ── Apply Now Modal ──────────────────────────────────────────────────────── */
 function ApplyModal({
@@ -330,115 +489,110 @@ function ApplyModal({
   if (!open || !quote) return null;
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-  e.preventDefault();
-  setError("");
-  if (!name.trim() || !phone.trim() || !email.trim()) {
-    setError("All fields are required.");
-    return;
-  }
-  setSubmitting(true);
-  try {
-    const formData = new FormData(e.currentTarget);
-
-    // Inject standard Zoho expected fields if they aren't captured by the form automatically
-    if (
-      typeof window !== "undefined" &&
-      (window as any)._wfa_track &&
-      (window as any)._wfa_track.wfa_submit
-    ) {
-      (window as any)._wfa_track.wfa_submit(e);
+    e.preventDefault();
+    setError("");
+    if (!name.trim() || !phone.trim() || !email.trim()) {
+      setError("All fields are required.");
+      return;
     }
-
-    // ── 1. Send to Zoho CRM (existing behavior, unchanged) ──────────────
-    const res = await fetch("https://crm.zoho.in/crm/WebToLeadForm", {
-      method: "POST",
-      body: formData,
-      cache: "no-cache",
-    });
-
-    const contentType = res.headers.get("Content-Type");
-    const data =
-      contentType && contentType.includes("application/json")
-        ? await res.json()
-        : await res.text();
-
-    if (typeof data === "object") {
-      if (
-        data.actionsubmit === "error_msg" ||
-        data.actionsubmit === "captcha_error"
-      ) {
-        throw new Error(data.message || "Submission failed");
-      }
-    }
-
-    // ── 2. Also save to MongoDB via your backend (NEW) ──────────────────
+    setSubmitting(true);
     try {
-      const backendRes = await fetch(`${API_URL}/quote-enquiries`, {
+      const formData = new FormData(e.currentTarget);
+
+      if (
+        typeof window !== "undefined" &&
+        (window as any)._wfa_track &&
+        (window as any)._wfa_track.wfa_submit
+      ) {
+        (window as any)._wfa_track.wfa_submit(e);
+      }
+
+      const res = await fetch("https://crm.zoho.in/crm/WebToLeadForm", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "x-database": DB_NAME,
-        },
-        body: JSON.stringify({
-          name: name.trim(),
-          phone: phone.trim(),
-          email: email.trim(),
-          destination,
-          zoningCountry: zoningCountry || "",
-          zipcode: zipcode || "",
-          actualWt: parseFloat(actualWt) || 0,
-          volWt: volWt ? parseFloat(volWt) : 0,
-          chargeableWt: chargeableWt || 0,
-          length: parseFloat(length) || 0,
-          breadth: parseFloat(breadth) || 0,
-          height: parseFloat(height) || 0,
-          service: quote.service,
-          network: quote.network || "",
-          zone: quote.zone || "",
-          rateType: quote.rateType || "",
-          totalPrice: quote.totalPrice || 0,
-          tat: quote.tat || "",
-          sourcePage: "Home Page",
-        }),
+        body: formData,
+        cache: "no-cache",
       });
 
-      if (!backendRes.ok) {
-        const errText = await backendRes.text().catch(() => "");
-        console.warn("[Hero Quote Enquiry] Backend save failed:", errText);
-      } else {
-        console.log("[Hero Quote Enquiry] Saved to MongoDB successfully");
+      const contentType = res.headers.get("Content-Type");
+      const data =
+        contentType && contentType.includes("application/json")
+          ? await res.json()
+          : await res.text();
+
+      if (typeof data === "object") {
+        if (
+          data.actionsubmit === "error_msg" ||
+          data.actionsubmit === "captcha_error"
+        ) {
+          throw new Error(data.message || "Submission failed");
+        }
       }
-    } catch (backendErr) {
-      // Never block the user — Zoho already accepted the lead
-      console.warn("[Hero Quote Enquiry] Backend save error:", backendErr);
-    }
 
-    setSubmitted(true);
-    // Meta Pixel: enquiry submitted successfully
-    trackEvent("Lead", {
-      content_name: quote.service,
-      content_category: destination,
-      destination_country: zoningCountry || destination,
-    });
-    if (typeof window !== "undefined") {
-      fireLeadFormConversion();
-      fireRequestQuoteConversion();
-      window.dataLayer = window.dataLayer || [];
-      window.dataLayer.push({
-        event: "form_enquiry_success",
-      });
-      if (typeof (window as any).gtag === "function") {
-        (window as any).gtag("event", "conversion", {
-          send_to: "AW-16880308122/jB3TCL-RwNccEJqflPE-",
+      try {
+        const backendRes = await fetch(`${API_URL}/quote-enquiries`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "x-database": DB_NAME,
+          },
+          body: JSON.stringify({
+            name: name.trim(),
+            phone: phone.trim(),
+            email: email.trim(),
+            destination,
+            zoningCountry: zoningCountry || "",
+            zipcode: zipcode || "",
+            actualWt: parseFloat(actualWt) || 0,
+            volWt: volWt ? parseFloat(volWt) : 0,
+            chargeableWt: chargeableWt || 0,
+            length: parseFloat(length) || 0,
+            breadth: parseFloat(breadth) || 0,
+            height: parseFloat(height) || 0,
+            service: quote.service,
+            network: quote.network || "",
+            zone: quote.zone || "",
+            rateType: quote.rateType || "",
+            totalPrice: quote.totalPrice || 0,
+            tat: quote.tat || "",
+            sourcePage: "Home Page",
+          }),
         });
+
+        if (!backendRes.ok) {
+          const errText = await backendRes.text().catch(() => "");
+          console.warn("[Hero Quote Enquiry] Backend save failed:", errText);
+        } else {
+          console.log("[Hero Quote Enquiry] Saved to MongoDB successfully");
+        }
+      } catch (backendErr) {
+        console.warn("[Hero Quote Enquiry] Backend save error:", backendErr);
       }
+
+      setSubmitted(true);
+      trackEvent("Lead", {
+        content_name: quote.service,
+        content_category: destination,
+        destination_country: zoningCountry || destination,
+      });
+      if (typeof window !== "undefined") {
+        fireLeadFormConversion();
+        fireRequestQuoteConversion();
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+          event: "form_enquiry_success",
+        });
+        if (typeof (window as any).gtag === "function") {
+          (window as any).gtag("event", "conversion", {
+            send_to: "AW-16880308122/jB3TCL-RwNccEJqflPE-",
+          });
+        }
+      }
+    } catch (err: any) {
+      setError(err.message || "An error occurred. Please try again.");
+    } finally {
+      setSubmitting(false);
     }
-  } catch (err: any) {
-    setError(err.message || "An error occurred. Please try again.");
-  } finally {
-    setSubmitting(false);
-  }
-};
+  };
 
   const handleClose = () => {
     setName("");
@@ -451,21 +605,17 @@ function ApplyModal({
 
   return (
     <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
-      {/* Zoho Tracking Script */}
       <script
         id="wf_anal"
         src="https://crm.zohopublic.in/crm/WebFormAnalyticsServeServlet?rid=35f6149cd4f21e4a45325993c4badb496bbff539e80a590d876efcc0473696f60c2ec3e80d2110a98e2dcc635ca8aeddgid14c49147eca089aa13008d713fef50e6c20e786337446d3f4e26d826b72f26e3gid977b9ca74605539e64e70acb1f8f2ab744682e0ee4dd585040a014e20cb32f55gide95ceeeacfd3215343280dd1fffc20591e601b303c86ab08381dd51ea75c3240&tw=eec3b02e1df12dbc38ecb4c4546e48954c77ac0a1744f3d5cc68d3bca26e4c9f&version=v2"
         async
       ></script>
-      {/* Backdrop */}
       <div
         className="absolute inset-0 bg-black/60 backdrop-blur-sm"
         onClick={handleClose}
       />
 
-      {/* Modal */}
       <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden">
-        {/* Header */}
         <div className="bg-[#0D1527] px-6 py-5 flex items-start justify-between">
           <div>
             <p className="text-[#f27a1a] text-[11px] font-extrabold tracking-widest uppercase mb-1">
@@ -505,7 +655,6 @@ function ApplyModal({
           </div>
         ) : (
           <>
-            {/* Selected Service Summary */}
             <div className="bg-orange-50 border-b border-orange-100 px-6 py-4">
               <p className="text-[10px] text-gray-400 uppercase tracking-wider font-bold mb-2">
                 Selected Service
@@ -533,7 +682,6 @@ function ApplyModal({
               </div>
             </div>
 
-            {/* Form */}
             <form
               onSubmit={handleSubmit}
               className="px-6 py-5 flex flex-col gap-4"
@@ -572,7 +720,6 @@ function ApplyModal({
                 the shipment.
               </p>
 
-              {/* Name */}
               <div className="relative">
                 <User
                   size={15}
@@ -589,7 +736,6 @@ function ApplyModal({
                 />
               </div>
 
-              {/* Phone */}
               <div className="relative">
                 <Phone
                   size={15}
@@ -606,7 +752,6 @@ function ApplyModal({
                 />
               </div>
 
-              {/* Email */}
               <div className="relative">
                 <Mail
                   size={15}
@@ -678,17 +823,11 @@ function QuotesModal({
     string | null
   >(null);
 
-  // Parse TAT string to extract days for sorting
   const getTATDays = (tat: string): number => {
     const match = tat.match(/(\d+)/);
     return match ? parseInt(match[0]) : 999;
   };
 
-  // Sort and filter quotes based on TAT only (no DHL priority)
-  // Memoized on [quotes, filter] so the array reference only changes when
-  // the underlying data actually changes — this is what stops the
-  // auto-select effect below from re-firing (and overriding a manual click)
-  // on every render.
   const displayedQuotes = useMemo<Quote[]>(() => {
     const filtered = [...quotes];
 
@@ -704,7 +843,6 @@ function QuotesModal({
         });
         break;
       default:
-        // Keep original order
         break;
     }
 
@@ -712,11 +850,6 @@ function QuotesModal({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [quotes, filter]);
 
-  // Automatically select the first quote ONLY when the filter (or the quote
-  // set) changes — never when the user manually picked a card. Previously
-  // this effect depended on `displayedQuotes`, which was a brand-new array
-  // reference every render, so it kept firing after a manual click and
-  // immediately overwrote the selection back to the first card.
   useEffect(() => {
     if (isManualSelection) {
       setIsManualSelection(false);
@@ -730,7 +863,6 @@ function QuotesModal({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filter, quotes]);
 
-  // Scroll to selected card when it changes
   useEffect(() => {
     if (selectedService && scrollContainerRef.current) {
       const selectedElement = scrollContainerRef.current.querySelector(
@@ -780,13 +912,6 @@ function QuotesModal({
         if (e.target === e.currentTarget) onClose();
       }}
     >
-      {/*
-        Responsive modal shell: max-h instead of a fixed h so it never
-        forces itself taller than the viewport (important on mobile where
-        80vh could still overflow once keyboard/browser chrome is factored
-        in), with a sane min-height so it doesn't look collapsed when
-        there's only 1-2 quotes.
-      */}
       <div className="bg-[#0D1527] rounded-2xl w-full max-w-7xl max-h-[95vh] sm:max-h-[90vh] min-h-[380px] flex flex-col shadow-2xl border border-white/10">
         <div className="flex items-start justify-between gap-3 p-4 sm:p-5 border-b border-white/10 shrink-0">
           <div className="min-w-0">
@@ -806,7 +931,6 @@ function QuotesModal({
           </button>
         </div>
 
-        {/* Filter Section with Scroll Controls */}
         <div className="px-4 sm:px-5 py-3 border-b border-white/10 flex items-center justify-between flex-wrap gap-2 shrink-0">
           <div className="flex items-center gap-2 flex-wrap">
             <Filter size={14} className="text-zinc-400 shrink-0" />
@@ -874,16 +998,6 @@ function QuotesModal({
           </div>
         </div>
 
-        {/*
-          Horizontal Scrollable Container
-          - overflow-y-auto (not hidden) so a card taller than the visible
-            area (e.g. restrictions expanded) can be scrolled into view
-            instead of getting clipped.
-          - items-start stops flex's default align-items:stretch from
-            forcing every card to match the container's full height.
-          - min-h-0 lets this flex child actually shrink/scroll rather than
-            pushing the modal's height out to fit its content.
-        */}
         <div
           ref={scrollContainerRef}
           className="flex-1 min-h-0 overflow-x-auto overflow-y-auto p-3 sm:p-5 gap-3 sm:gap-5 flex items-start scrollbar-thin scrollbar-thumb-zinc-600 scrollbar-track-transparent"
@@ -902,7 +1016,6 @@ function QuotesModal({
             const restrictions = getShippingRestrictions(q.network, t);
             const isExpanded = expandedRestrictions === key;
 
-            // Determine if this quote has a badge
             let badge = "";
             if (filter === "cheapest" && index === 0) {
               badge = "🏆 Best Price";
@@ -915,15 +1028,6 @@ function QuotesModal({
                 key={key}
                 data-service-key={key}
                 onClick={() => handleServiceSelect(key)}
-                /*
-    Outer card: no padding, no overflow-y-auto here. Overflow must
-    stay "visible" so the absolutely-positioned "Selected"/badge
-    pills (offset -top-2.5, i.e. poking above the box) aren't
-    clipped — setting overflow-y on this element forces overflow-x
-    to auto too, which was slicing the pills off at the corners.
-    Responsive width still fills most of the viewport on small
-    screens and settles into a fixed range on larger ones.
-  */
                 className={`relative rounded-xl border-2 cursor-pointer transition-all min-w-[82vw] xs:min-w-[300px] sm:min-w-[300px] max-w-[340px] flex-shrink-0 flex flex-col max-h-full ${
                   isSelected
                     ? "border-[#e77419] bg-[#e77419]/10"
@@ -941,13 +1045,7 @@ function QuotesModal({
                   </div>
                 )}
 
-                {/*
-    Inner wrapper: padding + overflow-y-auto now live here instead of
-    on the outer card, so the card can still scroll internally when
-    restrictions expand, without clipping the badges above it.
-  */}
                 <div className="flex flex-col gap-3 h-full p-4 sm:p-5 overflow-y-auto rounded-xl">
-                  {/* Top row: Service badge, Zone, Rate Type */}
                   <div className="flex items-center gap-1.5 flex-wrap">
                     <span
                       className={`text-[10px] font-semibold px-2.5 py-0.5 rounded-full ${networkColor}`}
@@ -975,14 +1073,12 @@ function QuotesModal({
                     )}
                   </div>
 
-                  {/* Middle row: Network name */}
                   <div className="flex">
                     <p className="text-[18px] sm:text-[20px] font-semibold text-white leading-snug tracking-wide">
                       {networkLabel}
                     </p>
                   </div>
 
-                  {/* ── Shipping Restrictions (fills the blank space below the network name) ── */}
                   <div className="flex-1 border-t border-white/10 pt-2">
                     <button
                       onClick={(e) => {
@@ -1059,7 +1155,6 @@ function QuotesModal({
                     )}
                   </div>
 
-                  {/* Bottom row: TAT and Price */}
                   <div className="flex items-center justify-between pt-2 border-t border-white/5">
                     <p className="text-[11px] sm:text-[12px] text-zinc-400 font-medium">
                       {q.tat}
@@ -1079,7 +1174,6 @@ function QuotesModal({
           })}
         </div>
 
-        {/* Apply Now — shown when a service is selected */}
         {selectedService && selectedQuote && (
           <div className="px-4 sm:px-5 pt-3 shrink-0">
             <div className="bg-white/5 rounded-2xl border-2 border-[#e77419] p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
@@ -1119,7 +1213,6 @@ function QuotesModal({
 export default function Hero() {
   const { t } = useLanguage();
 
-  // Get translated slides
   const SLIDES = getSlides(t);
 
   /* Form state */
@@ -1135,6 +1228,11 @@ export default function Hero() {
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [applyModalOpen, setApplyModalOpen] = useState(false);
+
+  /* Australia cities state */
+  const [australiaCities, setAustraliaCities] = useState<AustraliaCity[]>([]);
+  const [citiesLoading, setCitiesLoading] = useState(false);
+  const [selectedCity, setSelectedCity] = useState("");
 
   /* Carousel state */
   const [current, setCurrent] = useState(0);
@@ -1162,6 +1260,22 @@ export default function Hero() {
   const selectedQuoteObj =
     quotes.find((q) => `${q.service}__${q.rateType}` === selectedService) ??
     null;
+
+  /* Fetch Australian cities when Australia is selected */
+  useEffect(() => {
+    if (destination !== "AUSTRALIA") return;
+    if (australiaCities.length > 0) return; // already loaded
+    setCitiesLoading(true);
+    fetch(`${API_URL}/rates/australia-cities`, {
+      headers: { "x-database": DB_NAME },
+    })
+      .then((r) => r.json())
+      .then((d) => {
+        if (d.success) setAustraliaCities(d.data);
+      })
+      .catch(() => {})
+      .finally(() => setCitiesLoading(false));
+  }, [destination, australiaCities.length]);
 
   /* Auto-advance */
   const goTo = useCallback(
@@ -1204,7 +1318,13 @@ export default function Hero() {
       alert("Please select a destination and enter actual weight");
       return;
     }
-    if (requiresZip && !zipcode.trim()) {
+    // Australia requires a city (zipcode derived from it)
+    if (destination === "AUSTRALIA" && !selectedCity) {
+      alert("Please select a city for Australia.");
+      return;
+    }
+    // Other zip-based countries require a raw zipcode
+    if (requiresZip && destination !== "AUSTRALIA" && !zipcode.trim()) {
       alert("Please enter the zipcode/postcode for this destination.");
       return;
     }
@@ -1300,6 +1420,7 @@ export default function Hero() {
                     setDestination(e.target.value);
                     setZipcode("");
                     setZoningCountry("");
+                    setSelectedCity("");
                     setQuotes([]);
                   }}
                   className="w-full bg-white text-[#333] text-[13px] font-medium rounded-xl px-4 py-3 focus:outline-none appearance-none"
@@ -1350,7 +1471,8 @@ export default function Hero() {
                 </div>
               )}
 
-              {requiresZip && (
+              {/* Zipcode (non-Australia zip-based destinations) */}
+              {requiresZip && destination !== "AUSTRALIA" && (
                 <input
                   aria-label={`${t.form_zipcode} (required for ${destObj?.label})`}
                   type="text"
@@ -1359,6 +1481,28 @@ export default function Hero() {
                   onChange={(e) => setZipcode(e.target.value.toUpperCase())}
                   className="w-full bg-white text-[#333] text-[13px] font-medium rounded-xl px-4 py-3 focus:outline-none placeholder:text-gray-400"
                 />
+              )}
+
+              {/* Searchable City dropdown (Australia only) */}
+              {destination === "AUSTRALIA" && (
+                <SearchableCityDropdown
+                  cities={australiaCities}
+                  loading={citiesLoading}
+                  value={selectedCity}
+                  onChange={(city) => {
+                    setSelectedCity(city);
+                    const found = australiaCities.find((c) => c.city === city);
+                    setZipcode(found ? found.zipcode : "");
+                    setQuotes([]);
+                  }}
+                />
+              )}
+
+              {/* Derived zipcode note (Australia) */}
+              {destination === "AUSTRALIA" && zipcode && (
+                <p className="text-white/80 text-[11px] -mt-1 pl-1">
+                  Zipcode: <strong className="text-white">{zipcode}</strong>
+                </p>
               )}
 
               <input
@@ -1428,7 +1572,6 @@ export default function Hero() {
             onMouseEnter={() => setPaused(true)}
             onMouseLeave={() => setPaused(false)}
           >
-            {/* Slides */}
             {SLIDES.map((s, i) => (
               <div
                 key={i}
@@ -1445,7 +1588,6 @@ export default function Hero() {
                   priority={i === 0}
                   fetchPriority={i === 0 ? "high" : "auto"}
                 />
-                {/* Dark gradient overlay */}
                 <div className="absolute inset-0 bg-black/45" />
                 <div
                   className="absolute inset-0"
@@ -1457,14 +1599,12 @@ export default function Hero() {
               </div>
             ))}
 
-            {/* Top badge — above everything */}
             <div className="relative z-20 p-6 sm:p-8 lg:p-10 flex flex-col gap-3">
               <span className="text-[11px] font-bold tracking-wider bg-white/15 text-white/90 border border-white/20 w-fit px-3 py-1 rounded-full">
                 {t.hero_legacy_badge}
               </span>
             </div>
 
-            {/* Tagline — centre of card, changes per slide */}
             <div className="absolute inset-0 z-20 flex flex-col justify-end px-8 pb-75 pointer-events-none">
               <div
                 key={current}
@@ -1489,15 +1629,18 @@ export default function Hero() {
               </div>
             </div>
 
-            {/* Bottom bar: WhatsApp + dots + arrows + read more */}
             <div className="relative z-20 p-6 sm:p-8 lg:p-10 flex flex-col sm:flex-row items-end justify-between gap-6 sm:gap-0">
-              {/* WhatsApp cutout */}
               <div className="absolute -bottom-4 -left-4 w-34 h-34 sm:w-36 sm:h-36 bg-[#f8f9fa] rounded-full flex items-center justify-center pointer-events-none z-20">
                 <a
                   href="https://wa.me/917070506070"
                   target="_blank"
                   rel="noopener noreferrer"
-                  onClick={() => trackEvent("Contact", { method: "WhatsApp", location: "hero_circle" })}
+                  onClick={() =>
+                    trackEvent("Contact", {
+                      method: "WhatsApp",
+                      location: "hero_circle",
+                    })
+                  }
                   aria-label="WhatsApp Us - Manvi International Courier"
                   className="w-20 h-20 sm:w-28 sm:h-28 bg-[#23c961] rounded-full relative flex items-center justify-center shadow-lg pointer-events-auto cursor-pointer hover:scale-105 transition-transform duration-300 z-50"
                 >
@@ -1539,12 +1682,9 @@ export default function Hero() {
                 </a>
               </div>
 
-              {/* Spacer for WhatsApp */}
               <div className="w-24 sm:w-32 flex-shrink-0" />
 
-              {/* Right side: dots + arrows + read more */}
               <div className="flex items-center gap-4 w-full sm:w-auto justify-between sm:justify-end">
-                {/* Dot indicators */}
                 <div className="flex gap-1.5 items-center">
                   {SLIDES.map((_, i) => (
                     <button
@@ -1560,7 +1700,6 @@ export default function Hero() {
                   ))}
                 </div>
 
-                {/* Arrow controls */}
                 <div className="flex items-center gap-1.5">
                   <button
                     onClick={prev}
@@ -1626,7 +1765,6 @@ export default function Hero() {
         </div>
       </section>
 
-      {/* Keyframe for tagline fade-up */}
       <style>{`
         @keyframes fadeSlideUp {
           from { opacity: 0; transform: translateY(14px); }
