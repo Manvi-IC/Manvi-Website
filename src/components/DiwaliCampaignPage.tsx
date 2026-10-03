@@ -4,7 +4,6 @@ import SearchableCountryDropdown from "@/components/SearchableCountryDropdown";
 import {
   DiyaLamp,
   AkashKandil,
-  MarigoldToran,
   RangoliDivider,
   RangoliWatermark,
   DiwaliAmbientEmbers,
@@ -358,7 +357,7 @@ export default function DiwaliCampaignPage({
 
   return (
     <main
-      className={`w-full font-sans flex flex-col antialiased pb-24 sm:pb-28 transition-colors duration-300 ${
+      className={`w-full font-sans flex flex-col antialiased pb-24 sm:pb-28 transition-colors duration-300 relative ${
         isDiwaliMode ? "bg-[#1E1109] text-white diwali-dark" : "bg-[#faf5ea] text-[#1c1f2e]"
       }`}
     >
@@ -368,8 +367,25 @@ export default function DiwaliCampaignPage({
           body.diwali-dark-global .min-h-screen { background-color: #1E1109 !important; color: #ffffff !important; }
         `}</style>
       )}
+
+      {/* ── Festive Top Props (Visible exclusively in Diwali Mode) ── */}
+      {isDiwaliMode && (
+        <>
+          {/* Traditional Hanging Akash Kandils on Outer Margins (Desktop only to prevent clutter) */}
+          <div className="hidden 2xl:block fixed top-24 left-3 z-30 opacity-90 pointer-events-none">
+            <AkashKandil size={56} />
+          </div>
+          <div className="hidden 2xl:block fixed top-24 right-3 z-30 opacity-90 pointer-events-none">
+            <AkashKandil size={56} />
+          </div>
+
+          {/* Gentle Ambient Embers Floating Upwards */}
+          <DiwaliAmbientEmbers />
+        </>
+      )}
+
       {/* ── 1. HERO BANNER ── */}
-      <section className="w-full max-w-[1352px] mx-auto px-3 sm:px-6 pt-4 sm:pt-6 pb-6 sm:pb-10">
+      <section className="w-full max-w-[1352px] mx-auto px-3 sm:px-6 pt-2 sm:pt-4 pb-6 sm:pb-10">
         <div
           className={`relative w-full overflow-hidden rounded-[20px] sm:rounded-[32px] shadow-2xl transition-colors ${
             isDiwaliMode ? "bg-[#1E1109] border border-amber-500/20" : "bg-[#1a0c02]"
@@ -391,14 +407,22 @@ export default function DiwaliCampaignPage({
 
             {/* Top Festive Badge */}
             <div className="absolute top-4 right-4 hidden md:flex items-center gap-2 bg-amber-500/20 backdrop-blur-md border border-amber-400/40 text-amber-300 px-3.5 py-1.5 rounded-full text-[11px] font-bold tracking-wider uppercase shadow-lg">
-              <Sparkles className="w-3.5 h-3.5 text-yellow-300" />
-              Diwali Festive Special Edition · Guaranteed Delivery
+              {isDiwaliMode ? (
+                <DiyaLamp size={16} glow={false} />
+              ) : (
+                <Sparkles className="w-3.5 h-3.5 text-yellow-300" />
+              )}
+              <span>Diwali Festive Special Edition · Guaranteed Delivery</span>
             </div>
 
             {/* Desktop Hero Content Overlay */}
             <div className="hidden md:flex absolute inset-0 z-10 flex-col justify-center px-6 lg:px-12 py-4 max-w-xl lg:max-w-2xl">
               <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/25 backdrop-blur-sm border border-amber-400/40 text-amber-200 text-xs font-extrabold w-fit mb-2.5 tracking-wide uppercase shadow">
-                <Flame className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
+                {isDiwaliMode ? (
+                  <DiyaLamp size={15} glow={false} />
+                ) : (
+                  <Flame className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
+                )}
                 DIWALI WITH MANVI
               </div>
 
@@ -610,11 +634,29 @@ export default function DiwaliCampaignPage({
         id="diwali-calculator"
         className="w-full max-w-[1400px] mx-auto px-3 sm:px-6 py-5 sm:py-10"
       >
-        <div className="bg-[#f27a1a] rounded-[20px] sm:rounded-[28px] p-4 sm:p-10 lg:p-12 shadow-xl">
-          <div className="flex flex-col gap-1.5 sm:gap-2 mb-5 sm:mb-6 text-center md:text-left">
-            <h2 className="text-xl sm:text-[30px] md:text-[34px] font-extrabold text-white leading-tight tracking-tight">
-              Calculate Instant Diwali Parcel Rates
-            </h2>
+        <div className="bg-[#f27a1a] rounded-[20px] sm:rounded-[28px] p-4 sm:p-10 lg:p-12 shadow-xl relative overflow-hidden">
+          {/* Subtle Royal Rangoli Watermarks */}
+          {isDiwaliMode && (
+            <>
+              <div className="absolute -top-12 -right-12 pointer-events-none">
+                <RangoliWatermark size={250} opacity={0.14} />
+              </div>
+              <div className="absolute -bottom-16 -left-16 pointer-events-none">
+                <RangoliWatermark size={220} opacity={0.1} />
+              </div>
+            </>
+          )}
+
+          <div className="flex flex-col gap-1.5 sm:gap-2 mb-5 sm:mb-6 text-center md:text-left relative z-10">
+            <div className="flex items-center justify-center md:justify-start gap-2.5">
+              {isDiwaliMode && <DiyaLamp size={26} className="shrink-0" />}
+              <h2 className="text-xl sm:text-[30px] md:text-[34px] font-extrabold text-white leading-tight tracking-tight">
+                Calculate Instant Diwali Parcel Rates
+              </h2>
+              {isDiwaliMode && (
+                <DiyaLamp size={26} className="shrink-0 hidden sm:inline-flex" />
+              )}
+            </div>
             <p className="text-white/80 text-xs sm:text-[14px] leading-relaxed max-w-2xl mx-auto md:mx-0">
               Calculate lowest courier rates for Diwali Sweets, Faral, Hampers &
               Clothes across global air carriers.
@@ -814,8 +856,11 @@ export default function DiwaliCampaignPage({
         </div>
       </section>
 
+      {/* Rangoli Divider */}
+      {isDiwaliMode && <RangoliDivider label="Festive Express Air Dispatch" />}
+
       {/* ── 3. SPECIAL DIWALI FESTIVE OFFER INFO BOX ── */}
-      <section className="w-full max-w-[1400px] mx-auto px-3 sm:px-6 py-4 sm:py-10">
+      <section className="w-full max-w-[1400px] mx-auto px-3 sm:px-6 py-4 sm:py-6">
         <div
           className={`rounded-[20px] sm:rounded-[28px] p-4 sm:p-8 lg:p-12 shadow-sm relative overflow-hidden transition-colors ${
             isDiwaliMode
@@ -823,10 +868,16 @@ export default function DiwaliCampaignPage({
               : "bg-gradient-to-br from-[#fff7ed] via-[#fffbf5] to-[#fff3e0] border-2 border-[#e77419]/30 text-[#0a111e]"
           }`}
         >
+          {isDiwaliMode && (
+            <div className="absolute -right-10 -bottom-10 pointer-events-none">
+              <RangoliWatermark size={200} opacity={0.12} />
+            </div>
+          )}
           <div className="relative z-10 flex flex-col gap-3 sm:gap-4">
             <div>
-              <span className="inline-flex items-center gap-1.5 border border-[#e77419] bg-[#e77419]/10 text-[#e77419] px-3 py-1 sm:px-4 sm:py-1.5 rounded-full text-[11px] sm:text-sm font-extrabold uppercase tracking-wide">
-                🪔 Special Diwali Shipping Offer
+              <span className="inline-flex items-center gap-2 border border-[#e77419] bg-[#e77419]/10 text-[#e77419] px-3.5 py-1 sm:px-4 sm:py-1.5 rounded-full text-[11px] sm:text-sm font-extrabold uppercase tracking-wide">
+                {isDiwaliMode ? <DiyaLamp size={18} glow={false} /> : "🪔"}
+                Special Diwali Shipping Offer
               </span>
             </div>
             <p
@@ -853,12 +904,17 @@ export default function DiwaliCampaignPage({
         </div>
       </section>
 
+      {/* Rangoli Divider */}
+      {isDiwaliMode && <RangoliDivider label="Homemade Faral & Traditional Gifts" />}
+
       {/* ── 4. WHAT YOU CAN SHIP FOR DIWALI ── */}
-      <section className="w-full max-w-[1400px] mx-auto px-3 sm:px-6 py-6 sm:py-14">
+      <section className="w-full max-w-[1400px] mx-auto px-3 sm:px-6 py-6 sm:py-12">
         <div className="text-center max-w-2xl mx-auto mb-6 sm:mb-12">
-          <span className="text-[#f27a1a] text-[11px] sm:text-xs font-black uppercase tracking-wider">
-            Festive Packing Catalog
-          </span>
+          <div className="inline-flex items-center justify-center gap-2 text-[#f27a1a] text-[11px] sm:text-xs font-black uppercase tracking-wider mb-1">
+            {isDiwaliMode && <DiyaLamp size={18} glow={false} />}
+            <span>Festive Packing Catalog</span>
+            {isDiwaliMode && <DiyaLamp size={18} glow={false} />}
+          </div>
           <h2
             className={`text-2xl sm:text-4xl font-extrabold mt-1 ${
               isDiwaliMode ? "text-white" : "text-[#1c1f2e]"
@@ -880,12 +936,17 @@ export default function DiwaliCampaignPage({
           {DIWALI_ITEMS.map((item, idx) => (
             <div
               key={idx}
-              className={`rounded-2xl sm:rounded-3xl p-4 sm:p-8 flex flex-col gap-3 sm:gap-4 transition-all group shadow-sm ${
+              className={`rounded-2xl sm:rounded-3xl p-4 sm:p-8 flex flex-col gap-3 sm:gap-4 transition-all group shadow-sm relative overflow-hidden ${
                 isDiwaliMode
-                  ? "bg-[#1E1109] border border-amber-500/25 text-white hover:border-amber-400/50"
+                  ? "bg-[#1E1109] border border-amber-500/25 text-white hover:border-amber-400/60 hover:shadow-[0_4px_24px_rgba(245,158,11,0.14)]"
                   : "bg-white border border-gray-200/80 hover:border-orange-400 hover:shadow-md"
               }`}
             >
+              {isDiwaliMode && (
+                <span className="absolute top-3.5 right-3.5 text-amber-400/35 group-hover:text-amber-300 transition-colors text-xs pointer-events-none">
+                  ✨
+                </span>
+              )}
               <div
                 className={`w-12 h-12 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl flex items-center justify-center text-2xl sm:text-3xl shrink-0 group-hover:scale-110 transition-transform ${
                   isDiwaliMode
@@ -918,6 +979,9 @@ export default function DiwaliCampaignPage({
         </div>
       </section>
 
+      {/* Rangoli Divider */}
+      {isDiwaliMode && <RangoliDivider label="Doorstep to Worldwide" />}
+
       {/* ── 5. HOW IT WORKS ── */}
       <section className="w-full max-w-[1400px] mx-auto px-3 sm:px-6 py-6 sm:py-14">
         <div
@@ -928,9 +992,11 @@ export default function DiwaliCampaignPage({
           }`}
         >
           <div className="text-center max-w-xl mx-auto mb-6 sm:mb-12">
-            <span className="text-[#f27a1a] text-[11px] sm:text-xs font-black uppercase tracking-wider">
-              Hassle-Free Logistics
-            </span>
+            <div className="inline-flex items-center justify-center gap-2 text-[#f27a1a] text-[11px] sm:text-xs font-black uppercase tracking-wider mb-1">
+              {isDiwaliMode && <DiyaLamp size={18} glow={false} />}
+              <span>Hassle-Free Logistics</span>
+              {isDiwaliMode && <DiyaLamp size={18} glow={false} />}
+            </div>
             <h2
               className={`text-2xl sm:text-4xl font-extrabold mt-1 ${
                 isDiwaliMode ? "text-white" : "text-[#1c1f2e]"
@@ -975,6 +1041,9 @@ export default function DiwaliCampaignPage({
         </div>
       </section>
 
+      {/* Rangoli Divider */}
+      {isDiwaliMode && <RangoliDivider label="Book Your Shipment" />}
+
       {/* ── 6. QUICK INQUIRY & BOOKING FORM ── */}
       <section className="w-full max-w-[1400px] mx-auto px-3 sm:px-6 py-6 sm:py-14">
         <div
@@ -985,9 +1054,10 @@ export default function DiwaliCampaignPage({
           }`}
         >
           <div className="lg:col-span-6 flex flex-col gap-3 sm:gap-4">
-            <span className="text-[#f27a1a] text-[11px] sm:text-xs font-black uppercase tracking-wider">
-              Diwali Express Dispatch
-            </span>
+            <div className="inline-flex items-center gap-2 text-[#f27a1a] text-[11px] sm:text-xs font-black uppercase tracking-wider">
+              {isDiwaliMode && <DiyaLamp size={16} glow={false} />}
+              <span>Diwali Express Dispatch</span>
+            </div>
             <h2
               className={`text-2xl sm:text-4xl font-black leading-tight ${
                 isDiwaliMode ? "text-white" : "text-[#1c1f2e]"
@@ -1046,12 +1116,17 @@ export default function DiwaliCampaignPage({
 
           {/* Form */}
           <div
-            className={`lg:col-span-6 rounded-xl sm:rounded-2xl p-4 sm:p-8 shadow-sm transition-colors ${
+            className={`lg:col-span-6 rounded-xl sm:rounded-2xl p-4 sm:p-8 shadow-sm transition-colors relative overflow-hidden ${
               isDiwaliMode
                 ? "bg-[#25150B] border border-amber-500/20 text-white"
                 : "bg-white border border-gray-200/80"
             }`}
           >
+            {isDiwaliMode && (
+              <div className="absolute -top-10 -right-10 pointer-events-none">
+                <RangoliWatermark size={180} opacity={0.12} />
+              </div>
+            )}
             {inqSuccess ? (
               <div className="text-center py-6 sm:py-8">
                 <CheckCircle2 className="w-10 h-10 sm:w-12 sm:h-12 text-emerald-500 mx-auto mb-3" />
@@ -1172,12 +1247,17 @@ export default function DiwaliCampaignPage({
         </div>
       </section>
 
+      {/* Rangoli Divider */}
+      {isDiwaliMode && <RangoliDivider label="Diwali Shipping Guidelines" />}
+
       {/* ── 7. DIWALI SHIPPING FAQS ── */}
       <section className="w-full max-w-[1400px] mx-auto px-3 sm:px-6 py-6 sm:py-14">
         <div className="text-center max-w-2xl mx-auto mb-6 sm:mb-12">
-          <span className="text-[#f27a1a] text-[11px] sm:text-xs font-black uppercase tracking-wider">
-            Help & Guidelines
-          </span>
+          <div className="inline-flex items-center justify-center gap-2 text-[#f27a1a] text-[11px] sm:text-xs font-black uppercase tracking-wider mb-1">
+            {isDiwaliMode && <DiyaLamp size={18} glow={false} />}
+            <span>Help & Guidelines</span>
+            {isDiwaliMode && <DiyaLamp size={18} glow={false} />}
+          </div>
           <h2
             className={`text-2xl sm:text-4xl font-extrabold mt-1 ${
               isDiwaliMode ? "text-white" : "text-[#1c1f2e]"
@@ -1252,7 +1332,12 @@ export default function DiwaliCampaignPage({
       {/* Diwali Mode Toggle */}
       <div className="fixed bottom-6 left-6 z-[10000] flex items-center gap-3 bg-black/40 backdrop-blur-md p-3 rounded-full border border-white/10 shadow-2xl">
         <span className="text-white text-xs font-bold tracking-wide uppercase flex items-center gap-1.5">
-          <Sparkles className="w-3.5 h-3.5 text-amber-400" /> Diwali Mode
+          {isDiwaliMode ? (
+            <DiyaLamp size={16} glow={false} />
+          ) : (
+            <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+          )}
+          Diwali Mode
         </span>
         <button
           onClick={() => setIsDiwaliMode(!isDiwaliMode)}
