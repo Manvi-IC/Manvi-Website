@@ -128,3 +128,57 @@ a, a *, button, button *, [role="button"], [role="button"] *, summary, summary *
 input:not([type="submit"]):not([type="button"]):not([type="checkbox"]):not([type="radio"]), textarea {
   cursor: text;
 }
+
+/* ── Diwali Festive Props Animations ── */
+@keyframes kandilSway {
+  0% {
+    transform: rotate(-3deg);
+  }
+  100% {
+    transform: rotate(3deg);
+  }
+}
+
+@keyframes diyaFlame {
+  0%, 100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 0.95;
+  }
+  25% {
+    transform: scale(1.05, 0.95) rotate(-1.5deg);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(0.96, 1.04) rotate(1.2deg);
+    opacity: 0.92;
+  }
+  75% {
+    transform: scale(1.03, 1.02) rotate(-0.8deg);
+    opacity: 1;
+  }
+}
+
+.diya-flame-motion {
+  animation: diyaFlame 2.2s ease-in-out infinite alternate;
+}
+
+@keyframes diwaliEmber {
+  0% {
+    transform: translateY(0) scale(0.5);
+    opacity: 0;
+  }
+  25% {
+    opacity: 0.7;
+  }
+  75% {
+    opacity: 0.55;
+  }
+  100% {
+    transform: translateY(-90vh) scale(1.1) translateX(18px);
+    opacity: 0;
+  }
+}
+
+.animate-diwali-ember {
+  animation: diwaliEmber linear infinite;
+}
