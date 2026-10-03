@@ -1,6 +1,14 @@
 "use client";
 import DiwaliFireworks from "@/components/DiwaliFireworks";
 import SearchableCountryDropdown from "@/components/SearchableCountryDropdown";
+import {
+  DiyaLamp,
+  AkashKandil,
+  MarigoldToran,
+  RangoliDivider,
+  RangoliWatermark,
+  DiwaliAmbientEmbers,
+} from "@/components/DiwaliDecorations";
 
 import {
   ArrowUpRight,
