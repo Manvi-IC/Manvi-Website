@@ -11,8 +11,17 @@ export default function DiwaliPageContent() {
   return (
     <div
       className={`min-h-screen font-sans flex flex-col antialiased transition-colors duration-300 ${
-        isDiwaliMode ? "bg-[#1E1109] text-white" : "bg-[#faf5ea] text-[#0f172a]"
+        isDiwaliMode ? "text-[#1F272F]" : "bg-[#faf5ea] text-[#0f172a]"
       }`}
+      style={
+        isDiwaliMode
+          ? {
+              background:
+                "radial-gradient(130% 92% at 50% 0%, #ffffff 0%, #F0F3F3 46%, #E8DDD0 100%)",
+              backgroundAttachment: "fixed",
+            }
+          : undefined
+      }
     >
       <Header isDiwaliMode={isDiwaliMode} />
       <DiwaliCampaignPage
