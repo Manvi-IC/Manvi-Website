@@ -1647,15 +1647,8 @@ export default function ShopkeeperPage() {
     if (contactLoaded) saveStoredContact(contact);
   }, [contact, contactLoaded]);
 
-  const handleCompareRate = async (location: string) => {
+  const handleCompareRate = (location: string) => {
     trackWhatsApp(location);
-
-    await submitZohoLead({
-      firstName: "",
-      lastName: "",
-      mobile: "",
-      description: "Clicked 'Compare your rate' on shopkeeper hero",
-    });
 
     if (typeof window !== "undefined") {
       (window as any).dataLayer = (window as any).dataLayer || [];
