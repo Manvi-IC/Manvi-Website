@@ -31,10 +31,55 @@ export default function Footer({ isDiwaliMode = false }: FooterProps = {}) {
     <footer
       className={`text-white pt-12 sm:pt-16 pb-8 px-4 sm:px-6 font-sans rounded-t-2xl sm:rounded-t-3xl shadow-inner transition-colors duration-300 ${
         isDiwaliMode
-          ? "bg-[#1E1109] border-t border-amber-500/20"
+          ? "diwali-footer border-t border-[#ED7E23]/30"
           : "bg-[#f27a1a]"
       }`}
     >
+      {isDiwaliMode && (
+        <style>{`
+          .diwali-footer {
+            background-color: rgba(239, 234, 226, 0.95) !important;
+            border-top: 1px solid rgba(237, 126, 35, 0.3) !important;
+            color: #58626c !important;
+          }
+          .diwali-footer .text-white,
+          .diwali-footer .text-white\\/90,
+          .diwali-footer .text-white\\/85,
+          .diwali-footer .text-white\\/80,
+          .diwali-footer .text-white\\/75 {
+            color: #58626c !important;
+          }
+          .diwali-footer a:hover {
+            color: #c4620c !important;
+          }
+          .diwali-footer h3,
+          .diwali-footer .uppercase {
+            color: #c4620c !important;
+          }
+          .diwali-footer .brand-title {
+            color: #1F272F !important;
+          }
+          .diwali-footer .h-\\[1px\\] {
+            background-color: rgba(237, 126, 35, 0.25) !important;
+          }
+          .diwali-footer .border-white\\/20,
+          .diwali-footer .border-white\\/10 {
+            border-color: rgba(237, 126, 35, 0.25) !important;
+          }
+          .diwali-footer .bg-white\\/5 {
+            background-color: rgba(255, 255, 255, 0.75) !important;
+            border-color: rgba(237, 126, 35, 0.25) !important;
+          }
+          .diwali-footer .bg-white\\/10 {
+            background-color: rgba(255, 255, 255, 0.85) !important;
+            border-color: rgba(237, 126, 35, 0.3) !important;
+            color: #1F272F !important;
+          }
+          .diwali-footer svg {
+            color: #c4620c !important;
+          }
+        `}</style>
+      )}
       <div className="max-w-[1650px] mx-auto flex flex-col gap-10 px-4 sm:px-8 lg:px-12">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-10 lg:gap-16">
           {/* Column 1: Brand */}
@@ -58,7 +103,7 @@ export default function Footer({ isDiwaliMode = false }: FooterProps = {}) {
                     lineHeight: "100%",
                     letterSpacing: 0,
                   }}
-                  className="text-white"
+                  className="brand-title text-white"
                 >
                   Manvi
                 </span>
@@ -70,7 +115,7 @@ export default function Footer({ isDiwaliMode = false }: FooterProps = {}) {
                     lineHeight: "100%",
                     letterSpacing: 0,
                   }}
-                  className="text-white"
+                  className="brand-title text-white"
                 >
                   International Courier
                 </span>

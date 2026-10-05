@@ -285,25 +285,25 @@ export function RangoliDivider({
       aria-hidden="true"
     >
       {/* Left Golden Filigree Line */}
-      <div className="flex-1 h-[1px] bg-gradient-to-r from-transparent via-amber-500/40 to-amber-500/70 relative">
-        <div className="absolute right-0 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rotate-45 bg-amber-400" />
+      <div className="flex-1 h-[1.5px] bg-gradient-to-r from-transparent via-[#ED7E23]/40 to-[#c4620c]/80 relative">
+        <div className="absolute right-0 top-1/2 -translate-y-1/2 w-2 h-2 rotate-45 bg-[#c4620c] shadow-xs" />
       </div>
 
       {/* Center Ornate Motif & Diya */}
-      <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 backdrop-blur-sm">
-        <span className="text-amber-400 text-xs">✨</span>
+      <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/95 border border-[#ED7E23]/45 shadow-sm shadow-orange-950/5">
+        <span className="text-[#c4620c] text-xs">✨</span>
         <DiyaLamp size={22} glow={false} />
         {label && (
-          <span className="text-[11px] sm:text-xs font-bold tracking-widest uppercase text-amber-200/90 px-1">
+          <span className="text-[11px] sm:text-xs font-black tracking-widest uppercase text-[#c4620c] px-1">
             {label}
           </span>
         )}
-        <span className="text-amber-400 text-xs">✨</span>
+        <span className="text-[#c4620c] text-xs">✨</span>
       </div>
 
       {/* Right Golden Filigree Line */}
-      <div className="flex-1 h-[1px] bg-gradient-to-l from-transparent via-amber-500/40 to-amber-500/70 relative">
-        <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rotate-45 bg-amber-400" />
+      <div className="flex-1 h-[1.5px] bg-gradient-to-l from-transparent via-[#ED7E23]/40 to-[#c4620c]/80 relative">
+        <div className="absolute left-0 top-1/2 -translate-y-1/2 w-2 h-2 rotate-45 bg-[#c4620c] shadow-xs" />
       </div>
     </div>
   );
@@ -408,3 +408,74 @@ export function DiwaliAmbientEmbers() {
     </div>
   );
 }
+
+// ─── 7. Subtle Royal Indian Jali Lattice Texture ─────────────────────────────
+export function FestiveJaliBackground() {
+  return (
+    <div
+      className="fixed inset-0 pointer-events-none z-0 opacity-[0.038]"
+      style={{
+        backgroundImage: `url("data:image/svg+xml,%3Csvg width='56' height='56' viewBox='0 0 56 56' xmlns='http://www.w3.org/2000/svg'%3E%3Cg stroke='%23f59e0b' stroke-width='0.75' fill='none'%3E%3Cpath d='M28 0 L38 10 L28 20 L18 10 Z'/%3E%3Cpath d='M0 28 L10 38 L0 48 L-10 38 Z'/%3E%3Cpath d='M56 28 L66 38 L56 48 L46 38 Z'/%3E%3Cpath d='M28 56 L38 66 L28 76 L18 66 Z'/%3E%3Ccircle cx='28' cy='28' r='5' stroke-width='0.5'/%3E%3Cpath d='M14 14 L28 28 L42 14 M14 42 L28 28 L42 42' stroke-width='0.5' opacity='0.7'/%3E%3Ccircle cx='0' cy='0' r='2' fill='%23f59e0b'/%3E%3Ccircle cx='56' cy='0' r='2' fill='%23f59e0b'/%3E%3Ccircle cx='0' cy='56' r='2' fill='%23f59e0b'/%3E%3Ccircle cx='56' cy='56' r='2' fill='%23f59e0b'/%3E%3C/g%3E%3C/svg%3E")`,
+        backgroundRepeat: "repeat",
+      }}
+      aria-hidden="true"
+    />
+  );
+}
+
+// ─── 8. Delicate Indian Gold Corner Filigree ─────────────────────────────────
+export function CornerFlourish({
+  position = "top-left",
+  size = 32,
+  className = "",
+}: {
+  position?: "top-left" | "top-right" | "bottom-left" | "bottom-right";
+  size?: number;
+  className?: string;
+}) {
+  const transform =
+    position === "top-left"
+      ? ""
+      : position === "top-right"
+      ? "scale-x-[-1]"
+      : position === "bottom-left"
+      ? "scale-y-[-1]"
+      : "scale-x-[-1] scale-y-[-1]";
+
+  return (
+    <svg
+      viewBox="0 0 40 40"
+      width={size}
+      height={size}
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={`pointer-events-none select-none absolute ${transform} ${className}`}
+      aria-hidden="true"
+    >
+      <path
+        d="M2 38 V10 C2 5.58 5.58 2 10 2 H38"
+        stroke="#f59e0b"
+        strokeWidth="1.2"
+        strokeLinecap="round"
+      />
+      <path
+        d="M6 38 V14 C6 9.58 9.58 6 14 6 H38"
+        stroke="#fbbf24"
+        strokeWidth="0.8"
+        strokeDasharray="2 2"
+        strokeLinecap="round"
+      />
+      <circle cx="14" cy="14" r="2.2" fill="#f59e0b" />
+      <path
+        d="M14 14 C19 14, 22 17, 22 22"
+        stroke="#f59e0b"
+        strokeWidth="0.8"
+        strokeLinecap="round"
+      />
+      <circle cx="22" cy="22" r="1.3" fill="#fde047" />
+      <circle cx="38" cy="2" r="1.8" fill="#f59e0b" />
+      <circle cx="2" cy="38" r="1.8" fill="#f59e0b" />
+    </svg>
+  );
+}
+
