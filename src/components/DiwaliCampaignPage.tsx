@@ -1,4 +1,13 @@
 "use client";
+import DiwaliFireworks from "@/components/DiwaliFireworks";
+import SearchableCountryDropdown from "@/components/SearchableCountryDropdown";
+import {
+  DiyaLamp,
+  AkashKandil,
+  RangoliDivider,
+  RangoliWatermark,
+  DiwaliAmbientEmbers,
+} from "@/components/DiwaliDecorations";
 
 import {
   ArrowUpRight,
@@ -14,7 +23,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useLanguage } from "@/context/LanguageContext";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
@@ -77,23 +86,66 @@ const STEPS = [
 ];
 
 const DESTINATIONS = [
-  { label: "Australia", value: "AUSTRALIA", requiresZip: true, requiresSubCountry: false, flag: "🇦🇺" },
-  { label: "Canada", value: "CANADA", requiresZip: true, requiresSubCountry: false, flag: "🇨🇦" },
-  { label: "United Kingdom", value: "UK", requiresZip: false, requiresSubCountry: false, flag: "🇬🇧" },
-  { label: "Europe", value: "EUROPE", requiresZip: false, requiresSubCountry: true, flag: "🇪🇺" },
-  { label: "International", value: "INTERNATIONAL", requiresZip: false, requiresSubCountry: true, flag: "🌍" },
+  {
+    label: "Australia",
+    value: "AUSTRALIA",
+    requiresZip: true,
+    requiresSubCountry: false,
+    flag: "🇦🇺",
+  },
+  {
+    label: "Canada",
+    value: "CANADA",
+    requiresZip: true,
+    requiresSubCountry: false,
+    flag: "🇨🇦",
+  },
+  {
+    label: "United Kingdom",
+    value: "UK",
+    requiresZip: false,
+    requiresSubCountry: false,
+    flag: "🇬🇧",
+  },
+  {
+    label: "Europe",
+    value: "EUROPE",
+    requiresZip: false,
+    requiresSubCountry: true,
+    flag: "🇪🇺",
+  },
+  {
+    label: "International",
+    value: "INTERNATIONAL",
+    requiresZip: false,
+    requiresSubCountry: true,
+    flag: "🌍",
+  },
 ];
 
 const EUROPE_COUNTRIES = [
-  "GERMANY", "AUSTRIA", "BELGIUM", "LUXEMBOURG", "NETHERLANDS", "CZECH REPUBLIC",
-  "DENMARK", "FRANCE", "ITALY", "POLAND", "SPAIN", "IRELAND", "PORTUGAL", "SWEDEN",
-  "FINLAND", "GREECE", "ICELAND", "NORWAY", "SWITZERLAND",
+  "GERMANY",
+  "AUSTRIA",
+  "BELGIUM",
+  "LUXEMBOURG",
+  "NETHERLANDS",
+  "CZECH REPUBLIC",
+  "DENMARK",
+  "FRANCE",
+  "ITALY",
+  "POLAND",
+  "SPAIN",
+  "IRELAND",
+  "PORTUGAL",
+  "SWEDEN",
+  "FINLAND",
+  "GREECE",
+  "ICELAND",
+  "NORWAY",
+  "SWITZERLAND",
 ];
 
-const INTERNATIONAL_COUNTRIES = [
-  "USA", "SINGAPORE", "UNITED ARAB EMIRATES", "MALAYSIA", "NEW ZEALAND", "THAILAND",
-  "HONG KONG", "QATAR", "SAUDI ARABIA", "KUWAIT", "OMAN", "BAHRAIN", "JAPAN", "SOUTH AFRICA",
-];
+import { INTERNATIONAL_COUNTRIES } from "@/lib/countries";
 
 const DIWALI_FAQS = [
   {
@@ -121,7 +173,15 @@ interface Quote {
   tat: string;
 }
 
-export default function DiwaliCampaignPage() {
+interface DiwaliCampaignPageProps {
+  isDiwaliMode?: boolean;
+  setIsDiwaliMode?: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export default function DiwaliCampaignPage({
+  isDiwaliMode: controlledDiwaliMode,
+  setIsDiwaliMode: setControlledDiwaliMode,
+}: DiwaliCampaignPageProps = {}) {
   const { t } = useLanguage();
   const [destination, setDestination] = useState("");
   const [zoningCountry, setZoningCountry] = useState("");
@@ -144,18 +204,43 @@ export default function DiwaliCampaignPage() {
   const [inqItems, setInqItems] = useState("");
   const [inqLoading, setInqLoading] = useState(false);
   const [inqSuccess, setInqSuccess] = useState(false);
+  const [internalDiwaliMode, setInternalDiwaliMode] = useState(true);
+  const isDiwaliMode =
+    controlledDiwaliMode !== undefined
+      ? controlledDiwaliMode
+      : internalDiwaliMode;
+  const setIsDiwaliMode = setControlledDiwaliMode || setInternalDiwaliMode;
+
+  useEffect(() => {
+    if (isDiwaliMode) {
+      document.body.classList.add("diwali-dark-global");
+      document.documentElement.style.backgroundColor = "#1E1109";
+      document.body.style.backgroundColor = "#1E1109";
+    } else {
+      document.body.classList.remove("diwali-dark-global");
+      document.documentElement.style.backgroundColor = "";
+      document.body.style.backgroundColor = "";
+    }
+
+    return () => {
+      document.body.classList.remove("diwali-dark-global");
+      document.documentElement.style.backgroundColor = "";
+      document.body.style.backgroundColor = "";
+    };
+  }, [isDiwaliMode]);
 
   const destObj = DESTINATIONS.find((d) => d.value === destination);
   const requiresZip = destObj?.requiresZip ?? false;
   const requiresSubCountry = destObj?.requiresSubCountry ?? false;
-  const subCountryOptions = destination === "EUROPE" ? EUROPE_COUNTRIES : INTERNATIONAL_COUNTRIES;
+  const subCountryOptions =
+    destination === "EUROPE" ? EUROPE_COUNTRIES : INTERNATIONAL_COUNTRIES;
 
   const volWt =
     parseFloat(length) && parseFloat(breadth) && parseFloat(height)
       ? (
-        (parseFloat(length) * parseFloat(breadth) * parseFloat(height)) /
-        5000
-      ).toFixed(2)
+          (parseFloat(length) * parseFloat(breadth) * parseFloat(height)) /
+          5000
+        ).toFixed(2)
       : null;
   const chargeableWt = volWt
     ? Math.ceil(Math.max(parseFloat(actualWt) || 0, parseFloat(volWt)))
@@ -185,13 +270,20 @@ export default function DiwaliCampaignPage() {
         setQuotes(data.quotes);
         setShowQuoteModal(true);
         setTimeout(() => {
-          quotesSectionRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+          quotesSectionRef.current?.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+          });
         }, 100);
       } else {
-        alert(data.message || "No rate available. Contact us directly on WhatsApp!");
+        alert(
+          data.message || "No rate available. Contact us directly on WhatsApp!",
+        );
       }
     } catch {
-      alert("Could not fetch instant rates. Please connect directly with our support team.");
+      alert(
+        "Could not fetch instant rates. Please connect directly with our support team.",
+      );
     } finally {
       setQuoteLoading(false);
     }
@@ -201,9 +293,15 @@ export default function DiwaliCampaignPage() {
     e.preventDefault();
     setInqLoading(true);
     const params = new URLSearchParams();
-    params.append("xnQsjsdp", "0865f832e9eff8ac8416c9074e4fe81d82b2f78105b16bc6675b9cd2e3f7dfad");
+    params.append(
+      "xnQsjsdp",
+      "0865f832e9eff8ac8416c9074e4fe81d82b2f78105b16bc6675b9cd2e3f7dfad",
+    );
     params.append("zc_gad", "");
-    params.append("xmIwtLD", "ca6104fc687d6c4afcb27e6c4f9bdef93a18aec2baa19548cd8ce05901d0a0de7d20fe8f7958b27d61877d5aaa686212");
+    params.append(
+      "xmIwtLD",
+      "ca6104fc687d6c4afcb27e6c4f9bdef93a18aec2baa19548cd8ce05901d0a0de7d20fe8f7958b27d61877d5aaa686212",
+    );
     params.append("actionType", "Q29udGFjdHM=");
     params.append("returnURL", "null");
     params.append("Last Name", inqName || "Diwali Customer");
@@ -211,7 +309,10 @@ export default function DiwaliCampaignPage() {
     params.append("Email", inqEmail || "noemail@diwali.com");
     params.append("Title", "Diwali Campaign Inquiry");
     params.append("Department", inqDest || "International");
-    params.append("Description", `Diwali shipment: ${inqItems}, Approx weight: ${inqWeight}kg`);
+    params.append(
+      "Description",
+      `Diwali shipment: ${inqItems}, Approx weight: ${inqWeight}kg`,
+    );
     params.append("Lead Source", "Diwali Campaign Page");
 
     try {
@@ -245,7 +346,9 @@ export default function DiwaliCampaignPage() {
       setInqSuccess(true);
     } catch (err) {
       console.error(err);
-      alert("Thank you! Your Diwali courier request is received. We will contact you shortly.");
+      alert(
+        "Thank you! Your Diwali courier request is received. We will contact you shortly.",
+      );
       setInqSuccess(true);
     } finally {
       setInqLoading(false);
@@ -253,10 +356,41 @@ export default function DiwaliCampaignPage() {
   };
 
   return (
-    <main className="w-full font-sans bg-[#faf5ea] text-[#1c1f2e] flex flex-col antialiased pb-24 sm:pb-28">
+    <main
+      className={`w-full font-sans flex flex-col antialiased pb-24 sm:pb-28 transition-colors duration-300 relative ${
+        isDiwaliMode ? "bg-[#1E1109] text-white diwali-dark" : "bg-[#faf5ea] text-[#1c1f2e]"
+      }`}
+    >
+      {isDiwaliMode && (
+        <style>{`
+          html, body, .diwali-dark, body.diwali-dark-global { background-color: #1E1109 !important; color: #e5e7eb !important; }
+          body.diwali-dark-global .min-h-screen { background-color: #1E1109 !important; color: #ffffff !important; }
+        `}</style>
+      )}
+
+      {/* ── Festive Top Props (Visible exclusively in Diwali Mode) ── */}
+      {isDiwaliMode && (
+        <>
+          {/* Traditional Hanging Akash Kandils on Outer Margins (Desktop only to prevent clutter) */}
+          <div className="hidden 2xl:block fixed top-24 left-3 z-30 opacity-90 pointer-events-none">
+            <AkashKandil size={56} />
+          </div>
+          <div className="hidden 2xl:block fixed top-24 right-3 z-30 opacity-90 pointer-events-none">
+            <AkashKandil size={56} />
+          </div>
+
+          {/* Gentle Ambient Embers Floating Upwards */}
+          <DiwaliAmbientEmbers />
+        </>
+      )}
+
       {/* ── 1. HERO BANNER ── */}
-      <section className="w-full max-w-[1352px] mx-auto px-3 sm:px-6 pt-4 sm:pt-6 pb-6 sm:pb-10">
-        <div className="relative w-full overflow-hidden rounded-[20px] sm:rounded-[32px] bg-[#1a0c02] shadow-2xl">
+      <section className="w-full max-w-[1352px] mx-auto px-3 sm:px-6 pt-2 sm:pt-4 pb-6 sm:pb-10">
+        <div
+          className={`relative w-full overflow-hidden rounded-[20px] sm:rounded-[32px] shadow-2xl transition-colors ${
+            isDiwaliMode ? "bg-[#1E1109] border border-amber-500/20" : "bg-[#1a0c02]"
+          }`}
+        >
           {/* Exact aspect ratio container (1352x486) ensures zero cutout */}
           <div className="relative w-full aspect-[1352/486]">
             <Image
@@ -273,14 +407,22 @@ export default function DiwaliCampaignPage() {
 
             {/* Top Festive Badge */}
             <div className="absolute top-4 right-4 hidden md:flex items-center gap-2 bg-amber-500/20 backdrop-blur-md border border-amber-400/40 text-amber-300 px-3.5 py-1.5 rounded-full text-[11px] font-bold tracking-wider uppercase shadow-lg">
-              <Sparkles className="w-3.5 h-3.5 text-yellow-300" />
-              Diwali Festive Special Edition · Guaranteed Delivery
+              {isDiwaliMode ? (
+                <DiyaLamp size={16} glow={false} />
+              ) : (
+                <Sparkles className="w-3.5 h-3.5 text-yellow-300" />
+              )}
+              <span>Diwali Festive Special Edition · Guaranteed Delivery</span>
             </div>
 
             {/* Desktop Hero Content Overlay */}
             <div className="hidden md:flex absolute inset-0 z-10 flex-col justify-center px-6 lg:px-12 py-4 max-w-xl lg:max-w-2xl">
               <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/25 backdrop-blur-sm border border-amber-400/40 text-amber-200 text-xs font-extrabold w-fit mb-2.5 tracking-wide uppercase shadow">
-                <Flame className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
+                {isDiwaliMode ? (
+                  <DiyaLamp size={15} glow={false} />
+                ) : (
+                  <Flame className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
+                )}
                 DIWALI WITH MANVI
               </div>
 
@@ -300,26 +442,45 @@ export default function DiwaliCampaignPage() {
               <div className="bg-black/35 backdrop-blur-md border border-amber-400/30 rounded-xl p-2 max-w-lg mb-3 shadow-lg">
                 <div className="text-[10px] uppercase tracking-wider text-amber-300 font-extrabold mb-1.5 flex items-center justify-between">
                   <span className="flex items-center gap-1.5">
-                    <Gift className="w-3 h-3" /> 🪔 Festive Sweets, Faral & Gift Rates
+                    <Gift className="w-3 h-3" /> 🪔 Festive Sweets, Faral & Gift
+                    Rates
                   </span>
-                  <span className="text-white/60 text-[9px] font-normal">Per Kg starting</span>
+                  <span className="text-white/60 text-[9px] font-normal">
+                    Per Kg starting
+                  </span>
                 </div>
                 <div className="grid grid-cols-4 gap-1.5 text-center text-xs font-bold">
                   <div className="bg-black/40 border border-amber-500/30 rounded-lg py-1 px-1.5">
-                    <span className="text-white block text-[10px] leading-tight">🇬🇧 UK</span>
-                    <span className="text-amber-300 font-extrabold text-xs">₹649/kg</span>
+                    <span className="text-white block text-[10px] leading-tight">
+                      🇬🇧 UK
+                    </span>
+                    <span className="text-amber-300 font-extrabold text-xs">
+                      ₹649/kg
+                    </span>
                   </div>
                   <div className="bg-black/40 border border-amber-500/30 rounded-lg py-1 px-1.5">
-                    <span className="text-white block text-[10px] leading-tight">🇺🇸 USA</span>
-                    <span className="text-amber-300 font-extrabold text-xs">₹679/kg</span>
+                    <span className="text-white block text-[10px] leading-tight">
+                      🇺🇸 USA
+                    </span>
+                    <span className="text-amber-300 font-extrabold text-xs">
+                      ₹679/kg
+                    </span>
                   </div>
                   <div className="bg-black/40 border border-amber-500/30 rounded-lg py-1 px-1.5">
-                    <span className="text-white block text-[10px] leading-tight">🇨🇦 Canada</span>
-                    <span className="text-amber-300 font-extrabold text-xs">₹749/kg</span>
+                    <span className="text-white block text-[10px] leading-tight">
+                      🇨🇦 Canada
+                    </span>
+                    <span className="text-amber-300 font-extrabold text-xs">
+                      ₹749/kg
+                    </span>
                   </div>
                   <div className="bg-black/40 border border-cyan-500/30 rounded-lg py-1 px-1.5">
-                    <span className="text-white block text-[10px] leading-tight">🇦🇺 Australia</span>
-                    <span className="text-amber-300 font-extrabold text-xs">₹789/kg</span>
+                    <span className="text-white block text-[10px] leading-tight">
+                      🇦🇺 Australia
+                    </span>
+                    <span className="text-amber-300 font-extrabold text-xs">
+                      ₹789/kg
+                    </span>
                   </div>
                 </div>
               </div>
@@ -345,7 +506,11 @@ export default function DiwaliCampaignPage() {
           </div>
 
           {/* Mobile Content (Below banner on small screens so banner artwork is 100% visible with 0 cutout) */}
-          <div className="md:hidden px-4 py-5 bg-[#170a02] flex flex-col gap-3">
+          <div
+            className={`md:hidden px-4 py-5 flex flex-col gap-3 transition-colors ${
+              isDiwaliMode ? "bg-[#1E1109]" : "bg-[#170a02]"
+            }`}
+          >
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/20 border border-amber-400/40 text-amber-300 text-[11px] font-extrabold w-fit tracking-wide uppercase">
               <Flame className="w-3 h-3 text-amber-400 fill-amber-400" />
               DIWALI WITH MANVI
@@ -369,24 +534,42 @@ export default function DiwaliCampaignPage() {
                 <span className="flex items-center gap-1">
                   <Gift className="w-3 h-3" /> 🪔 Festive Sweets & Gift Rates
                 </span>
-                <span className="text-white/60 text-[10px] font-normal">Per Kg starting</span>
+                <span className="text-white/60 text-[10px] font-normal">
+                  Per Kg starting
+                </span>
               </div>
               <div className="grid grid-cols-2 gap-1.5 text-center text-xs font-bold">
                 <div className="bg-amber-950/80 border border-amber-500/40 rounded-lg py-1.5 px-2">
-                  <span className="text-white block text-[11px] mb-0.5">🇬🇧 UK</span>
-                  <span className="text-amber-300 font-extrabold text-xs">₹649/kg</span>
+                  <span className="text-white block text-[11px] mb-0.5">
+                    🇬🇧 UK
+                  </span>
+                  <span className="text-amber-300 font-extrabold text-xs">
+                    ₹649/kg
+                  </span>
                 </div>
                 <div className="bg-amber-950/80 border border-amber-500/40 rounded-lg py-1.5 px-2">
-                  <span className="text-white block text-[11px] mb-0.5">🇺🇸 USA</span>
-                  <span className="text-amber-300 font-extrabold text-xs">₹679/kg</span>
+                  <span className="text-white block text-[11px] mb-0.5">
+                    🇺🇸 USA
+                  </span>
+                  <span className="text-amber-300 font-extrabold text-xs">
+                    ₹679/kg
+                  </span>
                 </div>
                 <div className="bg-amber-950/80 border border-amber-500/40 rounded-lg py-1.5 px-2">
-                  <span className="text-white block text-[11px] mb-0.5">🇨🇦 Canada</span>
-                  <span className="text-amber-300 font-extrabold text-xs">₹749/kg</span>
+                  <span className="text-white block text-[11px] mb-0.5">
+                    🇨🇦 Canada
+                  </span>
+                  <span className="text-amber-300 font-extrabold text-xs">
+                    ₹749/kg
+                  </span>
                 </div>
                 <div className="bg-amber-950/80 border border-cyan-500/30 rounded-lg py-1.5 px-2">
-                  <span className="text-white block text-[11px] mb-0.5">🇦🇺 Australia</span>
-                  <span className="text-amber-300 font-extrabold text-xs">₹789/kg</span>
+                  <span className="text-white block text-[11px] mb-0.5">
+                    🇦🇺 Australia
+                  </span>
+                  <span className="text-amber-300 font-extrabold text-xs">
+                    ₹789/kg
+                  </span>
                 </div>
               </div>
             </div>
@@ -427,11 +610,19 @@ export default function DiwaliCampaignPage() {
                 style={{ background: "#e77419" }}
               >
                 {idx === 1 ? (
-                  <Receipt className="w-4 h-4 sm:w-5 sm:h-5 shrink-0" strokeWidth={2.5} />
+                  <Receipt
+                    className="w-4 h-4 sm:w-5 sm:h-5 shrink-0"
+                    strokeWidth={2.5}
+                  />
                 ) : (
-                  <MapPin className="w-4 h-4 sm:w-5 sm:h-5 shrink-0" strokeWidth={2.5} />
+                  <MapPin
+                    className="w-4 h-4 sm:w-5 sm:h-5 shrink-0"
+                    strokeWidth={2.5}
+                  />
                 )}
-                <span className="truncate sm:whitespace-normal">{tab.label}</span>
+                <span className="truncate sm:whitespace-normal">
+                  {tab.label}
+                </span>
               </Link>
             );
           })}
@@ -439,18 +630,43 @@ export default function DiwaliCampaignPage() {
       </section>
 
       {/* ── 2. INSTANT RATE CALCULATOR (Signature Orange Card) ── */}
-      <section id="diwali-calculator" className="w-full max-w-[1400px] mx-auto px-3 sm:px-6 py-5 sm:py-10">
-        <div className="bg-[#f27a1a] rounded-[20px] sm:rounded-[28px] p-4 sm:p-10 lg:p-12 shadow-xl">
-          <div className="flex flex-col gap-1.5 sm:gap-2 mb-5 sm:mb-6 text-center md:text-left">
-            <h2 className="text-xl sm:text-[30px] md:text-[34px] font-extrabold text-white leading-tight tracking-tight">
-              Calculate Instant Diwali Parcel Rates
-            </h2>
+      <section
+        id="diwali-calculator"
+        className="w-full max-w-[1400px] mx-auto px-3 sm:px-6 py-5 sm:py-10"
+      >
+        <div className="bg-[#f27a1a] rounded-[20px] sm:rounded-[28px] p-4 sm:p-10 lg:p-12 shadow-xl relative overflow-hidden">
+          {/* Subtle Royal Rangoli Watermarks */}
+          {isDiwaliMode && (
+            <>
+              <div className="absolute -top-12 -right-12 pointer-events-none">
+                <RangoliWatermark size={250} opacity={0.14} />
+              </div>
+              <div className="absolute -bottom-16 -left-16 pointer-events-none">
+                <RangoliWatermark size={220} opacity={0.1} />
+              </div>
+            </>
+          )}
+
+          <div className="flex flex-col gap-1.5 sm:gap-2 mb-5 sm:mb-6 text-center md:text-left relative z-10">
+            <div className="flex items-center justify-center md:justify-start gap-2.5">
+              {isDiwaliMode && <DiyaLamp size={26} className="shrink-0" />}
+              <h2 className="text-xl sm:text-[30px] md:text-[34px] font-extrabold text-white leading-tight tracking-tight">
+                Calculate Instant Diwali Parcel Rates
+              </h2>
+              {isDiwaliMode && (
+                <DiyaLamp size={26} className="shrink-0 hidden sm:inline-flex" />
+              )}
+            </div>
             <p className="text-white/80 text-xs sm:text-[14px] leading-relaxed max-w-2xl mx-auto md:mx-0">
-              Calculate lowest courier rates for Diwali Sweets, Faral, Hampers & Clothes across global air carriers.
+              Calculate lowest courier rates for Diwali Sweets, Faral, Hampers &
+              Clothes across global air carriers.
             </p>
           </div>
 
-          <form onSubmit={handleQuoteSubmit} className="flex flex-col gap-3 sm:gap-4">
+          <form
+            onSubmit={handleQuoteSubmit}
+            className="flex flex-col gap-3 sm:gap-4"
+          >
             {/* Row 1: Destination · (Sub-country / Zip) · Actual Weight */}
             <div className="flex flex-wrap gap-2.5 sm:gap-3">
               <div className="relative flex-1 min-w-full sm:min-w-[220px]">
@@ -480,33 +696,18 @@ export default function DiwaliCampaignPage() {
 
               {requiresSubCountry && (
                 <div className="relative flex-1 min-w-full sm:min-w-[220px]">
-                  <select
-                    aria-label={
+                  <SearchableCountryDropdown
+                    countries={subCountryOptions}
+                    value={zoningCountry}
+                    onChange={(val) => {
+                      setZoningCountry(val);
+                      setQuotes([]);
+                    }}
+                    placeholder={
                       destination === "EUROPE"
                         ? t.form_select_euro
                         : t.form_select_country
                     }
-                    value={zoningCountry}
-                    onChange={(e) => {
-                      setZoningCountry(e.target.value);
-                      setQuotes([]);
-                    }}
-                    className="w-full bg-white text-[#333] text-xs sm:text-[13px] font-medium rounded-lg sm:rounded-xl px-3.5 sm:px-4 py-3 sm:py-3.5 focus:outline-none appearance-none"
-                  >
-                    <option value="">
-                      {destination === "EUROPE"
-                        ? t.form_select_euro
-                        : t.form_select_country}
-                    </option>
-                    {subCountryOptions.map((c) => (
-                      <option key={c} value={c}>
-                        {c}
-                      </option>
-                    ))}
-                  </select>
-                  <ChevronDown
-                    size={14}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
                   />
                 </div>
               )}
@@ -587,8 +788,9 @@ export default function DiwaliCampaignPage() {
               <button
                 type="submit"
                 disabled={quoteLoading}
-                className={`bg-[#0D1527] hover:bg-slate-800 text-white font-bold text-xs sm:text-[13px] py-3 sm:py-3.5 px-6 sm:px-8 rounded-lg sm:rounded-xl transition-all active:scale-95 cursor-pointer flex items-center justify-center gap-1.5 disabled:opacity-70 ${actualWt || volWt ? "sm:w-auto" : "w-full"
-                  }`}
+                className={`bg-[#0D1527] hover:bg-slate-800 text-white font-bold text-xs sm:text-[13px] py-3 sm:py-3.5 px-6 sm:px-8 rounded-lg sm:rounded-xl transition-all active:scale-95 cursor-pointer flex items-center justify-center gap-1.5 disabled:opacity-70 ${
+                  actualWt || volWt ? "sm:w-auto" : "w-full"
+                }`}
               >
                 {quoteLoading ? t.form_calculating : t.hero_get_quote}{" "}
                 {!quoteLoading && (
@@ -600,9 +802,14 @@ export default function DiwaliCampaignPage() {
 
           {/* Quotes Results List */}
           {showQuoteModal && quotes.length > 0 && (
-            <div ref={quotesSectionRef} className="mt-6 sm:mt-8 pt-6 sm:pt-8 border-t border-white/20 animate-in fade-in duration-300">
+            <div
+              ref={quotesSectionRef}
+              className="mt-6 sm:mt-8 pt-6 sm:pt-8 border-t border-white/20 animate-in fade-in duration-300"
+            >
               <h3 className="text-base sm:text-lg font-bold text-white mb-3 sm:mb-4 flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-300" /> Available Diwali Carrier Options for {destObj?.label || destination}:
+                <CheckCircle2 className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-300" />{" "}
+                Available Diwali Carrier Options for{" "}
+                {destObj?.label || destination}:
               </h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
                 {quotes.map((q, i) => (
@@ -612,17 +819,25 @@ export default function DiwaliCampaignPage() {
                   >
                     <div>
                       <div className="flex items-center justify-between mb-2">
-                        <span className="font-extrabold text-sm sm:text-base text-[#1c1f2e]">{q.service}</span>
+                        <span className="font-extrabold text-sm sm:text-base text-[#1c1f2e]">
+                          {q.service}
+                        </span>
                         <span className="text-[11px] sm:text-xs font-bold text-amber-800 bg-amber-50 px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full border border-amber-200">
                           {q.tat}
                         </span>
                       </div>
-                      <p className="text-[11px] sm:text-xs text-gray-500">{q.rateType} · Priority Festive Air Dispatch</p>
+                      <p className="text-[11px] sm:text-xs text-gray-500">
+                        {q.rateType} · Priority Festive Air Dispatch
+                      </p>
                     </div>
                     <div className="mt-3 sm:mt-4 pt-3 sm:pt-4 border-t border-gray-100 flex items-center justify-between">
                       <div>
-                        <span className="text-[10px] sm:text-xs text-gray-400 block font-medium">Total Price</span>
-                        <p className="text-xl sm:text-2xl font-black text-[#f27a1a]">₹{Math.round(q.totalPrice).toLocaleString("en-IN")}</p>
+                        <span className="text-[10px] sm:text-xs text-gray-400 block font-medium">
+                          Total Price
+                        </span>
+                        <p className="text-xl sm:text-2xl font-black text-[#f27a1a]">
+                          ₹{Math.round(q.totalPrice).toLocaleString("en-IN")}
+                        </p>
                       </div>
                       <a
                         href={`https://wa.me/917070506070?text=Hi%2C%20I%20want%20to%20book%20Diwali%20Shipment%20${encodeURIComponent(q.service)}%20to%20${destination}%20for%20approx%20${actualWt}kg%20at%20₹${Math.round(q.totalPrice)}`}
@@ -641,36 +856,79 @@ export default function DiwaliCampaignPage() {
         </div>
       </section>
 
+      {/* Rangoli Divider */}
+      {isDiwaliMode && <RangoliDivider label="Festive Express Air Dispatch" />}
+
       {/* ── 3. SPECIAL DIWALI FESTIVE OFFER INFO BOX ── */}
-      <section className="w-full max-w-[1400px] mx-auto px-3 sm:px-6 py-4 sm:py-10">
-        <div className="bg-gradient-to-br from-[#fff7ed] via-[#fffbf5] to-[#fff3e0] border-2 border-[#e77419]/30 rounded-[20px] sm:rounded-[28px] p-4 sm:p-8 lg:p-12 shadow-sm relative overflow-hidden">
-          <div className="relative z-10 flex flex-col gap-3 sm:gap-4 text-[#0a111e]">
+      <section className="w-full max-w-[1400px] mx-auto px-3 sm:px-6 py-4 sm:py-6">
+        <div
+          className={`rounded-[20px] sm:rounded-[28px] p-4 sm:p-8 lg:p-12 shadow-sm relative overflow-hidden transition-colors ${
+            isDiwaliMode
+              ? "bg-[#1E1109] border-2 border-amber-500/30 text-white shadow-amber-950/20"
+              : "bg-gradient-to-br from-[#fff7ed] via-[#fffbf5] to-[#fff3e0] border-2 border-[#e77419]/30 text-[#0a111e]"
+          }`}
+        >
+          {isDiwaliMode && (
+            <div className="absolute -right-10 -bottom-10 pointer-events-none">
+              <RangoliWatermark size={200} opacity={0.12} />
+            </div>
+          )}
+          <div className="relative z-10 flex flex-col gap-3 sm:gap-4">
             <div>
-              <span className="inline-flex items-center gap-1.5 border border-[#e77419] bg-[#e77419]/10 text-[#e77419] px-3 py-1 sm:px-4 sm:py-1.5 rounded-full text-[11px] sm:text-sm font-extrabold uppercase tracking-wide">
-                🪔 Special Diwali Shipping Offer
+              <span className="inline-flex items-center gap-2 border border-[#e77419] bg-[#e77419]/10 text-[#e77419] px-3.5 py-1 sm:px-4 sm:py-1.5 rounded-full text-[11px] sm:text-sm font-extrabold uppercase tracking-wide">
+                {isDiwaliMode ? <DiyaLamp size={18} glow={false} /> : "🪔"}
+                Special Diwali Shipping Offer
               </span>
             </div>
-            <p className="text-sm sm:text-[17px] md:text-[18px] font-semibold text-[#0a111e] leading-relaxed">
-              Celebrate the festival of lights with your relatives overseas! Send homemade Diwali Faral, Kaju Katli, traditional Diyas, and gift hampers with guaranteed fast delivery.
+            <p
+              className={`text-sm sm:text-[17px] md:text-[18px] font-semibold leading-relaxed ${
+                isDiwaliMode ? "text-white" : "text-[#0a111e]"
+              }`}
+            >
+              Celebrate the festival of lights with your relatives overseas!
+              Send homemade Diwali Faral, Kaju Katli, traditional Diyas, and
+              gift hampers with guaranteed fast delivery.
             </p>
-            <p className="text-xs sm:text-[16px] text-[#444] leading-relaxed">
-              <strong className="text-[#e77419] font-bold">Food-Grade Vacuum Sealing:</strong> We protect every batch of homemade snacks and sweets with airtight sealing and rigid packing so they arrive tasting just like home.
+            <p
+              className={`text-xs sm:text-[16px] leading-relaxed ${
+                isDiwaliMode ? "text-amber-100/80" : "text-[#444]"
+              }`}
+            >
+              <strong className="text-[#e77419] font-bold">
+                Food-Grade Vacuum Sealing:
+              </strong>{" "}
+              We protect every batch of homemade snacks and sweets with airtight
+              sealing and rigid packing so they arrive tasting just like home.
             </p>
           </div>
         </div>
       </section>
 
+      {/* Rangoli Divider */}
+      {isDiwaliMode && <RangoliDivider label="Homemade Faral & Traditional Gifts" />}
+
       {/* ── 4. WHAT YOU CAN SHIP FOR DIWALI ── */}
-      <section className="w-full max-w-[1400px] mx-auto px-3 sm:px-6 py-6 sm:py-14">
+      <section className="w-full max-w-[1400px] mx-auto px-3 sm:px-6 py-6 sm:py-12">
         <div className="text-center max-w-2xl mx-auto mb-6 sm:mb-12">
-          <span className="text-[#f27a1a] text-[11px] sm:text-xs font-black uppercase tracking-wider">
-            Festive Packing Catalog
-          </span>
-          <h2 className="text-2xl sm:text-4xl font-extrabold text-[#1c1f2e] mt-1">
+          <div className="inline-flex items-center justify-center gap-2 text-[#f27a1a] text-[11px] sm:text-xs font-black uppercase tracking-wider mb-1">
+            {isDiwaliMode && <DiyaLamp size={18} glow={false} />}
+            <span>Festive Packing Catalog</span>
+            {isDiwaliMode && <DiyaLamp size={18} glow={false} />}
+          </div>
+          <h2
+            className={`text-2xl sm:text-4xl font-extrabold mt-1 ${
+              isDiwaliMode ? "text-white" : "text-[#1c1f2e]"
+            }`}
+          >
             What Can You Ship For Diwali?
           </h2>
-          <p className="text-gray-600 text-xs sm:text-sm mt-1.5 sm:mt-2">
-            Send authentic homemade delicacies, traditional gifts, and festive wear anywhere in the world.
+          <p
+            className={`text-xs sm:text-sm mt-1.5 sm:mt-2 ${
+              isDiwaliMode ? "text-amber-100/70" : "text-gray-600"
+            }`}
+          >
+            Send authentic homemade delicacies, traditional gifts, and festive
+            wear anywhere in the world.
           </p>
         </div>
 
@@ -678,16 +936,41 @@ export default function DiwaliCampaignPage() {
           {DIWALI_ITEMS.map((item, idx) => (
             <div
               key={idx}
-              className="bg-white border border-gray-200/80 rounded-2xl sm:rounded-3xl p-4 sm:p-8 flex flex-col gap-3 sm:gap-4 hover:border-orange-400 hover:shadow-md transition-all group shadow-sm"
+              className={`rounded-2xl sm:rounded-3xl p-4 sm:p-8 flex flex-col gap-3 sm:gap-4 transition-all group shadow-sm relative overflow-hidden ${
+                isDiwaliMode
+                  ? "bg-[#1E1109] border border-amber-500/25 text-white hover:border-amber-400/60 hover:shadow-[0_4px_24px_rgba(245,158,11,0.14)]"
+                  : "bg-white border border-gray-200/80 hover:border-orange-400 hover:shadow-md"
+              }`}
             >
-              <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl bg-orange-50 border border-orange-100 flex items-center justify-center text-2xl sm:text-3xl shrink-0 group-hover:scale-110 transition-transform">
+              {isDiwaliMode && (
+                <span className="absolute top-3.5 right-3.5 text-amber-400/35 group-hover:text-amber-300 transition-colors text-xs pointer-events-none">
+                  ✨
+                </span>
+              )}
+              <div
+                className={`w-12 h-12 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl flex items-center justify-center text-2xl sm:text-3xl shrink-0 group-hover:scale-110 transition-transform ${
+                  isDiwaliMode
+                    ? "bg-[#25150B] border border-amber-500/30 text-white"
+                    : "bg-orange-50 border border-orange-100"
+                }`}
+              >
                 {item.icon}
               </div>
               <div>
-                <h3 className="text-lg sm:text-xl font-bold text-[#1c1f2e] group-hover:text-[#f27a1a] transition-colors">
+                <h3
+                  className={`text-lg sm:text-xl font-bold transition-colors ${
+                    isDiwaliMode
+                      ? "text-white group-hover:text-amber-400"
+                      : "text-[#1c1f2e] group-hover:text-[#f27a1a]"
+                  }`}
+                >
                   {item.title}
                 </h3>
-                <p className="text-xs sm:text-sm text-gray-600 leading-relaxed mt-1 sm:mt-1.5">
+                <p
+                  className={`text-xs sm:text-sm leading-relaxed mt-1 sm:mt-1.5 ${
+                    isDiwaliMode ? "text-amber-100/75" : "text-gray-600"
+                  }`}
+                >
                   {item.desc}
                 </p>
               </div>
@@ -696,14 +979,29 @@ export default function DiwaliCampaignPage() {
         </div>
       </section>
 
+      {/* Rangoli Divider */}
+      {isDiwaliMode && <RangoliDivider label="Doorstep to Worldwide" />}
+
       {/* ── 5. HOW IT WORKS ── */}
       <section className="w-full max-w-[1400px] mx-auto px-3 sm:px-6 py-6 sm:py-14">
-        <div className="bg-[#eef0f5] rounded-[20px] sm:rounded-3xl p-5 sm:p-12 shadow-sm border border-gray-200/60">
+        <div
+          className={`rounded-[20px] sm:rounded-3xl p-5 sm:p-12 shadow-sm transition-colors ${
+            isDiwaliMode
+              ? "bg-[#1E1109] border border-amber-500/25"
+              : "bg-[#eef0f5] border border-gray-200/60"
+          }`}
+        >
           <div className="text-center max-w-xl mx-auto mb-6 sm:mb-12">
-            <span className="text-[#f27a1a] text-[11px] sm:text-xs font-black uppercase tracking-wider">
-              Hassle-Free Logistics
-            </span>
-            <h2 className="text-2xl sm:text-4xl font-extrabold text-[#1c1f2e] mt-1">
+            <div className="inline-flex items-center justify-center gap-2 text-[#f27a1a] text-[11px] sm:text-xs font-black uppercase tracking-wider mb-1">
+              {isDiwaliMode && <DiyaLamp size={18} glow={false} />}
+              <span>Hassle-Free Logistics</span>
+              {isDiwaliMode && <DiyaLamp size={18} glow={false} />}
+            </div>
+            <h2
+              className={`text-2xl sm:text-4xl font-extrabold mt-1 ${
+                isDiwaliMode ? "text-white" : "text-[#1c1f2e]"
+              }`}
+            >
               How Diwali Delivery Works
             </h2>
           </div>
@@ -712,16 +1010,28 @@ export default function DiwaliCampaignPage() {
             {STEPS.map((step, idx) => (
               <div
                 key={idx}
-                className="bg-white border border-gray-200/80 rounded-xl sm:rounded-2xl p-4 sm:p-6 flex flex-col justify-between shadow-sm"
+                className={`rounded-xl sm:rounded-2xl p-4 sm:p-6 flex flex-col justify-between shadow-sm transition-colors ${
+                  isDiwaliMode
+                    ? "bg-[#25150B] border border-amber-500/20 text-white"
+                    : "bg-white border border-gray-200/80"
+                }`}
               >
                 <div>
                   <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-[#f27a1a] text-white font-black text-sm sm:text-lg flex items-center justify-center mb-3 sm:mb-4 shadow-md shadow-orange-500/20">
                     {step.num}
                   </div>
-                  <h3 className="text-base sm:text-lg font-bold text-[#1c1f2e] mb-1.5 sm:mb-2 leading-snug">
+                  <h3
+                    className={`text-base sm:text-lg font-bold mb-1.5 sm:mb-2 leading-snug ${
+                      isDiwaliMode ? "text-white" : "text-[#1c1f2e]"
+                    }`}
+                  >
                     {step.title}
                   </h3>
-                  <p className="text-xs text-gray-600 leading-relaxed">
+                  <p
+                    className={`text-xs leading-relaxed ${
+                      isDiwaliMode ? "text-amber-100/75" : "text-gray-600"
+                    }`}
+                  >
                     {step.desc}
                   </p>
                 </div>
@@ -731,31 +1041,65 @@ export default function DiwaliCampaignPage() {
         </div>
       </section>
 
+      {/* Rangoli Divider */}
+      {isDiwaliMode && <RangoliDivider label="Book Your Shipment" />}
+
       {/* ── 6. QUICK INQUIRY & BOOKING FORM ── */}
       <section className="w-full max-w-[1400px] mx-auto px-3 sm:px-6 py-6 sm:py-14">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-12 items-center bg-[#eef0f5] border border-gray-200/70 rounded-[20px] sm:rounded-3xl p-4 sm:p-10 lg:p-12 shadow-sm">
+        <div
+          className={`grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-12 items-center rounded-[20px] sm:rounded-3xl p-4 sm:p-10 lg:p-12 shadow-sm transition-colors ${
+            isDiwaliMode
+              ? "bg-[#1E1109] border border-amber-500/25"
+              : "bg-[#eef0f5] border border-gray-200/70"
+          }`}
+        >
           <div className="lg:col-span-6 flex flex-col gap-3 sm:gap-4">
-            <span className="text-[#f27a1a] text-[11px] sm:text-xs font-black uppercase tracking-wider">
-              Diwali Express Dispatch
-            </span>
-            <h2 className="text-2xl sm:text-4xl font-black text-[#1c1f2e] leading-tight">
+            <div className="inline-flex items-center gap-2 text-[#f27a1a] text-[11px] sm:text-xs font-black uppercase tracking-wider">
+              {isDiwaliMode && <DiyaLamp size={16} glow={false} />}
+              <span>Diwali Express Dispatch</span>
+            </div>
+            <h2
+              className={`text-2xl sm:text-4xl font-black leading-tight ${
+                isDiwaliMode ? "text-white" : "text-[#1c1f2e]"
+              }`}
+            >
               Book Your Diwali Parcel Today
             </h2>
-            <p className="text-gray-600 text-xs sm:text-sm leading-relaxed">
-              Ensure your family celebrates with homemade treats and gifts on time. Request our free doorstep pickup and custom packing service today.
+            <p
+              className={`text-xs sm:text-sm leading-relaxed ${
+                isDiwaliMode ? "text-amber-100/80" : "text-gray-600"
+              }`}
+            >
+              Ensure your family celebrates with homemade treats and gifts on
+              time. Request our free doorstep pickup and custom packing service
+              today.
             </p>
 
             <div className="flex flex-col gap-2.5 sm:gap-3 mt-1 sm:mt-2">
-              <div className="flex items-center gap-2.5 sm:gap-3 text-xs sm:text-sm text-gray-700 font-medium">
-                <CheckCircle2 className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-600 shrink-0" />
-                <span>Doorstep Pickup Across Delhi NCR, Punjab, Haryana & Gujarat</span>
+              <div
+                className={`flex items-center gap-2.5 sm:gap-3 text-xs sm:text-sm font-medium ${
+                  isDiwaliMode ? "text-amber-100/90" : "text-gray-700"
+                }`}
+              >
+                <CheckCircle2 className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-500 shrink-0" />
+                <span>
+                  Doorstep Pickup Across Delhi NCR, Punjab, Haryana & Gujarat
+                </span>
               </div>
-              <div className="flex items-center gap-2.5 sm:gap-3 text-xs sm:text-sm text-gray-700 font-medium">
-                <CheckCircle2 className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-600 shrink-0" />
+              <div
+                className={`flex items-center gap-2.5 sm:gap-3 text-xs sm:text-sm font-medium ${
+                  isDiwaliMode ? "text-amber-100/90" : "text-gray-700"
+                }`}
+              >
+                <CheckCircle2 className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-500 shrink-0" />
                 <span>Free Vacuum Sealing & Food-Grade Packaging</span>
               </div>
-              <div className="flex items-center gap-2.5 sm:gap-3 text-xs sm:text-sm text-gray-700 font-medium">
-                <CheckCircle2 className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-600 shrink-0" />
+              <div
+                className={`flex items-center gap-2.5 sm:gap-3 text-xs sm:text-sm font-medium ${
+                  isDiwaliMode ? "text-amber-100/90" : "text-gray-700"
+                }`}
+              >
+                <CheckCircle2 className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-500 shrink-0" />
                 <span>Zero Customs Hassle with Complete Documentation</span>
               </div>
             </div>
@@ -771,12 +1115,36 @@ export default function DiwaliCampaignPage() {
           </div>
 
           {/* Form */}
-          <div className="lg:col-span-6 bg-white border border-gray-200/80 rounded-xl sm:rounded-2xl p-4 sm:p-8 shadow-sm">
+          <div
+            className={`lg:col-span-6 rounded-xl sm:rounded-2xl p-4 sm:p-8 shadow-sm transition-colors relative overflow-hidden ${
+              isDiwaliMode
+                ? "bg-[#25150B] border border-amber-500/20 text-white"
+                : "bg-white border border-gray-200/80"
+            }`}
+          >
+            {isDiwaliMode && (
+              <div className="absolute -top-10 -right-10 pointer-events-none">
+                <RangoliWatermark size={180} opacity={0.12} />
+              </div>
+            )}
             {inqSuccess ? (
               <div className="text-center py-6 sm:py-8">
-                <CheckCircle2 className="w-10 h-10 sm:w-12 sm:h-12 text-emerald-600 mx-auto mb-3" />
-                <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-1">Diwali Booking Received!</h3>
-                <p className="text-xs sm:text-sm text-gray-500 mb-4">Our logistics agent will contact you shortly to schedule pickup.</p>
+                <CheckCircle2 className="w-10 h-10 sm:w-12 sm:h-12 text-emerald-500 mx-auto mb-3" />
+                <h3
+                  className={`text-lg sm:text-xl font-bold mb-1 ${
+                    isDiwaliMode ? "text-white" : "text-gray-900"
+                  }`}
+                >
+                  Diwali Booking Received!
+                </h3>
+                <p
+                  className={`text-xs sm:text-sm mb-4 ${
+                    isDiwaliMode ? "text-amber-100/70" : "text-gray-500"
+                  }`}
+                >
+                  Our logistics agent will contact you shortly to schedule
+                  pickup.
+                </p>
                 <button
                   onClick={() => setInqSuccess(false)}
                   className="text-xs text-[#f27a1a] font-bold underline"
@@ -785,8 +1153,17 @@ export default function DiwaliCampaignPage() {
                 </button>
               </div>
             ) : (
-              <form onSubmit={handleInquirySubmit} className="flex flex-col gap-3 sm:gap-4">
-                <h3 className="text-base sm:text-lg font-bold text-[#1c1f2e] mb-1">Request Diwali Pickup</h3>
+              <form
+                onSubmit={handleInquirySubmit}
+                className="flex flex-col gap-3 sm:gap-4"
+              >
+                <h3
+                  className={`text-base sm:text-lg font-bold mb-1 ${
+                    isDiwaliMode ? "text-white" : "text-[#1c1f2e]"
+                  }`}
+                >
+                  Request Diwali Pickup
+                </h3>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3">
                   <input
@@ -795,7 +1172,11 @@ export default function DiwaliCampaignPage() {
                     placeholder="Your Name*"
                     value={inqName}
                     onChange={(e) => setInqName(e.target.value)}
-                    className="bg-[#f8f9fa] border border-gray-200 rounded-lg sm:rounded-xl px-3.5 sm:px-4 py-2.5 sm:py-3 text-[#333] text-xs font-medium focus:outline-none focus:border-orange-500"
+                    className={`rounded-lg sm:rounded-xl px-3.5 sm:px-4 py-2.5 sm:py-3 text-xs font-medium focus:outline-none focus:border-orange-500 transition-colors ${
+                      isDiwaliMode
+                        ? "bg-[#1E1109] border border-amber-500/30 text-white placeholder:text-amber-100/40"
+                        : "bg-[#f8f9fa] border border-gray-200 text-[#333]"
+                    }`}
                   />
                   <input
                     type="tel"
@@ -803,7 +1184,11 @@ export default function DiwaliCampaignPage() {
                     placeholder="Contact Number*"
                     value={inqPhone}
                     onChange={(e) => setInqPhone(e.target.value)}
-                    className="bg-[#f8f9fa] border border-gray-200 rounded-lg sm:rounded-xl px-3.5 sm:px-4 py-2.5 sm:py-3 text-[#333] text-xs font-medium focus:outline-none focus:border-orange-500"
+                    className={`rounded-lg sm:rounded-xl px-3.5 sm:px-4 py-2.5 sm:py-3 text-xs font-medium focus:outline-none focus:border-orange-500 transition-colors ${
+                      isDiwaliMode
+                        ? "bg-[#1E1109] border border-amber-500/30 text-white placeholder:text-amber-100/40"
+                        : "bg-[#f8f9fa] border border-gray-200 text-[#333]"
+                    }`}
                   />
                 </div>
 
@@ -814,14 +1199,22 @@ export default function DiwaliCampaignPage() {
                     placeholder="Destination Country (e.g. USA)*"
                     value={inqDest}
                     onChange={(e) => setInqDest(e.target.value)}
-                    className="bg-[#f8f9fa] border border-gray-200 rounded-lg sm:rounded-xl px-3.5 sm:px-4 py-2.5 sm:py-3 text-[#333] text-xs font-medium focus:outline-none focus:border-orange-500"
+                    className={`rounded-lg sm:rounded-xl px-3.5 sm:px-4 py-2.5 sm:py-3 text-xs font-medium focus:outline-none focus:border-orange-500 transition-colors ${
+                      isDiwaliMode
+                        ? "bg-[#1E1109] border border-amber-500/30 text-white placeholder:text-amber-100/40"
+                        : "bg-[#f8f9fa] border border-gray-200 text-[#333]"
+                    }`}
                   />
                   <input
                     type="text"
                     placeholder="Approx Weight (kg)"
                     value={inqWeight}
                     onChange={(e) => setInqWeight(e.target.value)}
-                    className="bg-[#f8f9fa] border border-gray-200 rounded-lg sm:rounded-xl px-3.5 sm:px-4 py-2.5 sm:py-3 text-[#333] text-xs font-medium focus:outline-none focus:border-orange-500"
+                    className={`rounded-lg sm:rounded-xl px-3.5 sm:px-4 py-2.5 sm:py-3 text-xs font-medium focus:outline-none focus:border-orange-500 transition-colors ${
+                      isDiwaliMode
+                        ? "bg-[#1E1109] border border-amber-500/30 text-white placeholder:text-amber-100/40"
+                        : "bg-[#f8f9fa] border border-gray-200 text-[#333]"
+                    }`}
                   />
                 </div>
 
@@ -830,7 +1223,11 @@ export default function DiwaliCampaignPage() {
                   placeholder="Items list (e.g., Kaju Katli, Faral, Diyas, Clothes)..."
                   value={inqItems}
                   onChange={(e) => setInqItems(e.target.value)}
-                  className="bg-[#f8f9fa] border border-gray-200 rounded-lg sm:rounded-xl px-3.5 sm:px-4 py-2.5 sm:py-3 text-[#333] text-xs font-medium focus:outline-none focus:border-orange-500 resize-none"
+                  className={`rounded-lg sm:rounded-xl px-3.5 sm:px-4 py-2.5 sm:py-3 text-xs font-medium focus:outline-none focus:border-orange-500 resize-none transition-colors ${
+                    isDiwaliMode
+                      ? "bg-[#1E1109] border border-amber-500/30 text-white placeholder:text-amber-100/40"
+                      : "bg-[#f8f9fa] border border-gray-200 text-[#333]"
+                  }`}
                 />
 
                 <button
@@ -838,7 +1235,11 @@ export default function DiwaliCampaignPage() {
                   disabled={inqLoading}
                   className="bg-[#f27a1a] hover:bg-orange-600 disabled:opacity-70 text-white font-extrabold text-xs sm:text-sm py-3 sm:py-3.5 rounded-lg sm:rounded-xl transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer mt-1"
                 >
-                  {inqLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : "Submit Diwali Pickup Request"}
+                  {inqLoading ? (
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                  ) : (
+                    "Submit Diwali Pickup Request"
+                  )}
                 </button>
               </form>
             )}
@@ -846,13 +1247,22 @@ export default function DiwaliCampaignPage() {
         </div>
       </section>
 
+      {/* Rangoli Divider */}
+      {isDiwaliMode && <RangoliDivider label="Diwali Shipping Guidelines" />}
+
       {/* ── 7. DIWALI SHIPPING FAQS ── */}
       <section className="w-full max-w-[1400px] mx-auto px-3 sm:px-6 py-6 sm:py-14">
         <div className="text-center max-w-2xl mx-auto mb-6 sm:mb-12">
-          <span className="text-[#f27a1a] text-[11px] sm:text-xs font-black uppercase tracking-wider">
-            Help & Guidelines
-          </span>
-          <h2 className="text-2xl sm:text-4xl font-extrabold text-[#1c1f2e] mt-1">
+          <div className="inline-flex items-center justify-center gap-2 text-[#f27a1a] text-[11px] sm:text-xs font-black uppercase tracking-wider mb-1">
+            {isDiwaliMode && <DiyaLamp size={18} glow={false} />}
+            <span>Help & Guidelines</span>
+            {isDiwaliMode && <DiyaLamp size={18} glow={false} />}
+          </div>
+          <h2
+            className={`text-2xl sm:text-4xl font-extrabold mt-1 ${
+              isDiwaliMode ? "text-white" : "text-[#1c1f2e]"
+            }`}
+          >
             Diwali Shipping FAQs
           </h2>
         </div>
@@ -861,12 +1271,27 @@ export default function DiwaliCampaignPage() {
           {DIWALI_FAQS.map((faq, idx) => (
             <div
               key={idx}
-              className="bg-white border border-gray-200 rounded-xl sm:rounded-2xl p-4 sm:p-6 flex flex-col gap-1.5 sm:gap-2 shadow-sm"
+              className={`rounded-xl sm:rounded-2xl p-4 sm:p-6 flex flex-col gap-1.5 sm:gap-2 shadow-sm transition-colors ${
+                isDiwaliMode
+                  ? "bg-[#25150B] border border-amber-500/20 text-white"
+                  : "bg-white border border-gray-200 text-[#1c1f2e]"
+              }`}
             >
-              <h3 className="text-sm sm:text-base font-bold text-[#1c1f2e] flex items-start gap-2 sm:gap-3">
-                <span className="text-[#f27a1a] font-extrabold">Q{idx + 1}.</span> {faq.q}
+              <h3
+                className={`text-sm sm:text-base font-bold flex items-start gap-2 sm:gap-3 ${
+                  isDiwaliMode ? "text-white" : "text-[#1c1f2e]"
+                }`}
+              >
+                <span className="text-[#f27a1a] font-extrabold">
+                  Q{idx + 1}.
+                </span>{" "}
+                {faq.q}
               </h3>
-              <p className="text-[11px] sm:text-sm text-gray-600 leading-relaxed pl-5 sm:pl-7">
+              <p
+                className={`text-[11px] sm:text-sm leading-relaxed pl-5 sm:pl-7 ${
+                  isDiwaliMode ? "text-amber-100/80" : "text-gray-600"
+                }`}
+              >
                 {faq.a}
               </p>
             </div>
@@ -875,12 +1300,17 @@ export default function DiwaliCampaignPage() {
       </section>
 
       {/* ── MOBILE STICKY QUICK ACTION BAR ── */}
-      <div className="sm:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#1a0c02]/95 backdrop-blur-md border-t border-amber-500/20 px-3 py-2 flex items-center justify-between gap-2 shadow-2xl">
+      <div
+        className={`sm:hidden fixed bottom-0 left-0 right-0 z-50 backdrop-blur-md border-t border-amber-500/20 px-3 py-2 flex items-center justify-between gap-2 shadow-2xl transition-colors ${
+          isDiwaliMode ? "bg-[#1E1109]/95" : "bg-[#1a0c02]/95"
+        }`}
+      >
         <a
           href="#diwali-calculator"
           className="flex-1 bg-[#e77419] hover:bg-orange-600 text-white font-bold text-xs py-2.5 px-3 rounded-lg flex items-center justify-center gap-1.5 active:scale-95 transition-all text-center no-underline"
         >
-          {t.nav_quote || "Instant Rate"} <ArrowUpRight className="w-3.5 h-3.5" />
+          {t.nav_quote || "Instant Rate"}{" "}
+          <ArrowUpRight className="w-3.5 h-3.5" />
         </a>
         <a
           href="https://wa.me/917070506070?text=Hi%2C%20I%20want%20to%20send%20a%20Diwali%20gift%20parcel%20abroad"
@@ -898,6 +1328,28 @@ export default function DiwaliCampaignPage() {
           <Phone className="w-3.5 h-3.5 text-amber-300" />
         </a>
       </div>
+
+      {/* Diwali Mode Toggle */}
+      <div className="fixed bottom-6 left-6 z-[10000] flex items-center gap-3 bg-black/40 backdrop-blur-md p-3 rounded-full border border-white/10 shadow-2xl">
+        <span className="text-white text-xs font-bold tracking-wide uppercase flex items-center gap-1.5">
+          {isDiwaliMode ? (
+            <DiyaLamp size={16} glow={false} />
+          ) : (
+            <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+          )}
+          Diwali Mode
+        </span>
+        <button
+          onClick={() => setIsDiwaliMode(!isDiwaliMode)}
+          className={`w-12 h-6 rounded-full p-1 transition-colors duration-300 ease-in-out ${isDiwaliMode ? "bg-[#f27a1a]" : "bg-gray-500"}`}
+        >
+          <div
+            className={`w-4 h-4 bg-white rounded-full shadow-md transform transition-transform duration-300 ease-in-out ${isDiwaliMode ? "translate-x-6" : "translate-x-0"}`}
+          />
+        </button>
+      </div>
+
+      {isDiwaliMode && <DiwaliFireworks />}
     </main>
   );
 }

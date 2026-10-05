@@ -1,5 +1,6 @@
 // app/campaign/page.tsx
 "use client";
+import SearchableCountryDropdown from "@/components/SearchableCountryDropdown";
 import {
   ArrowUpRight,
   MapPin,
@@ -167,43 +168,7 @@ const EUROPE_COUNTRIES = [
   "ICELAND",
 ];
 
-const INTERNATIONAL_COUNTRIES = [
-  "USA",
-  "BANGLADESH",
-  "BHUTAN",
-  "MALDIVES",
-  "NEPAL",
-  "SRI LANKA",
-  "UNITED ARAB EMIRATES",
-  "HONG KONG",
-  "MALAYSIA",
-  "SINGAPORE",
-  "THAILAND",
-  "CHINA, PEOPLE'S REPUBLIC",
-  "BAHRAIN",
-  "JORDAN",
-  "KUWAIT",
-  "OMAN",
-  "PAKISTAN",
-  "QATAR",
-  "SAUDI ARABIA",
-  "BRUNEI",
-  "CAMBODIA",
-  "INDONESIA",
-  "JAPAN",
-  "KOREA, REPUBLIC OF",
-  "MACAU",
-  "MYANMAR",
-  "PHILIPPINES, THE",
-  "TAIWAN",
-  "VIETNAM",
-  "NEW ZEALAND",
-  "SOUTH AFRICA",
-  "NIGERIA",
-  "KENYA",
-  "EGYPT",
-  "GHANA",
-];
+import { INTERNATIONAL_COUNTRIES } from "@/lib/countries";
 
 const NETWORK_LABELS: Record<string, string> = {
   SELF: "Self Network",
@@ -1646,34 +1611,16 @@ export default function CampaignPage() {
 
               {requiresSubCountry && (
                 <div className="relative flex-1 min-w-[220px]">
-                  <select
-                    aria-label={
-                      destination === "EUROPE"
-                        ? t.form_select_euro
-                        : t.form_select_country
-                    }
-                    value={zoningCountry}
-                    onChange={(e) => {
-                      setZoningCountry(e.target.value);
-                      setQuotes([]);
-                    }}
-                    className="w-full bg-white text-[#333] text-[13px] font-medium rounded-xl px-4 py-3.5 focus:outline-none appearance-none"
-                  >
-                    <option value="">
-                      {destination === "EUROPE"
+                  <SearchableCountryDropdown
+                  countries={subCountryOptions}
+                  value={zoningCountry}
+                  onChange={(val) => {
+                      setZoningCountry(val);
+                      setQuotes([]); }}
+                  placeholder={destination === "EUROPE"
                         ? t.form_select_euro
                         : t.form_select_country}
-                    </option>
-                    {subCountryOptions.map((c) => (
-                      <option key={c} value={c}>
-                        {c}
-                      </option>
-                    ))}
-                  </select>
-                  <ChevronDown
-                    size={14}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
-                  />
+                />
                 </div>
               )}
 

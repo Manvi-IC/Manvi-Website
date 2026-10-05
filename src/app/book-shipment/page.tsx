@@ -1,4 +1,5 @@
 "use client";
+import SearchableCountryDropdown from "@/components/SearchableCountryDropdown";
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
@@ -1026,15 +1027,7 @@ const EUROPE_COUNTRIES = [
   "PORTUGAL",
   "SWEDEN",
 ];
-const INTERNATIONAL_COUNTRIES = [
-  "USA",
-  "UNITED ARAB EMIRATES",
-  "SINGAPORE",
-  "MALAYSIA",
-  "THAILAND",
-  "SAUDI ARABIA",
-  "NEW ZEALAND",
-];
+import { INTERNATIONAL_COUNTRIES } from "@/lib/countries";
 
 const TERMS_OF_SALE = ["DAP", "DDP", "DDU", "EXW", "FOB"];
 const REASONS_FOR_EXPORT = [
@@ -1598,18 +1591,12 @@ export default function BookShipmentPage() {
                 {destObj?.requiresSubCountry && (
                   <div>
                     <label className={lbl}>Country *</label>
-                    <select
-                      value={zoningCountry}
-                      onChange={(e) => setZoningCountry(e.target.value)}
-                      className={inp}
-                    >
-                      <option value="">Select Country</option>
-                      {subCountryOptions.map((c) => (
-                        <option key={c} value={c}>
-                          {c}
-                        </option>
-                      ))}
-                    </select>
+                    <SearchableCountryDropdown
+                  countries={subCountryOptions}
+                  value={zoningCountry}
+                  onChange={(val) => { setZoningCountry(val) }}
+                  placeholder={"Select Country"}
+                />
                   </div>
                 )}
 

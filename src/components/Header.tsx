@@ -19,7 +19,11 @@ const LANGUAGES: {
   { code: "es", label: "Spanish", native: "Español", flag: "🇪🇸" },
 ];
 
-export default function Header() {
+interface HeaderProps {
+  isDiwaliMode?: boolean;
+}
+
+export default function Header({ isDiwaliMode = false }: HeaderProps = {}) {
   const pathname = usePathname();
   const { language, setLanguage, t } = useLanguage();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -49,7 +53,9 @@ export default function Header() {
           }
         }
       })
-      .catch((err) => console.warn("Failed to fetch site settings:", err.message));
+      .catch((err) =>
+        console.warn("Failed to fetch site settings:", err.message),
+      );
   }, []);
 
   useEffect(() => {
@@ -72,15 +78,80 @@ export default function Header() {
 
   return (
     <>
-      <div className="sticky top-0 z-50 w-full flex flex-col">
-        <div className="bg-[#0D1527] text-zinc-300 text-[12px] font-semibold py-3.5 px-4 sm:px-6 border-b border-white/5 relative z-50">
+      {isDiwaliMode && (
+        <style>{`
+          @keyframes waterFluid1 {
+            0% {
+              transform: translate(-30%, -30%) rotate(0deg) scale(1.1);
+            }
+            50% {
+              transform: translate(15%, 20%) rotate(180deg) scale(1.4);
+            }
+            100% {
+              transform: translate(-30%, -30%) rotate(360deg) scale(1.1);
+            }
+          }
+          @keyframes waterFluid2 {
+            0% {
+              transform: translate(25%, 20%) rotate(0deg) scale(1.3);
+            }
+            50% {
+              transform: translate(-25%, -20%) rotate(-180deg) scale(1.1);
+            }
+            100% {
+              transform: translate(25%, 20%) rotate(-360deg) scale(1.3);
+            }
+          }
+          @keyframes waterShimmerFlow {
+            0% {
+              background-position: 0% 50%;
+              opacity: 0.3;
+            }
+            50% {
+              background-position: 100% 50%;
+              opacity: 0.75;
+            }
+            100% {
+              background-position: 0% 50%;
+              opacity: 0.3;
+            }
+          }
+          .diwali-water-flow-1 {
+            background: radial-gradient(ellipse 65% 55% at 50% 50%, rgba(245, 158, 11, 0.5) 0%, rgba(217, 119, 6, 0.25) 50%, transparent 75%);
+            animation: waterFluid1 36s ease-in-out infinite;
+            filter: blur(22px);
+          }
+          .diwali-water-flow-2 {
+            background: radial-gradient(ellipse 60% 50% at 50% 50%, rgba(251, 191, 36, 0.45) 0%, rgba(234, 88, 12, 0.2) 55%, transparent 80%);
+            animation: waterFluid2 48s ease-in-out infinite;
+            filter: blur(26px);
+          }
+          .diwali-water-shimmer-layer {
+            background: linear-gradient(90deg, transparent 0%, rgba(255, 215, 0, 0.15) 30%, rgba(255, 180, 50, 0.25) 50%, rgba(255, 215, 0, 0.15) 70%, transparent 100%);
+            background-size: 200% 100%;
+            animation: waterShimmerFlow 24s ease-in-out infinite;
+          }
+        `}</style>
+      )}
+      <div className="sticky top-0 z-50 w-full flex flex-col transition-colors duration-300">
+        <div
+          data-header-bg
+          className={`text-[12px] font-semibold py-3.5 px-4 sm:px-6 relative z-50 transition-colors duration-300 ${
+            isDiwaliMode
+              ? "bg-[#1E1109] border-b border-amber-500/20 text-amber-100/90"
+              : "bg-[#0D1527] text-zinc-300 border-b border-white/5"
+          }`}
+        >
           <div className="max-w-425 mx-auto flex flex-col md:flex-row justify-between items-center gap-2.5 md:gap-0">
             <div className="flex items-center justify-between sm:justify-start gap-4 w-full md:w-auto">
               {/* Phone: Meta "Contact" event + Google Ads conversion */}
               <a
                 href="tel:+917070506070"
                 onClick={() => {
-                  trackEvent("Contact", { method: "Phone", location: "header" });
+                  trackEvent("Contact", {
+                    method: "Phone",
+                    location: "header",
+                  });
                   if (
                     typeof window !== "undefined" &&
                     typeof (window as any).gtag === "function"
@@ -93,7 +164,9 @@ export default function Header() {
                 className="flex items-center gap-1.5 sm:gap-2 hover:text-white transition-colors"
               >
                 <Phone className="h-3.5 w-3.5 text-white shrink-0" />
-                <span className="text-white/90 truncate">+91 70 70 50 60 70</span>
+                <span className="text-white/90 truncate">
+                  +91 70 70 50 60 70
+                </span>
               </a>
 
               {/* Email: Meta "Contact" event */}
@@ -105,7 +178,9 @@ export default function Header() {
                 className="flex items-center gap-1.5 sm:gap-2 hover:text-white transition-colors"
               >
                 <Mail className="h-3.5 w-3.5 text-white shrink-0" />
-                <span className="text-white/90 truncate">Info@manvicourier.com</span>
+                <span className="text-white/90 truncate">
+                  Info@manvicourier.com
+                </span>
               </a>
             </div>
 
@@ -121,7 +196,10 @@ export default function Header() {
             </div>
 
             <div className="hidden sm:flex items-center gap-6 overflow-visible">
-              <Link href="/zipcode" className="hover:text-white transition-colors">
+              <Link
+                href="/zipcode"
+                className="hover:text-white transition-colors"
+              >
                 {t.nav_zipcode}
               </Link>
 
@@ -183,7 +261,9 @@ export default function Header() {
                         <span className="text-base">{lang.flag}</span>
                         <span className="flex flex-col items-start leading-none gap-0.5">
                           <span>{lang.label}</span>
-                          <span className="text-[10px] opacity-60">{lang.native}</span>
+                          <span className="text-[10px] opacity-60">
+                            {lang.native}
+                          </span>
                         </span>
                       </button>
                     ))}
@@ -194,9 +274,25 @@ export default function Header() {
           </div>
         </div>
 
-        <header className="px-4 sm:px-6 py-4 relative z-40">
-          <div className="max-w-425 mx-auto bg-[#0D1527] rounded-2xl px-6 sm:px-8 py-4 flex justify-between items-center">
-            <Link href="/" className="flex items-center gap-3">
+        <header className="px-4 sm:px-6 py-4 relative z-40 transition-colors duration-300">
+          <div
+            data-header-bg
+            className={`max-w-425 mx-auto rounded-2xl px-6 sm:px-8 py-4 flex justify-between items-center transition-all duration-300 relative overflow-hidden ${
+              isDiwaliMode
+                ? "bg-[#281308]/85 backdrop-blur-md border border-amber-500/30 shadow-lg shadow-black/40"
+                : "bg-[#0D1527] border border-white/5 shadow-md"
+            }`}
+          >
+            {/* Glowing Water Background Animation for Diwali Mode */}
+            {isDiwaliMode && (
+              <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-2xl z-0">
+                <div className="diwali-water-flow-1 absolute -inset-full opacity-70" />
+                <div className="diwali-water-flow-2 absolute -inset-full opacity-60" />
+                <div className="diwali-water-shimmer-layer absolute inset-0" />
+              </div>
+            )}
+
+            <Link href="/" className="flex items-center gap-3 relative z-10">
               <img
                 src="/logo.png"
                 alt="Logo"
@@ -204,14 +300,16 @@ export default function Header() {
                 className="object-contain"
               />
               <div className="flex flex-col leading-none">
-                <span className="text-white font-bold text-[18px] font-league-spartan">Manvi</span>
+                <span className="text-white font-bold text-[18px] font-league-spartan">
+                  Manvi
+                </span>
                 <span className="text-white font-bold text-[18px] font-league-spartan">
                   International Courier
                 </span>
               </div>
             </Link>
 
-            <div className="hidden md:flex items-center gap-8">
+            <div className="hidden md:flex items-center gap-8 relative z-10">
               <nav className="flex items-center gap-8 text-[13px] font-semibold text-white">
                 <Link
                   href="/about"
@@ -271,10 +369,12 @@ export default function Header() {
               </nav>
               <Link
                 href="/track"
-                className={`px-5 py-2 rounded-full text-[13px] font-bold transition-colors whitespace-nowrap ${
-                  pathname?.startsWith("/track")
-                    ? "bg-orange-600 text-white"
-                    : "bg-[#f27a1a] text-white hover:bg-orange-600"
+                className={`px-5 py-2 rounded-full text-[13px] font-bold transition-all whitespace-nowrap ${
+                  isDiwaliMode
+                    ? "bg-gradient-to-r from-[#f27a1a] to-amber-500 text-white shadow-md shadow-orange-500/30 hover:scale-105 active:scale-95"
+                    : pathname?.startsWith("/track")
+                      ? "bg-orange-600 text-white"
+                      : "bg-[#f27a1a] text-white hover:bg-orange-600"
                 }`}
               >
                 {t.nav_track}
@@ -284,7 +384,7 @@ export default function Header() {
             <button
               aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
               aria-expanded={isMobileMenuOpen}
-              className="md:hidden w-10 h-10 bg-[#f27a1a] rounded-xl flex items-center justify-center cursor-pointer hover:bg-orange-600 transition-colors focus:outline-none"
+              className="md:hidden w-10 h-10 bg-[#f27a1a] rounded-xl flex items-center justify-center cursor-pointer hover:bg-orange-600 transition-colors focus:outline-none shadow-md shadow-orange-500/25 relative z-10"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             >
               {isMobileMenuOpen ? (
@@ -308,8 +408,18 @@ export default function Header() {
       </div>
 
       {isMobileMenuOpen && (
-        <div className="md:hidden fixed inset-0 top-33.75 z-40 bg-white px-6 py-6 shadow-xl border-t border-gray-100 flex flex-col gap-6 font-sans overflow-y-auto">
-          <nav className="flex flex-col gap-4 text-[16px] font-bold text-[#1c1f2e]">
+        <div
+          className={`md:hidden fixed inset-0 top-33.75 z-40 px-6 py-6 shadow-xl flex flex-col gap-6 font-sans overflow-y-auto ${
+            isDiwaliMode
+              ? "bg-[#1E1109]/95 backdrop-blur-xl text-white border-t border-amber-500/20 shadow-2xl"
+              : "bg-white text-[#1c1f2e] border-t border-gray-100"
+          }`}
+        >
+          <nav
+            className={`flex flex-col gap-4 text-[16px] font-bold ${
+              isDiwaliMode ? "text-white" : "text-[#1c1f2e]"
+            }`}
+          >
             <Link
               href="/"
               onClick={() => setIsMobileMenuOpen(false)}
@@ -429,6 +539,8 @@ export default function Header() {
       {pathname &&
         pathname !== "/" &&
         pathname !== "/campaign" &&
+        pathname !== "/diwali-campaign" &&
+        pathname !== "/winter-campaign" &&
         pathname !== "/shopkeeper" &&
         pathname !== "/shopkeepers" &&
         pathname !== "/winter" &&

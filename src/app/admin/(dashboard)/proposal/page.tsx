@@ -1,4 +1,5 @@
 "use client";
+import SearchableCountryDropdown from "@/components/SearchableCountryDropdown";
 
 import React, { useState, useMemo, useEffect } from "react";
 import * as XLSX from "xlsx";
@@ -161,43 +162,7 @@ const EUROPE_COUNTRIES = [
   "NORWAY",
 ];
 
-const INTERNATIONAL_COUNTRIES = [
-  "USA",
-  "BANGLADESH",
-  "BHUTAN",
-  "MALDIVES",
-  "NEPAL",
-  "SRI LANKA",
-  "UNITED ARAB EMIRATES",
-  "HONG KONG",
-  "MALAYSIA",
-  "SINGAPORE",
-  "THAILAND",
-  "CHINA, PEOPLE'S REPUBLIC",
-  "BAHRAIN",
-  "JORDAN",
-  "KUWAIT",
-  "OMAN",
-  "PAKISTAN",
-  "QATAR",
-  "SAUDI ARABIA",
-  "BRUNEI",
-  "CAMBODIA",
-  "INDONESIA",
-  "JAPAN",
-  "KOREA, REPUBLIC OF",
-  "MACAU",
-  "MYANMAR",
-  "PHILIPPINES, THE",
-  "TAIWAN",
-  "VIETNAM",
-  "NEW ZEALAND",
-  "SOUTH AFRICA",
-  "NIGERIA",
-  "KENYA",
-  "EGYPT",
-  "GHANA",
-];
+import { INTERNATIONAL_COUNTRIES } from "@/lib/countries";
 
 /* ── Box Interface for Multi-Box Consignment ─────────────────────────────── */
 interface PackageBox {
@@ -2191,25 +2156,12 @@ export default function ProposalPage() {
                     <span className="text-[#f27a1a]">*</span>
                   </label>
                   <div className="relative">
-                    <select
-                      value={zoningCountry}
-                      onChange={(e) => setZoningCountry(e.target.value)}
-                      required
-                      className="w-full bg-slate-50 text-slate-900 text-xs font-semibold rounded-xl px-3.5 py-2.5 border border-orange-300 focus:outline-none focus:border-[#f27a1a] focus:bg-white transition-colors appearance-none cursor-pointer"
-                    >
-                      <option value="" className="text-slate-400">
-                        Choose country...
-                      </option>
-                      {subCountryList.map((c) => (
-                        <option key={c} value={c} className="text-slate-900">
-                          {c}
-                        </option>
-                      ))}
-                    </select>
-                    <ChevronDown
-                      size={14}
-                      className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-500 pointer-events-none"
-                    />
+                    <SearchableCountryDropdown
+                  countries={subCountryOptions}
+                  value={zoningCountry}
+                  onChange={(val) => { setZoningCountry(val) }}
+                  placeholder={destination === "EUROPE" ? t.form_select_euro : t.form_select_country}
+                />
                   </div>
                 </div>
               )}

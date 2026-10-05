@@ -95,41 +95,400 @@ const EUROPE_COUNTRIES = [
 ];
 
 const INTERNATIONAL_COUNTRIES = [
-  "USA",
-  "BANGLADESH",
-  "BHUTAN",
-  "MALDIVES",
-  "NEPAL",
-  "SRI LANKA",
-  "UNITED ARAB EMIRATES",
-  "HONG KONG",
-  "MALAYSIA",
-  "SINGAPORE",
-  "THAILAND",
-  "CHINA, PEOPLE'S REPUBLIC",
+  "AFGHANISTAN",
+  "ALAND ISLAND (FINLAND)",
+  "ALAND ISLAND FINLAND",
+  "ALBANIA",
+  "ALGERIA",
+  "AMERICAN SAMOA",
+  "ANDORRA",
+  "ANGOLA",
+  "ANGUILLA",
+  "ANTIGUA",
+  "ANTIGUA & BARBUDA",
+  "ANTIGUA AND BARBUDA",
+  "ARGENTINA",
+  "ARMENIA",
+  "ARUBA",
+  "AUSTRALIA",
+  "AUSTRIA",
+  "AZERBAIJAN",
+  "AZORES (PORTUGAL)",
+  "AZORES PORTUGAL",
+  "BAHAMA",
+  "BAHAMAS",
   "BAHRAIN",
+  "BANGLADESH",
+  "BARBADOS",
+  "BELARUS",
+  "BELARUS BYELORUSSIA",
+  "BELARUS/ BYELORUSSIA",
+  "BELGIUM",
+  "BELIZE",
+  "BENIN",
+  "BERMUDA",
+  "BHUTAN",
+  "BOLIVIA",
+  "BONAIRE",
+  "BONAIRE SINT EUSTATIUS AND SABA",
+  "BONAIRE STEUSTATIUS SABA",
+  "BONAIRE, ST.EUSTATIUS, SABA",
+  "BOSNIA AND HERZEGOVINA",
+  "BOSNIA-HERZEGOVINA",
+  "BOTSWANA",
+  "BRAZIL",
+  "BRITISH VIRGIN ISLANDS",
+  "BRUNEI",
+  "BUESINGEN (GERMANY)",
+  "BUESINGEN GERMANY",
+  "BULGARIA",
+  "BURKINA FASO",
+  "BURUNDI",
+  "CAMBODIA",
+  "CAMEROON",
+  "CAMPIONE  LAKE LUGANO ITALY",
+  "CAMPIONE / LAKE LUGANO (ITALY)",
+  "CANADA",
+  "CANARY ISLANDS (SPAIN)",
+  "CANARY ISLANDS SPAIN",
+  "CANARY ISLANDS, THE",
+  "CAPE VERDE",
+  "CAYMAN ISLANDS",
+  "CENTRAL AFRICAN REPUBLIC",
+  "CEUTA (SPAIN)",
+  "CEUTA SPAIN",
+  "CHAD",
+  "CHILE",
+  "CHINA",
+  "CHINA SOUTH¹",
+  "CHINA, PEOPLE'S REPUBLIC",
+  "COLOMBIA",
+  "COMOROS",
+  "CONGO",
+  "CONGO (BRAZZAVILLE)",
+  "CONGO BRAZZAVILLE",
+  "CONGO DEMOCRATIC REPUBLIC OF",
+  "CONGO, DEMOCRATIC REPUBLIC OF",
+  "CONGO, THE DEMOCRATIC REPUBLIC",
+  "COOK ISLANDS",
+  "COSTA RICA",
+  "COTE D'IVOIRE",
+  "COTE D'IVOIRE (IVORY COAST)",
+  "COTE DIVOIRE IVORY COAST",
+  "CROATIA",
+  "CUBA",
+  "CURACAO",
+  "CYPRUS",
+  "CZECH REPUBLIC",
+  "CZECH REPUBLIC, THE",
+  "CÔTE D'IVOIRE (IVORY COAST)",
+  "DEMOCRATIC REPUBLIC OF THE CONGO",
+  "DENMARK",
+  "DJIBOUTI",
+  "DOMINICA",
+  "DOMINICAN REPUBLIC",
+  "EAST TIMOR",
+  "ECUADOR",
+  "EGYPT",
+  "EL SALVADOR",
+  "ENGLAND (UNITED KINGDOM)",
+  "ENGLAND UNITED KINGDOM",
+  "EQUATORIAL GUINEA",
+  "ERITREA",
+  "ESTONIA",
+  "ETHIOPIA",
+  "FAEROE ISLANDS",
+  "FALKLAND ISLANDS",
+  "FAROE ISLANDS",
+  "FIJI",
+  "FINLAND",
+  "FRANCE",
+  "FRENCH GUIANA",
+  "FRENCH GUYANA",
+  "FRENCH POLYNESIA",
+  "GABON",
+  "GAMBIA",
+  "GEORGIA",
+  "GERMANY",
+  "GHANA",
+  "GIBRALTAR",
+  "GREECE",
+  "GREENLAND",
+  "GRENADA",
+  "GUADELOUPE",
+  "GUAM",
+  "GUATEMALA",
+  "GUERNSEY",
+  "GUERNSEY (CHANNEL ISLANDS)",
+  "GUERNSEY CHANNEL ISLANDS",
+  "GUINEA",
+  "GUINEA REPUBLIC",
+  "GUINEA-BISSAU",
+  "GUINEA-EQUATORIAL",
+  "GUINEABISSAU",
+  "GUYANA",
+  "GUYANA (BRITISH)",
+  "HAITI",
+  "HELIGOLAND (GERMANY)",
+  "HELIGOLAND GERMANY",
+  "HONDURAS",
+  "HONG KONG",
+  "HONG KONG SAR, CHINA",
+  "HUNGARY",
+  "ICELAND",
+  "INDONESIA",
+  "IRAN",
+  "IRAN (ISLAMIC REPUBLIC OF)",
+  "IRAQ",
+  "IRELAND",
+  "IRELAND REPUBLIC OF",
+  "IRELAND, REPUBLIC OF",
+  "ISRAEL",
+  "ITALY",
+  "JAMAICA",
+  "JAPAN",
+  "JERSEY",
+  "JERSEY (CHANNEL ISLANDS)",
+  "JERSEY CHANNEL ISLANDS",
   "JORDAN",
+  "KAZAKHSTAN",
+  "KENYA",
+  "KIRGHIZIA (KYRGYZSTAN)",
+  "KIRGHIZIA KYRGYZSTAN",
+  "KIRIBATI",
+  "KOREA SOUTH",
+  "KOREA, REPUBLIC OF",
+  "KOREA, SOUTH",
+  "KOREA, THE D.P.R OF",
+  "KOSOVO",
+  "KOSRAE (MICRONESIA FEDERATED STATES OF )",
+  "KOSRAE MICRONESIA FEDERATED STATES OF",
   "KUWAIT",
+  "KYRGYZSTAN",
+  "LAO PEOPLE'S DEMOCRATIC REPUBLIC",
+  "LAOS",
+  "LATVIA",
+  "LEBANON",
+  "LESOTHO",
+  "LIBERIA",
+  "LIBYA",
+  "LIBYAN ARAB JAMAHIRIYA",
+  "LIECHTENSTEIN",
+  "LITHUANIA",
+  "LIVIGNO (ITALY)",
+  "LIVIGNO ITALY",
+  "LUXEMBOURG",
+  "LUXEMBOURGE",
+  "MACAU",
+  "MACAU SAR, CHINA",
+  "MACEDONIA",
+  "MACEDONIA (FYROM)",
+  "MACEDONIA FYROM",
+  "MACEDONIA, REPUBLIC OF",
+  "MADAGASCAR",
+  "MADEIRA (PORTUGAL)",
+  "MADEIRA PORTUGAL",
+  "MALAWI",
+  "MALAYSIA",
+  "MALDIVES",
+  "MALI",
+  "MALTA",
+  "MARSHALL ISLANDS",
+  "MARTINIQUE",
+  "MAURITANIA",
+  "MAURITIUS",
+  "MAYOTTE",
+  "MELILLA (SPAIN)",
+  "MELILLA SPAIN",
+  "MEXICO",
+  "MICRONESIA",
+  "MICRONESIA FEDERATED STATES OF",
+  "MICRONESIA, FEDERATED STATES OF",
+  "MOLDOVA",
+  "MOLDOVA, REPUBLIC OF",
+  "MONACO",
+  "MONACO (FRANCE)",
+  "MONACO FRANCE",
+  "MONGOLIA",
+  "MONSERRAT",
+  "MONTENEGRO",
+  "MONTENEGRO, REPUBLIC OF",
+  "MONTSERRAT",
+  "MOROCCO",
+  "MOUNT ATHOS (GREECE)",
+  "MOUNT ATHOS GREECE",
+  "MOZAMBIQUE",
+  "MYANMAR",
+  "NAMIBIA",
+  "NAURU, REPUBLIC OF",
+  "NEPAL",
+  "NETHERLANDS",
+  "NETHERLANDS (HOLLAND)",
+  "NETHERLANDS HOLLAND",
+  "NETHERLANDS, THE",
+  "NEVIS",
+  "NEW CALEDONIA",
+  "NEW ZEALAND",
+  "NICARAGUA",
+  "NIGER",
+  "NIGERIA",
+  "NIUE",
+  "NORFOLK ISLAND (AUSTRALIA)",
+  "NORFOLK ISLAND AUSTRALIA",
+  "NORTHERN IRELAND (UNITED KINGDOM)",
+  "NORTHERN IRELAND UNITED KINGDOM",
+  "NORTHERN MARIANA ISLANDS",
+  "NORWAY",
   "OMAN",
   "PAKISTAN",
-  "QATAR",
-  "SAUDI ARABIA",
-  "BRUNEI",
-  "CAMBODIA",
-  "INDONESIA",
-  "JAPAN",
-  "KOREA, REPUBLIC OF",
-  "MACAU",
-  "MYANMAR",
+  "PALAU",
+  "PALESTINIAN TERRITORY",
+  "PANAMA",
+  "PAPUA NEW GUINEA",
+  "PARAGUAY",
+  "PERU",
+  "PHILIPPINES",
   "PHILIPPINES, THE",
-  "TAIWAN",
-  "VIETNAM",
-  "NEW ZEALAND",
+  "PHILLIPINES",
+  "POLAND",
+  "PONAPE (MICRONESIA FEDERATED STATES OF)",
+  "PONAPE MICRONESIA FEDERATED STATES OF",
+  "PORTUGAL",
+  "PUERTO RICO",
+  "PUERTO RICO - AGUADILLA         -        BQN",
+  "PUERTO RICO - ARECIBO         -        ARE",
+  "PUERTO RICO - CAROLINA (FAJ)         -        FAJ",
+  "PUERTO RICO - CAROLINA (NRR)         -        NRR",
+  "QATAR",
+  "REPUBLIC OF MOLDOVA",
+  "REUNION ISLAND",
+  "REUNION, ISLAND OF",
+  "ROMANIA",
+  "ROTA (NORTHERN MARIANA ISLANDS)",
+  "ROTA NORTHERN MARIANA ISLANDS",
+  "RUSSIA",
+  "RUSSIAN FEDERATION",
+  "RUSSIAN FEDERATION, THE",
+  "RWANDA",
+  "RÉUNION",
+  "SAINT HELENA",
+  "SAINT LUCIA",
+  "SAIPAN",
+  "SAIPAN (NORTHERN MARIANA ISLANDS)",
+  "SAIPAN NORTHERN MARIANA ISLANDS",
+  "SAMOA",
+  "SAN MARINO",
+  "SAO TOME AND PRINCIPE",
+  "SAUDI ARABIA",
+  "SCOTLAND (UNITED KINGDOM)",
+  "SCOTLAND UNITED KINGDOM",
+  "SENEGAL",
+  "SERBIA",
+  "SERBIA, REPUBLIC OF",
+  "SEYCHELLES",
+  "SIERRA LEONE",
+  "SINGAPORE",
+  "SLOVAKIA",
+  "SLOVENIA",
+  "SOLOMON ISLANDS",
+  "SOMALIA",
+  "SOMALILAND, REP OF (NORTH SOMALIA)",
   "SOUTH AFRICA",
-  "NIGERIA",
-  "KENYA",
-  "EGYPT",
-  "GHANA",
+  "SOUTH KOREA",
+  "SOUTH SUDAN",
+  "SPAIN",
+  "SRI LANKA",
+  "ST BARTHELEMY",
+  "ST CHRISTOPHER STKITTS",
+  "ST CROIX US VIRGIN ISLANDS",
+  "ST JOHN US VIRGIN ISLANDS",
+  "ST KITTS AND NEVIS",
+  "ST LUCIA",
+  "ST MAARTEN ST MARTIN",
+  "ST THOMAS US VIRGIN ISLANDS",
+  "ST VINCENT AND THE GRENADINES",
+  "ST. BARTHELEMY",
+  "ST. CHRISTOPHER (ST.KITTS)",
+  "ST. EUSTATIUS",
+  "ST. JOHN (US VIRGIN ISLANDS)",
+  "ST. KITTS",
+  "ST. KITTS AND NEVIS",
+  "ST. LUCIA",
+  "ST. MAARTEN",
+  "ST. MARTIN",
+  "ST. THOMAS (US VIRGIN ISLANDS)",
+  "ST. VINCENT",
+  "ST. VINCENT & THE GRENADINES",
+  "ST.CROIX (US VIRGIN ISLANDS)",
+  "ST.MAARTEN, ST. MARTIN",
+  "SUDAN",
+  "SURINAME",
+  "SWAZILAND",
+  "SWEDEN",
+  "SWITZERLAND",
+  "SYRIA",
+  "SYRIAN ARAB REPUBLIC",
+  "TAHITI",
+  "TAHITI (FRENCH POLYNESIA)",
+  "TAHITI FRENCH POLYNESIA",
+  "TAIWAN",
+  "TAJIKISTAN",
+  "TANZANIA",
+  "TANZANIA UNITED REPUBLIC OF",
+  "TANZANIA, UNITED REPUBLIC OF",
+  "THAILAND",
+  "TIMOR-LESTE",
+  "TIMORLESTE",
+  "TINIAN (NORTHERN MARIANA ISLANDS)",
+  "TINIAN NORTHERN MARIANA ISLANDS",
+  "TOGO",
+  "TONGA",
+  "TORTOLA (BRITISH VIRGIN ISLANDS)",
+  "TORTOLA BRITISH VIRGIN ISLANDS",
+  "TRINIDAD & TOBAGO",
+  "TRINIDAD AND TOBAGO",
+  "TRUK (MICRONESIA, FEDERATED STATES OF)",
+  "TRUK MICRONESIA FEDERATED STATES OF",
+  "TUNISIA",
+  "TURKEY",
+  "TURKMENISTAN",
+  "TURKS & CAICOS ISLANDS",
+  "TURKS AND CAICOS ISLANDS",
+  "TUVALU",
+  "U.S. VIRGIN ISLANDS",
+  "UGANDA",
+  "UK",
+  "UKRAINE",
+  "UNION ISLANDS (ST. VINCENT & THE GRENADINES)",
+  "UNION ISLANDS ST VINCENT AND THE GRENADINES",
+  "UNITED ARAB EMIRATES",
+  "UNITED KINGDOM (G B)",
+  "UNITED REPUBLIC OF TANZANIA",
+  "URUGUAY",
+  "US VIRGIN ISLANDS",
+  "USA",
+  "UZBEKISTAN",
+  "VANUATU",
+  "VATICAN CITY (ITALY)",
+  "VATICAN CITY ITALY",
+  "VATICAN CITY STATE",
+  "VENEZUELA",
+  "VIETNAM",
+  "VIRGIN GORDA (BRITISH VIRGIN ISLANDS)",
+  "VIRGIN GORDA BRITISH VIRGIN ISLANDS",
+  "VIRGIN ISLANDS (BRITISH)",
+  "VIRGIN ISLANDS (US)",
+  "WALES (UNITED KINGDOM)",
+  "WALES UNITED KINGDOM",
+  "WALLIS & FUTUNA ISLANDS",
+  "WALLIS AND FUTUNA ISLANDS",
+  "YAP",
+  "YAP (MICRONESIA, FEDERATION STATES OF)",
+  "YEMEN",
+  "YEMEN REPUBLIC OF",
+  "YEMEN, REPUBLIC OF",
+  "ZAMBIA",
+  "ZIMBABWE"
 ];
 
 const NETWORK_LABELS: Record<string, string> = {
@@ -196,6 +555,137 @@ interface AustraliaCity {
 
 function fmtPrice(n: number): string {
   return Math.round(n).toLocaleString("en-IN");
+}
+
+
+// ─── Searchable Country Dropdown ─────────────────────────────────────
+function SearchableCountryDropdown({
+  countries,
+  value,
+  onChange,
+  placeholder = "Select Country",
+}: {
+  countries: string[];
+  value: string;
+  onChange: (country: string) => void;
+  placeholder?: string;
+}) {
+  const [open, setOpen] = useState(false);
+  const [query, setQuery] = useState("");
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (wrapperRef.current && !wrapperRef.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
+
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    document.addEventListener("keydown", handler);
+    return () => document.removeEventListener("keydown", handler);
+  }, []);
+
+  useEffect(() => {
+    if (!open) setQuery("");
+  }, [open]);
+
+  const filtered = query.trim()
+    ? countries.filter((c) =>
+        c.toLowerCase().startsWith(query.trim().toLowerCase()),
+      )
+    : countries.slice(0, 100);
+
+  const handleSelect = (c: string) => {
+    onChange(c);
+    setOpen(false);
+    setQuery("");
+  };
+
+  return (
+    <div className="relative" ref={wrapperRef}>
+      <div
+        className="w-full bg-white text-[#333] text-[14px] font-medium rounded-xl border border-gray-200 shadow-sm flex items-center gap-3 px-5 py-4 cursor-text"
+        onClick={() => {
+          setOpen(true);
+          setTimeout(() => inputRef.current?.focus(), 0);
+        }}
+      >
+        <Search size={15} className="text-gray-400 shrink-0" />
+        <input
+          ref={inputRef}
+          type="text"
+          value={open ? query : value}
+          placeholder={value || placeholder}
+          onChange={(e) => {
+            setQuery(e.target.value);
+            if (!open) setOpen(true);
+          }}
+          onFocus={() => setOpen(true)}
+          className="flex-1 bg-transparent outline-none placeholder:text-gray-400"
+        />
+        {value ? (
+          <button
+            type="button"
+            onMouseDown={(e) => e.preventDefault()}
+            onClick={(e) => {
+              e.stopPropagation();
+              onChange("");
+              setQuery("");
+            }}
+            className="text-gray-300 hover:text-gray-500 shrink-0"
+          >
+            <X size={14} />
+          </button>
+        ) : (
+          <ChevronDown
+            size={16}
+            className={`text-gray-400 shrink-0 transition-transform ${open ? "rotate-180" : ""}`}
+          />
+        )}
+      </div>
+
+      {open && (
+        <div className="absolute z-30 mt-2 w-full bg-white border border-gray-200 rounded-xl shadow-lg max-h-72 overflow-y-auto">
+          {filtered.length === 0 && (
+            <div className="px-5 py-4 text-sm text-gray-400 text-center">
+              No countries found
+            </div>
+          )}
+          {filtered.map((c) => {
+            const isSelected = c === value;
+            return (
+              <button
+                key={c}
+                type="button"
+                onMouseDown={(e) => e.preventDefault()}
+                onClick={() => handleSelect(c)}
+                className={`w-full text-left px-5 py-3 text-sm flex items-center justify-between gap-3 transition-colors ${
+                  isSelected
+                    ? "bg-orange-50 text-[#f27a1a] font-semibold"
+                    : "text-gray-700 hover:bg-gray-50"
+                }`}
+              >
+                <span className="truncate">{c}</span>
+              </button>
+            );
+          })}
+          {!query.trim() && countries.length > 100 && (
+            <div className="px-5 py-3 text-xs text-gray-400 text-center italic">
+              Start typing to see more...
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
 }
 
 // ─── Searchable City Dropdown (Australia) ─────────────────────────────────────
@@ -1047,37 +1537,20 @@ export default function GetQuote() {
 
               {/* Sub-country */}
               {requiresSubCountry && (
-                <div className="relative">
-                  <select
-                    aria-label={
-                      destination === "EUROPE"
-                        ? t.form_select_euro
-                        : t.form_select_country
-                    }
-                    value={zoningCountry}
-                    onChange={(e) => {
-                      setZoningCountry(e.target.value);
-                      setResult(null);
-                      setError("");
-                    }}
-                    className="w-full bg-white text-[#333] text-[14px] font-medium rounded-xl px-5 py-4 focus:outline-none appearance-none border border-gray-200 shadow-sm"
-                  >
-                    <option value="">
-                      {destination === "EUROPE"
-                        ? t.form_select_euro
-                        : t.form_select_country}
-                    </option>
-                    {subCountryOptions.map((c) => (
-                      <option key={c} value={c}>
-                        {c}
-                      </option>
-                    ))}
-                  </select>
-                  <ChevronDown
-                    size={16}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
-                  />
-                </div>
+                <SearchableCountryDropdown
+                  countries={subCountryOptions}
+                  value={zoningCountry}
+                  onChange={(val) => {
+                    setZoningCountry(val);
+                    setResult(null);
+                    setError("");
+                  }}
+                  placeholder={
+                    destination === "EUROPE"
+                      ? t.form_select_euro
+                      : t.form_select_country
+                  }
+                />
               )}
 
               {/* Zipcode (non-Australia zip-based destinations) */}
