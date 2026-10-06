@@ -213,7 +213,9 @@ export default function DiwaliCampaignPage({
   const [inqLoading, setInqLoading] = useState(false);
   const [inqSuccess, setInqSuccess] = useState(false);
   const [showInqSuccessModal, setShowInqSuccessModal] = useState(false);
-  const [successAnimationPhase, setSuccessAnimationPhase] = useState<"idle" | "celebrating" | "modal">("idle");
+  const [successAnimationPhase, setSuccessAnimationPhase] = useState<
+    "idle" | "celebrating" | "modal"
+  >("idle");
   const [submittedInquiry, setSubmittedInquiry] = useState<{
     name: string;
     phone: string;
@@ -229,6 +231,26 @@ export default function DiwaliCampaignPage({
       ? controlledDiwaliMode
       : internalDiwaliMode;
   const setIsDiwaliMode = setControlledDiwaliMode || setInternalDiwaliMode;
+
+  const [isIlluminating, setIsIlluminating] = useState(false);
+  const [renderFireworks, setRenderFireworks] = useState(isDiwaliMode);
+
+  useEffect(() => {
+    if (isDiwaliMode) {
+      setRenderFireworks(true);
+    } else {
+      const timer = setTimeout(() => setRenderFireworks(false), 700);
+      return () => clearTimeout(timer);
+    }
+  }, [isDiwaliMode]);
+
+  const handleToggleDiwaliMode = () => {
+    setIsIlluminating(true);
+    setIsDiwaliMode(!isDiwaliMode);
+    setTimeout(() => {
+      setIsIlluminating(false);
+    }, 650);
+  };
 
   const closeModal = () => {
     setSuccessAnimationPhase("idle");
@@ -426,7 +448,7 @@ export default function DiwaliCampaignPage({
 
   return (
     <main
-      className={`w-full font-sans flex flex-col antialiased pb-24 sm:pb-28 transition-colors duration-300 relative ${
+      className={`w-full font-sans flex flex-col antialiased pb-24 sm:pb-28 transition-colors duration-700 ease-in-out relative ${
         isDiwaliMode ? "text-[#1F272F]" : "bg-[#faf5ea] text-[#1c1f2e]"
       }`}
     >
@@ -485,29 +507,44 @@ export default function DiwaliCampaignPage({
         }
       `}</style>
 
-      {/* ── Festive Top Props (Visible exclusively in Diwali Mode) ── */}
-      {isDiwaliMode && (
-        <>
-          {/* Subtle Royal Indian Jali Lattice Texture across the background */}
-          <FestiveJaliBackground />
+      {/* ── Festive Top Props (Visible with silky smooth opacity transition) ── */}
+      <div
+        className={`pointer-events-none transition-opacity duration-700 ease-in-out ${
+          isDiwaliMode ? "opacity-100" : "opacity-0"
+        }`}
+        aria-hidden={!isDiwaliMode}
+      >
+        {/* Subtle Royal Indian Jali Lattice Texture across the background */}
+        <FestiveJaliBackground isVisible={isDiwaliMode} />
 
-          {/* Traditional Hanging Akash Kandils on Outer Margins (Desktop only to prevent clutter) */}
-          <div className="hidden 2xl:block fixed top-24 left-3 z-30 opacity-90 pointer-events-none">
-            <AkashKandil size={56} />
-          </div>
-          <div className="hidden 2xl:block fixed top-24 right-3 z-30 opacity-90 pointer-events-none">
-            <AkashKandil size={56} />
-          </div>
+        {/* Traditional Hanging Akash Kandils on Outer Margins (Desktop only to prevent clutter) */}
+        <div
+          className="hidden 2xl:block fixed top-24 left-3 z-30 pointer-events-none transition-all duration-700 ease-out"
+          style={{
+            transform: isDiwaliMode ? "translateY(0)" : "translateY(-20px)",
+            opacity: isDiwaliMode ? 0.9 : 0,
+          }}
+        >
+          <AkashKandil size={56} />
+        </div>
+        <div
+          className="hidden 2xl:block fixed top-24 right-3 z-30 pointer-events-none transition-all duration-700 ease-out"
+          style={{
+            transform: isDiwaliMode ? "translateY(0)" : "translateY(-20px)",
+            opacity: isDiwaliMode ? 0.9 : 0,
+          }}
+        >
+          <AkashKandil size={56} />
+        </div>
 
-          {/* Gentle Ambient Embers Floating Upwards */}
-          <DiwaliAmbientEmbers />
-        </>
-      )}
+        {/* Gentle Ambient Embers Floating Upwards */}
+        <DiwaliAmbientEmbers />
+      </div>
 
       {/* ── 1. HERO BANNER ── */}
       <section className="w-full max-w-[1352px] mx-auto px-3 sm:px-6 pt-2 sm:pt-4 pb-6 sm:pb-10">
         <div
-          className={`relative w-full overflow-hidden rounded-[20px] sm:rounded-[32px] shadow-2xl transition-all ${
+          className={`relative w-full overflow-hidden rounded-[20px] sm:rounded-[32px] shadow-2xl transition-all duration-700 ease-in-out ${
             isDiwaliMode
               ? "bg-white border-2 border-[#ED7E23]/40 shadow-[0_20px_50px_-20px_rgba(31,39,47,0.25)]"
               : "bg-[#1a0c02]"
@@ -575,7 +612,9 @@ export default function DiwaliCampaignPage({
               {/* Emotional Sub-tagline */}
               <p className="text-amber-100/95 text-xs lg:text-[13px] font-medium tracking-wide leading-relaxed mb-3.5 max-w-lg drop-shadow-[0_1px_4px_rgba(0,0,0,0.8)] flex items-center gap-2">
                 <span className="text-amber-400 font-bold">✨</span>
-                <span className="italic">Because miles don&apos;t matter at Manvi.</span>
+                <span className="italic">
+                  Because miles don&apos;t matter at Manvi.
+                </span>
               </p>
 
               {/* Sleek Floating Glass Rate Highlight Bar */}
@@ -693,7 +732,8 @@ export default function DiwaliCampaignPage({
                 }`}
               >
                 <span className="flex items-center gap-1.5">
-                  <Gift className="w-3.5 h-3.5 text-[#ED7E23]" /> Festive Sweets & Gift Rates
+                  <Gift className="w-3.5 h-3.5 text-[#ED7E23]" /> Festive Sweets
+                  & Gift Rates
                 </span>
                 <span
                   className={`text-[10px] font-normal ${
@@ -773,7 +813,11 @@ export default function DiwaliCampaignPage({
         {/* Action Tabs */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4 mt-4 sm:mt-8">
           {[
-            { label: t.hero_serviceable_zipcodes, href: "/zipcode", icon: MapPin },
+            {
+              label: t.hero_serviceable_zipcodes,
+              href: "/zipcode",
+              icon: MapPin,
+            },
             { label: t.nav_track_shipment, href: "/track", icon: Receipt },
             { label: t.hero_our_services, href: "/services", icon: Gift },
             { label: t.hero_contact_us, href: "/contact", icon: Phone },
@@ -783,21 +827,24 @@ export default function DiwaliCampaignPage({
               <Link
                 key={tab.href}
                 href={tab.href}
-                className={`group relative flex items-center justify-center gap-2 sm:gap-2.5 rounded-xl md:rounded-2xl text-[12px] sm:text-[14px] font-bold py-3 sm:py-4 px-3 sm:px-4 transition-all duration-300 no-underline text-center overflow-hidden active:scale-95 min-h-[48px] sm:min-h-[56px] ${
+                className={`group relative flex items-center justify-center gap-2 sm:gap-2.5 rounded-xl md:rounded-2xl text-[12px] sm:text-[14px] font-bold py-3 sm:py-4 px-3 sm:px-4 transition-all duration-500 ease-in-out no-underline text-center overflow-hidden active:scale-95 min-h-[48px] sm:min-h-[56px] ${
                   isDiwaliMode
                     ? "bg-gradient-to-b from-[#f79a45] to-[#ED7E23] text-[#1F272F] border border-[#ED7E23]/40 shadow-[0_10px_30px_-8px_rgba(237,126,35,0.6),inset_0_1px_0_#ffd9b5] hover:scale-[1.03]"
                     : "bg-[#e77419] text-white shadow-sm hover:scale-[1.02]"
                 }`}
               >
                 {/* Diwali Festive Micro-Accents */}
-                {isDiwaliMode && (
-                  <>
-                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
-                    <span className="absolute top-1.5 right-2 text-[10px] text-[#1F272F]/50 group-hover:text-[#1F272F] transition-colors pointer-events-none">
-                      ✨
-                    </span>
-                  </>
-                )}
+                <div
+                  className={`pointer-events-none transition-opacity duration-500 ${
+                    isDiwaliMode ? "opacity-100" : "opacity-0"
+                  }`}
+                  aria-hidden={!isDiwaliMode}
+                >
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
+                  <span className="absolute top-1.5 right-2 text-[10px] text-[#1F272F]/50 group-hover:text-[#1F272F] transition-colors pointer-events-none">
+                    ✨
+                  </span>
+                </div>
 
                 <div
                   className={`w-7 h-7 sm:w-8 sm:h-8 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-110 ${
@@ -816,11 +863,15 @@ export default function DiwaliCampaignPage({
                   {tab.label}
                 </span>
 
-                {isDiwaliMode && (
-                  <span className="text-[#1F272F] group-hover:translate-x-0.5 transition-transform text-xs font-black hidden sm:inline-block">
-                    →
-                  </span>
-                )}
+                <span
+                  className={`text-[#1F272F] group-hover:translate-x-0.5 transition-all duration-300 text-xs font-black hidden sm:inline-block ${
+                    isDiwaliMode
+                      ? "opacity-100 max-w-[20px]"
+                      : "opacity-0 max-w-0 overflow-hidden"
+                  }`}
+                >
+                  →
+                </span>
               </Link>
             );
           })}
@@ -833,33 +884,70 @@ export default function DiwaliCampaignPage({
         className="w-full max-w-[1400px] mx-auto px-3 sm:px-6 py-5 sm:py-10"
       >
         <div
-          className={`rounded-[20px] sm:rounded-[28px] p-4 sm:p-10 lg:p-12 shadow-xl relative overflow-hidden transition-all ${
+          className={`rounded-[20px] sm:rounded-[28px] p-4 sm:p-10 lg:p-12 shadow-xl relative overflow-hidden transition-all duration-700 ease-in-out ${
             isDiwaliMode
               ? "bg-gradient-to-br from-[#f79a45] via-[#ED7E23] to-[#c4620c] text-white shadow-[0_20px_50px_-20px_rgba(237,126,35,0.6)] border border-[#ffd9b5]/40"
               : "bg-[#f27a1a] text-white"
           }`}
         >
-          {/* Subtle Royal Rangoli Watermarks */}
-          {isDiwaliMode && (
-            <>
-              <div className="absolute -top-12 -right-12 pointer-events-none">
-                <RangoliWatermark size={250} opacity={0.14} />
-              </div>
-              <div className="absolute -bottom-16 -left-16 pointer-events-none">
-                <RangoliWatermark size={220} opacity={0.1} />
-              </div>
-            </>
-          )}
+          {/* Subtle Royal Rangoli Watermarks & Ornate Corner Flourishes */}
+          <div
+            className={`pointer-events-none transition-opacity duration-700 ease-in-out ${
+              isDiwaliMode ? "opacity-100" : "opacity-0"
+            }`}
+            aria-hidden={!isDiwaliMode}
+          >
+            <CornerFlourish
+              position="top-left"
+              size={64}
+              className="top-2 left-2 opacity-95"
+            />
+            <CornerFlourish
+              position="top-right"
+              size={64}
+              className="top-2 right-2 opacity-95"
+            />
+            <CornerFlourish
+              position="bottom-left"
+              size={64}
+              className="bottom-2 left-2 opacity-95"
+            />
+            <CornerFlourish
+              position="bottom-right"
+              size={64}
+              className="bottom-2 right-2 opacity-95"
+            />
+            <div className="absolute -top-12 -right-12 pointer-events-none">
+              <RangoliWatermark size={260} opacity={0.22} />
+            </div>
+            <div className="absolute -bottom-16 -left-16 pointer-events-none">
+              <RangoliWatermark size={240} opacity={0.18} />
+            </div>
+          </div>
 
           <div className="flex flex-col gap-1.5 sm:gap-2 mb-5 sm:mb-6 text-center md:text-left relative z-10">
             <div className="flex items-center justify-center md:justify-start gap-2.5">
-              {isDiwaliMode && <DiyaLamp size={26} className="shrink-0" />}
+              <div
+                className={`inline-flex items-center transition-all duration-500 overflow-hidden ${
+                  isDiwaliMode
+                    ? "opacity-100 max-w-[32px] scale-100"
+                    : "opacity-0 max-w-0 scale-75"
+                }`}
+              >
+                <DiyaLamp size={26} className="shrink-0" />
+              </div>
               <h2 className="text-xl sm:text-[30px] md:text-[34px] font-extrabold text-white leading-tight tracking-tight">
                 Calculate Instant Diwali Parcel Rates
               </h2>
-              {isDiwaliMode && (
-                <DiyaLamp size={26} className="shrink-0 hidden sm:inline-flex" />
-              )}
+              <div
+                className={`hidden sm:inline-flex items-center transition-all duration-500 overflow-hidden ${
+                  isDiwaliMode
+                    ? "opacity-100 max-w-[32px] scale-100"
+                    : "opacity-0 max-w-0 scale-75"
+                }`}
+              >
+                <DiyaLamp size={26} className="shrink-0" />
+              </div>
             </div>
             <p className="text-white/80 text-xs sm:text-[14px] leading-relaxed max-w-2xl mx-auto md:mx-0">
               Calculate lowest courier rates for Diwali Sweets, Faral, Hampers &
@@ -1067,26 +1155,29 @@ export default function DiwaliCampaignPage({
       </section>
 
       {/* Rangoli Divider */}
-      {isDiwaliMode && <RangoliDivider label="Festive Express Air Dispatch" />}
+      <RangoliDivider label="Festive Express Air Dispatch" isVisible={isDiwaliMode} />
 
       {/* ── 3. SPECIAL DIWALI FESTIVE OFFER INFO BOX ── */}
       <section className="w-full max-w-[1400px] mx-auto px-3 sm:px-6 py-4 sm:py-6">
         <div
-          className={`rounded-[20px] sm:rounded-[28px] p-4 sm:p-8 lg:p-12 shadow-sm relative overflow-hidden transition-colors ${
+          className={`rounded-[20px] sm:rounded-[28px] p-4 sm:p-8 lg:p-12 shadow-sm relative overflow-hidden transition-all duration-700 ease-in-out ${
             isDiwaliMode
               ? "bg-gradient-to-b from-white/95 to-[#FCF6F0]/96 border border-[#ED7E23]/35 shadow-[0_14px_34px_-22px_rgba(31,39,47,0.28)] text-[#1F272F]"
               : "bg-gradient-to-br from-[#fff7ed] via-[#fffbf5] to-[#fff3e0] border-2 border-[#e77419]/30 text-[#0a111e]"
           }`}
         >
-          {isDiwaliMode && (
-            <div className="absolute -right-10 -bottom-10 pointer-events-none">
-              <RangoliWatermark size={200} opacity={0.12} />
-            </div>
-          )}
+          <div
+            className={`absolute -right-10 -bottom-10 pointer-events-none transition-opacity duration-700 ease-in-out ${
+              isDiwaliMode ? "opacity-100" : "opacity-0"
+            }`}
+            aria-hidden={!isDiwaliMode}
+          >
+            <RangoliWatermark size={200} opacity={0.14} />
+          </div>
           <div className="relative z-10 flex flex-col gap-3 sm:gap-4">
             <div>
               <span
-                className={`inline-flex items-center gap-2 border px-3.5 py-1 sm:px-4 sm:py-1.5 rounded-full text-[11px] sm:text-sm font-black uppercase tracking-wide ${
+                className={`inline-flex items-center gap-2 border px-3.5 py-1 sm:px-4 sm:py-1.5 rounded-full text-[11px] sm:text-sm font-black uppercase tracking-wide transition-colors duration-500 ${
                   isDiwaliMode
                     ? "border-[#ED7E23]/40 bg-[#ED7E23]/10 text-[#c4620c]"
                     : "border-[#e77419] bg-[#e77419]/10 text-[#e77419]"
@@ -1097,7 +1188,7 @@ export default function DiwaliCampaignPage({
               </span>
             </div>
             <p
-              className={`text-sm sm:text-[17px] md:text-[18px] font-semibold leading-relaxed ${
+              className={`text-sm sm:text-[17px] md:text-[18px] font-semibold leading-relaxed transition-colors duration-500 ${
                 isDiwaliMode ? "text-[#1F272F]" : "text-[#0a111e]"
               }`}
             >
@@ -1106,16 +1197,14 @@ export default function DiwaliCampaignPage({
               gift hampers with guaranteed fast delivery.
             </p>
             <p
-              className={`text-xs sm:text-[16px] leading-relaxed ${
+              className={`text-xs sm:text-[16px] leading-relaxed transition-colors duration-500 ${
                 isDiwaliMode ? "text-[#58626c]" : "text-[#444]"
               }`}
             >
               <strong
-                className={
-                  isDiwaliMode
-                    ? "text-[#c4620c] font-bold"
-                    : "text-[#e77419] font-bold"
-                }
+                className={`font-bold transition-colors duration-500 ${
+                  isDiwaliMode ? "text-[#c4620c]" : "text-[#e77419]"
+                }`}
               >
                 Food-Grade Vacuum Sealing:
               </strong>{" "}
@@ -1127,13 +1216,13 @@ export default function DiwaliCampaignPage({
       </section>
 
       {/* Rangoli Divider */}
-      {isDiwaliMode && <RangoliDivider label="Homemade Faral & Traditional Gifts" />}
+      <RangoliDivider label="Homemade Faral & Traditional Gifts" isVisible={isDiwaliMode} />
 
       {/* ── 4. WHAT YOU CAN SHIP FOR DIWALI ── */}
       <section className="w-full max-w-[1400px] mx-auto px-3 sm:px-6 py-6 sm:py-12">
         <div className="text-center max-w-2xl mx-auto mb-6 sm:mb-12">
           <div
-            className={`inline-flex items-center justify-center gap-2 text-[11px] sm:text-xs font-black uppercase tracking-wider mb-1 ${
+            className={`inline-flex items-center justify-center gap-2 text-[11px] sm:text-xs font-black uppercase tracking-wider mb-1 transition-colors duration-500 ${
               isDiwaliMode ? "text-[#c4620c]" : "text-[#f27a1a]"
             }`}
           >
@@ -1142,14 +1231,14 @@ export default function DiwaliCampaignPage({
             {isDiwaliMode && <DiyaLamp size={18} glow={false} />}
           </div>
           <h2
-            className={`text-2xl sm:text-4xl font-extrabold mt-1 ${
+            className={`text-2xl sm:text-4xl font-extrabold mt-1 transition-colors duration-500 ${
               isDiwaliMode ? "gold-text" : "text-[#1c1f2e]"
             }`}
           >
             What Can You Ship For Diwali?
           </h2>
           <p
-            className={`text-xs sm:text-sm mt-1.5 sm:mt-2 ${
+            className={`text-xs sm:text-sm mt-1.5 sm:mt-2 transition-colors duration-500 ${
               isDiwaliMode ? "text-[#58626c]" : "text-gray-600"
             }`}
           >
@@ -1162,17 +1251,27 @@ export default function DiwaliCampaignPage({
           {DIWALI_ITEMS.map((item, idx) => (
             <div
               key={idx}
-              className={`rounded-2xl sm:rounded-3xl p-4 sm:p-8 flex flex-col gap-3 sm:gap-4 transition-all group shadow-sm relative overflow-hidden ${
+              className={`rounded-2xl sm:rounded-3xl p-4 sm:p-8 flex flex-col gap-3 sm:gap-4 transition-all duration-500 ease-in-out group shadow-sm relative overflow-hidden ${
                 isDiwaliMode
                   ? "bg-gradient-to-b from-white/95 to-[#FCF6F0]/96 border border-[#ED7E23]/30 shadow-[0_10px_25px_-18px_rgba(31,39,47,0.2)] hover:border-[#ED7E23]/60 hover:shadow-[0_20px_45px_-20px_rgba(237,126,35,0.4)] text-[#1F272F]"
                   : "bg-white border border-gray-200/80 hover:border-orange-400 hover:shadow-md"
               }`}
             >
-              {isDiwaliMode && (
+              <div
+                className={`pointer-events-none transition-opacity duration-500 ease-in-out ${
+                  isDiwaliMode ? "opacity-100" : "opacity-0"
+                }`}
+                aria-hidden={!isDiwaliMode}
+              >
+                <CornerFlourish
+                  position="top-right"
+                  size={34}
+                  className="top-1 right-1 opacity-80"
+                />
                 <span className="absolute top-3.5 right-3.5 text-[#ED7E23]/40 group-hover:text-[#ED7E23] transition-colors text-xs pointer-events-none">
                   ✨
                 </span>
-              )}
+              </div>
               <div
                 className={`w-12 h-12 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl flex items-center justify-center text-2xl sm:text-3xl shrink-0 group-hover:scale-110 transition-transform ${
                   isDiwaliMode
@@ -1206,34 +1305,30 @@ export default function DiwaliCampaignPage({
       </section>
 
       {/* Rangoli Divider */}
-      {isDiwaliMode && <RangoliDivider label="Doorstep to Worldwide" />}
+      <RangoliDivider label="Doorstep to Worldwide" isVisible={isDiwaliMode} />
 
       {/* ── 5. HOW IT WORKS ── */}
       <section className="w-full max-w-[1400px] mx-auto px-3 sm:px-6 py-6 sm:py-14">
         <div
-          className={`rounded-[20px] sm:rounded-3xl p-5 sm:p-12 shadow-sm transition-colors relative overflow-hidden ${
+          className={`rounded-[20px] sm:rounded-3xl p-5 sm:p-12 shadow-sm transition-all duration-700 ease-in-out relative overflow-hidden ${
             isDiwaliMode
               ? "bg-gradient-to-b from-white/92 to-[#FCF6F0]/95 border border-[#ED7E23]/30 shadow-[0_14px_34px_-22px_rgba(31,39,47,0.28)]"
               : "bg-[#eef0f5] border border-gray-200/60"
           }`}
         >
-          {isDiwaliMode && (
-            <>
-              {/* Antique Gold Corner Flourishes */}
-              <CornerFlourish position="top-left" size={32} className="top-2 left-2 opacity-40" />
-              <CornerFlourish position="top-right" size={32} className="top-2 right-2 opacity-40" />
-              <CornerFlourish position="bottom-left" size={32} className="bottom-2 left-2 opacity-40" />
-              <CornerFlourish position="bottom-right" size={32} className="bottom-2 right-2 opacity-40" />
-              {/* Subtle Central Floor Mandala Watermark */}
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none">
-                <RangoliWatermark size={360} opacity={0.05} />
-              </div>
-            </>
-          )}
+          {/* Grand Central Floor Mandala Watermark */}
+          <div
+            className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none transition-opacity duration-700 ease-in-out ${
+              isDiwaliMode ? "opacity-100" : "opacity-0"
+            }`}
+            aria-hidden={!isDiwaliMode}
+          >
+            <RangoliWatermark size={420} opacity={0.16} />
+          </div>
 
           <div className="text-center max-w-xl mx-auto mb-6 sm:mb-12 relative z-10">
             <div
-              className={`inline-flex items-center justify-center gap-2 text-[11px] sm:text-xs font-black uppercase tracking-wider mb-1 ${
+              className={`inline-flex items-center justify-center gap-2 text-[11px] sm:text-xs font-black uppercase tracking-wider mb-1 transition-colors duration-500 ${
                 isDiwaliMode ? "text-[#c4620c]" : "text-[#f27a1a]"
               }`}
             >
@@ -1242,7 +1337,7 @@ export default function DiwaliCampaignPage({
               {isDiwaliMode && <DiyaLamp size={18} glow={false} />}
             </div>
             <h2
-              className={`text-2xl sm:text-4xl font-extrabold mt-1 ${
+              className={`text-2xl sm:text-4xl font-extrabold mt-1 transition-colors duration-500 ${
                 isDiwaliMode ? "gold-text" : "text-[#1c1f2e]"
               }`}
             >
@@ -1292,29 +1387,29 @@ export default function DiwaliCampaignPage({
       </section>
 
       {/* Rangoli Divider */}
-      {isDiwaliMode && <RangoliDivider label="Book Your Shipment" />}
+      <RangoliDivider label="Book Your Shipment" isVisible={isDiwaliMode} />
 
       {/* ── 6. QUICK INQUIRY & BOOKING FORM ── */}
       <section className="w-full max-w-[1400px] mx-auto px-3 sm:px-6 py-6 sm:py-14">
         <div
-          className={`grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-12 items-center rounded-[20px] sm:rounded-3xl p-4 sm:p-10 lg:p-12 shadow-sm transition-colors relative overflow-hidden ${
+          className={`grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-12 items-center rounded-[20px] sm:rounded-3xl p-4 sm:p-10 lg:p-12 shadow-sm transition-all duration-700 ease-in-out relative overflow-hidden ${
             isDiwaliMode
               ? "bg-gradient-to-b from-white/92 to-[#FCF6F0]/95 border border-[#ED7E23]/30 shadow-[0_14px_34px_-22px_rgba(31,39,47,0.28)] text-[#1F272F]"
               : "bg-[#eef0f5] border border-gray-200/70"
           }`}
         >
-          {isDiwaliMode && (
-            <>
-              <CornerFlourish position="top-left" size={32} className="top-2 left-2 opacity-40" />
-              <CornerFlourish position="top-right" size={32} className="top-2 right-2 opacity-40" />
-              <CornerFlourish position="bottom-left" size={32} className="bottom-2 left-2 opacity-40" />
-              <CornerFlourish position="bottom-right" size={32} className="bottom-2 right-2 opacity-40" />
-            </>
-          )}
+          <div
+            className={`absolute -left-12 -bottom-12 pointer-events-none transition-opacity duration-700 ease-in-out ${
+              isDiwaliMode ? "opacity-100" : "opacity-0"
+            }`}
+            aria-hidden={!isDiwaliMode}
+          >
+            <RangoliWatermark size={240} opacity={0.14} />
+          </div>
 
           <div className="lg:col-span-6 flex flex-col gap-3 sm:gap-4 relative z-10">
             <div
-              className={`inline-flex items-center gap-2 text-[11px] sm:text-xs font-black uppercase tracking-wider ${
+              className={`inline-flex items-center gap-2 text-[11px] sm:text-xs font-black uppercase tracking-wider transition-colors duration-500 ${
                 isDiwaliMode ? "text-[#c4620c]" : "text-[#f27a1a]"
               }`}
             >
@@ -1322,14 +1417,14 @@ export default function DiwaliCampaignPage({
               <span>Diwali Express Dispatch</span>
             </div>
             <h2
-              className={`text-2xl sm:text-4xl font-black leading-tight ${
+              className={`text-2xl sm:text-4xl font-black leading-tight transition-colors duration-500 ${
                 isDiwaliMode ? "gold-text" : "text-[#1c1f2e]"
               }`}
             >
               Book Your Diwali Parcel Today
             </h2>
             <p
-              className={`text-xs sm:text-sm leading-relaxed ${
+              className={`text-xs sm:text-sm leading-relaxed transition-colors duration-500 ${
                 isDiwaliMode ? "text-[#58626c]" : "text-gray-600"
               }`}
             >
@@ -1395,17 +1490,20 @@ export default function DiwaliCampaignPage({
 
           {/* Form */}
           <div
-            className={`lg:col-span-6 rounded-xl sm:rounded-2xl p-4 sm:p-8 shadow-sm transition-colors relative overflow-hidden ${
+            className={`lg:col-span-6 rounded-xl sm:rounded-2xl p-4 sm:p-8 shadow-sm transition-all duration-700 ease-in-out relative overflow-hidden ${
               isDiwaliMode
                 ? "bg-white border border-[#ED7E23]/35 shadow-md text-[#1F272F]"
                 : "bg-white border border-gray-200/80"
             }`}
           >
-            {isDiwaliMode && (
-              <div className="absolute -top-10 -right-10 pointer-events-none">
-                <RangoliWatermark size={180} opacity={0.12} />
-              </div>
-            )}
+            <div
+              className={`absolute -top-10 -right-10 pointer-events-none transition-opacity duration-700 ease-in-out ${
+                isDiwaliMode ? "opacity-100" : "opacity-0"
+              }`}
+              aria-hidden={!isDiwaliMode}
+            >
+              <RangoliWatermark size={180} opacity={0.12} />
+            </div>
             {inqSuccess ? (
               <div className="text-center py-6 sm:py-8">
                 <div className="relative inline-flex items-center justify-center mb-2">
@@ -1424,12 +1522,18 @@ export default function DiwaliCampaignPage({
                     isDiwaliMode ? "text-[#58626c]" : "text-gray-500"
                   }`}
                 >
-                  Thank you{submittedInquiry?.name ? `, ${submittedInquiry.name}` : ""}! Our logistics coordinator will contact you shortly to schedule doorstep pickup.
+                  Thank you
+                  {submittedInquiry?.name ? `, ${submittedInquiry.name}` : ""}!
+                  Our logistics coordinator will contact you shortly to schedule
+                  doorstep pickup.
                 </p>
                 <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3">
                   <button
                     type="button"
-                    onClick={() => setShowInqSuccessModal(true)}
+                    onClick={() => {
+                      setShowInqSuccessModal(true);
+                      setSuccessAnimationPhase("celebrating");
+                    }}
                     className="text-xs font-bold px-4 py-2.5 rounded-xl bg-gradient-to-r from-[#f79a45] to-[#ED7E23] text-[#1F272F] shadow-sm hover:scale-[1.02] transition-transform cursor-pointer"
                   >
                     View Confirmation 🪔
@@ -1553,18 +1657,21 @@ export default function DiwaliCampaignPage({
       </section>
 
       {/* Rangoli Divider */}
-      {isDiwaliMode && <RangoliDivider label="Diwali Shipping Guidelines" />}
+      <RangoliDivider label="Diwali Shipping Guidelines" isVisible={isDiwaliMode} />
 
       {/* ── 7. DIWALI SHIPPING FAQS ── */}
       <section className="w-full max-w-[1400px] mx-auto px-3 sm:px-6 py-6 sm:py-14 relative overflow-hidden">
-        {isDiwaliMode && (
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none">
-            <RangoliWatermark size={460} opacity={0.04} />
-          </div>
-        )}
+        <div
+          className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none transition-opacity duration-700 ease-in-out ${
+            isDiwaliMode ? "opacity-100" : "opacity-0"
+          }`}
+          aria-hidden={!isDiwaliMode}
+        >
+          <RangoliWatermark size={500} opacity={0.2} />
+        </div>
         <div className="text-center max-w-2xl mx-auto mb-6 sm:mb-12 relative z-10">
           <div
-            className={`inline-flex items-center justify-center gap-2 text-[11px] sm:text-xs font-black uppercase tracking-wider mb-1 ${
+            className={`inline-flex items-center justify-center gap-2 text-[11px] sm:text-xs font-black uppercase tracking-wider mb-1 transition-colors duration-500 ${
               isDiwaliMode ? "text-[#c4620c]" : "text-[#f27a1a]"
             }`}
           >
@@ -1573,7 +1680,7 @@ export default function DiwaliCampaignPage({
             {isDiwaliMode && <DiyaLamp size={18} glow={false} />}
           </div>
           <h2
-            className={`text-2xl sm:text-4xl font-extrabold mt-1 ${
+            className={`text-2xl sm:text-4xl font-extrabold mt-1 transition-colors duration-500 ${
               isDiwaliMode ? "gold-text" : "text-[#1c1f2e]"
             }`}
           >
@@ -1585,30 +1692,40 @@ export default function DiwaliCampaignPage({
           {DIWALI_FAQS.map((faq, idx) => (
             <div
               key={idx}
-              className={`rounded-xl sm:rounded-2xl p-4 sm:p-6 flex flex-col gap-1.5 sm:gap-2 shadow-sm transition-colors ${
+              className={`rounded-xl sm:rounded-2xl p-4 sm:p-6 flex flex-col gap-1.5 sm:gap-2 shadow-sm transition-all duration-500 ease-in-out relative overflow-hidden ${
                 isDiwaliMode
                   ? "bg-white/90 border border-[#ED7E23]/28 shadow-sm text-[#1F272F]"
                   : "bg-white border border-gray-200 text-[#1c1f2e]"
               }`}
             >
+              <div
+                className={`pointer-events-none transition-opacity duration-500 ease-in-out ${
+                  isDiwaliMode ? "opacity-100" : "opacity-0"
+                }`}
+                aria-hidden={!isDiwaliMode}
+              >
+                <CornerFlourish
+                  position="top-right"
+                  size={30}
+                  className="top-1 right-1 opacity-75"
+                />
+              </div>
               <h3
-                className={`text-sm sm:text-base font-bold flex items-start gap-2 sm:gap-3 ${
+                className={`text-sm sm:text-base font-bold flex items-start gap-2 sm:gap-3 transition-colors duration-500 ${
                   isDiwaliMode ? "text-[#1F272F]" : "text-[#1c1f2e]"
                 }`}
               >
                 <span
-                  className={
-                    isDiwaliMode
-                      ? "text-[#c4620c] font-extrabold"
-                      : "text-[#f27a1a] font-extrabold"
-                  }
+                  className={`font-extrabold transition-colors duration-500 ${
+                    isDiwaliMode ? "text-[#c4620c]" : "text-[#f27a1a]"
+                  }`}
                 >
                   Q{idx + 1}.
                 </span>{" "}
                 {faq.q}
               </h3>
               <p
-                className={`text-[11px] sm:text-sm leading-relaxed pl-5 sm:pl-7 ${
+                className={`text-[11px] sm:text-sm leading-relaxed pl-5 sm:pl-7 transition-colors duration-500 ${
                   isDiwaliMode ? "text-[#58626c]" : "text-gray-600"
                 }`}
               >
@@ -1621,7 +1738,7 @@ export default function DiwaliCampaignPage({
 
       {/* ── MOBILE STICKY QUICK ACTION BAR ── */}
       <div
-        className={`sm:hidden fixed bottom-0 left-0 right-0 z-50 backdrop-blur-md border-t px-3 py-2 flex items-center justify-between gap-2 shadow-2xl transition-colors ${
+        className={`sm:hidden fixed bottom-0 left-0 right-0 z-50 backdrop-blur-md border-t px-3 py-2 flex items-center justify-between gap-2 shadow-2xl transition-all duration-700 ease-in-out ${
           isDiwaliMode
             ? "bg-white/95 border-[#ED7E23]/30 text-[#1F272F]"
             : "bg-[#1a0c02]/95 border-amber-500/20"
@@ -1656,48 +1773,90 @@ export default function DiwaliCampaignPage({
           aria-label="Call Support"
         >
           <Phone
-            className={`w-3.5 h-3.5 ${
+            className={`w-3.5 h-3.5 transition-colors duration-500 ${
               isDiwaliMode ? "text-[#c4620c]" : "text-amber-300"
             }`}
           />
         </a>
       </div>
 
+      {/* ── Silky Smooth Ambient Illumination Wash (0% CPU, pure CSS transition) ── */}
+      <div
+        className={`pointer-events-none fixed inset-0 z-[9990] transition-opacity duration-700 ease-out ${
+          isIlluminating ? "opacity-100" : "opacity-0"
+        }`}
+        style={{
+          background: isDiwaliMode
+            ? "radial-gradient(ellipse 90% 80% at 20% 90%, rgba(237, 126, 35, 0.18) 0%, rgba(251, 191, 36, 0.10) 45%, transparent 75%)"
+            : "radial-gradient(ellipse 90% 80% at 20% 90%, rgba(251, 191, 36, 0.16) 0%, rgba(237, 126, 35, 0.08) 45%, transparent 75%)",
+        }}
+        aria-hidden="true"
+      />
+
       {/* Diwali Mode Toggle */}
       <div
-        className={`fixed bottom-6 left-6 z-[10000] flex items-center gap-3 p-3 rounded-full shadow-2xl backdrop-blur-md border ${
+        className={`fixed bottom-6 left-6 z-[10000] flex items-center gap-3 p-3 rounded-full shadow-2xl backdrop-blur-md border transition-all duration-500 ease-in-out ${
           isDiwaliMode
-            ? "bg-white/90 border-[#ED7E23]/40 text-[#1F272F]"
-            : "bg-black/40 border-white/10 text-white"
+            ? "bg-white/95 border-[#ED7E23]/50 text-[#1F272F] shadow-[0_12px_36px_-6px_rgba(237,126,35,0.35)]"
+            : "bg-[#1E1109]/90 border-white/15 text-white shadow-[0_10px_30px_rgba(0,0,0,0.5)]"
         }`}
       >
         <span
-          className={`text-xs font-bold tracking-wide uppercase flex items-center gap-1.5 ${
+          className={`text-xs font-bold tracking-wide uppercase flex items-center gap-1.5 transition-colors duration-500 ${
             isDiwaliMode ? "text-[#1F272F]" : "text-white"
           }`}
         >
-          {isDiwaliMode ? (
-            <DiyaLamp size={16} glow={false} />
-          ) : (
-            <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-          )}
-          Diwali Mode
+          <span className="relative w-4 h-4 flex items-center justify-center">
+            <span
+              className={`absolute inset-0 flex items-center justify-center transition-all duration-400 ${
+                isDiwaliMode
+                  ? "opacity-100 scale-100 rotate-0"
+                  : "opacity-0 scale-50 -rotate-45"
+              }`}
+            >
+              <DiyaLamp size={16} glow={false} />
+            </span>
+            <span
+              className={`absolute inset-0 flex items-center justify-center transition-all duration-400 ${
+                !isDiwaliMode
+                  ? "opacity-100 scale-100 rotate-0"
+                  : "opacity-0 scale-50 rotate-45"
+              }`}
+            >
+              <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+            </span>
+          </span>
+          <span>Diwali Mode</span>
         </span>
         <button
-          onClick={() => setIsDiwaliMode(!isDiwaliMode)}
-          className={`w-12 h-6 rounded-full p-1 transition-colors duration-300 ease-in-out ${
-            isDiwaliMode ? "bg-[#ED7E23]" : "bg-gray-500"
+          onClick={handleToggleDiwaliMode}
+          className={`w-12 h-6 rounded-full p-1 transition-colors duration-500 ease-in-out cursor-pointer relative focus:outline-none focus:ring-2 focus:ring-[#ED7E23]/50 ${
+            isDiwaliMode ? "bg-[#ED7E23]" : "bg-gray-600/80"
           }`}
+          aria-label="Toggle Diwali Mode"
+          role="switch"
+          aria-checked={isDiwaliMode}
         >
           <div
-            className={`w-4 h-4 bg-white rounded-full shadow-md transform transition-transform duration-300 ease-in-out ${
-              isDiwaliMode ? "translate-x-6" : "translate-x-0"
-            }`}
+            className="w-4 h-4 bg-white rounded-full shadow-md transform transition-transform duration-500"
+            style={{
+              transform: isDiwaliMode ? "translateX(24px)" : "translateX(0px)",
+              transitionTimingFunction: "cubic-bezier(0.34, 1.56, 0.64, 1)",
+            }}
           />
         </button>
       </div>
 
-      {isDiwaliMode && <DiwaliFireworks />}
+      {renderFireworks && (
+        <div
+          className={`pointer-events-none transition-opacity duration-700 ease-in-out ${
+            isDiwaliMode ? "opacity-100" : "opacity-0"
+          }`}
+          aria-hidden={!isDiwaliMode}
+        >
+          <DiwaliFireworks />
+        </div>
+      )}
 
       {/* Diwali Themed Success Popup Modal (Premium Reference Design with Festive Intro Animation) */}
       {showInqSuccessModal && (
@@ -1705,7 +1864,9 @@ export default function DiwaliCampaignPage({
           role="dialog"
           aria-modal="true"
           className={`fixed inset-0 z-[10005] flex items-center justify-center p-4 sm:p-6 bg-black/65 backdrop-blur-xs transition-opacity duration-300 ${
-            successAnimationPhase !== "idle" ? "opacity-100" : "opacity-0 pointer-events-none"
+            successAnimationPhase !== "idle"
+              ? "opacity-100"
+              : "opacity-0 pointer-events-none"
           }`}
           onClick={() => {
             if (successAnimationPhase === "celebrating") {
@@ -1740,21 +1901,111 @@ export default function DiwaliCampaignPage({
             {/* 16 Golden & Amber Fireworks Sparkler Bursts */}
             {[
               { angle: 0, dist: 150, color: "#FDE047", size: 18, delay: "0s" },
-              { angle: 22, dist: 125, color: "#F97316", size: 14, delay: "0.08s" },
-              { angle: 45, dist: 165, color: "#FEF08A", size: 20, delay: "0.15s" },
-              { angle: 68, dist: 135, color: "#FBBF24", size: 15, delay: "0.12s" },
-              { angle: 90, dist: 160, color: "#FDE047", size: 18, delay: "0.18s" },
-              { angle: 112, dist: 130, color: "#EA580C", size: 14, delay: "0.06s" },
-              { angle: 135, dist: 155, color: "#FEF08A", size: 20, delay: "0.14s" },
-              { angle: 158, dist: 140, color: "#F59E0B", size: 16, delay: "0.22s" },
-              { angle: 180, dist: 160, color: "#FDE047", size: 18, delay: "0.04s" },
-              { angle: 202, dist: 125, color: "#F97316", size: 14, delay: "0.1s" },
-              { angle: 225, dist: 165, color: "#FEF08A", size: 20, delay: "0.16s" },
-              { angle: 248, dist: 135, color: "#FBBF24", size: 15, delay: "0.09s" },
-              { angle: 270, dist: 155, color: "#FDE047", size: 18, delay: "0.2s" },
-              { angle: 292, dist: 130, color: "#EA580C", size: 14, delay: "0.07s" },
-              { angle: 315, dist: 160, color: "#FEF08A", size: 20, delay: "0.15s" },
-              { angle: 338, dist: 140, color: "#F59E0B", size: 16, delay: "0.11s" },
+              {
+                angle: 22,
+                dist: 125,
+                color: "#F97316",
+                size: 14,
+                delay: "0.08s",
+              },
+              {
+                angle: 45,
+                dist: 165,
+                color: "#FEF08A",
+                size: 20,
+                delay: "0.15s",
+              },
+              {
+                angle: 68,
+                dist: 135,
+                color: "#FBBF24",
+                size: 15,
+                delay: "0.12s",
+              },
+              {
+                angle: 90,
+                dist: 160,
+                color: "#FDE047",
+                size: 18,
+                delay: "0.18s",
+              },
+              {
+                angle: 112,
+                dist: 130,
+                color: "#EA580C",
+                size: 14,
+                delay: "0.06s",
+              },
+              {
+                angle: 135,
+                dist: 155,
+                color: "#FEF08A",
+                size: 20,
+                delay: "0.14s",
+              },
+              {
+                angle: 158,
+                dist: 140,
+                color: "#F59E0B",
+                size: 16,
+                delay: "0.22s",
+              },
+              {
+                angle: 180,
+                dist: 160,
+                color: "#FDE047",
+                size: 18,
+                delay: "0.04s",
+              },
+              {
+                angle: 202,
+                dist: 125,
+                color: "#F97316",
+                size: 14,
+                delay: "0.1s",
+              },
+              {
+                angle: 225,
+                dist: 165,
+                color: "#FEF08A",
+                size: 20,
+                delay: "0.16s",
+              },
+              {
+                angle: 248,
+                dist: 135,
+                color: "#FBBF24",
+                size: 15,
+                delay: "0.09s",
+              },
+              {
+                angle: 270,
+                dist: 155,
+                color: "#FDE047",
+                size: 18,
+                delay: "0.2s",
+              },
+              {
+                angle: 292,
+                dist: 130,
+                color: "#EA580C",
+                size: 14,
+                delay: "0.07s",
+              },
+              {
+                angle: 315,
+                dist: 160,
+                color: "#FEF08A",
+                size: 20,
+                delay: "0.15s",
+              },
+              {
+                angle: 338,
+                dist: 140,
+                color: "#F59E0B",
+                size: 16,
+                delay: "0.11s",
+              },
             ].map((p, idx) => {
               const rad = (p.angle * Math.PI) / 180;
               const x = Math.round(Math.cos(rad) * p.dist);
@@ -1782,7 +2033,10 @@ export default function DiwaliCampaignPage({
             {/* Centered Glowing Diya & Radiant Checkmark Emblem (Clean visual, no text) */}
             <div
               className="relative z-10 flex flex-col items-center text-center px-4"
-              style={{ animation: "diwaliDiyaIgnite 1.4s cubic-bezier(0.25, 1, 0.5, 1) forwards" }}
+              style={{
+                animation:
+                  "diwaliDiyaIgnite 1.4s cubic-bezier(0.25, 1, 0.5, 1) forwards",
+              }}
             >
               {/* Large Blooming Radiant Golden Glow */}
               <div className="absolute -top-8 w-48 h-48 rounded-full bg-amber-400/45 blur-2xl pointer-events-none" />
@@ -1798,7 +2052,15 @@ export default function DiwaliCampaignPage({
                 className="w-28 h-22 drop-shadow-[0_0_28px_rgba(245,158,11,0.95)] overflow-visible"
                 fill="none"
               >
-                <ellipse cx="60" cy="30" rx="32" ry="26" fill="#FDE047" opacity="0.4" filter="blur(7px)" />
+                <ellipse
+                  cx="60"
+                  cy="30"
+                  rx="32"
+                  ry="26"
+                  fill="#FDE047"
+                  opacity="0.4"
+                  filter="blur(7px)"
+                />
                 <path
                   d="M 60 6 C 48 24, 43 34, 49 46 C 54 54, 66 54, 71 46 C 77 34, 72 24, 60 6 Z"
                   fill="url(#diyaFlameGrad)"
@@ -1814,7 +2076,13 @@ export default function DiwaliCampaignPage({
                   d="M 22 52 C 28 80, 92 80, 98 52 C 84 60, 36 60, 22 52 Z"
                   fill="url(#diyaBowlGrad)"
                 />
-                <ellipse cx="60" cy="51.5" rx="38" ry="7.5" fill="url(#diyaRimGrad)" />
+                <ellipse
+                  cx="60"
+                  cy="51.5"
+                  rx="38"
+                  ry="7.5"
+                  fill="url(#diyaRimGrad)"
+                />
                 <ellipse cx="60" cy="51.5" rx="33" ry="5.2" fill="#2D0E07" />
                 <circle cx="34" cy="62" r="2.5" fill="#FFD54F" />
                 <circle cx="42" cy="67" r="2.7" fill="#FFD54F" />
@@ -1861,10 +2129,34 @@ export default function DiwaliCampaignPage({
                   strokeWidth="1.2"
                   strokeDasharray="2 3"
                 />
-                <circle cx="72.5" cy="21" r="3.2" fill="#FEF08A" filter="drop-shadow(0 0 3px rgba(254, 240, 138, 0.9))" />
-                <circle cx="217.5" cy="21" r="3.2" fill="#FEF08A" filter="drop-shadow(0 0 3px rgba(254, 240, 138, 0.9))" />
-                <circle cx="362.5" cy="21" r="3.2" fill="#FEF08A" filter="drop-shadow(0 0 3px rgba(254, 240, 138, 0.9))" />
-                <circle cx="507.5" cy="21" r="3.2" fill="#FEF08A" filter="drop-shadow(0 0 3px rgba(254, 240, 138, 0.9))" />
+                <circle
+                  cx="72.5"
+                  cy="21"
+                  r="3.2"
+                  fill="#FEF08A"
+                  filter="drop-shadow(0 0 3px rgba(254, 240, 138, 0.9))"
+                />
+                <circle
+                  cx="217.5"
+                  cy="21"
+                  r="3.2"
+                  fill="#FEF08A"
+                  filter="drop-shadow(0 0 3px rgba(254, 240, 138, 0.9))"
+                />
+                <circle
+                  cx="362.5"
+                  cy="21"
+                  r="3.2"
+                  fill="#FEF08A"
+                  filter="drop-shadow(0 0 3px rgba(254, 240, 138, 0.9))"
+                />
+                <circle
+                  cx="507.5"
+                  cy="21"
+                  r="3.2"
+                  fill="#FEF08A"
+                  filter="drop-shadow(0 0 3px rgba(254, 240, 138, 0.9))"
+                />
                 <circle cx="145" cy="6" r="2" fill="#FDE047" />
                 <circle cx="290" cy="6" r="2" fill="#FDE047" />
                 <circle cx="435" cy="6" r="2" fill="#FDE047" />
@@ -1905,34 +2197,71 @@ export default function DiwaliCampaignPage({
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <defs>
-                    <linearGradient id="diyaFlameGrad" x1="60" y1="6" x2="60" y2="52" gradientUnits="userSpaceOnUse">
+                    <linearGradient
+                      id="diyaFlameGrad"
+                      x1="60"
+                      y1="6"
+                      x2="60"
+                      y2="52"
+                      gradientUnits="userSpaceOnUse"
+                    >
                       <stop offset="0%" stopColor="#FFFFFF" />
                       <stop offset="25%" stopColor="#FFF59D" />
                       <stop offset="65%" stopColor="#FFC107" />
                       <stop offset="100%" stopColor="#FF8F00" />
                     </linearGradient>
 
-                    <linearGradient id="diyaBowlGrad" x1="60" y1="52" x2="60" y2="82" gradientUnits="userSpaceOnUse">
+                    <linearGradient
+                      id="diyaBowlGrad"
+                      x1="60"
+                      y1="52"
+                      x2="60"
+                      y2="82"
+                      gradientUnits="userSpaceOnUse"
+                    >
                       <stop offset="0%" stopColor="#5C2415" />
                       <stop offset="60%" stopColor="#45180C" />
                       <stop offset="100%" stopColor="#321008" />
                     </linearGradient>
 
-                    <linearGradient id="diyaRimGrad" x1="20" y1="50" x2="100" y2="50" gradientUnits="userSpaceOnUse">
+                    <linearGradient
+                      id="diyaRimGrad"
+                      x1="20"
+                      y1="50"
+                      x2="100"
+                      y2="50"
+                      gradientUnits="userSpaceOnUse"
+                    >
                       <stop offset="0%" stopColor="#7E311B" />
                       <stop offset="50%" stopColor="#A84427" />
                       <stop offset="100%" stopColor="#7E311B" />
                     </linearGradient>
 
-                    <radialGradient id="flameGlow" cx="60" cy="30" r="30" gradientUnits="userSpaceOnUse">
+                    <radialGradient
+                      id="flameGlow"
+                      cx="60"
+                      cy="30"
+                      r="30"
+                      gradientUnits="userSpaceOnUse"
+                    >
                       <stop offset="0%" stopColor="#FFE082" stopOpacity="0.8" />
-                      <stop offset="60%" stopColor="#FFB300" stopOpacity="0.3" />
+                      <stop
+                        offset="60%"
+                        stopColor="#FFB300"
+                        stopOpacity="0.3"
+                      />
                       <stop offset="100%" stopColor="#FF8F00" stopOpacity="0" />
                     </radialGradient>
                   </defs>
 
                   {/* Ambient Glow Behind Flame */}
-                  <circle cx="60" cy="32" r="28" fill="url(#flameGlow)" filter="blur(4px)" />
+                  <circle
+                    cx="60"
+                    cy="32"
+                    r="28"
+                    fill="url(#flameGlow)"
+                    filter="blur(4px)"
+                  />
 
                   {/* Outer Flame Teardrop */}
                   <path
@@ -1949,10 +2278,7 @@ export default function DiwaliCampaignPage({
                   />
 
                   {/* Diya Stand / Foot */}
-                  <path
-                    d="M 50 78 L 70 78 L 74 84 L 46 84 Z"
-                    fill="#321008"
-                  />
+                  <path d="M 50 78 L 70 78 L 74 84 L 46 84 Z" fill="#321008" />
 
                   {/* Diya Clay Bowl Body */}
                   <path
@@ -1961,22 +2287,84 @@ export default function DiwaliCampaignPage({
                   />
 
                   {/* Outer Rim Ellipse */}
-                  <ellipse cx="60" cy="51.5" rx="38" ry="7.5" fill="url(#diyaRimGrad)" />
+                  <ellipse
+                    cx="60"
+                    cy="51.5"
+                    rx="38"
+                    ry="7.5"
+                    fill="url(#diyaRimGrad)"
+                  />
 
                   {/* Inner Rim Hollow Ellipse */}
                   <ellipse cx="60" cy="51.5" rx="33" ry="5.2" fill="#2D0E07" />
 
                   {/* Oil Reflection in Diya Bowl */}
-                  <ellipse cx="60" cy="52" rx="27" ry="3.5" fill="#5A1E0E" opacity="0.8" />
+                  <ellipse
+                    cx="60"
+                    cy="52"
+                    rx="27"
+                    ry="3.5"
+                    fill="#5A1E0E"
+                    opacity="0.8"
+                  />
 
                   {/* Golden Pearl Beads Along the Belly of the Bowl */}
-                  <circle cx="34" cy="62" r="2.5" fill="#FFD54F" stroke="#B27400" strokeWidth="0.5" />
-                  <circle cx="42" cy="67" r="2.7" fill="#FFD54F" stroke="#B27400" strokeWidth="0.5" />
-                  <circle cx="51" cy="70" r="2.9" fill="#FFD54F" stroke="#B27400" strokeWidth="0.5" />
-                  <circle cx="60" cy="71" r="3.0" fill="#FFD54F" stroke="#B27400" strokeWidth="0.5" />
-                  <circle cx="69" cy="70" r="2.9" fill="#FFD54F" stroke="#B27400" strokeWidth="0.5" />
-                  <circle cx="78" cy="67" r="2.7" fill="#FFD54F" stroke="#B27400" strokeWidth="0.5" />
-                  <circle cx="86" cy="62" r="2.5" fill="#FFD54F" stroke="#B27400" strokeWidth="0.5" />
+                  <circle
+                    cx="34"
+                    cy="62"
+                    r="2.5"
+                    fill="#FFD54F"
+                    stroke="#B27400"
+                    strokeWidth="0.5"
+                  />
+                  <circle
+                    cx="42"
+                    cy="67"
+                    r="2.7"
+                    fill="#FFD54F"
+                    stroke="#B27400"
+                    strokeWidth="0.5"
+                  />
+                  <circle
+                    cx="51"
+                    cy="70"
+                    r="2.9"
+                    fill="#FFD54F"
+                    stroke="#B27400"
+                    strokeWidth="0.5"
+                  />
+                  <circle
+                    cx="60"
+                    cy="71"
+                    r="3.0"
+                    fill="#FFD54F"
+                    stroke="#B27400"
+                    strokeWidth="0.5"
+                  />
+                  <circle
+                    cx="69"
+                    cy="70"
+                    r="2.9"
+                    fill="#FFD54F"
+                    stroke="#B27400"
+                    strokeWidth="0.5"
+                  />
+                  <circle
+                    cx="78"
+                    cy="67"
+                    r="2.7"
+                    fill="#FFD54F"
+                    stroke="#B27400"
+                    strokeWidth="0.5"
+                  />
+                  <circle
+                    cx="86"
+                    cy="62"
+                    r="2.5"
+                    fill="#FFD54F"
+                    stroke="#B27400"
+                    strokeWidth="0.5"
+                  />
 
                   {/* Golden Dots Highlights */}
                   <circle cx="34" cy="61.3" r="0.8" fill="#FFFDE7" />
@@ -1988,16 +2376,43 @@ export default function DiwaliCampaignPage({
                   <circle cx="86" cy="61.3" r="0.8" fill="#FFFDE7" />
 
                   {/* Floating Sparkles around Diya */}
-                  <circle cx="44" cy="20" r="1.3" fill="#FFF9C4" opacity="0.85" />
-                  <circle cx="76" cy="17" r="1.1" fill="#FFF9C4" opacity="0.85" />
-                  <circle cx="28" cy="45" r="1.5" fill="#FFE082" opacity="0.9" />
-                  <circle cx="92" cy="45" r="1.5" fill="#FFE082" opacity="0.9" />
+                  <circle
+                    cx="44"
+                    cy="20"
+                    r="1.3"
+                    fill="#FFF9C4"
+                    opacity="0.85"
+                  />
+                  <circle
+                    cx="76"
+                    cy="17"
+                    r="1.1"
+                    fill="#FFF9C4"
+                    opacity="0.85"
+                  />
+                  <circle
+                    cx="28"
+                    cy="45"
+                    r="1.5"
+                    fill="#FFE082"
+                    opacity="0.9"
+                  />
+                  <circle
+                    cx="92"
+                    cy="45"
+                    r="1.5"
+                    fill="#FFE082"
+                    opacity="0.9"
+                  />
                 </svg>
               </div>
 
               {/* Happy Diwali, {Name} */}
               <h2 className="text-2xl sm:text-[27px] font-bold text-[#1C1917] tracking-tight mt-1 leading-snug">
-                Happy Diwali, {submittedInquiry?.name ? submittedInquiry.name.trim().split(" ")[0] : "Priya"}
+                Happy Diwali,{" "}
+                {submittedInquiry?.name
+                  ? submittedInquiry.name.trim().split(" ")[0]
+                  : "Priya"}
               </h2>
             </div>
 
@@ -2056,13 +2471,16 @@ export default function DiwaliCampaignPage({
                     submittedInquiry?.name || ""
                   } to ${
                     submittedInquiry?.destination || ""
-                  }. Please reply with my quote!`
+                  }. Please reply with my quote!`,
                 )}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full py-4 px-6 rounded-full bg-[#EE7F26] hover:bg-[#E07218] text-white font-bold text-base sm:text-[17px] flex items-center justify-center gap-3 shadow-md shadow-[#EE7F26]/25 transition-all hover:scale-[1.01] active:scale-[0.99] cursor-pointer mb-4"
               >
-                <svg className="w-5 h-5 fill-current shrink-0" viewBox="0 0 24 24">
+                <svg
+                  className="w-5 h-5 fill-current shrink-0"
+                  viewBox="0 0 24 24"
+                >
                   <path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0012.04 2m.01 1.67c4.56 0 8.25 3.69 8.25 8.24 0 2.2-.86 4.28-2.42 5.84-1.56 1.56-3.64 2.4-5.83 2.4-1.46 0-2.89-.39-4.14-1.12l-.3-.18-3.12.82.83-3.04-.2-.31a8.216 8.216 0 01-1.26-4.41c0-4.55 3.69-8.24 8.24-8.24m4.52 11.66c-.25-.13-1.47-.72-1.7-.8-.23-.09-.39-.13-.56.13-.17.25-.64.8-.79.97-.14.17-.29.19-.54.06-.25-.13-1.06-.39-2.02-1.25-.75-.67-1.25-1.49-1.4-1.74-.14-.25-.02-.39.11-.51.11-.11.25-.29.38-.43.13-.15.17-.25.25-.42.08-.17.04-.32-.02-.45s-.56-1.35-.77-1.85c-.2-.49-.41-.42-.56-.43h-.48c-.17 0-.44.06-.67.31-.23.25-.88.86-.88 2.1 0 1.24.9 2.44 1.03 2.61.13.17 1.77 2.7 4.29 3.79.6.26 1.07.41 1.43.53.6.19 1.15.16 1.58.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.15-1.18-.06-.11-.23-.17-.48-.29z" />
                 </svg>
                 <span>Continue on WhatsApp</span>
