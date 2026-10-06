@@ -39,75 +39,102 @@ const DB_NAME = process.env.NEXT_PUBLIC_X_DATABASE || "manvi";
 const DIWALI_ITEMS = [
   {
     icon: "🥮",
-    title: "Diwali Sweets & Faral",
-    desc: "Kaju Katli, Motichoor Ladoo, Besan Barfi, Chakli, Karanji, Chivda & mathri with vacuum food sealing.",
+    title: "Sweets, Mithai & Puja Items",
+    desc: "Kaju katli, laddoo, motichoor, chakli, mathri & faral — securely packed. Diyas, brass puja items, torans and rangoli too.",
   },
   {
-    icon: "🪔",
-    title: "Diyas, Puja Thalis & Decor",
-    desc: "Terracotta diyas, brass puja items, decorative incense holders, rangoli stencils, and torans.",
+    icon: "🧣",
+    title: "Blankets & Winter Wear",
+    desc: "Razai, blankets, shawls, sweaters, woollens, caps & mufflers — ready for the cold months abroad.",
   },
   {
     icon: "👗",
-    title: "Ethnic Wear & Outfits",
-    desc: "Festive Kurta-Pajamas, Sarees, Lehengas, kids ethnic dresses, and traditional jewellery.",
+    title: "Ethnic Wear & Clothes",
+    desc: "Kurta-pajamas, sarees, lehengas, kids' ethnic wear, everyday clothes and traditional jewellery.",
+  },
+  {
+    icon: "🍼",
+    title: "Wellness & New Baby Items",
+    desc: "Baby clothes, swaddles, baby-care essentials and ayurvedic & herbal wellness products — for a new arrival or someone who needs a little care. Medicines need a quick check with us first.",
   },
   {
     icon: "🥜",
-    title: "Dry Fruits & Nuts Hampers",
-    desc: "Cashews, almonds, pistachios, raisins, saffron, and customized festive gift boxes.",
+    title: "Dry Fruits, Masalas & Pickles",
+    desc: "Cashews, almonds, saffron, whole spices, homemade masalas, achaar and other Indian pantry favourites.",
   },
   {
-    icon: "🎁",
-    title: "Corporate & Family Gifts",
-    desc: "Festive gift packs, customized stationery, and premium token hampers for relatives.",
+    icon: "💬",
+    title: "Not on the list?",
+    desc: "Gifts, books, home items or something else entirely — tell us what you want to send and we'll let you know if it can go.",
+    link: "https://wa.me/917070506070?text=Hi%2C%20I%20want%20to%20send%20something%20abroad%20that%20is%20not%20on%20your%20list",
+    linkText: "Contact us for more info →",
   },
-  {
-    icon: "🕯️",
-    title: "Lanterns & Lights",
-    desc: "Decorative paper kandils, decorative battery string lights, and festive home art.",
-  },
+];
+
+const DIWALI_RATES = [
+  { flag: "🇬🇧", country: "UK", price: "₹649", per: "per kg · starting" },
+  { flag: "🇺🇸", country: "USA", price: "₹679", per: "per kg · starting" },
+  { flag: "🇨🇦", country: "Canada", price: "₹749", per: "per kg · starting" },
+  { flag: "🇦🇺", country: "Australia", price: "₹789", per: "per kg · starting" },
 ];
 
 const STEPS = [
   {
     num: "1",
-    title: "Book Early for Diwali",
-    desc: "Share your Diwali parcel details and address to guarantee delivery before Diwali night.",
+    title: "Book early for Diwali",
+    desc: "Share your parcel details & address to guarantee delivery before Diwali night.",
   },
   {
     num: "2",
-    title: "Free Doorstep Pickup",
-    desc: "We pick up directly from your doorstep across Delhi NCR, Punjab, Haryana, Rajasthan, Gujarat, etc.",
+    title: "Free doorstep pickup",
+    desc: "We collect from your home across Delhi NCR, Haryana & Punjab — pan-India on request.",
   },
   {
     num: "3",
-    title: "Special Vacuum Packing",
-    desc: "Multi-layered protective food packaging ensures fragile sweets and snacks arrive crunchy and fresh.",
+    title: "Secure packing",
+    desc: "Your parcel is packed securely in sturdy boxes with protective cushioning, so everything arrives safe and intact.",
   },
   {
     num: "4",
-    title: "Festive Worldwide Delivery",
-    desc: "Swift 3–5 day delivery right to your relatives' homes across USA, UK, Canada, Australia, and 200+ countries.",
+    title: "Worldwide delivery",
+    desc: "We deliver to Australia, Canada, UK, USA and worldwide — 200+ countries.",
   },
 ];
 
 const DIWALI_FAQS = [
   {
-    q: "Will my Diwali sweets and Faral reach before Diwali day?",
-    a: "Yes! We recommend booking your Diwali shipment 7 to 10 days before the festival. With express shipping (3-5 days delivery), your parcel will arrive well in time for the celebrations.",
+    q: "Will my Diwali order reach before Diwali?",
+    a: "Yes, if you book early. Book at least 7–10 days before Diwali — with express shipping (3–5 day delivery), your parcel can reach in time for the celebrations. Booking later? Message us on WhatsApp and we'll tell you what's possible.",
   },
   {
-    q: "How do you ensure fragile sweets and snacks don't break or spoil?",
-    a: "All eatables, namkeen, and sweets are professionally vacuum-sealed, bubble wrapped, and placed inside rigid corrugated boxes to maintain freshness and prevent breakage.",
+    q: "Which cities do you pick up from?",
+    a: "We offer free doorstep pickup across Delhi NCR, Haryana & Punjab. The rest of India is available on request.",
   },
   {
-    q: "Are Brass Puja items, Diyas, and Torans allowed for courier to USA/UK?",
-    a: "Yes! Brass puja items, clay diyas, Torans, and decorations are 100% permitted. Fireworks, oil, and flammable items are strictly prohibited.",
+    q: "How much does shipping cost?",
+    a: "Festive rates start from ₹649/kg to the UK, ₹679/kg to the USA, ₹749/kg to Canada and ₹789/kg to Australia. The final price depends on actual or volumetric weight, destination and speed — share your details and we'll send an exact quote on WhatsApp.",
   },
   {
-    q: "Can I send branded sweets as well as homemade snacks together?",
-    a: "Yes, you can combine homemade snacks (faral, mathri, laddoos) and branded packaged sweets in the same box. We provide an itemized packing invoice for smooth customs clearance.",
+    q: "How do you make sure sweets & snacks don't break or spoil?",
+    a: "Everything is packed securely in sturdy corrugated boxes with protective cushioning to prevent breakage.",
+  },
+  {
+    q: "Are there any restrictions on sending sweets and food?",
+    a: "Dry sweets, snacks and dry fruits are usually fine, but milk-based sweets, dairy, meat and fresh items can be restricted in some countries. Share your item list and destination and we'll confirm before pickup.",
+  },
+  {
+    q: "Are brass puja items, diyas and torans allowed?",
+    a: "Generally yes — brass puja items, clay diyas, torans and decorations are commonly shipped to the USA, UK, Canada and Australia. Fireworks, oil, ghee, camphor, lighters, matches, perfumes and other flammable items are not allowed.",
+  },
+  {
+    q: "Can I send branded sweets and homemade snacks together?",
+    a: "Yes. You can combine homemade snacks and branded packaged sweets in one box, subject to your destination's food rules. We provide an itemised packing invoice for smooth customs clearance.",
+  },
+  {
+    q: "Can I track my parcel?",
+    a: "Yes. Once your parcel is booked, you can follow it any time on the Track shipment page.",
+    link: "/track",
+    linkText: "Track shipment",
   },
 ];
 
@@ -314,6 +341,108 @@ export default function DiwaliCampaignPage({
           -webkit-background-clip: text;
           background-clip: text;
           color: transparent;
+        }
+        .eyebrow {
+          font-family: var(--font-space-mono), "Space Mono", monospace;
+          font-size: 12px;
+          letter-spacing: 0.28em;
+          text-transform: uppercase;
+          color: #c4620c;
+          display: inline-flex;
+          align-items: center;
+          gap: 10px;
+        }
+        .eyebrow::before {
+          content: "";
+          width: 22px;
+          height: 1px;
+          background: linear-gradient(90deg, transparent, #c4620c);
+          display: inline-block;
+        }
+        .eyebrow::after {
+          content: "";
+          width: 22px;
+          height: 1px;
+          background: linear-gradient(90deg, #c4620c, transparent);
+          display: inline-block;
+        }
+        .btn {
+          display: inline-flex;
+          align-items: center;
+          gap: 9px;
+          font-weight: 700;
+          font-size: 16px;
+          padding: 15px 28px;
+          border-radius: 999px;
+          border: 1.5px solid transparent;
+          cursor: pointer;
+          transition: transform .15s, box-shadow .15s, background .15s;
+          white-space: nowrap;
+          text-decoration: none;
+        }
+        .btn:focus-visible {
+          outline: 3px solid #c4620c;
+          outline-offset: 3px;
+        }
+        .btn svg {
+          width: 18px;
+          height: 18px;
+          flex: none;
+        }
+        .btn-primary {
+          background: linear-gradient(180deg, #f79a45, #ED7E23);
+          color: #1F272F;
+          box-shadow: 0 10px 30px -8px rgba(237, 126, 35, 0.6), inset 0 1px 0 #ffd9b5;
+        }
+        .btn-primary:hover {
+          transform: translateY(-2px);
+        }
+        .btn-ghost {
+          background: rgba(255, 255, 255, 0.75);
+          color: #1F272F;
+          border: 1.5px solid rgba(237, 126, 35, 0.5);
+        }
+        .btn-ghost:hover {
+          border-color: #c4620c;
+          transform: translateY(-2px);
+          background: rgba(237, 126, 35, 0.12);
+        }
+        .offer-cta {
+          animation: ctapulse 2s ease-in-out infinite;
+        }
+        @keyframes ctapulse {
+          0%, 100% {
+            box-shadow: 0 10px 30px -8px rgba(237, 126, 35, 0.6), inset 0 1px 0 #ffd9b5, 0 0 0 0 rgba(237, 126, 35, 0.5);
+          }
+          50% {
+            box-shadow: 0 10px 30px -8px rgba(237, 126, 35, 0.6), inset 0 1px 0 #ffd9b5, 0 0 0 10px rgba(237, 126, 35, 0);
+          }
+        }
+        .final {
+          text-align: center;
+          padding: 60px 0 44px;
+        }
+        .final h2 {
+          font-family: var(--font-league-spartan), Georgia, serif;
+          font-weight: 700;
+          font-size: clamp(30px, 4.4vw, 52px);
+          max-width: 18ch;
+          margin: 0 auto;
+          line-height: 1.15;
+        }
+        .final .hinglish {
+          margin-top: 16px;
+          font-family: Georgia, serif;
+          font-style: italic;
+          font-size: 20px;
+          color: #c4620c;
+        }
+        .final .hero-cta {
+          display: flex;
+          gap: 13px;
+          justify-content: center;
+          margin-top: 26px;
+          flex-wrap: wrap;
         }
         .diwali-panel {
           background: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(252, 246, 240, 0.96));
@@ -966,95 +1095,28 @@ export default function DiwaliCampaignPage({
       </section>
 
       {/* Rangoli Divider */}
-      <RangoliDivider label="Festive Express Air Dispatch" isVisible={isDiwaliMode} />
+      <RangoliDivider
+        label="What You Can Send This Diwali"
+        isVisible={isDiwaliMode}
+      />
 
-      {/* ── 3. SPECIAL DIWALI FESTIVE OFFER INFO BOX ── */}
-      <section className="w-full max-w-[1400px] mx-auto px-3 sm:px-6 py-4 sm:py-6">
-        <div
-          className={`rounded-[20px] sm:rounded-[28px] p-4 sm:p-8 lg:p-12 shadow-sm relative overflow-hidden transition-all duration-700 ease-in-out ${
-            isDiwaliMode
-              ? "bg-gradient-to-b from-white/95 to-[#FCF6F0]/96 border border-[#ED7E23]/35 shadow-[0_14px_34px_-22px_rgba(31,39,47,0.28)] text-[#1F272F]"
-              : "bg-gradient-to-br from-[#fff7ed] via-[#fffbf5] to-[#fff3e0] border-2 border-[#e77419]/30 text-[#0a111e]"
-          }`}
-        >
-          <div
-            className={`absolute -right-10 -bottom-10 pointer-events-none transition-opacity duration-700 ease-in-out ${
-              isDiwaliMode ? "opacity-100" : "opacity-0"
-            }`}
-            aria-hidden={!isDiwaliMode}
-          >
-            <RangoliWatermark size={200} opacity={0.14} />
-          </div>
-          <div className="relative z-10 flex flex-col gap-3 sm:gap-4">
-            <div>
-              <span
-                className={`inline-flex items-center gap-2 border px-3.5 py-1 sm:px-4 sm:py-1.5 rounded-full text-[11px] sm:text-sm font-black uppercase tracking-wide transition-colors duration-500 ${
-                  isDiwaliMode
-                    ? "border-[#ED7E23]/40 bg-[#ED7E23]/10 text-[#c4620c]"
-                    : "border-[#e77419] bg-[#e77419]/10 text-[#e77419]"
-                }`}
-              >
-                {isDiwaliMode ? <DiyaLamp size={18} glow={false} /> : "🪔"}
-                Special Diwali Shipping Offer
-              </span>
-            </div>
-            <p
-              className={`text-sm sm:text-[17px] md:text-[18px] font-semibold leading-relaxed transition-colors duration-500 ${
-                isDiwaliMode ? "text-[#1F272F]" : "text-[#0a111e]"
-              }`}
-            >
-              Celebrate the festival of lights with your relatives overseas!
-              Send homemade Diwali Faral, Kaju Katli, traditional Diyas, and
-              gift hampers with guaranteed fast delivery.
-            </p>
-            <p
-              className={`text-xs sm:text-[16px] leading-relaxed transition-colors duration-500 ${
-                isDiwaliMode ? "text-[#58626c]" : "text-[#444]"
-              }`}
-            >
-              <strong
-                className={`font-bold transition-colors duration-500 ${
-                  isDiwaliMode ? "text-[#c4620c]" : "text-[#e77419]"
-                }`}
-              >
-                Food-Grade Vacuum Sealing:
-              </strong>{" "}
-              We protect every batch of homemade snacks and sweets with airtight
-              sealing and rigid packing so they arrive tasting just like home.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Rangoli Divider */}
-      <RangoliDivider label="Homemade Faral & Traditional Gifts" isVisible={isDiwaliMode} />
-
-      {/* ── 4. WHAT YOU CAN SHIP FOR DIWALI ── */}
+      {/* ── 3. WHAT YOU CAN SEND THIS DIWALI ── */}
       <section className="w-full max-w-[1400px] mx-auto px-3 sm:px-6 py-6 sm:py-12">
         <div className="text-center max-w-2xl mx-auto mb-6 sm:mb-12">
-          <div
-            className={`inline-flex items-center justify-center gap-2 text-[11px] sm:text-xs font-black uppercase tracking-wider mb-1 transition-colors duration-500 ${
-              isDiwaliMode ? "text-[#c4620c]" : "text-[#f27a1a]"
-            }`}
-          >
-            {isDiwaliMode && <DiyaLamp size={18} glow={false} />}
-            <span>Festive Packing Catalog</span>
-            {isDiwaliMode && <DiyaLamp size={18} glow={false} />}
-          </div>
           <h2
             className={`text-2xl sm:text-4xl font-extrabold mt-1 transition-colors duration-500 ${
               isDiwaliMode ? "gold-text" : "text-[#1c1f2e]"
             }`}
           >
-            What Can You Ship For Diwali?
+            A little box of home, delivered worldwide
           </h2>
           <p
             className={`text-xs sm:text-sm mt-1.5 sm:mt-2 transition-colors duration-500 ${
               isDiwaliMode ? "text-[#58626c]" : "text-gray-600"
             }`}
           >
-            Send authentic homemade delicacies, traditional gifts, and festive
-            wear anywhere in the world.
+            From mithai to blankets — whatever your family abroad is missing, we
+            pick it up from your door and deliver it, packed with care.
           </p>
         </div>
 
@@ -1062,7 +1124,7 @@ export default function DiwaliCampaignPage({
           {DIWALI_ITEMS.map((item, idx) => (
             <div
               key={idx}
-              className={`rounded-2xl sm:rounded-3xl p-4 sm:p-8 flex flex-col gap-3 sm:gap-4 transition-all duration-500 ease-in-out group shadow-sm relative overflow-hidden ${
+              className={`rounded-2xl sm:rounded-3xl p-4 sm:p-8 flex flex-col justify-between gap-3 sm:gap-4 transition-all duration-500 ease-in-out group shadow-sm relative overflow-hidden ${
                 isDiwaliMode
                   ? "bg-gradient-to-b from-white/95 to-[#FCF6F0]/96 border border-[#ED7E23]/30 shadow-[0_10px_25px_-18px_rgba(31,39,47,0.2)] hover:border-[#ED7E23]/60 hover:shadow-[0_20px_45px_-20px_rgba(237,126,35,0.4)] text-[#1F272F]"
                   : "bg-white border border-gray-200/80 hover:border-orange-400 hover:shadow-md"
@@ -1083,16 +1145,16 @@ export default function DiwaliCampaignPage({
                   ✨
                 </span>
               </div>
-              <div
-                className={`w-12 h-12 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl flex items-center justify-center text-2xl sm:text-3xl shrink-0 group-hover:scale-110 transition-transform ${
-                  isDiwaliMode
-                    ? "bg-white border border-[#ED7E23]/30 shadow-sm"
-                    : "bg-orange-50 border border-orange-100"
-                }`}
-              >
-                {item.icon}
-              </div>
               <div>
+                <div
+                  className={`w-12 h-12 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl flex items-center justify-center text-2xl sm:text-3xl shrink-0 group-hover:scale-110 transition-transform mb-3 sm:mb-4 ${
+                    isDiwaliMode
+                      ? "bg-white border border-[#ED7E23]/30 shadow-sm"
+                      : "bg-orange-50 border border-orange-100"
+                  }`}
+                >
+                  {item.icon}
+                </div>
                 <h3
                   className={`text-lg sm:text-xl font-bold transition-colors ${
                     isDiwaliMode
@@ -1110,13 +1172,125 @@ export default function DiwaliCampaignPage({
                   {item.desc}
                 </p>
               </div>
+
+              {item.link && (
+                <div className="pt-2">
+                  <a
+                    href={item.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`inline-flex items-center gap-1 font-bold text-xs sm:text-sm hover:underline cursor-pointer ${
+                      isDiwaliMode ? "text-[#c4620c]" : "text-[#f27a1a]"
+                    }`}
+                  >
+                    {item.linkText || "Contact us for more info →"}
+                  </a>
+                </div>
+              )}
             </div>
           ))}
         </div>
+
+        <p
+          className={`text-xs sm:text-sm text-center mt-6 sm:mt-8 transition-colors duration-500 ${
+            isDiwaliMode ? "text-[#58626c]" : "text-gray-500"
+          }`}
+        >
+          Almost anything for family can go. Fireworks, flammables and a few
+          restricted items can&apos;t be shipped — not sure about something? Just
+          ask us on WhatsApp.
+        </p>
       </section>
 
       {/* Rangoli Divider */}
-      <RangoliDivider label="Doorstep to Worldwide" isVisible={isDiwaliMode} />
+      <RangoliDivider
+        label="Festive Air Cargo Rates"
+        isVisible={isDiwaliMode}
+      />
+
+      {/* ── 4. FESTIVE PER-KG RATES ── */}
+      <section className="w-full max-w-[1400px] mx-auto px-3 sm:px-6 py-6 sm:py-12">
+        <div className="text-center max-w-2xl mx-auto mb-6 sm:mb-12">
+          <h2
+            className={`text-2xl sm:text-4xl font-extrabold mt-1 transition-colors duration-500 ${
+              isDiwaliMode ? "gold-text" : "text-[#1c1f2e]"
+            }`}
+          >
+            Diwali shipping, starting from
+          </h2>
+          <p
+            className={`text-xs sm:text-sm mt-1.5 sm:mt-2 transition-colors duration-500 ${
+              isDiwaliMode ? "text-[#58626c]" : "text-gray-600"
+            }`}
+          >
+            For homemade sweets, faral, hampers &amp; clothes — across global
+            air carriers.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-6">
+          {DIWALI_RATES.map((rate, idx) => (
+            <div
+              key={idx}
+              className={`rounded-xl sm:rounded-2xl p-5 sm:p-6 flex flex-col items-center text-center shadow-sm transition-all duration-500 ease-in-out relative overflow-hidden group hover:scale-[1.02] ${
+                isDiwaliMode
+                  ? "bg-gradient-to-b from-white/95 to-[#FCF6F0]/96 border border-[#ED7E23]/30 shadow-[0_10px_25px_-18px_rgba(31,39,47,0.2)] text-[#1F272F]"
+                  : "bg-white border border-gray-200/80 text-[#1c1f2e] hover:shadow-md hover:border-orange-300"
+              }`}
+            >
+              <div
+                className={`pointer-events-none transition-opacity duration-500 ease-in-out ${
+                  isDiwaliMode ? "opacity-100" : "opacity-0"
+                }`}
+                aria-hidden={!isDiwaliMode}
+              >
+                <CornerFlourish
+                  position="top-right"
+                  size={26}
+                  className="top-1 right-1 opacity-70"
+                />
+              </div>
+              <div className="text-3xl sm:text-4xl mb-2">{rate.flag}</div>
+              <div
+                className={`font-mono text-xs font-bold uppercase tracking-wider ${
+                  isDiwaliMode ? "text-[#58626c]" : "text-gray-500"
+                }`}
+              >
+                {rate.country}
+              </div>
+              <div
+                className={`text-2xl sm:text-3xl font-extrabold my-1.5 transition-colors duration-500 ${
+                  isDiwaliMode ? "gold-text" : "text-[#ED7E23]"
+                }`}
+              >
+                {rate.price}
+              </div>
+              <div
+                className={`text-xs ${
+                  isDiwaliMode ? "text-[#58626c]" : "text-gray-500"
+                }`}
+              >
+                {rate.per}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <p
+          className={`text-xs sm:text-sm text-center mt-6 sm:mt-8 transition-colors duration-500 ${
+            isDiwaliMode ? "text-[#58626c]" : "text-gray-500"
+          }`}
+        >
+          Starting rates. Final price depends on actual/volumetric weight,
+          destination &amp; speed — get a quick quote on WhatsApp.
+        </p>
+      </section>
+
+      {/* Rangoli Divider */}
+      <RangoliDivider
+        label="Doorstep to Worldwide"
+        isVisible={isDiwaliMode}
+      />
 
       {/* ── 5. HOW IT WORKS ── */}
       <section className="w-full max-w-[1400px] mx-auto px-3 sm:px-6 py-6 sm:py-14">
@@ -1138,15 +1312,6 @@ export default function DiwaliCampaignPage({
           </div>
 
           <div className="text-center max-w-xl mx-auto mb-6 sm:mb-12 relative z-10">
-            <div
-              className={`inline-flex items-center justify-center gap-2 text-[11px] sm:text-xs font-black uppercase tracking-wider mb-1 transition-colors duration-500 ${
-                isDiwaliMode ? "text-[#c4620c]" : "text-[#f27a1a]"
-              }`}
-            >
-              {isDiwaliMode && <DiyaLamp size={18} glow={false} />}
-              <span>Hassle-Free Logistics</span>
-              {isDiwaliMode && <DiyaLamp size={18} glow={false} />}
-            </div>
             <h2
               className={`text-2xl sm:text-4xl font-extrabold mt-1 transition-colors duration-500 ${
                 isDiwaliMode ? "gold-text" : "text-[#1c1f2e]"
@@ -1154,9 +1319,17 @@ export default function DiwaliCampaignPage({
             >
               How Diwali Delivery Works
             </h2>
+            <p
+              className={`text-xs sm:text-sm mt-1.5 sm:mt-2 transition-colors duration-500 ${
+                isDiwaliMode ? "text-[#58626c]" : "text-gray-600"
+              }`}
+            >
+              Doorstep pickup, secure packing, customs handled — you just share
+              what to send.
+            </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-6 relative z-10">
             {STEPS.map((step, idx) => (
               <div
                 key={idx}
@@ -1198,9 +1371,12 @@ export default function DiwaliCampaignPage({
       </section>
 
       {/* Rangoli Divider */}
-      <RangoliDivider label="Diwali Shipping Guidelines" isVisible={isDiwaliMode} />
+      <RangoliDivider
+        label="Help & Guidelines"
+        isVisible={isDiwaliMode}
+      />
 
-      {/* ── 7. DIWALI SHIPPING FAQS ── */}
+      {/* ── 6. DIWALI SHIPPING FAQS ── */}
       <section className="w-full max-w-[1400px] mx-auto px-3 sm:px-6 py-6 sm:py-14 relative overflow-hidden">
         <div
           className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none transition-opacity duration-700 ease-in-out ${
@@ -1211,15 +1387,6 @@ export default function DiwaliCampaignPage({
           <RangoliWatermark size={500} opacity={0.2} />
         </div>
         <div className="text-center max-w-2xl mx-auto mb-6 sm:mb-12 relative z-10">
-          <div
-            className={`inline-flex items-center justify-center gap-2 text-[11px] sm:text-xs font-black uppercase tracking-wider mb-1 transition-colors duration-500 ${
-              isDiwaliMode ? "text-[#c4620c]" : "text-[#f27a1a]"
-            }`}
-          >
-            {isDiwaliMode && <DiyaLamp size={18} glow={false} />}
-            <span>Help & Guidelines</span>
-            {isDiwaliMode && <DiyaLamp size={18} glow={false} />}
-          </div>
           <h2
             className={`text-2xl sm:text-4xl font-extrabold mt-1 transition-colors duration-500 ${
               isDiwaliMode ? "gold-text" : "text-[#1c1f2e]"
@@ -1229,7 +1396,7 @@ export default function DiwaliCampaignPage({
           </h2>
         </div>
 
-        <div className="max-w-4xl mx-auto flex flex-col gap-3 sm:gap-4">
+        <div className="max-w-4xl mx-auto flex flex-col gap-3 sm:gap-4 relative z-10">
           {DIWALI_FAQS.map((faq, idx) => (
             <div
               key={idx}
@@ -1270,10 +1437,55 @@ export default function DiwaliCampaignPage({
                   isDiwaliMode ? "text-[#58626c]" : "text-gray-600"
                 }`}
               >
-                {faq.a}
+                {faq.a}{" "}
+                {faq.link && (
+                  <Link
+                    href={faq.link}
+                    className={`font-semibold underline underline-offset-2 ${
+                      isDiwaliMode ? "text-[#c4620c]" : "text-[#f27a1a]"
+                    }`}
+                  >
+                    {faq.linkText}
+                  </Link>
+                )}
               </p>
             </div>
           ))}
+        </div>
+      </section>
+
+      {/* ── FINAL CTA: SEND A LITTLE BIT OF HOME THIS DIWALI ── */}
+      <section className="final">
+        <div className="w-full max-w-[1180px] mx-auto px-4 sm:px-6">
+          <span
+            className="eyebrow"
+            style={{ justifyContent: "center", display: "inline-flex" }}
+          >
+            This Diwali
+          </span>
+          <h2 className="gold-text" style={{ marginTop: "14px" }}>
+            Send a little bit of home this Diwali.
+          </h2>
+          <p className="hinglish">
+            Is Diwali, apno tak ghar ki mithaas pahunchaiye. 💖
+          </p>
+          <div className="hero-cta">
+            <a
+              className="btn btn-primary offer-cta"
+              href="#diwali-booking"
+            >
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2a10 10 0 0 0-8.6 15.06L2 22l5.06-1.32A10 10 0 1 0 12 2Zm5.3 14.1c-.22.62-1.3 1.2-1.8 1.24-.46.05-1.03.07-1.66-.1a13.6 13.6 0 0 1-5.9-4.53c-.44-.58-1.1-1.56-1.1-2.98 0-1.42.75-2.12 1.02-2.4a1.05 1.05 0 0 1 .77-.36c.19 0 .38 0 .55.01.18.01.42-.07.65.5.24.6.8 2.02.87 2.16.07.15.12.32.02.5-.1.19-.15.3-.3.47-.15.18-.3.4-.44.53-.15.15-.3.3-.13.6.18.3.8 1.3 1.7 2.1 1.18 1.05 2.16 1.37 2.47 1.53.3.15.48.12.65-.08.18-.2.75-.87.95-1.17.2-.3.4-.25.66-.15.27.1 1.7.8 2 .95.3.15.5.22.57.34.07.13.07.72-.15 1.34Z" />
+              </svg>
+              Book now &mdash; offer ends 2 Nov
+            </a>
+            <a
+              className="btn btn-ghost"
+              href="tel:+917070506070"
+            >
+              Call +91 70 70 50 60 70
+            </a>
+          </div>
         </div>
       </section>
 
