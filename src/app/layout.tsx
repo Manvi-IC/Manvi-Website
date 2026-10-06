@@ -1,6 +1,6 @@
 // app/layout.tsx
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, League_Spartan } from "next/font/google";
+import { Geist, Geist_Mono, League_Spartan, Space_Mono } from "next/font/google";
 import "./globals.css";
 import { LanguageProvider } from "@/context/LanguageContext";
 import Script from "next/script";
@@ -26,6 +26,13 @@ const leagueSpartan = League_Spartan({
   weight: ["700"],
   display: "swap",
   preload: true,
+});
+
+const spaceMono = Space_Mono({
+  variable: "--font-space-mono",
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -107,7 +114,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} ${leagueSpartan.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${leagueSpartan.variable} ${spaceMono.variable} h-full antialiased`}
       data-scroll-behavior="smooth"
       suppressHydrationWarning
     >
