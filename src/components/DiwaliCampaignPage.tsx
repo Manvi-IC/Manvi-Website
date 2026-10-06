@@ -22,6 +22,12 @@ import {
   Sparkles,
   Gift,
   Flame,
+  X,
+  PackageCheck,
+  Check,
+  MessageCircle,
+  Truck,
+  Clock,
 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
@@ -206,12 +212,56 @@ export default function DiwaliCampaignPage({
   const [inqItems, setInqItems] = useState("");
   const [inqLoading, setInqLoading] = useState(false);
   const [inqSuccess, setInqSuccess] = useState(false);
+  const [showInqSuccessModal, setShowInqSuccessModal] = useState(false);
+  const [successAnimationPhase, setSuccessAnimationPhase] = useState<"idle" | "celebrating" | "modal">("idle");
+  const [submittedInquiry, setSubmittedInquiry] = useState<{
+    name: string;
+    phone: string;
+    email: string;
+    destination: string;
+    weight: string;
+    items: string;
+    submittedAt: string;
+  } | null>(null);
   const [internalDiwaliMode, setInternalDiwaliMode] = useState(true);
   const isDiwaliMode =
     controlledDiwaliMode !== undefined
       ? controlledDiwaliMode
       : internalDiwaliMode;
   const setIsDiwaliMode = setControlledDiwaliMode || setInternalDiwaliMode;
+
+  const closeModal = () => {
+    setSuccessAnimationPhase("idle");
+    setTimeout(() => {
+      setShowInqSuccessModal(false);
+    }, 350);
+  };
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") closeModal();
+    };
+    if (showInqSuccessModal) {
+      window.addEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = "hidden";
+    }
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = "";
+    };
+  }, [showInqSuccessModal]);
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (showInqSuccessModal && successAnimationPhase === "celebrating") {
+      timer = setTimeout(() => {
+        setSuccessAnimationPhase("modal");
+      }, 2300);
+    }
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [showInqSuccessModal, successAnimationPhase]);
 
   useEffect(() => {
     if (isDiwaliMode) {
@@ -294,6 +344,20 @@ export default function DiwaliCampaignPage({
   const handleInquirySubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setInqLoading(true);
+
+    const inquiryDetails = {
+      name: inqName.trim() || "Diwali Customer",
+      phone: inqPhone.trim(),
+      email: inqEmail.trim(),
+      destination: inqDest.trim() || "International",
+      weight: inqWeight.trim(),
+      items: inqItems.trim(),
+      submittedAt: new Date().toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+      }),
+    };
+
     const params = new URLSearchParams();
     params.append(
       "xnQsjsdp",
@@ -345,13 +409,16 @@ export default function DiwaliCampaignPage({
         }),
       }).catch((e) => console.warn("[Diwali Campaign] Quote save error:", e));
 
+      setSubmittedInquiry(inquiryDetails);
       setInqSuccess(true);
+      setShowInqSuccessModal(true);
+      setSuccessAnimationPhase("celebrating");
     } catch (err) {
       console.error(err);
-      alert(
-        "Thank you! Your Diwali courier request is received. We will contact you shortly.",
-      );
+      setSubmittedInquiry(inquiryDetails);
       setInqSuccess(true);
+      setShowInqSuccessModal(true);
+      setSuccessAnimationPhase("celebrating");
     } finally {
       setInqLoading(false);
     }
@@ -363,21 +430,60 @@ export default function DiwaliCampaignPage({
         isDiwaliMode ? "text-[#1F272F]" : "bg-[#faf5ea] text-[#1c1f2e]"
       }`}
     >
-      {isDiwaliMode && (
-        <style>{`
-          .gold-text {
-            background: linear-gradient(180deg, #f58f35 0%, #ED7E23 48%, #B4683F 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
+      <style>{`
+        .gold-text {
+          background: linear-gradient(180deg, #f58f35 0%, #ED7E23 48%, #B4683F 100%);
+          -webkit-background-clip: text;
+          background-clip: text;
+          color: transparent;
+        }
+        .diwali-panel {
+          background: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(252, 246, 240, 0.96));
+          box-shadow: 0 14px 34px -22px rgba(31, 39, 47, 0.28);
+          border: 1px solid rgba(237, 126, 35, 0.3);
+        }
+        @keyframes diwaliShockwave {
+          0% { transform: translate(-50%, -50%) scale(0.25); opacity: 0.95; }
+          60% { opacity: 0.6; }
+          100% { transform: translate(-50%, -50%) scale(2.8); opacity: 0; }
+        }
+        @keyframes diwaliCrackerSpark {
+          0% {
+            transform: translate(-50%, -50%) translate(0, 0) scale(0);
+            opacity: 0;
           }
-          .diwali-panel {
-            background: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(252, 246, 240, 0.96));
-            box-shadow: 0 14px 34px -22px rgba(31, 39, 47, 0.28);
-            border: 1px solid rgba(237, 126, 35, 0.3);
+          25% {
+            opacity: 1;
+            transform: translate(-50%, -50%) translate(calc(var(--tx) * 0.45), calc(var(--ty) * 0.45)) scale(1.3);
           }
-        `}</style>
-      )}
+          70% {
+            opacity: 0.95;
+            transform: translate(-50%, -50%) translate(var(--tx), var(--ty)) scale(1.1);
+          }
+          100% {
+            transform: translate(-50%, -50%) translate(calc(var(--tx) * 1.08), calc(var(--ty) * 1.08)) scale(0.7);
+            opacity: 0;
+          }
+        }
+        @keyframes diwaliDiyaIgnite {
+          0% {
+            transform: scale(0.3) translateY(30px);
+            opacity: 0;
+          }
+          45% {
+            transform: scale(1.1) translateY(-8px);
+            opacity: 1;
+          }
+          70% {
+            transform: scale(0.98) translateY(2px);
+            opacity: 1;
+          }
+          100% {
+            transform: scale(1) translateY(0);
+            opacity: 1;
+          }
+        }
+      `}</style>
 
       {/* ── Festive Top Props (Visible exclusively in Diwali Mode) ── */}
       {isDiwaliMode && (
@@ -1302,7 +1408,10 @@ export default function DiwaliCampaignPage({
             )}
             {inqSuccess ? (
               <div className="text-center py-6 sm:py-8">
-                <CheckCircle2 className="w-10 h-10 sm:w-12 sm:h-12 text-emerald-500 mx-auto mb-3" />
+                <div className="relative inline-flex items-center justify-center mb-2">
+                  <div className="absolute w-12 h-12 rounded-full bg-emerald-500/20 blur-md pointer-events-none" />
+                  <CheckCircle2 className="w-10 h-10 sm:w-12 sm:h-12 text-emerald-600 relative z-10" />
+                </div>
                 <h3
                   className={`text-lg sm:text-xl font-bold mb-1 ${
                     isDiwaliMode ? "text-[#1F272F]" : "text-gray-900"
@@ -1311,21 +1420,38 @@ export default function DiwaliCampaignPage({
                   Diwali Booking Received!
                 </h3>
                 <p
-                  className={`text-xs sm:text-sm mb-4 ${
+                  className={`text-xs sm:text-sm mb-4 max-w-sm mx-auto ${
                     isDiwaliMode ? "text-[#58626c]" : "text-gray-500"
                   }`}
                 >
-                  Our logistics agent will contact you shortly to schedule
-                  pickup.
+                  Thank you{submittedInquiry?.name ? `, ${submittedInquiry.name}` : ""}! Our logistics coordinator will contact you shortly to schedule doorstep pickup.
                 </p>
-                <button
-                  onClick={() => setInqSuccess(false)}
-                  className={`text-xs font-bold underline ${
-                    isDiwaliMode ? "text-[#c4620c]" : "text-[#f27a1a]"
-                  }`}
-                >
-                  Send another inquiry
-                </button>
+                <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3">
+                  <button
+                    type="button"
+                    onClick={() => setShowInqSuccessModal(true)}
+                    className="text-xs font-bold px-4 py-2.5 rounded-xl bg-gradient-to-r from-[#f79a45] to-[#ED7E23] text-[#1F272F] shadow-sm hover:scale-[1.02] transition-transform cursor-pointer"
+                  >
+                    View Confirmation 🪔
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setInqSuccess(false);
+                      setInqName("");
+                      setInqPhone("");
+                      setInqEmail("");
+                      setInqDest("");
+                      setInqWeight("");
+                      setInqItems("");
+                    }}
+                    className={`text-xs font-bold underline cursor-pointer px-2 py-1 ${
+                      isDiwaliMode ? "text-[#c4620c]" : "text-[#f27a1a]"
+                    }`}
+                  >
+                    Send another inquiry
+                  </button>
+                </div>
               </div>
             ) : (
               <form
@@ -1572,6 +1698,388 @@ export default function DiwaliCampaignPage({
       </div>
 
       {isDiwaliMode && <DiwaliFireworks />}
+
+      {/* Diwali Themed Success Popup Modal (Premium Reference Design with Festive Intro Animation) */}
+      {showInqSuccessModal && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          className={`fixed inset-0 z-[10005] flex items-center justify-center p-4 sm:p-6 bg-black/65 backdrop-blur-xs transition-opacity duration-300 ${
+            successAnimationPhase !== "idle" ? "opacity-100" : "opacity-0 pointer-events-none"
+          }`}
+          onClick={() => {
+            if (successAnimationPhase === "celebrating") {
+              setSuccessAnimationPhase("modal");
+            } else {
+              closeModal();
+            }
+          }}
+        >
+          {/* ── Festive Diwali Celebration Stage (Pure Visual Animation - No Text) ── */}
+          <div
+            className={`absolute inset-0 flex flex-col items-center justify-center pointer-events-none z-30 select-none overflow-hidden transition-all duration-700 ease-in-out ${
+              successAnimationPhase === "celebrating"
+                ? "opacity-100 scale-100 blur-none"
+                : "opacity-0 scale-110 blur-xs pointer-events-none"
+            }`}
+          >
+            {/* Concentric Golden Mandala Shockwaves */}
+            <div
+              className="absolute top-1/2 left-1/2 w-48 h-48 rounded-full border-2 border-amber-400/80 pointer-events-none"
+              style={{ animation: "diwaliShockwave 2s ease-out infinite" }}
+            />
+            <div
+              className="absolute top-1/2 left-1/2 w-64 h-64 rounded-full border border-orange-400/50 pointer-events-none"
+              style={{ animation: "diwaliShockwave 2s ease-out 0.4s infinite" }}
+            />
+            <div
+              className="absolute top-1/2 left-1/2 w-80 h-80 rounded-full border border-amber-300/30 pointer-events-none"
+              style={{ animation: "diwaliShockwave 2s ease-out 0.8s infinite" }}
+            />
+
+            {/* 16 Golden & Amber Fireworks Sparkler Bursts */}
+            {[
+              { angle: 0, dist: 150, color: "#FDE047", size: 18, delay: "0s" },
+              { angle: 22, dist: 125, color: "#F97316", size: 14, delay: "0.08s" },
+              { angle: 45, dist: 165, color: "#FEF08A", size: 20, delay: "0.15s" },
+              { angle: 68, dist: 135, color: "#FBBF24", size: 15, delay: "0.12s" },
+              { angle: 90, dist: 160, color: "#FDE047", size: 18, delay: "0.18s" },
+              { angle: 112, dist: 130, color: "#EA580C", size: 14, delay: "0.06s" },
+              { angle: 135, dist: 155, color: "#FEF08A", size: 20, delay: "0.14s" },
+              { angle: 158, dist: 140, color: "#F59E0B", size: 16, delay: "0.22s" },
+              { angle: 180, dist: 160, color: "#FDE047", size: 18, delay: "0.04s" },
+              { angle: 202, dist: 125, color: "#F97316", size: 14, delay: "0.1s" },
+              { angle: 225, dist: 165, color: "#FEF08A", size: 20, delay: "0.16s" },
+              { angle: 248, dist: 135, color: "#FBBF24", size: 15, delay: "0.09s" },
+              { angle: 270, dist: 155, color: "#FDE047", size: 18, delay: "0.2s" },
+              { angle: 292, dist: 130, color: "#EA580C", size: 14, delay: "0.07s" },
+              { angle: 315, dist: 160, color: "#FEF08A", size: 20, delay: "0.15s" },
+              { angle: 338, dist: 140, color: "#F59E0B", size: 16, delay: "0.11s" },
+            ].map((p, idx) => {
+              const rad = (p.angle * Math.PI) / 180;
+              const x = Math.round(Math.cos(rad) * p.dist);
+              const y = Math.round(Math.sin(rad) * p.dist);
+              return (
+                <div
+                  key={idx}
+                  className="absolute top-1/2 left-1/2 select-none"
+                  style={{
+                    animation: `diwaliCrackerSpark 1.8s cubic-bezier(0.25, 1, 0.5, 1) ${p.delay} forwards`,
+                    ["--tx" as any]: `${x}px`,
+                    ["--ty" as any]: `${y}px`,
+                  }}
+                >
+                  <span
+                    style={{ color: p.color, fontSize: `${p.size}px` }}
+                    className="drop-shadow-[0_0_10px_rgba(254,240,138,0.95)]"
+                  >
+                    ✦
+                  </span>
+                </div>
+              );
+            })}
+
+            {/* Centered Glowing Diya & Radiant Checkmark Emblem (Clean visual, no text) */}
+            <div
+              className="relative z-10 flex flex-col items-center text-center px-4"
+              style={{ animation: "diwaliDiyaIgnite 1.4s cubic-bezier(0.25, 1, 0.5, 1) forwards" }}
+            >
+              {/* Large Blooming Radiant Golden Glow */}
+              <div className="absolute -top-8 w-48 h-48 rounded-full bg-amber-400/45 blur-2xl pointer-events-none" />
+
+              {/* Golden Checkmark Emblem */}
+              <div className="w-16 h-16 rounded-full bg-gradient-to-tr from-[#EE7F26] to-[#FBBF24] text-white flex items-center justify-center mb-4 shadow-[0_0_35px_rgba(238,127,38,0.9)] border-2 border-amber-200">
+                <Check className="w-9 h-9 stroke-[3.2]" />
+              </div>
+
+              {/* Luminous Vector Diya */}
+              <svg
+                viewBox="0 0 120 90"
+                className="w-28 h-22 drop-shadow-[0_0_28px_rgba(245,158,11,0.95)] overflow-visible"
+                fill="none"
+              >
+                <ellipse cx="60" cy="30" rx="32" ry="26" fill="#FDE047" opacity="0.4" filter="blur(7px)" />
+                <path
+                  d="M 60 6 C 48 24, 43 34, 49 46 C 54 54, 66 54, 71 46 C 77 34, 72 24, 60 6 Z"
+                  fill="url(#diyaFlameGrad)"
+                  filter="drop-shadow(0 0 10px rgba(255, 213, 79, 0.95))"
+                />
+                <path
+                  d="M 60 14 C 54 25, 51 32, 54 41 C 57 47, 63 47, 66 41 C 69 32, 66 25, 60 14 Z"
+                  fill="#FFFFFF"
+                  opacity="0.95"
+                />
+                <path d="M 50 78 L 70 78 L 74 84 L 46 84 Z" fill="#321008" />
+                <path
+                  d="M 22 52 C 28 80, 92 80, 98 52 C 84 60, 36 60, 22 52 Z"
+                  fill="url(#diyaBowlGrad)"
+                />
+                <ellipse cx="60" cy="51.5" rx="38" ry="7.5" fill="url(#diyaRimGrad)" />
+                <ellipse cx="60" cy="51.5" rx="33" ry="5.2" fill="#2D0E07" />
+                <circle cx="34" cy="62" r="2.5" fill="#FFD54F" />
+                <circle cx="42" cy="67" r="2.7" fill="#FFD54F" />
+                <circle cx="51" cy="70" r="2.9" fill="#FFD54F" />
+                <circle cx="60" cy="71" r="3.0" fill="#FFD54F" />
+                <circle cx="69" cy="70" r="2.9" fill="#FFD54F" />
+                <circle cx="78" cy="67" r="2.7" fill="#FFD54F" />
+                <circle cx="86" cy="62" r="2.5" fill="#FFD54F" />
+              </svg>
+            </div>
+          </div>
+
+          {/* ── The Modal Dialog (Enters with smooth ease-in-out transition) ── */}
+          <div
+            className={`relative w-full max-w-[580px] rounded-[28px] overflow-hidden bg-white shadow-2xl transition-all duration-700 ease-in-out transform ${
+              successAnimationPhase === "modal"
+                ? "opacity-100 scale-100 translate-y-0 pointer-events-auto"
+                : "opacity-0 scale-90 translate-y-8 pointer-events-none"
+            }`}
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Top Close Button (Discreet X) */}
+            <button
+              type="button"
+              onClick={closeModal}
+              aria-label="Close"
+              className="absolute top-4 right-4 z-20 w-8 h-8 rounded-full bg-black/15 hover:bg-black/25 text-white/95 hover:text-white flex items-center justify-center transition-all cursor-pointer"
+            >
+              <X className="w-4 h-4" />
+            </button>
+
+            {/* ── Orange Festive Header ── */}
+            <div className="relative bg-[#EE7F26] px-6 sm:px-12 pt-9 pb-8 text-center select-none overflow-hidden">
+              {/* Top Festive String Lights & Hanging Golden Bulbs */}
+              <svg
+                className="absolute top-0 left-0 w-full h-9 pointer-events-none opacity-60"
+                viewBox="0 0 580 36"
+                preserveAspectRatio="none"
+                fill="none"
+              >
+                <path
+                  d="M 0 6 Q 72 26 145 6 Q 217 26 290 6 Q 362 26 435 6 Q 507 26 580 6"
+                  stroke="#FDE68A"
+                  strokeWidth="1.2"
+                  strokeDasharray="2 3"
+                />
+                <circle cx="72.5" cy="21" r="3.2" fill="#FEF08A" filter="drop-shadow(0 0 3px rgba(254, 240, 138, 0.9))" />
+                <circle cx="217.5" cy="21" r="3.2" fill="#FEF08A" filter="drop-shadow(0 0 3px rgba(254, 240, 138, 0.9))" />
+                <circle cx="362.5" cy="21" r="3.2" fill="#FEF08A" filter="drop-shadow(0 0 3px rgba(254, 240, 138, 0.9))" />
+                <circle cx="507.5" cy="21" r="3.2" fill="#FEF08A" filter="drop-shadow(0 0 3px rgba(254, 240, 138, 0.9))" />
+                <circle cx="145" cy="6" r="2" fill="#FDE047" />
+                <circle cx="290" cy="6" r="2" fill="#FDE047" />
+                <circle cx="435" cy="6" r="2" fill="#FDE047" />
+              </svg>
+
+              {/* Four-point Sparkle Stars */}
+              <div className="absolute top-8 left-9 text-[#FED7AA] opacity-90 select-none">
+                <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                  <path d="M12 0 Q12 12 0 12 Q12 12 12 24 Q12 12 24 12 Q12 12 12 0 Z" />
+                </svg>
+              </div>
+              <div className="absolute top-22 left-14 text-[#FEF08A] opacity-75 select-none">
+                <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
+                  <path d="M12 0 Q12 12 0 12 Q12 12 12 24 Q12 12 24 12 Q12 12 12 0 Z" />
+                </svg>
+              </div>
+              <div className="absolute top-8 right-9 text-[#FED7AA] opacity-90 select-none">
+                <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                  <path d="M12 0 Q12 12 0 12 Q12 12 12 24 Q12 12 24 12 Q12 12 12 0 Z" />
+                </svg>
+              </div>
+              <div className="absolute top-22 right-14 text-[#FEF08A] opacity-75 select-none">
+                <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
+                  <path d="M12 0 Q12 12 0 12 Q12 12 12 24 Q12 12 24 12 Q12 12 12 0 Z" />
+                </svg>
+              </div>
+
+              {/* Ambient light glow orbs */}
+              <div className="absolute top-9 left-[22%] w-1.5 h-1.5 rounded-full bg-white/60 blur-[0.5px]" />
+              <div className="absolute top-14 right-[24%] w-1.5 h-1.5 rounded-full bg-white/60 blur-[0.5px]" />
+
+              {/* ── Central Illustrated Diwali Diya ── */}
+              <div className="relative mx-auto mb-3 flex flex-col items-center justify-center">
+                <svg
+                  viewBox="0 0 120 90"
+                  className="w-28 h-22 drop-shadow-[0_4px_14px_rgba(0,0,0,0.15)] overflow-visible"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <defs>
+                    <linearGradient id="diyaFlameGrad" x1="60" y1="6" x2="60" y2="52" gradientUnits="userSpaceOnUse">
+                      <stop offset="0%" stopColor="#FFFFFF" />
+                      <stop offset="25%" stopColor="#FFF59D" />
+                      <stop offset="65%" stopColor="#FFC107" />
+                      <stop offset="100%" stopColor="#FF8F00" />
+                    </linearGradient>
+
+                    <linearGradient id="diyaBowlGrad" x1="60" y1="52" x2="60" y2="82" gradientUnits="userSpaceOnUse">
+                      <stop offset="0%" stopColor="#5C2415" />
+                      <stop offset="60%" stopColor="#45180C" />
+                      <stop offset="100%" stopColor="#321008" />
+                    </linearGradient>
+
+                    <linearGradient id="diyaRimGrad" x1="20" y1="50" x2="100" y2="50" gradientUnits="userSpaceOnUse">
+                      <stop offset="0%" stopColor="#7E311B" />
+                      <stop offset="50%" stopColor="#A84427" />
+                      <stop offset="100%" stopColor="#7E311B" />
+                    </linearGradient>
+
+                    <radialGradient id="flameGlow" cx="60" cy="30" r="30" gradientUnits="userSpaceOnUse">
+                      <stop offset="0%" stopColor="#FFE082" stopOpacity="0.8" />
+                      <stop offset="60%" stopColor="#FFB300" stopOpacity="0.3" />
+                      <stop offset="100%" stopColor="#FF8F00" stopOpacity="0" />
+                    </radialGradient>
+                  </defs>
+
+                  {/* Ambient Glow Behind Flame */}
+                  <circle cx="60" cy="32" r="28" fill="url(#flameGlow)" filter="blur(4px)" />
+
+                  {/* Outer Flame Teardrop */}
+                  <path
+                    d="M 60 6 C 48 24, 43 34, 49 46 C 54 54, 66 54, 71 46 C 77 34, 72 24, 60 6 Z"
+                    fill="url(#diyaFlameGrad)"
+                    filter="drop-shadow(0 0 6px rgba(255, 213, 79, 0.9))"
+                  />
+
+                  {/* Bright Pure White Flame Core */}
+                  <path
+                    d="M 60 14 C 54 25, 51 32, 54 41 C 57 47, 63 47, 66 41 C 69 32, 66 25, 60 14 Z"
+                    fill="#FFFFFF"
+                    opacity="0.95"
+                  />
+
+                  {/* Diya Stand / Foot */}
+                  <path
+                    d="M 50 78 L 70 78 L 74 84 L 46 84 Z"
+                    fill="#321008"
+                  />
+
+                  {/* Diya Clay Bowl Body */}
+                  <path
+                    d="M 22 52 C 28 80, 92 80, 98 52 C 84 60, 36 60, 22 52 Z"
+                    fill="url(#diyaBowlGrad)"
+                  />
+
+                  {/* Outer Rim Ellipse */}
+                  <ellipse cx="60" cy="51.5" rx="38" ry="7.5" fill="url(#diyaRimGrad)" />
+
+                  {/* Inner Rim Hollow Ellipse */}
+                  <ellipse cx="60" cy="51.5" rx="33" ry="5.2" fill="#2D0E07" />
+
+                  {/* Oil Reflection in Diya Bowl */}
+                  <ellipse cx="60" cy="52" rx="27" ry="3.5" fill="#5A1E0E" opacity="0.8" />
+
+                  {/* Golden Pearl Beads Along the Belly of the Bowl */}
+                  <circle cx="34" cy="62" r="2.5" fill="#FFD54F" stroke="#B27400" strokeWidth="0.5" />
+                  <circle cx="42" cy="67" r="2.7" fill="#FFD54F" stroke="#B27400" strokeWidth="0.5" />
+                  <circle cx="51" cy="70" r="2.9" fill="#FFD54F" stroke="#B27400" strokeWidth="0.5" />
+                  <circle cx="60" cy="71" r="3.0" fill="#FFD54F" stroke="#B27400" strokeWidth="0.5" />
+                  <circle cx="69" cy="70" r="2.9" fill="#FFD54F" stroke="#B27400" strokeWidth="0.5" />
+                  <circle cx="78" cy="67" r="2.7" fill="#FFD54F" stroke="#B27400" strokeWidth="0.5" />
+                  <circle cx="86" cy="62" r="2.5" fill="#FFD54F" stroke="#B27400" strokeWidth="0.5" />
+
+                  {/* Golden Dots Highlights */}
+                  <circle cx="34" cy="61.3" r="0.8" fill="#FFFDE7" />
+                  <circle cx="42" cy="66.3" r="0.9" fill="#FFFDE7" />
+                  <circle cx="51" cy="69.3" r="1.0" fill="#FFFDE7" />
+                  <circle cx="60" cy="70.3" r="1.0" fill="#FFFDE7" />
+                  <circle cx="69" cy="69.3" r="1.0" fill="#FFFDE7" />
+                  <circle cx="78" cy="66.3" r="0.9" fill="#FFFDE7" />
+                  <circle cx="86" cy="61.3" r="0.8" fill="#FFFDE7" />
+
+                  {/* Floating Sparkles around Diya */}
+                  <circle cx="44" cy="20" r="1.3" fill="#FFF9C4" opacity="0.85" />
+                  <circle cx="76" cy="17" r="1.1" fill="#FFF9C4" opacity="0.85" />
+                  <circle cx="28" cy="45" r="1.5" fill="#FFE082" opacity="0.9" />
+                  <circle cx="92" cy="45" r="1.5" fill="#FFE082" opacity="0.9" />
+                </svg>
+              </div>
+
+              {/* Happy Diwali, {Name} */}
+              <h2 className="text-2xl sm:text-[27px] font-bold text-[#1C1917] tracking-tight mt-1 leading-snug">
+                Happy Diwali, {submittedInquiry?.name ? submittedInquiry.name.trim().split(" ")[0] : "Priya"}
+              </h2>
+            </div>
+
+            {/* ── White Lower Body Section ── */}
+            <div className="px-6 sm:px-12 pt-8 pb-7 text-center bg-white">
+              {/* Title */}
+              <h3 className="font-bold text-[#1F2937] text-lg sm:text-[20px] mb-8 tracking-tight">
+                Your pickup request is in.
+              </h3>
+
+              {/* 3 Steps Progress Tracker */}
+              <div className="grid grid-cols-3 gap-3 sm:gap-6 text-center mb-8">
+                {/* Step 1: Request sent (Solid Orange Circle with Checkmark) */}
+                <div className="flex flex-col items-center">
+                  <div className="w-12 h-12 rounded-full bg-[#EE7F26] text-white flex items-center justify-center mb-2.5 shadow-sm">
+                    <Check className="w-6 h-6 stroke-[3]" />
+                  </div>
+                  <span className="text-xs sm:text-sm font-semibold text-gray-800 leading-tight">
+                    Request sent
+                  </span>
+                </div>
+
+                {/* Step 2: We reply with quote (White Circle with Orange Border & Chat Bubble) */}
+                <div className="flex flex-col items-center">
+                  <div className="w-12 h-12 rounded-full border-2 border-[#EE7F26] bg-white text-[#EE7F26] flex items-center justify-center mb-2.5 shadow-xs">
+                    <MessageCircle className="w-5 h-5 stroke-[2.4]" />
+                  </div>
+                  <span className="text-xs sm:text-sm font-semibold text-gray-800 leading-tight">
+                    We reply with quote
+                  </span>
+                </div>
+
+                {/* Step 3: Pickup booked (Dashed Border Gray Circle with Truck) */}
+                <div className="flex flex-col items-center">
+                  <div className="w-12 h-12 rounded-full border-2 border-dashed border-gray-300 bg-white text-gray-400 flex items-center justify-center mb-2.5">
+                    <Truck className="w-5 h-5 stroke-[2]" />
+                  </div>
+                  <span className="text-xs sm:text-sm font-semibold text-gray-400 leading-tight">
+                    Pickup booked
+                  </span>
+                </div>
+              </div>
+
+              {/* Festive offer pill */}
+              <div className="rounded-2xl bg-[#FCE4CC] py-3.5 px-5 flex items-center justify-center gap-2.5 mb-7 text-[#6F3E17]">
+                <Clock className="w-4 h-4 text-[#6F3E17] stroke-[2.4] shrink-0" />
+                <span className="text-xs sm:text-sm font-semibold tracking-tight">
+                  Festive offer ends 2 November
+                </span>
+              </div>
+
+              {/* Continue on WhatsApp Button */}
+              <a
+                href={`https://wa.me/917070506070?text=${encodeURIComponent(
+                  `Hi Manvi Express! 🪔 I just submitted a Diwali pickup request for ${
+                    submittedInquiry?.name || ""
+                  } to ${
+                    submittedInquiry?.destination || ""
+                  }. Please reply with my quote!`
+                )}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full py-4 px-6 rounded-full bg-[#EE7F26] hover:bg-[#E07218] text-white font-bold text-base sm:text-[17px] flex items-center justify-center gap-3 shadow-md shadow-[#EE7F26]/25 transition-all hover:scale-[1.01] active:scale-[0.99] cursor-pointer mb-4"
+              >
+                <svg className="w-5 h-5 fill-current shrink-0" viewBox="0 0 24 24">
+                  <path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0012.04 2m.01 1.67c4.56 0 8.25 3.69 8.25 8.24 0 2.2-.86 4.28-2.42 5.84-1.56 1.56-3.64 2.4-5.83 2.4-1.46 0-2.89-.39-4.14-1.12l-.3-.18-3.12.82.83-3.04-.2-.31a8.216 8.216 0 01-1.26-4.41c0-4.55 3.69-8.24 8.24-8.24m4.52 11.66c-.25-.13-1.47-.72-1.7-.8-.23-.09-.39-.13-.56.13-.17.25-.64.8-.79.97-.14.17-.29.19-.54.06-.25-.13-1.06-.39-2.02-1.25-.75-.67-1.25-1.49-1.4-1.74-.14-.25-.02-.39.11-.51.11-.11.25-.29.38-.43.13-.15.17-.25.25-.42.08-.17.04-.32-.02-.45s-.56-1.35-.77-1.85c-.2-.49-.41-.42-.56-.43h-.48c-.17 0-.44.06-.67.31-.23.25-.88.86-.88 2.1 0 1.24.9 2.44 1.03 2.61.13.17 1.77 2.7 4.29 3.79.6.26 1.07.41 1.43.53.6.19 1.15.16 1.58.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.15-1.18-.06-.11-.23-.17-.48-.29z" />
+                </svg>
+                <span>Continue on WhatsApp</span>
+              </a>
+
+              {/* Back to page Link */}
+              <button
+                type="button"
+                onClick={closeModal}
+                className="w-full text-center text-xs sm:text-sm font-medium text-gray-500 hover:text-gray-900 underline underline-offset-4 cursor-pointer py-1 transition-colors"
+              >
+                Back to page
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </main>
   );
 }
