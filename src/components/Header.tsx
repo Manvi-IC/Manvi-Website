@@ -30,6 +30,48 @@ export default function Header({ isDiwaliMode = false }: HeaderProps = {}) {
   const [isLangOpen, setIsLangOpen] = useState(false);
   const [showMarquee, setShowMarquee] = useState(true);
   const [marqueeText, setMarqueeText] = useState("");
+  const [timeLeft, setTimeLeft] = useState({
+    days: "00",
+    hours: "00",
+    minutes: "00",
+    seconds: "00",
+    isEnded: false,
+  });
+
+  useEffect(() => {
+    const OFFER_END = new Date("2026-11-02T23:59:59+05:30");
+    const pad = (n: number) => (n < 10 ? `0${n}` : `${n}`);
+
+    function calculateTime() {
+      const diff = OFFER_END.getTime() - Date.now();
+      if (diff <= 0) {
+        setTimeLeft({
+          days: "00",
+          hours: "00",
+          minutes: "00",
+          seconds: "00",
+          isEnded: true,
+        });
+        return;
+      }
+      const totalSec = Math.floor(diff / 1000);
+      const d = Math.floor(totalSec / 86400);
+      const h = Math.floor((totalSec % 86400) / 3600);
+      const m = Math.floor((totalSec % 3600) / 60);
+      const s = totalSec % 60;
+      setTimeLeft({
+        days: pad(d),
+        hours: pad(h),
+        minutes: pad(m),
+        seconds: pad(s),
+        isEnded: false,
+      });
+    }
+
+    calculateTime();
+    const timer = setInterval(calculateTime, 1000);
+    return () => clearInterval(timer);
+  }, []);
 
   const langRef = useRef<HTMLDivElement>(null);
 
@@ -130,6 +172,107 @@ export default function Header({ isDiwaliMode = false }: HeaderProps = {}) {
           background-size: 200% 100%;
           animation: waterShimmerFlow 24s ease-in-out infinite;
         }
+
+        .announce {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 12px 20px;
+          color: #ED7E23;
+          font-weight: 700;
+          font-size: 16px;
+          white-space: nowrap;
+        }
+        .announce .an-txt {
+          font-size: 16px;
+          font-weight: 700;
+          color: #ED7E23;
+          display: inline-flex;
+          align-items: center;
+          gap: 7px;
+          letter-spacing: -0.01em;
+        }
+        .announce .an-cd {
+          display: flex;
+          align-items: center;
+          gap: 9px;
+          font-family: var(--font-space-mono), "Space Mono", monospace;
+          color: #ED7E23;
+        }
+        .announce .an-u {
+          font-size: 13.5px;
+          font-weight: 500;
+          color: #ED7E23;
+          display: inline-flex;
+          align-items: baseline;
+        }
+        .announce .an-u b {
+          font-size: 19px;
+          font-weight: 800;
+          margin-right: 1.5px;
+          color: #ED7E23;
+        }
+        .announce .an-link {
+          background: linear-gradient(180deg, #f79a45, #ED7E23);
+          color: #1F272F;
+          padding: 3.5px 14px;
+          border-radius: 999px;
+          font-size: 13.5px;
+          font-weight: 700;
+          text-decoration: none;
+          transition: transform 0.15s ease, opacity 0.15s ease, box-shadow 0.15s ease;
+          display: inline-flex;
+          align-items: center;
+          box-shadow: 0 4px 12px -4px rgba(237, 126, 35, 0.45);
+        }
+        .announce .an-link:hover {
+          opacity: 0.92;
+          transform: translateY(-1px);
+        }
+        .announce .offer-end {
+          margin: 0;
+          color: #ED7E23;
+          font-weight: 700;
+          font-size: 15px;
+        }
+        @media (max-width: 860px) {
+          .announce {
+            font-size: 14px;
+            gap: 8px 12px;
+          }
+          .announce .an-txt {
+            font-size: 14px;
+          }
+          .announce .an-u {
+            font-size: 12px;
+          }
+          .announce .an-u b {
+            font-size: 16px;
+          }
+          .announce .an-cd {
+            gap: 7px;
+          }
+        }
+        @media (max-width: 560px) {
+          .announce {
+            font-size: 13px;
+            gap: 8px 10px;
+          }
+          .announce .an-link {
+            display: none;
+          }
+          .announce .an-u b {
+            font-size: 15px;
+          }
+          .announce .an-cd {
+            gap: 6px;
+          }
+        }
+        @media (max-width: 380px) {
+          .announce .an-txt {
+            display: none;
+          }
+        }
       `}</style>
       <div className="sticky top-0 z-50 w-full flex flex-col transition-colors duration-700 ease-in-out">
         <div
@@ -141,7 +284,7 @@ export default function Header({ isDiwaliMode = false }: HeaderProps = {}) {
           }`}
         >
           <div className="max-w-425 mx-auto flex flex-col md:flex-row justify-between items-center gap-2.5 md:gap-0">
-            <div className="flex items-center justify-between sm:justify-start gap-4 w-full md:w-auto">
+            <div className="flex items-center justify-between sm:justify-start gap-4 w-full md:w-auto shrink-0">
               {/* Phone: Meta "Contact" event + Google Ads conversion */}
               <a
                 href="tel:+917070506070"
@@ -186,18 +329,58 @@ export default function Header({ isDiwaliMode = false }: HeaderProps = {}) {
               </a>
             </div>
 
-            <div className="flex flex-1 w-full mx-0 md:mx-6 overflow-hidden relative pt-1 md:pt-0">
-              {showMarquee && marqueeText && (
-                <div
-                  className="text-[12.5px] md:text-[14.5px] font-medium md:font-extrabold tracking-wide whitespace-pre overflow-hidden"
-                  style={{ color: isDiwaliMode ? "#c4620c" : "#f27a1a" }}
-                >
-                  {marqueeText}
+            {!timeLeft.isEnded || isDiwaliMode || pathname === "/diwali-campaign" ? (
+              <div className="flex flex-1 items-center justify-center w-full mx-0 md:mx-4 overflow-visible relative py-0.5 md:py-0">
+                <div className="announce" id="offer">
+                  {!timeLeft.isEnded ? (
+                    <>
+                      <span className="an-txt">&#128293; Festive offer ends 2 Nov</span>
+                      <div className="an-cd" id="cd" role="timer" aria-label="Time left to book">
+                        <span className="an-u">
+                          <b id="cd-d">{timeLeft.days}</b>d
+                        </span>
+                        <span className="an-u">
+                          <b id="cd-h">{timeLeft.hours}</b>h
+                        </span>
+                        <span className="an-u">
+                          <b id="cd-m">{timeLeft.minutes}</b>m
+                        </span>
+                        <span className="an-u">
+                          <b id="cd-s">{timeLeft.seconds}</b>s
+                        </span>
+                      </div>
+                      <Link
+                        href={
+                          pathname === "/diwali-campaign"
+                            ? "#diwali-booking"
+                            : "/diwali-campaign#diwali-booking"
+                        }
+                        className="an-link"
+                      >
+                        Book now &rarr;
+                      </Link>
+                    </>
+                  ) : (
+                    <span className="offer-end" id="offerEnd">
+                      This offer has ended &mdash; message us for current rates.
+                    </span>
+                  )}
                 </div>
-              )}
-            </div>
+              </div>
+            ) : (
+              <div className="flex flex-1 w-full mx-0 md:mx-6 overflow-hidden relative pt-1 md:pt-0">
+                {showMarquee && marqueeText && (
+                  <div
+                    className="text-[12.5px] md:text-[14.5px] font-medium md:font-extrabold tracking-wide whitespace-pre overflow-hidden"
+                    style={{ color: isDiwaliMode ? "#c4620c" : "#f27a1a" }}
+                  >
+                    {marqueeText}
+                  </div>
+                )}
+              </div>
+            )}
 
-            <div className="hidden sm:flex items-center gap-6 overflow-visible">
+            <div className="hidden sm:flex items-center gap-6 overflow-visible shrink-0">
               <Link
                 href="/zipcode"
                 className={`transition-colors ${
