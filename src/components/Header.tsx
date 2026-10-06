@@ -78,65 +78,63 @@ export default function Header({ isDiwaliMode = false }: HeaderProps = {}) {
 
   return (
     <>
-      {isDiwaliMode && (
-        <style>{`
-          @keyframes waterFluid1 {
-            0% {
-              transform: translate(-30%, -30%) rotate(0deg) scale(1.1);
-            }
-            50% {
-              transform: translate(15%, 20%) rotate(180deg) scale(1.4);
-            }
-            100% {
-              transform: translate(-30%, -30%) rotate(360deg) scale(1.1);
-            }
+      <style>{`
+        @keyframes waterFluid1 {
+          0% {
+            transform: translate(-30%, -30%) rotate(0deg) scale(1.1);
           }
-          @keyframes waterFluid2 {
-            0% {
-              transform: translate(25%, 20%) rotate(0deg) scale(1.3);
-            }
-            50% {
-              transform: translate(-25%, -20%) rotate(-180deg) scale(1.1);
-            }
-            100% {
-              transform: translate(25%, 20%) rotate(-360deg) scale(1.3);
-            }
+          50% {
+            transform: translate(15%, 20%) rotate(180deg) scale(1.4);
           }
-          @keyframes waterShimmerFlow {
-            0% {
-              background-position: 0% 50%;
-              opacity: 0.25;
-            }
-            50% {
-              background-position: 100% 50%;
-              opacity: 0.6;
-            }
-            100% {
-              background-position: 0% 50%;
-              opacity: 0.25;
-            }
+          100% {
+            transform: translate(-30%, -30%) rotate(360deg) scale(1.1);
           }
-          .diwali-water-flow-1 {
-            background: radial-gradient(ellipse 65% 55% at 50% 50%, rgba(247, 154, 69, 0.22) 0%, rgba(237, 126, 35, 0.10) 50%, transparent 75%);
-            animation: waterFluid1 36s ease-in-out infinite;
-            filter: blur(22px);
+        }
+        @keyframes waterFluid2 {
+          0% {
+            transform: translate(25%, 20%) rotate(0deg) scale(1.3);
           }
-          .diwali-water-flow-2 {
-            background: radial-gradient(ellipse 60% 50% at 50% 50%, rgba(237, 126, 35, 0.18) 0%, rgba(180, 104, 63, 0.08) 55%, transparent 80%);
-            animation: waterFluid2 48s ease-in-out infinite;
-            filter: blur(26px);
+          50% {
+            transform: translate(-25%, -20%) rotate(-180deg) scale(1.1);
           }
-          .diwali-water-shimmer-layer {
-            background: linear-gradient(90deg, transparent 0%, rgba(237, 126, 35, 0.08) 30%, rgba(247, 154, 69, 0.16) 50%, rgba(237, 126, 35, 0.08) 70%, transparent 100%);
-            background-size: 200% 100%;
-            animation: waterShimmerFlow 24s ease-in-out infinite;
+          100% {
+            transform: translate(25%, 20%) rotate(-360deg) scale(1.3);
           }
-        `}</style>
-      )}
-      <div className="sticky top-0 z-50 w-full flex flex-col transition-colors duration-300">
+        }
+        @keyframes waterShimmerFlow {
+          0% {
+            background-position: 0% 50%;
+            opacity: 0.25;
+          }
+          50% {
+            background-position: 100% 50%;
+            opacity: 0.6;
+          }
+          100% {
+            background-position: 0% 50%;
+            opacity: 0.25;
+          }
+        }
+        .diwali-water-flow-1 {
+          background: radial-gradient(ellipse 65% 55% at 50% 50%, rgba(247, 154, 69, 0.22) 0%, rgba(237, 126, 35, 0.10) 50%, transparent 75%);
+          animation: waterFluid1 36s ease-in-out infinite;
+          filter: blur(22px);
+        }
+        .diwali-water-flow-2 {
+          background: radial-gradient(ellipse 60% 50% at 50% 50%, rgba(237, 126, 35, 0.18) 0%, rgba(180, 104, 63, 0.08) 55%, transparent 80%);
+          animation: waterFluid2 48s ease-in-out infinite;
+          filter: blur(26px);
+        }
+        .diwali-water-shimmer-layer {
+          background: linear-gradient(90deg, transparent 0%, rgba(237, 126, 35, 0.08) 30%, rgba(247, 154, 69, 0.16) 50%, rgba(237, 126, 35, 0.08) 70%, transparent 100%);
+          background-size: 200% 100%;
+          animation: waterShimmerFlow 24s ease-in-out infinite;
+        }
+      `}</style>
+      <div className="sticky top-0 z-50 w-full flex flex-col transition-colors duration-700 ease-in-out">
         <div
           data-header-bg
-          className={`text-[12px] font-semibold py-3.5 px-4 sm:px-6 relative z-50 transition-colors duration-300 ${
+          className={`text-[12px] font-semibold py-3.5 px-4 sm:px-6 relative z-50 transition-colors duration-700 ease-in-out ${
             isDiwaliMode
               ? "bg-white/95 border-b border-[#ED7E23]/25 text-[#1F272F]"
               : "bg-[#0D1527] text-zinc-300 border-b border-white/5"
@@ -282,23 +280,26 @@ export default function Header({ isDiwaliMode = false }: HeaderProps = {}) {
           </div>
         </div>
 
-        <header className="px-4 sm:px-6 py-4 relative z-40 transition-colors duration-300">
+        <header className="px-4 sm:px-6 py-4 relative z-40 transition-colors duration-700 ease-in-out">
           <div
             data-header-bg
-            className={`max-w-425 mx-auto rounded-2xl px-6 sm:px-8 py-4 flex justify-between items-center transition-all duration-300 relative overflow-hidden ${
+            className={`max-w-425 mx-auto rounded-2xl px-6 sm:px-8 py-4 flex justify-between items-center transition-all duration-700 ease-in-out relative overflow-hidden ${
               isDiwaliMode
                 ? "bg-gradient-to-b from-white/95 to-[#F0F3F3]/90 backdrop-blur-md border border-[#ED7E23]/35 shadow-lg shadow-black/5"
                 : "bg-[#0D1527] border border-white/5 shadow-md"
             }`}
           >
             {/* Glowing Water Background Animation for Diwali Mode */}
-            {isDiwaliMode && (
-              <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-2xl z-0">
-                <div className="diwali-water-flow-1 absolute -inset-full opacity-70" />
-                <div className="diwali-water-flow-2 absolute -inset-full opacity-60" />
-                <div className="diwali-water-shimmer-layer absolute inset-0" />
-              </div>
-            )}
+            <div
+              className={`absolute inset-0 pointer-events-none overflow-hidden rounded-2xl z-0 transition-opacity duration-700 ease-in-out ${
+                isDiwaliMode ? "opacity-100" : "opacity-0"
+              }`}
+              aria-hidden={!isDiwaliMode}
+            >
+              <div className="diwali-water-flow-1 absolute -inset-full opacity-70" />
+              <div className="diwali-water-flow-2 absolute -inset-full opacity-60" />
+              <div className="diwali-water-shimmer-layer absolute inset-0" />
+            </div>
 
             <Link href="/" className="flex items-center gap-3 relative z-10">
               <img
