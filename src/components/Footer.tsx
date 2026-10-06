@@ -29,14 +29,13 @@ export default function Footer({ isDiwaliMode = false }: FooterProps = {}) {
 
   return (
     <footer
-      className={`text-white pt-12 sm:pt-16 pb-8 px-4 sm:px-6 font-sans rounded-t-2xl sm:rounded-t-3xl shadow-inner transition-colors duration-300 ${
+      className={`text-white pt-12 sm:pt-16 pb-8 px-4 sm:px-6 font-sans rounded-t-2xl sm:rounded-t-3xl shadow-inner transition-colors duration-700 ease-in-out ${
         isDiwaliMode
           ? "diwali-footer border-t border-[#ED7E23]/30"
           : "bg-[#f27a1a]"
       }`}
     >
-      {isDiwaliMode && (
-        <style>{`
+      <style>{`
           .diwali-footer {
             background-color: rgba(239, 234, 226, 0.95) !important;
             border-top: 1px solid rgba(237, 126, 35, 0.3) !important;
@@ -79,7 +78,6 @@ export default function Footer({ isDiwaliMode = false }: FooterProps = {}) {
             color: #c4620c !important;
           }
         `}</style>
-      )}
       <div className="max-w-[1650px] mx-auto flex flex-col gap-10 px-4 sm:px-8 lg:px-12">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-10 lg:gap-16">
           {/* Column 1: Brand */}
