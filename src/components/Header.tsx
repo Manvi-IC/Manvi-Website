@@ -303,11 +303,17 @@ export default function Header({ isDiwaliMode = false }: HeaderProps = {}) {
                   }
                 }}
                 className={`flex items-center gap-1.5 sm:gap-2 transition-colors ${
-                  isDiwaliMode ? "text-[#1F272F] hover:text-[#c4620c]" : "hover:text-white"
+                  isDiwaliMode
+                    ? "text-[#1F272F] hover:text-[#c4620c]"
+                    : "hover:text-white"
                 }`}
               >
-                <Phone className={`h-3.5 w-3.5 shrink-0 ${isDiwaliMode ? "text-[#c4620c]" : "text-white"}`} />
-                <span className={`truncate ${isDiwaliMode ? "text-[#1F272F]" : "text-white/90"}`}>
+                <Phone
+                  className={`h-3.5 w-3.5 shrink-0 ${isDiwaliMode ? "text-[#c4620c]" : "text-white"}`}
+                />
+                <span
+                  className={`truncate ${isDiwaliMode ? "text-[#1F272F]" : "text-white/90"}`}
+                >
                   +91 70 70 50 60 70
                 </span>
               </a>
@@ -319,23 +325,38 @@ export default function Header({ isDiwaliMode = false }: HeaderProps = {}) {
                   trackEvent("Contact", { method: "Email", location: "header" })
                 }
                 className={`flex items-center gap-1.5 sm:gap-2 transition-colors ${
-                  isDiwaliMode ? "text-[#1F272F] hover:text-[#c4620c]" : "hover:text-white"
+                  isDiwaliMode
+                    ? "text-[#1F272F] hover:text-[#c4620c]"
+                    : "hover:text-white"
                 }`}
               >
-                <Mail className={`h-3.5 w-3.5 shrink-0 ${isDiwaliMode ? "text-[#c4620c]" : "text-white"}`} />
-                <span className={`truncate ${isDiwaliMode ? "text-[#1F272F]" : "text-white/90"}`}>
+                <Mail
+                  className={`h-3.5 w-3.5 shrink-0 ${isDiwaliMode ? "text-[#c4620c]" : "text-white"}`}
+                />
+                <span
+                  className={`truncate ${isDiwaliMode ? "text-[#1F272F]" : "text-white/90"}`}
+                >
                   Info@manvicourier.com
                 </span>
               </a>
             </div>
 
-            {!timeLeft.isEnded || isDiwaliMode || pathname === "/diwali-campaign" ? (
+            {!timeLeft.isEnded ||
+            isDiwaliMode ||
+            pathname === "/diwali-campaign" ? (
               <div className="flex flex-1 items-center justify-center w-full mx-0 md:mx-4 overflow-visible relative py-0.5 md:py-0">
                 <div className="announce" id="offer">
                   {!timeLeft.isEnded ? (
                     <>
-                      <span className="an-txt">&#128293; Festive offer ends 2 Nov</span>
-                      <div className="an-cd" id="cd" role="timer" aria-label="Time left to book">
+                      <span className="an-txt">
+                        &#128293; Festive offer ends 2 Nov
+                      </span>
+                      <div
+                        className="an-cd"
+                        id="cd"
+                        role="timer"
+                        aria-label="Time left to book"
+                      >
                         <span className="an-u">
                           <b id="cd-d">{timeLeft.days}</b>d
                         </span>
@@ -349,14 +370,7 @@ export default function Header({ isDiwaliMode = false }: HeaderProps = {}) {
                           <b id="cd-s">{timeLeft.seconds}</b>s
                         </span>
                       </div>
-                      <Link
-                        href={
-                          pathname === "/diwali-campaign"
-                            ? "#diwali-booking"
-                            : "/diwali-campaign#diwali-booking"
-                        }
-                        className="an-link"
-                      >
+                      <Link href="/book-shipment" className="an-link">
                         Book now &rarr;
                       </Link>
                     </>
@@ -384,7 +398,9 @@ export default function Header({ isDiwaliMode = false }: HeaderProps = {}) {
               <Link
                 href="/zipcode"
                 className={`transition-colors ${
-                  isDiwaliMode ? "text-[#1F272F] hover:text-[#c4620c]" : "hover:text-white"
+                  isDiwaliMode
+                    ? "text-[#1F272F] hover:text-[#c4620c]"
+                    : "hover:text-white"
                 }`}
               >
                 {t.nav_zipcode}
@@ -395,7 +411,9 @@ export default function Header({ isDiwaliMode = false }: HeaderProps = {}) {
                   id="language-selector"
                   onClick={() => setIsLangOpen((prev) => !prev)}
                   className={`flex items-center gap-1.5 transition-colors cursor-pointer focus:outline-none ${
-                    isDiwaliMode ? "text-[#1F272F] hover:text-[#c4620c]" : "hover:text-white"
+                    isDiwaliMode
+                      ? "text-[#1F272F] hover:text-[#c4620c]"
+                      : "hover:text-white"
                   }`}
                   aria-expanded={isLangOpen}
                   aria-haspopup="listbox"
@@ -466,7 +484,7 @@ export default function Header({ isDiwaliMode = false }: HeaderProps = {}) {
         <header className="px-4 sm:px-6 py-4 relative z-40 transition-colors duration-700 ease-in-out">
           <div
             data-header-bg
-            className={`max-w-425 mx-auto rounded-2xl px-6 sm:px-8 py-4 flex justify-between items-center transition-all duration-700 ease-in-out relative overflow-hidden ${
+            className={`max-w-425 mx-auto rounded-2xl px-6 sm:px-8 py-4 flex justify-between items-center transition-all duration-700 ease-in-out relative ${
               isDiwaliMode
                 ? "bg-gradient-to-b from-white/95 to-[#F0F3F3]/90 backdrop-blur-md border border-[#ED7E23]/35 shadow-lg shadow-black/5"
                 : "bg-[#0D1527] border border-white/5 shadow-md"
@@ -516,20 +534,6 @@ export default function Header({ isDiwaliMode = false }: HeaderProps = {}) {
                 }`}
               >
                 <Link
-                  href="/about"
-                  className={`transition-colors ${
-                    pathname?.startsWith("/about")
-                      ? isDiwaliMode
-                        ? "text-[#c4620c]"
-                        : "text-[#f27a1a]"
-                      : isDiwaliMode
-                        ? "hover:text-[#c4620c]"
-                        : "hover:text-[#f27a1a]"
-                  }`}
-                >
-                  {t.nav_about}
-                </Link>
-                <Link
                   href="/services"
                   className={`transition-colors ${
                     pathname?.startsWith("/services")
@@ -567,48 +571,71 @@ export default function Header({ isDiwaliMode = false }: HeaderProps = {}) {
                 >
                   {t.nav_quote}
                 </Link>
-                <Link
-                  href="/contact"
-                  className={`transition-colors ${
-                    pathname?.startsWith("/contact")
-                      ? isDiwaliMode
-                        ? "text-[#c4620c]"
-                        : "text-[#f27a1a]"
-                      : isDiwaliMode
-                        ? "hover:text-[#c4620c]"
-                        : "hover:text-[#f27a1a]"
-                  }`}
-                >
-                  {t.nav_contact}
-                </Link>
-                <Link
-                  href="/blog"
-                  className={`transition-colors ${
-                    pathname?.startsWith("/blog")
-                      ? isDiwaliMode
-                        ? "text-[#c4620c]"
-                        : "text-[#f27a1a]"
-                      : isDiwaliMode
-                        ? "hover:text-[#c4620c]"
-                        : "hover:text-[#f27a1a]"
-                  }`}
-                >
-                  {t.footer_blog}
-                </Link>
-                <Link
-                  href="/career"
-                  className={`transition-colors ${
-                    pathname?.startsWith("/career")
-                      ? isDiwaliMode
-                        ? "text-[#c4620c]"
-                        : "text-[#f27a1a]"
-                      : isDiwaliMode
-                        ? "hover:text-[#c4620c]"
-                        : "hover:text-[#f27a1a]"
-                  }`}
-                >
-                  {t.footer_career}
-                </Link>
+
+                <div className="relative group py-2">
+                  <span
+                    className={`cursor-pointer transition-colors flex items-center gap-1 ${
+                      ["/about", "/contact", "/blog", "/career"].some((p) => pathname?.startsWith(p))
+                        ? isDiwaliMode
+                          ? "text-[#c4620c]"
+                          : "text-[#f27a1a]"
+                        : isDiwaliMode
+                          ? "hover:text-[#c4620c]"
+                          : "hover:text-[#f27a1a]"
+                    }`}
+                  >
+                    Company <ChevronDown className="w-3.5 h-3.5 transition-transform duration-200 group-hover:rotate-180" />
+                  </span>
+                  
+                  <div
+                    className={`absolute left-0 top-full mt-0 w-40 rounded-xl shadow-lg border opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 flex flex-col overflow-hidden ${
+                      isDiwaliMode
+                        ? "bg-white border-[#ED7E23]/30"
+                        : "bg-[#0D1527] border-white/10"
+                    }`}
+                  >
+                    <Link
+                      href="/about"
+                      className={`px-4 py-3 transition-colors ${
+                        pathname?.startsWith("/about")
+                          ? isDiwaliMode ? "text-[#c4620c] bg-orange-50/50" : "text-[#f27a1a] bg-white/5"
+                          : isDiwaliMode ? "hover:bg-orange-50/50 hover:text-[#c4620c]" : "hover:bg-white/5 hover:text-[#f27a1a]"
+                      }`}
+                    >
+                      {t.nav_about}
+                    </Link>
+                    <Link
+                      href="/contact"
+                      className={`px-4 py-3 transition-colors ${
+                        pathname?.startsWith("/contact")
+                          ? isDiwaliMode ? "text-[#c4620c] bg-orange-50/50" : "text-[#f27a1a] bg-white/5"
+                          : isDiwaliMode ? "hover:bg-orange-50/50 hover:text-[#c4620c]" : "hover:bg-white/5 hover:text-[#f27a1a]"
+                      }`}
+                    >
+                      {t.nav_contact}
+                    </Link>
+                    <Link
+                      href="/blog"
+                      className={`px-4 py-3 transition-colors ${
+                        pathname?.startsWith("/blog")
+                          ? isDiwaliMode ? "text-[#c4620c] bg-orange-50/50" : "text-[#f27a1a] bg-white/5"
+                          : isDiwaliMode ? "hover:bg-orange-50/50 hover:text-[#c4620c]" : "hover:bg-white/5 hover:text-[#f27a1a]"
+                      }`}
+                    >
+                      {t.footer_blog}
+                    </Link>
+                    <Link
+                      href="/career"
+                      className={`px-4 py-3 transition-colors ${
+                        pathname?.startsWith("/career")
+                          ? isDiwaliMode ? "text-[#c4620c] bg-orange-50/50" : "text-[#f27a1a] bg-white/5"
+                          : isDiwaliMode ? "hover:bg-orange-50/50 hover:text-[#c4620c]" : "hover:bg-white/5 hover:text-[#f27a1a]"
+                      }`}
+                    >
+                      {t.footer_career}
+                    </Link>
+                  </div>
+                </div>
                 {/* Customer Login */}
                 <a
                   href="https://portal.manvicourier.com"
@@ -623,18 +650,32 @@ export default function Header({ isDiwaliMode = false }: HeaderProps = {}) {
                   Customer Login
                 </a>
               </nav>
-              <Link
-                href="/track"
-                className={`px-5 py-2 rounded-full text-[13px] font-extrabold transition-all whitespace-nowrap ${
-                  isDiwaliMode
-                    ? "bg-gradient-to-b from-[#f79a45] to-[#ED7E23] text-[#1F272F] shadow-[0_10px_30px_-8px_rgba(237,126,35,0.6),inset_0_1px_0_#ffd9b5] hover:scale-105 active:scale-95"
-                    : pathname?.startsWith("/track")
-                      ? "bg-orange-600 text-white"
-                      : "bg-[#f27a1a] text-white hover:bg-orange-600"
-                }`}
-              >
-                {t.nav_track}
-              </Link>
+              <div className="flex items-center gap-3">
+                <Link
+                  href="/book-shipment"
+                  className={`px-5 py-1.5 rounded-full text-[13px] font-extrabold transition-all whitespace-nowrap ${
+                    isDiwaliMode
+                      ? "bg-white text-[#ED7E23] border border-[#ED7E23] hover:bg-[#ED7E23] hover:text-white"
+                      : pathname?.startsWith("/book-shipment")
+                        ? "bg-[#0D1527] text-white border border-white"
+                        : "bg-[#0D1527] text-white hover:bg-gray-800 border-[2px] border-white/80"
+                  }`}
+                >
+                  Book Now
+                </Link>
+                <Link
+                  href="/track"
+                  className={`px-5 py-2 rounded-full text-[13px] font-extrabold transition-all whitespace-nowrap ${
+                    isDiwaliMode
+                      ? "bg-gradient-to-b from-[#f79a45] to-[#ED7E23] text-[#1F272F] shadow-[0_10px_30px_-8px_rgba(237,126,35,0.6),inset_0_1px_0_#ffd9b5] hover:scale-105 active:scale-95"
+                      : pathname?.startsWith("/track")
+                        ? "bg-orange-600  text-white"
+                        : "bg-[#f27a1a] text-white hover:bg-orange-600"
+                  }`}
+                >
+                  {t.nav_track}
+                </Link>
+              </div>
             </div>
 
             <button
@@ -696,6 +737,13 @@ export default function Header({ isDiwaliMode = false }: HeaderProps = {}) {
               className={`pb-2 border-b border-gray-100 ${pathname?.startsWith("/track") ? "text-[#f27a1a]" : ""}`}
             >
               {t.nav_track_shipment}
+            </Link>
+            <Link
+              href="/book-shipment"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className={`pb-2 border-b border-gray-100 ${pathname?.startsWith("/book-shipment") ? "text-[#f27a1a]" : ""}`}
+            >
+              Book Now
             </Link>
             <Link
               href="/quote"
