@@ -564,11 +564,13 @@ export function SearchableCountryDropdown({
   value,
   onChange,
   placeholder = "Select Country",
+  className,
 }: {
   countries: string[];
   value: string;
   onChange: (country: string) => void;
   placeholder?: string;
+  className?: string;
 }) {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
@@ -612,7 +614,10 @@ export function SearchableCountryDropdown({
   return (
     <div className="relative" ref={wrapperRef}>
       <div
-        className="w-full bg-white text-[#333] text-[14px] font-medium rounded-xl border border-gray-200 shadow-sm flex items-center gap-3 px-5 py-4 cursor-text"
+        className={
+          className ||
+          "w-full bg-white text-[#333] text-[14px] font-medium rounded-xl border border-gray-200 shadow-sm flex items-center gap-3 px-5 py-4 cursor-text"
+        }
         onClick={() => {
           setOpen(true);
           setTimeout(() => inputRef.current?.focus(), 0);

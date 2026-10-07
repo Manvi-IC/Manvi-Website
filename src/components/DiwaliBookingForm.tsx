@@ -125,9 +125,9 @@ export default function DiwaliBookingForm({
 
   return (
     <div
-      className={`lg:col-span-6 rounded-xl sm:rounded-2xl p-4 sm:p-8 shadow-sm transition-all duration-700 ease-in-out relative ${
+      className={`lg:col-span-6 order-1 lg:order-2 rounded-xl sm:rounded-2xl p-4 sm:p-8 shadow-sm transition-all duration-700 ease-in-out relative ${
         isDiwaliMode
-          ? "bg-white border border-[#ED7E23]/35 shadow-md text-[#1F272F]"
+          ? "bg-white border border-[#ED7E23]/80 shadow-md text-[#1F272F]"
           : "bg-white border border-gray-200/80"
       }`}
     >
@@ -286,6 +286,11 @@ export default function DiwaliBookingForm({
                       ? "Select European Country"
                       : "Select Country"
                   }
+                  className={`w-full flex items-center gap-2.5 sm:gap-3 rounded-lg sm:rounded-xl px-3.5 sm:px-4 py-2.5 sm:py-3 text-xs font-medium cursor-text transition-colors ${
+                    isDiwaliMode
+                      ? "bg-white border-[1.5px] border-[#B4683F]/45 text-[#1F272F] focus-within:border-[#c4620c] focus-within:ring-2 focus-within:ring-[#ED7E23]/25"
+                      : "bg-[#f8f9fa] border border-gray-200 text-[#333] focus-within:border-orange-500"
+                  }`}
                 />
               </div>
             )}

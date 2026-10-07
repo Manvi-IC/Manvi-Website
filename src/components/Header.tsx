@@ -703,15 +703,36 @@ export default function Header({ isDiwaliMode = false }: HeaderProps = {}) {
           </div>
         </header>
       </div>
+        
+      {/* Mobile Menu Backdrop */}
+      <div
+        className={`md:hidden fixed inset-0 bg-black/40 z-[100] transition-opacity duration-300 ${
+          isMobileMenuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+        }`}
+        onClick={() => setIsMobileMenuOpen(false)}
+      />
 
-      {isMobileMenuOpen && (
-        <div
-          className={`md:hidden fixed inset-0 top-33.75 z-40 px-6 py-6 shadow-xl flex flex-col gap-6 font-sans overflow-y-auto ${
-            isDiwaliMode
-              ? "bg-white/98 backdrop-blur-xl text-[#1F272F] border-t border-[#ED7E23]/25 shadow-2xl"
-              : "bg-white text-[#1c1f2e] border-t border-gray-100"
-          }`}
-        >
+      {/* Mobile Menu Sidebar */}
+      <div
+        className={`md:hidden fixed inset-y-0 right-0 w-[280px] max-w-[85vw] z-[110] px-6 py-6 pb-20 shadow-2xl flex flex-col gap-6 font-sans overflow-y-auto transition-transform duration-300 ease-in-out ${
+          isMobileMenuOpen ? "translate-x-0 pointer-events-auto" : "translate-x-full pointer-events-none"
+        } ${
+          isDiwaliMode
+            ? "bg-white/98 backdrop-blur-xl text-[#1F272F] border-l border-[#ED7E23]/25"
+            : "bg-white text-[#1c1f2e] border-l border-gray-100"
+        }`}
+      >
+          <div className="flex justify-end mb-2">
+            <button
+              onClick={() => setIsMobileMenuOpen(false)}
+              className={`p-2 rounded-full transition-colors ${
+                isDiwaliMode ? "bg-[#fef4ea] text-[#ED7E23]" : "bg-gray-100 text-gray-500"
+              }`}
+              aria-label="Close menu"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
           <nav
             className={`flex flex-col gap-4 text-[16px] font-bold ${
               isDiwaliMode ? "text-[#1F272F]" : "text-[#1c1f2e]"
@@ -731,20 +752,7 @@ export default function Header({ isDiwaliMode = false }: HeaderProps = {}) {
             >
               {t.nav_about}
             </Link>
-            <Link
-              href="/track"
-              onClick={() => setIsMobileMenuOpen(false)}
-              className={`pb-2 border-b border-gray-100 ${pathname?.startsWith("/track") ? "text-[#f27a1a]" : ""}`}
-            >
-              {t.nav_track_shipment}
-            </Link>
-            <Link
-              href="/book-shipment"
-              onClick={() => setIsMobileMenuOpen(false)}
-              className={`pb-2 border-b border-gray-100 ${pathname?.startsWith("/book-shipment") ? "text-[#f27a1a]" : ""}`}
-            >
-              Book Now
-            </Link>
+
             <Link
               href="/quote"
               onClick={() => {
@@ -795,10 +803,33 @@ export default function Header({ isDiwaliMode = false }: HeaderProps = {}) {
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => setIsMobileMenuOpen(false)}
-              className="pb-2 border-b border-gray-100 hover:text-[#f27a1a] transition-colors"
+              className="pb-2 hover:text-[#f27a1a] transition-colors"
             >
               Customer Login
             </a>
+            
+            <div className="flex flex-col gap-3 mt-4">
+              <Link
+                href="/book-shipment"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className={`w-full py-3 px-4 rounded-xl text-center text-white font-bold transition-all shadow-md active:scale-95 ${
+                  isDiwaliMode ? "bg-[#ED7E23] hover:bg-[#c4620c]" : "bg-[#f27a1a] hover:bg-[#e06808]"
+                }`}
+              >
+                Book Now
+              </Link>
+              <Link
+                href="/track"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className={`w-full py-3 px-4 rounded-xl text-center font-bold transition-all active:scale-95 ${
+                  isDiwaliMode
+                    ? "bg-[#fef4ea] text-[#ED7E23] border border-[#ED7E23]"
+                    : "bg-[#fff1e6] text-[#f27a1a] border border-[#f27a1a]"
+                }`}
+              >
+                {t.nav_track_shipment}
+              </Link>
+            </div>
           </nav>
 
           <div className="border-t border-gray-100 pt-4">
@@ -838,7 +869,6 @@ export default function Header({ isDiwaliMode = false }: HeaderProps = {}) {
             </div>
           </div>
         </div>
-      )}
 
       {pathname &&
         pathname !== "/" &&
