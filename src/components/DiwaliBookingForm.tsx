@@ -125,7 +125,7 @@ export default function DiwaliBookingForm({
 
   return (
     <div
-      className={`lg:col-span-6 order-1 lg:order-2 rounded-xl sm:rounded-2xl p-4 sm:p-8 shadow-sm transition-all duration-700 ease-in-out relative ${
+      className={`lg:col-span-6 order-1 lg:order-1 rounded-xl sm:rounded-2xl p-4 sm:p-8 shadow-sm transition-all duration-700 ease-in-out relative ${
         isDiwaliMode
           ? "bg-white border border-[#ED7E23]/80 shadow-md text-[#1F272F]"
           : "bg-white border border-gray-200/80"
