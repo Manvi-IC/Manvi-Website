@@ -1,14 +1,21 @@
 "use client";
-import DiwaliFireworks from "@/components/DiwaliFireworks";
+import dynamic from "next/dynamic";
 import {
   DiyaLamp,
   AkashKandil,
   RangoliDivider,
   RangoliWatermark,
-  DiwaliAmbientEmbers,
   FestiveJaliBackground,
   CornerFlourish,
 } from "@/components/DiwaliDecorations";
+
+const DiwaliFireworks = dynamic(() => import("@/components/DiwaliFireworks"), {
+  ssr: false,
+});
+const DiwaliAmbientEmbers = dynamic(
+  () => import("@/components/DiwaliDecorations").then((mod) => mod.DiwaliAmbientEmbers),
+  { ssr: false }
+);
 
 import {
   ArrowUpRight,
@@ -1301,15 +1308,7 @@ export default function DiwaliCampaignPage({
               : "bg-[#eef0f5] border border-gray-200/60"
           }`}
         >
-          {/* Grand Central Floor Mandala Watermark */}
-          <div
-            className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none transition-opacity duration-700 ease-in-out ${
-              isDiwaliMode ? "opacity-100" : "opacity-0"
-            }`}
-            aria-hidden={!isDiwaliMode}
-          >
-            <RangoliWatermark size={420} opacity={0.16} />
-          </div>
+
 
           <div className="text-center max-w-xl mx-auto mb-6 sm:mb-12 relative z-10">
             <h2
