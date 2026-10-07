@@ -370,9 +370,22 @@ export default function Header({ isDiwaliMode = false }: HeaderProps = {}) {
                           <b id="cd-s">{timeLeft.seconds}</b>s
                         </span>
                       </div>
-                      <Link href="/book-shipment" className="an-link">
+                      <a 
+                        href={pathname === "/diwali-campaign" ? "#diwali-booking" : "/diwali-campaign#diwali-booking"}
+                        onClick={(e) => {
+                          if (pathname === "/diwali-campaign") {
+                            e.preventDefault();
+                            const el = document.getElementById("diwali-booking");
+                            if (el) {
+                              const y = el.getBoundingClientRect().top + window.scrollY - 100;
+                              window.scrollTo({ top: y, behavior: "smooth" });
+                            }
+                          }
+                        }}
+                        className="an-link"
+                      >
                         Book now &rarr;
-                      </Link>
+                      </a>
                     </>
                   ) : (
                     <span className="offer-end" id="offerEnd">
@@ -722,19 +735,18 @@ export default function Header({ isDiwaliMode = false }: HeaderProps = {}) {
             : "bg-white text-[#1c1f2e] border-l border-gray-100"
         }`}
       >
-          <div className="flex justify-end mb-2">
-            <button
-              onClick={() => setIsMobileMenuOpen(false)}
-              className={`p-2 rounded-full transition-colors ${
-                isDiwaliMode ? "bg-[#fef4ea] text-[#ED7E23]" : "bg-gray-100 text-gray-500"
-              }`}
-              aria-label="Close menu"
-            >
-              <X className="w-5 h-5" />
-            </button>
-          </div>
+          <button
+            onClick={() => setIsMobileMenuOpen(false)}
+            className={`absolute top-4 right-4 p-2 rounded-full transition-colors z-50 ${
+              isDiwaliMode ? "bg-[#fef4ea] text-[#ED7E23]" : "bg-gray-100 text-gray-500"
+            }`}
+            aria-label="Close menu"
+          >
+            <X className="w-5 h-5" />
+          </button>
+          
           <nav
-            className={`flex flex-col gap-4 text-[16px] font-bold ${
+            className={`flex flex-col gap-4 text-[16px] font-bold mt-8 ${
               isDiwaliMode ? "text-[#1F272F]" : "text-[#1c1f2e]"
             }`}
           >
