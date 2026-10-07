@@ -1,7 +1,13 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { CheckCircle2, Loader2 } from "lucide-react";
+import { CheckCircle2, Loader2, ChevronDown } from "lucide-react";
 import { RangoliWatermark } from "@/components/DiwaliDecorations";
+import {
+  SearchableCountryDropdown,
+  DESTINATIONS,
+  EUROPE_COUNTRIES,
+  INTERNATIONAL_COUNTRIES,
+} from "@/components/GetQuote";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 const DB_NAME = process.env.NEXT_PUBLIC_X_DATABASE || "manvi";
@@ -22,20 +28,28 @@ export default function DiwaliBookingForm({
   const [inqName, setInqName] = useState("");
   const [inqPhone, setInqPhone] = useState("");
   const [inqEmail, setInqEmail] = useState("");
-  const [inqDest, setInqDest] = useState("");
+  const [destination, setDestination] = useState("");
+  const [zoningCountry, setZoningCountry] = useState("");
   const [inqWeight, setInqWeight] = useState("");
   const [inqLoading, setInqLoading] = useState(false);
   const [inqSuccess, setInqSuccess] = useState(false);
+
+  const destObj = DESTINATIONS.find((d) => d.value === destination);
+  const requiresSubCountry = destObj?.requiresSubCountry ?? false;
+  const subCountryOptions =
+    destination === "EUROPE" ? EUROPE_COUNTRIES : INTERNATIONAL_COUNTRIES;
 
   const handleInquirySubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setInqLoading(true);
 
+    const finalDest = requiresSubCountry ? zoningCountry : destination;
+
     const inquiryDetails = {
       name: inqName.trim() || "Diwali Customer",
       phone: inqPhone.trim(),
       email: inqEmail.trim(),
-      destination: inqDest.trim() || "International",
+      destination: finalDest || "International",
       weight: inqWeight.trim(),
       submittedAt: new Date().toLocaleTimeString([], {
         hour: "2-digit",
@@ -59,7 +73,7 @@ export default function DiwaliBookingForm({
     params.append("Phone", inqPhone);
     params.append("Email", inqEmail || "noemail@diwali.com");
     params.append("Title", "Diwali Campaign Inquiry");
-    params.append("Department", inqDest || "International");
+    params.append("Department", finalDest || "International");
     params.append(
       "Description",
       `Diwali shipment pickup request. Approx weight: ${inqWeight ? `${inqWeight}kg` : "Not specified"}`
@@ -85,7 +99,7 @@ export default function DiwaliBookingForm({
           name: inqName.trim() || "Diwali Customer",
           phone: inqPhone.trim(),
           email: inqEmail.trim() || "not-provided@diwali-campaign.local",
-          destination: inqDest.trim() || "International",
+          destination: finalDest || "International",
           actualWt: parseFloat(inqWeight) || 0,
           chargeableWt: parseFloat(inqWeight) || 0,
           service: "Diwali Pickup Request",
@@ -111,19 +125,22 @@ export default function DiwaliBookingForm({
 
   return (
     <div
-      className={`lg:col-span-6 rounded-xl sm:rounded-2xl p-4 sm:p-8 shadow-sm transition-all duration-700 ease-in-out relative overflow-hidden ${
+      className={`lg:col-span-6 rounded-xl sm:rounded-2xl p-4 sm:p-8 shadow-sm transition-all duration-700 ease-in-out relative ${
         isDiwaliMode
           ? "bg-white border border-[#ED7E23]/35 shadow-md text-[#1F272F]"
           : "bg-white border border-gray-200/80"
       }`}
     >
-      <div
-        className={`absolute -top-10 -right-10 pointer-events-none transition-opacity duration-700 ease-in-out ${
-          isDiwaliMode ? "opacity-100" : "opacity-0"
-        }`}
-        aria-hidden={!isDiwaliMode}
-      >
-        <RangoliWatermark size={180} opacity={0.12} />
+      {/* Background Watermark container with hidden overflow */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none rounded-xl sm:rounded-2xl z-0">
+        <div
+          className={`absolute -top-10 -right-10 transition-opacity duration-700 ease-in-out ${
+            isDiwaliMode ? "opacity-100" : "opacity-0"
+          }`}
+          aria-hidden={!isDiwaliMode}
+        >
+          <RangoliWatermark size={180} opacity={0.12} />
+        </div>
       </div>
       {inqSuccess ? (
         <div className="text-center py-6 sm:py-8">
@@ -163,7 +180,8 @@ export default function DiwaliBookingForm({
                 setInqName("");
                 setInqPhone("");
                 setInqEmail("");
-                setInqDest("");
+                setDestination("");
+                setZoningCountry("");
                 setInqWeight("");
               }}
               className={`text-xs font-bold underline cursor-pointer px-2 py-1 ${
@@ -212,18 +230,37 @@ export default function DiwaliBookingForm({
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3">
-            <input
-              type="text"
-              required
-              placeholder="Destination Country (e.g. USA)*"
-              value={inqDest}
-              onChange={(e) => setInqDest(e.target.value)}
-              className={`rounded-lg sm:rounded-xl px-3.5 sm:px-4 py-2.5 sm:py-3 text-xs font-medium focus:outline-none transition-colors ${
-                isDiwaliMode
-                  ? "bg-white border-[1.5px] border-[#B4683F]/45 text-[#1F272F] placeholder:text-[#909498] focus:border-[#c4620c] focus:ring-2 focus:ring-[#ED7E23]/25"
-                  : "bg-[#f8f9fa] border border-gray-200 text-[#333] focus:border-orange-500"
-              }`}
-            />
+            <div className="relative">
+              <select
+                required
+                value={destination}
+                onChange={(e) => {
+                  setDestination(e.target.value);
+                  setZoningCountry("");
+                }}
+                className={`w-full rounded-lg sm:rounded-xl px-3.5 sm:px-4 py-2.5 sm:py-3 text-xs font-medium focus:outline-none transition-colors appearance-none ${
+                  isDiwaliMode
+                    ? "bg-white border-[1.5px] border-[#B4683F]/45 text-[#1F272F] focus:border-[#c4620c] focus:ring-2 focus:ring-[#ED7E23]/25"
+                    : "bg-[#f8f9fa] border border-gray-200 text-[#333] focus:border-orange-500"
+                } ${!destination ? (isDiwaliMode ? "text-[#909498]" : "text-gray-400") : ""}`}
+              >
+                <option value="" disabled hidden>
+                  Destination Country*
+                </option>
+                {DESTINATIONS.map((d) => (
+                  <option key={d.value} value={d.value} className="text-[#333]">
+                    {d.flag} {d.label}
+                  </option>
+                ))}
+              </select>
+              <ChevronDown
+                size={14}
+                className={`absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none ${
+                  isDiwaliMode ? "text-[#909498]" : "text-gray-400"
+                }`}
+              />
+            </div>
+            
             <input
               type="text"
               placeholder="Approx Weight (kg)"
@@ -235,6 +272,23 @@ export default function DiwaliBookingForm({
                   : "bg-[#f8f9fa] border border-gray-200 text-[#333] focus:border-orange-500"
               }`}
             />
+
+            {requiresSubCountry && (
+              <div className="col-span-1 sm:col-span-2 relative">
+                <SearchableCountryDropdown
+                  countries={subCountryOptions}
+                  value={zoningCountry}
+                  onChange={(val) => {
+                    setZoningCountry(val);
+                  }}
+                  placeholder={
+                    destination === "EUROPE"
+                      ? "Select European Country"
+                      : "Select Country"
+                  }
+                />
+              </div>
+            )}
           </div>
 
           <button

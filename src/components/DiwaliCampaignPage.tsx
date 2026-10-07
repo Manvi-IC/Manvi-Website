@@ -764,19 +764,22 @@ export default function DiwaliCampaignPage({
       >
         <span id="diwali-calculator" className="sr-only" />
         <div
-          className={`grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-12 items-center rounded-[20px] sm:rounded-3xl p-4 sm:p-10 lg:p-12 shadow-sm transition-all duration-700 ease-in-out relative overflow-hidden ${
+          className={`grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-12 items-center rounded-[20px] sm:rounded-3xl p-4 sm:p-10 lg:p-12 shadow-sm transition-all duration-700 ease-in-out relative ${
             isDiwaliMode
               ? "bg-gradient-to-b from-white/92 to-[#FCF6F0]/95 border border-[#ED7E23]/30 shadow-[0_14px_34px_-22px_rgba(31,39,47,0.28)] text-[#1F272F]"
               : "bg-[#eef0f5] border border-gray-200/70"
           }`}
         >
-          <div
-            className={`absolute -left-12 -bottom-12 pointer-events-none transition-opacity duration-700 ease-in-out ${
-              isDiwaliMode ? "opacity-100" : "opacity-0"
-            }`}
-            aria-hidden={!isDiwaliMode}
-          >
-            <RangoliWatermark size={240} opacity={0.14} />
+          {/* Background Watermark container with hidden overflow */}
+          <div className="absolute inset-0 overflow-hidden pointer-events-none rounded-[20px] sm:rounded-3xl z-0">
+            <div
+              className={`absolute -left-12 -bottom-12 transition-opacity duration-700 ease-in-out ${
+                isDiwaliMode ? "opacity-100" : "opacity-0"
+              }`}
+              aria-hidden={!isDiwaliMode}
+            >
+              <RangoliWatermark size={240} opacity={0.14} />
+            </div>
           </div>
 
           <div className="lg:col-span-6 flex flex-col gap-3 sm:gap-4 relative z-10">

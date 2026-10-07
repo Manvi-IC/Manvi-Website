@@ -25,7 +25,7 @@ import { fireLeadFormConversion, fireRequestQuoteConversion } from "@/lib/ads";
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 const DB_NAME = process.env.NEXT_PUBLIC_X_DATABASE || "manvi";
 
-const DESTINATIONS = [
+export const DESTINATIONS = [
   {
     label: "Australia",
     value: "AUSTRALIA",
@@ -63,7 +63,7 @@ const DESTINATIONS = [
   },
 ];
 
-const EUROPE_COUNTRIES = [
+export const EUROPE_COUNTRIES = [
   "GERMANY",
   "AUSTRIA",
   "BELGIUM",
@@ -94,7 +94,7 @@ const EUROPE_COUNTRIES = [
   "ICELAND",
 ];
 
-const INTERNATIONAL_COUNTRIES = [
+export const INTERNATIONAL_COUNTRIES = [
   "AFGHANISTAN",
   "ALAND ISLAND (FINLAND)",
   "ALAND ISLAND FINLAND",
@@ -559,7 +559,7 @@ function fmtPrice(n: number): string {
 
 
 // ─── Searchable Country Dropdown ─────────────────────────────────────
-function SearchableCountryDropdown({
+export function SearchableCountryDropdown({
   countries,
   value,
   onChange,
