@@ -3,7 +3,7 @@
 import React from "react";
 
 // ─── 1. Traditional Glowing Diya (Terracotta & Brass with Flickering Flame) ───
-export function DiyaLamp({
+export const DiyaLamp = React.memo(function DiyaLamp({
   size = 36,
   className = "",
   glow = true,
@@ -91,10 +91,10 @@ export function DiyaLamp({
       </svg>
     </div>
   );
-}
+});
 
 // ─── 2. Hanging Akash Kandil (Traditional Lantern with Gentle Sway) ───────────
-export function AkashKandil({
+export const AkashKandil = React.memo(function AkashKandil({
   className = "",
   size = 64,
 }: {
@@ -215,10 +215,10 @@ export function AkashKandil({
       </svg>
     </div>
   );
-}
+});
 
 // ─── 3. Delicate Marigold (Genda Phool) & Mango Leaves Toran ──────────────────
-export function MarigoldToran({ className = "" }: { className?: string }) {
+export const MarigoldToran = React.memo(function MarigoldToran({ className = "" }: { className?: string }) {
   // A clean, minimal repeating string of marigold flowers and mango leaves
   const items = Array.from({ length: 14 });
 
@@ -269,10 +269,10 @@ export function MarigoldToran({ className = "" }: { className?: string }) {
       </div>
     </div>
   );
-}
+});
 
 // ─── 4. Royal Rangoli / Mandala Section Divider ──────────────────────────────
-export function RangoliDivider({
+export const RangoliDivider = React.memo(function RangoliDivider({
   label,
   className = "",
   isVisible = true,
@@ -313,10 +313,10 @@ export function RangoliDivider({
       </div>
     </div>
   );
-}
+});
 
 // ─── 5. Sacred Geometric Rangoli Mandala Watermark ───────────────────────────
-export function RangoliWatermark({
+export const RangoliWatermark = React.memo(function RangoliWatermark({
   size = 280,
   className = "",
   opacity = 0.2,
@@ -381,10 +381,10 @@ export function RangoliWatermark({
       <circle cx="100" cy="100" r="2.5" fill="#FEF08A" />
     </svg>
   );
-}
+});
 
 // ─── 6. Ambient Floating Golden Embers (Subtle, Minimal Particle Drift) ───────
-export function DiwaliAmbientEmbers() {
+export const DiwaliAmbientEmbers = React.memo(function DiwaliAmbientEmbers() {
   // 14 fixed seeds for consistent, non-jittering SSR hydration
   const embers = [
     { left: "4%", size: 3, delay: "0s", duration: "11s" },
@@ -422,10 +422,10 @@ export function DiwaliAmbientEmbers() {
       ))}
     </div>
   );
-}
+});
 
 // ─── 7. Subtle Royal Indian Jali Lattice Texture ─────────────────────────────
-export function FestiveJaliBackground({
+export const FestiveJaliBackground = React.memo(function FestiveJaliBackground({
   className = "",
   isVisible = true,
 }: {
@@ -444,10 +444,10 @@ export function FestiveJaliBackground({
       aria-hidden={!isVisible}
     />
   );
-}
+});
 
 // ─── 8. Ornate Authentic Diwali Corner Filigree (Golden Pearls & Floral Lace) ───
-export function CornerFlourish({
+export const CornerFlourish = React.memo(function CornerFlourish({
   position = "top-left",
   size = 56,
   className = "",
@@ -562,4 +562,4 @@ export function CornerFlourish({
       <circle cx="2" cy="78" r="1.8" fill="#FEF08A" />
     </svg>
   );
-}
+});
