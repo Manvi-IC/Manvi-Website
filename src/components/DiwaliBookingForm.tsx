@@ -60,12 +60,12 @@ export default function DiwaliBookingForm({
     const params = new URLSearchParams();
     params.append(
       "xnQsjsdp",
-      "0865f832e9eff8ac8416c9074e4fe81d82b2f78105b16bc6675b9cd2e3f7dfad"
+      "0865f832e9eff8ac8416c9074e4fe81d82b2f78105b16bc6675b9cd2e3f7dfad",
     );
     params.append("zc_gad", "");
     params.append(
       "xmIwtLD",
-      "ca6104fc687d6c4afcb27e6c4f9bdef93a18aec2baa19548cd8ce05901d0a0de7d20fe8f7958b27d61877d5aaa686212"
+      "ca6104fc687d6c4afcb27e6c4f9bdef93a18aec2baa19548cd8ce05901d0a0de7d20fe8f7958b27d61877d5aaa686212",
     );
     params.append("actionType", "Q29udGFjdHM=");
     params.append("returnURL", "null");
@@ -76,7 +76,7 @@ export default function DiwaliBookingForm({
     params.append("Department", finalDest || "International");
     params.append(
       "Description",
-      `Diwali shipment pickup request. Approx weight: ${inqWeight ? `${inqWeight}kg` : "Not specified"}`
+      `Diwali shipment pickup request. Approx weight: ${inqWeight ? `${inqWeight}kg` : "Not specified"}`,
     );
     params.append("Lead Source", "Diwali Campaign Page");
 
@@ -125,10 +125,10 @@ export default function DiwaliBookingForm({
 
   return (
     <div
-      className={`lg:col-span-6 order-1 lg:order-1 rounded-xl sm:rounded-2xl p-4 sm:p-8 shadow-sm transition-all duration-700 ease-in-out relative ${
+      className={`w-full rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-sm transition-all duration-700 ease-in-out relative flex flex-col ${
         isDiwaliMode
-          ? "bg-white border border-[#ED7E23]/80 shadow-md text-[#1F272F]"
-          : "bg-white border border-gray-200/80"
+          ? "bg-white shadow-md text-[#1F272F]"
+          : "bg-white"
       }`}
     >
       {/* Background Watermark container with hidden overflow */}
@@ -160,7 +160,8 @@ export default function DiwaliBookingForm({
               isDiwaliMode ? "text-[#58626c]" : "text-gray-500"
             }`}
           >
-            Thank you! Our logistics coordinator will contact you shortly to schedule doorstep pickup.
+            Thank you! Our logistics coordinator will contact you shortly to
+            schedule doorstep pickup.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3">
             <button
@@ -193,14 +194,50 @@ export default function DiwaliBookingForm({
           </div>
         </div>
       ) : (
-        <form onSubmit={handleInquirySubmit} className="flex flex-col gap-3 sm:gap-4">
-          <h3
-            className={`text-base sm:text-lg font-bold mb-1 ${
-              isDiwaliMode ? "text-[#1F272F]" : "text-[#1c1f2e]"
-            }`}
-          >
-            Request Diwali Pickup
-          </h3>
+        <form
+          onSubmit={handleInquirySubmit}
+          className="flex flex-col gap-2 sm:gap-4"
+        >
+          <div className="flex flex-col gap-0.5 relative z-10">
+            <span
+              className={`text-[10px] sm:text-[11px] font-black uppercase tracking-widest ${isDiwaliMode ? "text-[#ED7E23]" : "text-[#f27a1a]"}`}
+            >
+              Book Your Diwali Parcel Today
+            </span>
+            <h3
+              className={`text-base sm:text-lg font-extrabold ${
+                isDiwaliMode ? "text-[#1F272F]" : "text-[#1c1f2e]"
+              }`}
+            >
+              Request Diwali Pickup
+            </h3>
+            <div className="flex flex-col gap-1">
+              <div
+                className={`flex items-start gap-1.5 text-[10px] sm:text-[11px] font-semibold leading-tight ${isDiwaliMode ? "text-[#58626c]" : "text-gray-500"}`}
+              >
+                <CheckCircle2
+                  className={`w-3 h-3 sm:w-3.5 sm:h-3.5 shrink-0 mt-[1px] ${isDiwaliMode ? "text-[#ED7E23]" : "text-emerald-500"}`}
+                />
+                Doorstep Pickup Across Delhi NCR, Punjab, Haryana & Gujarat
+              </div>
+              <div
+                className={`flex items-start gap-1.5 text-[10px] sm:text-[11px] font-semibold leading-tight ${isDiwaliMode ? "text-[#58626c]" : "text-gray-500"}`}
+              >
+                <CheckCircle2
+                  className={`w-3 h-3 sm:w-3.5 sm:h-3.5 shrink-0 mt-[1px] ${isDiwaliMode ? "text-[#ED7E23]" : "text-emerald-500"}`}
+                />
+                Zero Customs Hassle with Complete Documentation
+              </div>
+              <div
+                className={`flex items-start gap-1.5 text-[10px] sm:text-[11px] font-semibold leading-tight ${isDiwaliMode ? "text-[#58626c]" : "text-gray-500"}`}
+              >
+                <CheckCircle2
+                  className={`w-3 h-3 sm:w-3.5 sm:h-3.5 shrink-0 mt-[1px] ${isDiwaliMode ? "text-[#ED7E23]" : "text-emerald-500"}`}
+                />
+                Free Packaging
+              </div>
+            </div>
+          </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3">
             <input
@@ -260,7 +297,7 @@ export default function DiwaliBookingForm({
                 }`}
               />
             </div>
-            
+
             <input
               type="text"
               placeholder="Approx Weight (kg)"
