@@ -57,7 +57,7 @@ const DIWALI_ITEMS = [
   {
     icon: "🧣",
     title: "Blankets & Winter Wear",
-    desc: "Razai, blankets, shawls, sweaters, woollens, caps & mufflers — ready for the cold months abroad.",
+    desc: "Razai, blankets, shawls, sweaters, woollens, caps & mufflers , ready for the cold months abroad.",
     bgImage: "/Blanket and winter wear.jpeg",
   },
   {
@@ -69,7 +69,7 @@ const DIWALI_ITEMS = [
   {
     icon: "🍼",
     title: "Wellness & New Baby Items",
-    desc: "Baby clothes, swaddles, baby-care essentials and ayurvedic & herbal wellness products — for a new arrival or someone who needs a little care. Medicines need a quick check with us first.",
+    desc: "Baby clothes, swaddles, baby-care essentials and ayurvedic & herbal wellness products , for a new arrival or someone who needs a little care. Medicines need a quick check with us first.",
     bgImage: "/wellness & new baby items.jpeg",
   },
   {
@@ -81,7 +81,7 @@ const DIWALI_ITEMS = [
   {
     icon: "💬",
     title: "Not on the list?",
-    desc: "Gifts, books, home items or something else entirely — tell us what you want to send and we'll let you know if it can go.",
+    desc: "Gifts, books, home items or something else entirely , tell us what you want to send and we'll let you know if it can go.",
     link: "https://wa.me/917070506070?text=Hi%2C%20I%20want%20to%20send%20something%20abroad%20that%20is%20not%20on%20your%20list",
     linkText: "Contact us for more info →",
     bgImage: "/Not on the list.jpeg",
@@ -90,31 +90,45 @@ const DIWALI_ITEMS = [
 
 const DIWALI_RATES = [
   {
-    flag: "🇬🇧",
-    country: "UK",
-    code: "GB",
-    price: "₹649",
+    flag: "🇦🇪",
+    country: "UAE",
+    code: "AE",
+    price: "₹301",
     per: "per kg · starting",
   },
   {
     flag: "🇺🇸",
     country: "USA",
     code: "US",
-    price: "₹679",
+    price: "₹680",
+    per: "per kg · starting",
+  },
+  {
+    flag: "🇬🇧",
+    country: "UK",
+    code: "GB",
+    price: "₹414",
     per: "per kg · starting",
   },
   {
     flag: "🇨🇦",
     country: "Canada",
     code: "CA",
-    price: "₹749",
+    price: "₹569",
+    per: "per kg · starting",
+  },
+  {
+    flag: "🇪🇺",
+    country: "Europe",
+    code: "EU",
+    price: "₹481",
     per: "per kg · starting",
   },
   {
     flag: "🇦🇺",
     country: "Australia",
     code: "AU",
-    price: "₹789",
+    price: "₹333",
     per: "per kg · starting",
   },
 ];
@@ -138,14 +152,14 @@ const STEPS = [
   {
     num: "4",
     title: "Worldwide delivery",
-    desc: "We deliver to Australia, Canada, UK, USA and worldwide — 200+ countries.",
+    desc: "We deliver to Australia, Canada, UK, USA and worldwide , 200+ countries.",
   },
 ];
 
 const DIWALI_FAQS = [
   {
     q: "Will my Diwali order reach before Diwali?",
-    a: "Yes, if you book early. Book at least 7–10 days before Diwali — with express shipping (3–5 day delivery), your parcel can reach in time for the celebrations. Booking later? Message us on WhatsApp and we'll tell you what's possible.",
+    a: "Yes, if you book early. Book at least 7–10 days before Diwali , with express shipping (3–5 day delivery), your parcel can reach in time for the celebrations. Booking later? Message us on WhatsApp and we'll tell you what's possible.",
   },
   {
     q: "Which cities do you pick up from?",
@@ -153,7 +167,7 @@ const DIWALI_FAQS = [
   },
   {
     q: "How much does shipping cost?",
-    a: "Festive rates start from ₹649/kg to the UK, ₹679/kg to the USA, ₹749/kg to Canada and ₹789/kg to Australia. The final price depends on actual or volumetric weight, destination and speed — share your details and we'll send an exact quote on WhatsApp.",
+    a: "Festive rates start from ₹301/kg to UAE, ₹333/kg to Australia, ₹414/kg to the UK, ₹481/kg to Europe, ₹569/kg to Canada and ₹680/kg to the USA. The final price depends on actual or volumetric weight, destination and speed , share your details and we'll send an exact quote on WhatsApp.",
   },
   {
     q: "How do you make sure sweets & snacks don't break or spoil?",
@@ -165,7 +179,7 @@ const DIWALI_FAQS = [
   },
   {
     q: "Are brass puja items, diyas and torans allowed?",
-    a: "Generally yes — brass puja items, clay diyas, torans and decorations are commonly shipped to the USA, UK, Canada and Australia. Fireworks, oil, ghee, camphor, lighters, matches, perfumes and other flammable items are not allowed.",
+    a: "Generally yes , brass puja items, clay diyas, torans and decorations are commonly shipped to the USA, UK, Canada and Australia. Fireworks, oil, ghee, camphor, lighters, matches, perfumes and other flammable items are not allowed.",
   },
   {
     q: "Can I send branded sweets and homemade snacks together?",
@@ -531,7 +545,7 @@ export default function DiwaliCampaignPage({
                 </p>
 
                 {/* Sleek Floating Glass Rate Highlight Bar */}
-                <div className="bg-black/55 backdrop-blur-md border border-amber-400/40 rounded-2xl p-2.5 sm:p-3 max-w-lg mb-3.5 shadow-lg">
+                <div className="bg-black/55 backdrop-blur-md border border-amber-400/40 rounded-2xl p-2.5 sm:p-3 max-w-xl xl:max-w-2xl mb-3.5 shadow-lg">
                   <div className="text-[10px] uppercase tracking-wider text-amber-300 font-extrabold mb-2 flex items-center justify-between px-1">
                     <span className="flex items-center gap-1.5">
                       <Gift className="w-3.5 h-3.5 text-amber-400" />
@@ -541,23 +555,25 @@ export default function DiwaliCampaignPage({
                       Starting per kg
                     </span>
                   </div>
-                  <div className="grid grid-cols-4 gap-2 text-center">
+                  <div className="grid grid-cols-6 gap-1.5 sm:gap-2 text-center">
                     {[
-                      { country: "UK", flag: "🇬🇧", price: "₹649" },
-                      { country: "USA", flag: "🇺🇸", price: "₹679" },
-                      { country: "Canada", flag: "🇨🇦", price: "₹749" },
-                      { country: "Australia", flag: "🇦🇺", price: "₹789" },
+                      { country: "UAE", flag: "🇦🇪", price: "₹301" },
+                      { country: "USA", flag: "🇺🇸", price: "₹680" },
+                      { country: "UK", flag: "🇬🇧", price: "₹414" },
+                      { country: "Canada", flag: "🇨🇦", price: "₹569" },
+                      { country: "Europe", flag: "🇪🇺", price: "₹481" },
+                      { country: "Australia", flag: "🇦🇺", price: "₹333" },
                     ].map((c) => (
                       <div
                         key={c.country}
-                        className="bg-white/10 hover:bg-white/15 border border-white/15 hover:border-amber-400/50 rounded-xl py-1.5 px-1 transition-all"
+                        className="bg-white/10 hover:bg-white/15 border border-white/15 hover:border-amber-400/50 rounded-lg sm:rounded-xl py-1.5 px-0.5 sm:px-1 transition-all flex flex-col items-center justify-center"
                       >
-                        <span className="text-white/90 block text-[11px] font-bold leading-tight uppercase">
+                        <span className="text-white/90 block text-[9px] sm:text-[10px] font-bold leading-tight uppercase">
                           {c.country}
                         </span>
-                        <span className="text-[#FFD666] font-black text-xs sm:text-[13px] block mt-0.5">
+                        <span className="text-[#FFD666] font-black text-[11px] sm:text-xs block mt-0.5 whitespace-nowrap">
                           {c.price}
-                          <span className="text-[9px] font-normal text-amber-200/70">
+                          <span className="text-[8px] font-normal text-amber-200/70">
                             /kg
                           </span>
                         </span>
@@ -796,7 +812,7 @@ export default function DiwaliCampaignPage({
                 "Doorstep Pickup Across Delhi NCR, Haryana & Pan India",
                 "Complete Customs Documentation for a Hassle-Free Shipment",
                 "Free Pickup and Packaging",
-                "Delivery Available to Australia, Canada, UK, USA & Worldwide — 200+ Countries",
+                "Delivery Available to Australia, Canada, UK, USA & Worldwide , 200+ Countries",
                 "Safe & Reliable Door-to-Door International Delivery",
                 "Easy Booking & Quick Assistance on WhatsApp",
               ].map((item, idx) => (
@@ -988,7 +1004,7 @@ export default function DiwaliCampaignPage({
           }`}
         >
           Almost anything for family can go. Fireworks, flammables and a few
-          restricted items can&apos;t be shipped — not sure about something?
+          restricted items can&apos;t be shipped , not sure about something?
           Just ask us on WhatsApp.
         </p>
       </section>
@@ -1014,12 +1030,12 @@ export default function DiwaliCampaignPage({
               isDiwaliMode ? "text-[#58626c]" : "text-gray-600"
             }`}
           >
-            For homemade sweets, faral, hampers &amp; clothes — across global
+            For homemade sweets, faral, hampers &amp; clothes , across global
             air carriers.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-6">
           {DIWALI_RATES.map((rate, idx) => (
             <div
               key={idx}
@@ -1077,7 +1093,7 @@ export default function DiwaliCampaignPage({
           }`}
         >
           Starting rates. Final price depends on actual/volumetric weight,
-          destination &amp; speed — get a quick quote on WhatsApp.
+          destination &amp; speed , get a quick quote on WhatsApp.
         </p>
       </section>
 
@@ -1106,7 +1122,7 @@ export default function DiwaliCampaignPage({
                 isDiwaliMode ? "text-[#58626c]" : "text-gray-600"
               }`}
             >
-              Doorstep pickup, secure packing, customs handled — you just share
+              Doorstep pickup, secure packing, customs handled , you just share
               what to send.
             </p>
           </div>
