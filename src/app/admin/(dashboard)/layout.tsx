@@ -371,7 +371,7 @@ export default function AdminLayout({
 
       {/* ── MOBILE SLIDEOUT DRAWER ── */}
       <aside
-        className={`fixed inset-y-0 left-0 w-[285px] bg-[#090D1A] text-slate-300 z-50 flex flex-col md:hidden transition-transform duration-300 ease-in-out shadow-2xl ${
+        className={`fixed inset-y-0 left-0 w-[285px] bg-[#090D1A] text-slate-300 z-50 flex flex-col md:hidden print:hidden transition-transform duration-300 ease-in-out shadow-2xl ${
           mobileOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >

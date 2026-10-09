@@ -2157,10 +2157,10 @@ export default function ProposalPage() {
                   </label>
                   <div className="relative">
                     <SearchableCountryDropdown
-                  countries={subCountryOptions}
+                  countries={subCountryList}
                   value={zoningCountry}
                   onChange={(val) => { setZoningCountry(val) }}
-                  placeholder={destination === "EUROPE" ? t.form_select_euro : t.form_select_country}
+                  placeholder={destination === "EUROPE" ? "Select European Country..." : "Select Country..."}
                 />
                   </div>
                 </div>

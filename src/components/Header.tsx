@@ -30,6 +30,48 @@ export default function Header({ isDiwaliMode = false }: HeaderProps = {}) {
   const [isLangOpen, setIsLangOpen] = useState(false);
   const [showMarquee, setShowMarquee] = useState(true);
   const [marqueeText, setMarqueeText] = useState("");
+  const [timeLeft, setTimeLeft] = useState({
+    days: "00",
+    hours: "00",
+    minutes: "00",
+    seconds: "00",
+    isEnded: false,
+  });
+
+  useEffect(() => {
+    const OFFER_END = new Date("2026-11-02T23:59:59+05:30");
+    const pad = (n: number) => (n < 10 ? `0${n}` : `${n}`);
+
+    function calculateTime() {
+      const diff = OFFER_END.getTime() - Date.now();
+      if (diff <= 0) {
+        setTimeLeft({
+          days: "00",
+          hours: "00",
+          minutes: "00",
+          seconds: "00",
+          isEnded: true,
+        });
+        return;
+      }
+      const totalSec = Math.floor(diff / 1000);
+      const d = Math.floor(totalSec / 86400);
+      const h = Math.floor((totalSec % 86400) / 3600);
+      const m = Math.floor((totalSec % 3600) / 60);
+      const s = totalSec % 60;
+      setTimeLeft({
+        days: pad(d),
+        hours: pad(h),
+        minutes: pad(m),
+        seconds: pad(s),
+        isEnded: false,
+      });
+    }
+
+    calculateTime();
+    const timer = setInterval(calculateTime, 1000);
+    return () => clearInterval(timer);
+  }, []);
 
   const langRef = useRef<HTMLDivElement>(null);
 
@@ -78,72 +120,171 @@ export default function Header({ isDiwaliMode = false }: HeaderProps = {}) {
 
   return (
     <>
-      {isDiwaliMode && (
-        <style>{`
-          @keyframes waterFluid1 {
-            0% {
-              transform: translate(-30%, -30%) rotate(0deg) scale(1.1);
-            }
-            50% {
-              transform: translate(15%, 20%) rotate(180deg) scale(1.4);
-            }
-            100% {
-              transform: translate(-30%, -30%) rotate(360deg) scale(1.1);
-            }
+      <style>{`
+        @keyframes waterFluid1 {
+          0% {
+            transform: translate(-30%, -30%) rotate(0deg) scale(1.1);
           }
-          @keyframes waterFluid2 {
-            0% {
-              transform: translate(25%, 20%) rotate(0deg) scale(1.3);
-            }
-            50% {
-              transform: translate(-25%, -20%) rotate(-180deg) scale(1.1);
-            }
-            100% {
-              transform: translate(25%, 20%) rotate(-360deg) scale(1.3);
-            }
+          50% {
+            transform: translate(15%, 20%) rotate(180deg) scale(1.4);
           }
-          @keyframes waterShimmerFlow {
-            0% {
-              background-position: 0% 50%;
-              opacity: 0.3;
-            }
-            50% {
-              background-position: 100% 50%;
-              opacity: 0.75;
-            }
-            100% {
-              background-position: 0% 50%;
-              opacity: 0.3;
-            }
+          100% {
+            transform: translate(-30%, -30%) rotate(360deg) scale(1.1);
           }
-          .diwali-water-flow-1 {
-            background: radial-gradient(ellipse 65% 55% at 50% 50%, rgba(245, 158, 11, 0.5) 0%, rgba(217, 119, 6, 0.25) 50%, transparent 75%);
-            animation: waterFluid1 36s ease-in-out infinite;
-            filter: blur(22px);
+        }
+        @keyframes waterFluid2 {
+          0% {
+            transform: translate(25%, 20%) rotate(0deg) scale(1.3);
           }
-          .diwali-water-flow-2 {
-            background: radial-gradient(ellipse 60% 50% at 50% 50%, rgba(251, 191, 36, 0.45) 0%, rgba(234, 88, 12, 0.2) 55%, transparent 80%);
-            animation: waterFluid2 48s ease-in-out infinite;
-            filter: blur(26px);
+          50% {
+            transform: translate(-25%, -20%) rotate(-180deg) scale(1.1);
           }
-          .diwali-water-shimmer-layer {
-            background: linear-gradient(90deg, transparent 0%, rgba(255, 215, 0, 0.15) 30%, rgba(255, 180, 50, 0.25) 50%, rgba(255, 215, 0, 0.15) 70%, transparent 100%);
-            background-size: 200% 100%;
-            animation: waterShimmerFlow 24s ease-in-out infinite;
+          100% {
+            transform: translate(25%, 20%) rotate(-360deg) scale(1.3);
           }
-        `}</style>
-      )}
-      <div className="sticky top-0 z-50 w-full flex flex-col transition-colors duration-300">
+        }
+        @keyframes waterShimmerFlow {
+          0% {
+            background-position: 0% 50%;
+            opacity: 0.25;
+          }
+          50% {
+            background-position: 100% 50%;
+            opacity: 0.6;
+          }
+          100% {
+            background-position: 0% 50%;
+            opacity: 0.25;
+          }
+        }
+        .diwali-water-flow-1 {
+          background: radial-gradient(ellipse 65% 55% at 50% 50%, rgba(247, 154, 69, 0.22) 0%, rgba(237, 126, 35, 0.10) 50%, transparent 75%);
+          animation: waterFluid1 36s ease-in-out infinite;
+          filter: blur(22px);
+        }
+        .diwali-water-flow-2 {
+          background: radial-gradient(ellipse 60% 50% at 50% 50%, rgba(237, 126, 35, 0.18) 0%, rgba(180, 104, 63, 0.08) 55%, transparent 80%);
+          animation: waterFluid2 48s ease-in-out infinite;
+          filter: blur(26px);
+        }
+        .diwali-water-shimmer-layer {
+          background: linear-gradient(90deg, transparent 0%, rgba(237, 126, 35, 0.08) 30%, rgba(247, 154, 69, 0.16) 50%, rgba(237, 126, 35, 0.08) 70%, transparent 100%);
+          background-size: 200% 100%;
+          animation: waterShimmerFlow 24s ease-in-out infinite;
+        }
+
+        .announce {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 12px 20px;
+          color: #ED7E23;
+          font-weight: 700;
+          font-size: 16px;
+          white-space: nowrap;
+        }
+        .announce .an-txt {
+          font-size: 16px;
+          font-weight: 700;
+          color: #ED7E23;
+          display: inline-flex;
+          align-items: center;
+          gap: 7px;
+          letter-spacing: -0.01em;
+        }
+        .announce .an-cd {
+          display: flex;
+          align-items: center;
+          gap: 9px;
+          font-family: var(--font-space-mono), "Space Mono", monospace;
+          color: #ED7E23;
+        }
+        .announce .an-u {
+          font-size: 13.5px;
+          font-weight: 500;
+          color: #ED7E23;
+          display: inline-flex;
+          align-items: baseline;
+        }
+        .announce .an-u b {
+          font-size: 19px;
+          font-weight: 800;
+          margin-right: 1.5px;
+          color: #ED7E23;
+        }
+        .announce .an-link {
+          background: linear-gradient(180deg, #f79a45, #ED7E23);
+          color: #1F272F;
+          padding: 3.5px 14px;
+          border-radius: 999px;
+          font-size: 13.5px;
+          font-weight: 700;
+          text-decoration: none;
+          transition: transform 0.15s ease, opacity 0.15s ease, box-shadow 0.15s ease;
+          display: inline-flex;
+          align-items: center;
+          box-shadow: 0 4px 12px -4px rgba(237, 126, 35, 0.45);
+        }
+        .announce .an-link:hover {
+          opacity: 0.92;
+          transform: translateY(-1px);
+        }
+        .announce .offer-end {
+          margin: 0;
+          color: #ED7E23;
+          font-weight: 700;
+          font-size: 15px;
+        }
+        @media (max-width: 860px) {
+          .announce {
+            font-size: 14px;
+            gap: 8px 12px;
+          }
+          .announce .an-txt {
+            font-size: 14px;
+          }
+          .announce .an-u {
+            font-size: 12px;
+          }
+          .announce .an-u b {
+            font-size: 16px;
+          }
+          .announce .an-cd {
+            gap: 7px;
+          }
+        }
+        @media (max-width: 560px) {
+          .announce {
+            font-size: 13px;
+            gap: 8px 10px;
+          }
+          .announce .an-link {
+            display: none;
+          }
+          .announce .an-u b {
+            font-size: 15px;
+          }
+          .announce .an-cd {
+            gap: 6px;
+          }
+        }
+        @media (max-width: 380px) {
+          .announce .an-txt {
+            display: none;
+          }
+        }
+      `}</style>
+      <div className="sticky top-0 z-50 w-full flex flex-col transition-colors duration-700 ease-in-out">
         <div
           data-header-bg
-          className={`text-[12px] font-semibold py-3.5 px-4 sm:px-6 relative z-50 transition-colors duration-300 ${
+          className={`text-[12px] font-semibold py-3.5 px-4 sm:px-6 relative z-50 transition-colors duration-700 ease-in-out ${
             isDiwaliMode
-              ? "bg-[#1E1109] border-b border-amber-500/20 text-amber-100/90"
+              ? "bg-white/95 border-b border-[#ED7E23]/25 text-[#1F272F]"
               : "bg-[#0D1527] text-zinc-300 border-b border-white/5"
           }`}
         >
           <div className="max-w-425 mx-auto flex flex-col md:flex-row justify-between items-center gap-2.5 md:gap-0">
-            <div className="flex items-center justify-between sm:justify-start gap-4 w-full md:w-auto">
+            <div className="flex items-center justify-between sm:justify-start gap-4 w-full md:w-auto shrink-0">
               {/* Phone: Meta "Contact" event + Google Ads conversion */}
               <a
                 href="tel:+917070506070"
@@ -161,10 +302,18 @@ export default function Header({ isDiwaliMode = false }: HeaderProps = {}) {
                     });
                   }
                 }}
-                className="flex items-center gap-1.5 sm:gap-2 hover:text-white transition-colors"
+                className={`flex items-center gap-1.5 sm:gap-2 transition-colors ${
+                  isDiwaliMode
+                    ? "text-[#1F272F] hover:text-[#c4620c]"
+                    : "hover:text-white"
+                }`}
               >
-                <Phone className="h-3.5 w-3.5 text-white shrink-0" />
-                <span className="text-white/90 truncate">
+                <Phone
+                  className={`h-3.5 w-3.5 shrink-0 ${isDiwaliMode ? "text-[#c4620c]" : "text-white"}`}
+                />
+                <span
+                  className={`truncate ${isDiwaliMode ? "text-[#1F272F]" : "text-white/90"}`}
+                >
                   +91 70 70 50 60 70
                 </span>
               </a>
@@ -175,30 +324,97 @@ export default function Header({ isDiwaliMode = false }: HeaderProps = {}) {
                 onClick={() =>
                   trackEvent("Contact", { method: "Email", location: "header" })
                 }
-                className="flex items-center gap-1.5 sm:gap-2 hover:text-white transition-colors"
+                className={`flex items-center gap-1.5 sm:gap-2 transition-colors ${
+                  isDiwaliMode
+                    ? "text-[#1F272F] hover:text-[#c4620c]"
+                    : "hover:text-white"
+                }`}
               >
-                <Mail className="h-3.5 w-3.5 text-white shrink-0" />
-                <span className="text-white/90 truncate">
+                <Mail
+                  className={`h-3.5 w-3.5 shrink-0 ${isDiwaliMode ? "text-[#c4620c]" : "text-white"}`}
+                />
+                <span
+                  className={`truncate ${isDiwaliMode ? "text-[#1F272F]" : "text-white/90"}`}
+                >
                   Info@manvicourier.com
                 </span>
               </a>
             </div>
 
-            <div className="flex flex-1 w-full mx-0 md:mx-6 overflow-hidden relative pt-1 md:pt-0">
-              {showMarquee && marqueeText && (
-                <div
-                  className="text-[12.5px] md:text-[14.5px] font-medium md:font-extrabold tracking-wide whitespace-pre overflow-hidden"
-                  style={{ color: "#f27a1a" }}
-                >
-                  {marqueeText}
+            {!timeLeft.isEnded ||
+            isDiwaliMode ||
+            pathname === "/diwali-campaign" ? (
+              <div className="flex flex-1 items-center justify-center w-full mx-0 md:mx-4 overflow-visible relative py-0.5 md:py-0">
+                <div className="announce" id="offer">
+                  {!timeLeft.isEnded ? (
+                    <>
+                      <span className="an-txt">
+                        &#128293; Festive offer ends 2 Nov
+                      </span>
+                      <div
+                        className="an-cd"
+                        id="cd"
+                        role="timer"
+                        aria-label="Time left to book"
+                      >
+                        <span className="an-u">
+                          <b id="cd-d">{timeLeft.days}</b>d
+                        </span>
+                        <span className="an-u">
+                          <b id="cd-h">{timeLeft.hours}</b>h
+                        </span>
+                        <span className="an-u">
+                          <b id="cd-m">{timeLeft.minutes}</b>m
+                        </span>
+                        <span className="an-u">
+                          <b id="cd-s">{timeLeft.seconds}</b>s
+                        </span>
+                      </div>
+                      <a 
+                        href={pathname === "/diwali-campaign" ? "#diwali-booking" : "/diwali-campaign#diwali-booking"}
+                        onClick={(e) => {
+                          if (pathname === "/diwali-campaign") {
+                            e.preventDefault();
+                            const el = document.getElementById("diwali-booking");
+                            if (el) {
+                              const y = el.getBoundingClientRect().top + window.scrollY - 100;
+                              window.scrollTo({ top: y, behavior: "smooth" });
+                            }
+                          }
+                        }}
+                        className="an-link"
+                      >
+                        Book now &rarr;
+                      </a>
+                    </>
+                  ) : (
+                    <span className="offer-end" id="offerEnd">
+                      This offer has ended &mdash; message us for current rates.
+                    </span>
+                  )}
                 </div>
-              )}
-            </div>
+              </div>
+            ) : (
+              <div className="flex flex-1 w-full mx-0 md:mx-6 overflow-hidden relative pt-1 md:pt-0">
+                {showMarquee && marqueeText && (
+                  <div
+                    className="text-[12.5px] md:text-[14.5px] font-medium md:font-extrabold tracking-wide whitespace-pre overflow-hidden"
+                    style={{ color: isDiwaliMode ? "#c4620c" : "#f27a1a" }}
+                  >
+                    {marqueeText}
+                  </div>
+                )}
+              </div>
+            )}
 
-            <div className="hidden sm:flex items-center gap-6 overflow-visible">
+            <div className="hidden sm:flex items-center gap-6 overflow-visible shrink-0">
               <Link
                 href="/zipcode"
-                className="hover:text-white transition-colors"
+                className={`transition-colors ${
+                  isDiwaliMode
+                    ? "text-[#1F272F] hover:text-[#c4620c]"
+                    : "hover:text-white"
+                }`}
               >
                 {t.nav_zipcode}
               </Link>
@@ -207,7 +423,11 @@ export default function Header({ isDiwaliMode = false }: HeaderProps = {}) {
                 <button
                   id="language-selector"
                   onClick={() => setIsLangOpen((prev) => !prev)}
-                  className="flex items-center gap-1.5 hover:text-white transition-colors cursor-pointer focus:outline-none"
+                  className={`flex items-center gap-1.5 transition-colors cursor-pointer focus:outline-none ${
+                    isDiwaliMode
+                      ? "text-[#1F272F] hover:text-[#c4620c]"
+                      : "hover:text-white"
+                  }`}
                   aria-expanded={isLangOpen}
                   aria-haspopup="listbox"
                   aria-controls="language-dropdown-list"
@@ -274,23 +494,26 @@ export default function Header({ isDiwaliMode = false }: HeaderProps = {}) {
           </div>
         </div>
 
-        <header className="px-4 sm:px-6 py-4 relative z-40 transition-colors duration-300">
+        <header className="px-4 sm:px-6 py-4 relative z-40 transition-colors duration-700 ease-in-out">
           <div
             data-header-bg
-            className={`max-w-425 mx-auto rounded-2xl px-6 sm:px-8 py-4 flex justify-between items-center transition-all duration-300 relative overflow-hidden ${
+            className={`max-w-425 mx-auto rounded-2xl px-6 sm:px-8 py-4 flex justify-between items-center transition-all duration-700 ease-in-out relative ${
               isDiwaliMode
-                ? "bg-[#281308]/85 backdrop-blur-md border border-amber-500/30 shadow-lg shadow-black/40"
+                ? "bg-gradient-to-b from-white/95 to-[#F0F3F3]/90 backdrop-blur-md border border-[#ED7E23]/35 shadow-lg shadow-black/5"
                 : "bg-[#0D1527] border border-white/5 shadow-md"
             }`}
           >
             {/* Glowing Water Background Animation for Diwali Mode */}
-            {isDiwaliMode && (
-              <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-2xl z-0">
-                <div className="diwali-water-flow-1 absolute -inset-full opacity-70" />
-                <div className="diwali-water-flow-2 absolute -inset-full opacity-60" />
-                <div className="diwali-water-shimmer-layer absolute inset-0" />
-              </div>
-            )}
+            <div
+              className={`absolute inset-0 pointer-events-none overflow-hidden rounded-2xl z-0 transition-opacity duration-700 ease-in-out ${
+                isDiwaliMode ? "opacity-100" : "opacity-0"
+              }`}
+              aria-hidden={!isDiwaliMode}
+            >
+              <div className="diwali-water-flow-1 absolute -inset-full opacity-70" />
+              <div className="diwali-water-flow-2 absolute -inset-full opacity-60" />
+              <div className="diwali-water-shimmer-layer absolute inset-0" />
+            </div>
 
             <Link href="/" className="flex items-center gap-3 relative z-10">
               <img
@@ -300,26 +523,40 @@ export default function Header({ isDiwaliMode = false }: HeaderProps = {}) {
                 className="object-contain"
               />
               <div className="flex flex-col leading-none">
-                <span className="text-white font-bold text-[18px] font-league-spartan">
+                <span
+                  className={`font-bold text-[18px] font-league-spartan ${
+                    isDiwaliMode ? "text-[#1F272F]" : "text-white"
+                  }`}
+                >
                   Manvi
                 </span>
-                <span className="text-white font-bold text-[18px] font-league-spartan">
+                <span
+                  className={`font-bold text-[18px] font-league-spartan ${
+                    isDiwaliMode ? "text-[#1F272F]" : "text-white"
+                  }`}
+                >
                   International Courier
                 </span>
               </div>
             </Link>
 
             <div className="hidden md:flex items-center gap-8 relative z-10">
-              <nav className="flex items-center gap-8 text-[13px] font-semibold text-white">
-                <Link
-                  href="/about"
-                  className={`transition-colors ${pathname?.startsWith("/about") ? "text-[#f27a1a]" : "hover:text-[#f27a1a]"}`}
-                >
-                  {t.nav_about}
-                </Link>
+              <nav
+                className={`flex items-center gap-8 text-[13px] font-semibold ${
+                  isDiwaliMode ? "text-[#1F272F]" : "text-white"
+                }`}
+              >
                 <Link
                   href="/services"
-                  className={`transition-colors ${pathname?.startsWith("/services") ? "text-[#f27a1a]" : "hover:text-[#f27a1a]"}`}
+                  className={`transition-colors ${
+                    pathname?.startsWith("/services")
+                      ? isDiwaliMode
+                        ? "text-[#c4620c]"
+                        : "text-[#f27a1a]"
+                      : isDiwaliMode
+                        ? "hover:text-[#c4620c]"
+                        : "hover:text-[#f27a1a]"
+                  }`}
                 >
                   {t.nav_services}
                 </Link>
@@ -335,50 +572,123 @@ export default function Header({ isDiwaliMode = false }: HeaderProps = {}) {
                       });
                     }
                   }}
-                  className={`transition-colors ${pathname?.startsWith("/quote") ? "text-[#f27a1a]" : "hover:text-[#f27a1a]"}`}
+                  className={`transition-colors ${
+                    pathname?.startsWith("/quote")
+                      ? isDiwaliMode
+                        ? "text-[#c4620c]"
+                        : "text-[#f27a1a]"
+                      : isDiwaliMode
+                        ? "hover:text-[#c4620c]"
+                        : "hover:text-[#f27a1a]"
+                  }`}
                 >
                   {t.nav_quote}
                 </Link>
-                <Link
-                  href="/contact"
-                  className={`transition-colors ${pathname?.startsWith("/contact") ? "text-[#f27a1a]" : "hover:text-[#f27a1a]"}`}
-                >
-                  {t.nav_contact}
-                </Link>
-                <Link
-                  href="/blog"
-                  className={`transition-colors ${pathname?.startsWith("/blog") ? "text-[#f27a1a]" : "hover:text-[#f27a1a]"}`}
-                >
-                  {t.footer_blog}
-                </Link>
-                <Link
-                  href="/career"
-                  className={`transition-colors ${pathname?.startsWith("/career") ? "text-[#f27a1a]" : "hover:text-[#f27a1a]"}`}
-                >
-                  {t.footer_career}
-                </Link>
+
+                <div className="relative group py-2">
+                  <span
+                    className={`cursor-pointer transition-colors flex items-center gap-1 ${
+                      ["/about", "/contact", "/blog", "/career"].some((p) => pathname?.startsWith(p))
+                        ? isDiwaliMode
+                          ? "text-[#c4620c]"
+                          : "text-[#f27a1a]"
+                        : isDiwaliMode
+                          ? "hover:text-[#c4620c]"
+                          : "hover:text-[#f27a1a]"
+                    }`}
+                  >
+                    Company <ChevronDown className="w-3.5 h-3.5 transition-transform duration-200 group-hover:rotate-180" />
+                  </span>
+                  
+                  <div
+                    className={`absolute left-0 top-full mt-0 w-40 rounded-xl shadow-lg border opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 flex flex-col overflow-hidden ${
+                      isDiwaliMode
+                        ? "bg-white border-[#ED7E23]/30"
+                        : "bg-[#0D1527] border-white/10"
+                    }`}
+                  >
+                    <Link
+                      href="/about"
+                      className={`px-4 py-3 transition-colors ${
+                        pathname?.startsWith("/about")
+                          ? isDiwaliMode ? "text-[#c4620c] bg-orange-50/50" : "text-[#f27a1a] bg-white/5"
+                          : isDiwaliMode ? "hover:bg-orange-50/50 hover:text-[#c4620c]" : "hover:bg-white/5 hover:text-[#f27a1a]"
+                      }`}
+                    >
+                      {t.nav_about}
+                    </Link>
+                    <Link
+                      href="/contact"
+                      className={`px-4 py-3 transition-colors ${
+                        pathname?.startsWith("/contact")
+                          ? isDiwaliMode ? "text-[#c4620c] bg-orange-50/50" : "text-[#f27a1a] bg-white/5"
+                          : isDiwaliMode ? "hover:bg-orange-50/50 hover:text-[#c4620c]" : "hover:bg-white/5 hover:text-[#f27a1a]"
+                      }`}
+                    >
+                      {t.nav_contact}
+                    </Link>
+                    <Link
+                      href="/blog"
+                      className={`px-4 py-3 transition-colors ${
+                        pathname?.startsWith("/blog")
+                          ? isDiwaliMode ? "text-[#c4620c] bg-orange-50/50" : "text-[#f27a1a] bg-white/5"
+                          : isDiwaliMode ? "hover:bg-orange-50/50 hover:text-[#c4620c]" : "hover:bg-white/5 hover:text-[#f27a1a]"
+                      }`}
+                    >
+                      {t.footer_blog}
+                    </Link>
+                    <Link
+                      href="/career"
+                      className={`px-4 py-3 transition-colors ${
+                        pathname?.startsWith("/career")
+                          ? isDiwaliMode ? "text-[#c4620c] bg-orange-50/50" : "text-[#f27a1a] bg-white/5"
+                          : isDiwaliMode ? "hover:bg-orange-50/50 hover:text-[#c4620c]" : "hover:bg-white/5 hover:text-[#f27a1a]"
+                      }`}
+                    >
+                      {t.footer_career}
+                    </Link>
+                  </div>
+                </div>
                 {/* Customer Login */}
                 <a
                   href="https://portal.manvicourier.com"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-white transition-colors hover:text-[#f27a1a] whitespace-nowrap"
+                  className={`transition-colors whitespace-nowrap ${
+                    isDiwaliMode
+                      ? "text-[#1F272F] hover:text-[#c4620c]"
+                      : "text-white hover:text-[#f27a1a]"
+                  }`}
                 >
                   Customer Login
                 </a>
               </nav>
-              <Link
-                href="/track"
-                className={`px-5 py-2 rounded-full text-[13px] font-bold transition-all whitespace-nowrap ${
-                  isDiwaliMode
-                    ? "bg-gradient-to-r from-[#f27a1a] to-amber-500 text-white shadow-md shadow-orange-500/30 hover:scale-105 active:scale-95"
-                    : pathname?.startsWith("/track")
-                      ? "bg-orange-600 text-white"
-                      : "bg-[#f27a1a] text-white hover:bg-orange-600"
-                }`}
-              >
-                {t.nav_track}
-              </Link>
+              <div className="flex items-center gap-3">
+                <Link
+                  href="/book-shipment"
+                  className={`px-5 py-1.5 rounded-full text-[13px] font-extrabold transition-all whitespace-nowrap ${
+                    isDiwaliMode
+                      ? "bg-white text-[#ED7E23] border border-[#ED7E23] hover:bg-[#ED7E23] hover:text-white"
+                      : pathname?.startsWith("/book-shipment")
+                        ? "bg-[#0D1527] text-white border border-white"
+                        : "bg-[#0D1527] text-white hover:bg-gray-800 border-[2px] border-white/80"
+                  }`}
+                >
+                  Book Now
+                </Link>
+                <Link
+                  href="/track"
+                  className={`px-5 py-2 rounded-full text-[13px] font-extrabold transition-all whitespace-nowrap ${
+                    isDiwaliMode
+                      ? "bg-gradient-to-b from-[#f79a45] to-[#ED7E23] text-[#1F272F] shadow-[0_10px_30px_-8px_rgba(237,126,35,0.6),inset_0_1px_0_#ffd9b5] hover:scale-105 active:scale-95"
+                      : pathname?.startsWith("/track")
+                        ? "bg-orange-600  text-white"
+                        : "bg-[#f27a1a] text-white hover:bg-orange-600"
+                  }`}
+                >
+                  {t.nav_track}
+                </Link>
+              </div>
             </div>
 
             <button
@@ -406,18 +716,38 @@ export default function Header({ isDiwaliMode = false }: HeaderProps = {}) {
           </div>
         </header>
       </div>
+        
+      {/* Mobile Menu Backdrop */}
+      <div
+        className={`md:hidden fixed inset-0 bg-black/40 z-[100] transition-opacity duration-300 ${
+          isMobileMenuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+        }`}
+        onClick={() => setIsMobileMenuOpen(false)}
+      />
 
-      {isMobileMenuOpen && (
-        <div
-          className={`md:hidden fixed inset-0 top-33.75 z-40 px-6 py-6 shadow-xl flex flex-col gap-6 font-sans overflow-y-auto ${
-            isDiwaliMode
-              ? "bg-[#1E1109]/95 backdrop-blur-xl text-white border-t border-amber-500/20 shadow-2xl"
-              : "bg-white text-[#1c1f2e] border-t border-gray-100"
-          }`}
-        >
+      {/* Mobile Menu Sidebar */}
+      <div
+        className={`md:hidden fixed inset-y-0 right-0 w-[280px] max-w-[85vw] z-[110] px-6 py-6 pb-20 shadow-2xl flex flex-col gap-6 font-sans overflow-y-auto transition-transform duration-300 ease-in-out ${
+          isMobileMenuOpen ? "translate-x-0 pointer-events-auto" : "translate-x-full pointer-events-none"
+        } ${
+          isDiwaliMode
+            ? "bg-white/98 backdrop-blur-xl text-[#1F272F] border-l border-[#ED7E23]/25"
+            : "bg-white text-[#1c1f2e] border-l border-gray-100"
+        }`}
+      >
+          <button
+            onClick={() => setIsMobileMenuOpen(false)}
+            className={`absolute top-4 right-4 p-2 rounded-full transition-colors z-50 ${
+              isDiwaliMode ? "bg-[#fef4ea] text-[#ED7E23]" : "bg-gray-100 text-gray-500"
+            }`}
+            aria-label="Close menu"
+          >
+            <X className="w-5 h-5" />
+          </button>
+          
           <nav
-            className={`flex flex-col gap-4 text-[16px] font-bold ${
-              isDiwaliMode ? "text-white" : "text-[#1c1f2e]"
+            className={`flex flex-col gap-4 text-[16px] font-bold mt-8 ${
+              isDiwaliMode ? "text-[#1F272F]" : "text-[#1c1f2e]"
             }`}
           >
             <Link
@@ -434,13 +764,7 @@ export default function Header({ isDiwaliMode = false }: HeaderProps = {}) {
             >
               {t.nav_about}
             </Link>
-            <Link
-              href="/track"
-              onClick={() => setIsMobileMenuOpen(false)}
-              className={`pb-2 border-b border-gray-100 ${pathname?.startsWith("/track") ? "text-[#f27a1a]" : ""}`}
-            >
-              {t.nav_track_shipment}
-            </Link>
+
             <Link
               href="/quote"
               onClick={() => {
@@ -491,10 +815,33 @@ export default function Header({ isDiwaliMode = false }: HeaderProps = {}) {
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => setIsMobileMenuOpen(false)}
-              className="pb-2 border-b border-gray-100 hover:text-[#f27a1a] transition-colors"
+              className="pb-2 hover:text-[#f27a1a] transition-colors"
             >
               Customer Login
             </a>
+            
+            <div className="flex flex-col gap-3 mt-4">
+              <Link
+                href="/book-shipment"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className={`w-full py-3 px-4 rounded-xl text-center text-white font-bold transition-all shadow-md active:scale-95 ${
+                  isDiwaliMode ? "bg-[#ED7E23] hover:bg-[#c4620c]" : "bg-[#f27a1a] hover:bg-[#e06808]"
+                }`}
+              >
+                Book Now
+              </Link>
+              <Link
+                href="/track"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className={`w-full py-3 px-4 rounded-xl text-center font-bold transition-all active:scale-95 ${
+                  isDiwaliMode
+                    ? "bg-[#fef4ea] text-[#ED7E23] border border-[#ED7E23]"
+                    : "bg-[#fff1e6] text-[#f27a1a] border border-[#f27a1a]"
+                }`}
+              >
+                {t.nav_track_shipment}
+              </Link>
+            </div>
           </nav>
 
           <div className="border-t border-gray-100 pt-4">
@@ -534,7 +881,6 @@ export default function Header({ isDiwaliMode = false }: HeaderProps = {}) {
             </div>
           </div>
         </div>
-      )}
 
       {pathname &&
         pathname !== "/" &&

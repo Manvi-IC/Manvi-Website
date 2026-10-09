@@ -3,7 +3,7 @@
 import React from "react";
 
 // ─── 1. Traditional Glowing Diya (Terracotta & Brass with Flickering Flame) ───
-export function DiyaLamp({
+export const DiyaLamp = React.memo(function DiyaLamp({
   size = 36,
   className = "",
   glow = true,
@@ -91,10 +91,10 @@ export function DiyaLamp({
       </svg>
     </div>
   );
-}
+});
 
 // ─── 2. Hanging Akash Kandil (Traditional Lantern with Gentle Sway) ───────────
-export function AkashKandil({
+export const AkashKandil = React.memo(function AkashKandil({
   className = "",
   size = 64,
 }: {
@@ -215,10 +215,10 @@ export function AkashKandil({
       </svg>
     </div>
   );
-}
+});
 
 // ─── 3. Delicate Marigold (Genda Phool) & Mango Leaves Toran ──────────────────
-export function MarigoldToran({ className = "" }: { className?: string }) {
+export const MarigoldToran = React.memo(function MarigoldToran({ className = "" }: { className?: string }) {
   // A clean, minimal repeating string of marigold flowers and mango leaves
   const items = Array.from({ length: 14 });
 
@@ -269,51 +269,57 @@ export function MarigoldToran({ className = "" }: { className?: string }) {
       </div>
     </div>
   );
-}
+});
 
 // ─── 4. Royal Rangoli / Mandala Section Divider ──────────────────────────────
-export function RangoliDivider({
+export const RangoliDivider = React.memo(function RangoliDivider({
   label,
   className = "",
+  isVisible = true,
 }: {
   label?: string;
   className?: string;
+  isVisible?: boolean;
 }) {
   return (
     <div
-      className={`w-full max-w-[1400px] mx-auto px-4 my-6 sm:my-8 flex items-center justify-center gap-3 select-none pointer-events-none ${className}`}
-      aria-hidden="true"
+      className={`w-full max-w-[1400px] mx-auto px-4 flex items-center justify-center gap-3 select-none pointer-events-none transition-all duration-500 ease-in-out overflow-hidden ${
+        isVisible
+          ? "opacity-100 max-h-20 my-6 sm:my-8 scale-100"
+          : "opacity-0 max-h-0 my-0 scale-95 pointer-events-none"
+      } ${className}`}
+      aria-hidden={!isVisible}
     >
       {/* Left Golden Filigree Line */}
-      <div className="flex-1 h-[1px] bg-gradient-to-r from-transparent via-amber-500/40 to-amber-500/70 relative">
-        <div className="absolute right-0 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rotate-45 bg-amber-400" />
+      <div className="flex-1 h-[1.5px] bg-gradient-to-r from-transparent via-[#ED7E23]/45 to-[#B45309]/80 relative">
+        <div className="absolute right-0 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rotate-45 bg-[#B45309]" />
       </div>
 
       {/* Center Ornate Motif & Diya */}
-      <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 backdrop-blur-sm">
-        <span className="text-amber-400 text-xs">✨</span>
-        <DiyaLamp size={22} glow={false} />
+      <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/95 border border-[#ED7E23]/40 shadow-xs backdrop-blur-md">
+        <span className="text-[#C2410C] text-xs">✨</span>
+        <DiyaLamp size={20} glow={false} />
         {label && (
-          <span className="text-[11px] sm:text-xs font-bold tracking-widest uppercase text-amber-200/90 px-1">
+          <span className="text-[11px] sm:text-xs font-black tracking-widest uppercase text-[#8A3804] px-1">
             {label}
           </span>
         )}
-        <span className="text-amber-400 text-xs">✨</span>
+        <span className="text-[#C2410C] text-xs">✨</span>
       </div>
 
       {/* Right Golden Filigree Line */}
-      <div className="flex-1 h-[1px] bg-gradient-to-l from-transparent via-amber-500/40 to-amber-500/70 relative">
-        <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rotate-45 bg-amber-400" />
+      <div className="flex-1 h-[1.5px] bg-gradient-to-l from-transparent via-[#ED7E23]/45 to-[#B45309]/80 relative">
+        <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rotate-45 bg-[#B45309]" />
       </div>
     </div>
   );
-}
+});
 
 // ─── 5. Sacred Geometric Rangoli Mandala Watermark ───────────────────────────
-export function RangoliWatermark({
+export const RangoliWatermark = React.memo(function RangoliWatermark({
   size = 280,
   className = "",
-  opacity = 0.06,
+  opacity = 0.2,
 }: {
   size?: number;
   className?: string;
@@ -330,46 +336,55 @@ export function RangoliWatermark({
       style={{ opacity }}
       aria-hidden="true"
     >
+      <defs>
+        <linearGradient id="rwGoldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#F59E0B" />
+          <stop offset="50%" stopColor="#ED7E23" />
+          <stop offset="100%" stopColor="#D97706" />
+        </linearGradient>
+      </defs>
+
       <circle
         cx="100"
         cy="100"
         r="92"
-        stroke="#f59e0b"
-        strokeWidth="1.2"
+        stroke="url(#rwGoldGrad)"
+        strokeWidth="1.8"
         strokeDasharray="4 3"
       />
-      <circle cx="100" cy="100" r="82" stroke="#f59e0b" strokeWidth="0.8" />
-      <circle cx="100" cy="100" r="64" stroke="#f59e0b" strokeWidth="1" />
-      <circle cx="100" cy="100" r="44" stroke="#f59e0b" strokeWidth="0.8" />
-      <circle cx="100" cy="100" r="24" stroke="#f59e0b" strokeWidth="1" />
+      <circle cx="100" cy="100" r="82" stroke="#ED7E23" strokeWidth="1.2" />
+      <circle cx="100" cy="100" r="64" stroke="url(#rwGoldGrad)" strokeWidth="1.4" />
+      <circle cx="100" cy="100" r="44" stroke="#ED7E23" strokeWidth="1.2" />
+      <circle cx="100" cy="100" r="24" stroke="url(#rwGoldGrad)" strokeWidth="1.4" />
 
       {/* 8-Pointed Star Lotus Petals */}
       {[0, 45, 90, 135, 180, 225, 270, 315].map((deg) => (
         <g key={deg} transform={`rotate(${deg} 100 100)`}>
           <path
             d="M100 8 C108 36, 118 64, 100 76 C82 64, 92 36, 100 8 Z"
-            stroke="#f59e0b"
-            strokeWidth="0.9"
+            stroke="url(#rwGoldGrad)"
+            strokeWidth="1.4"
             fill="none"
           />
-          <circle cx="100" cy="20" r="2" fill="#f59e0b" />
+          <circle cx="100" cy="20" r="2.5" fill="#ED7E23" />
           <path
             d="M100 36 C105 52, 110 68, 100 76 C90 68, 95 52, 100 36 Z"
-            stroke="#fbbf24"
-            strokeWidth="0.6"
+            stroke="#F59E0B"
+            strokeWidth="1.0"
           />
         </g>
       ))}
 
       {/* Inner Central Floral Ring */}
-      <circle cx="100" cy="100" r="10" fill="#f59e0b" opacity="0.3" />
-      <circle cx="100" cy="100" r="4" fill="#fde047" />
+      <circle cx="100" cy="100" r="10" fill="#ED7E23" opacity="0.35" />
+      <circle cx="100" cy="100" r="5" fill="#F59E0B" />
+      <circle cx="100" cy="100" r="2.5" fill="#FEF08A" />
     </svg>
   );
-}
+});
 
 // ─── 6. Ambient Floating Golden Embers (Subtle, Minimal Particle Drift) ───────
-export function DiwaliAmbientEmbers() {
+export const DiwaliAmbientEmbers = React.memo(function DiwaliAmbientEmbers() {
   // 14 fixed seeds for consistent, non-jittering SSR hydration
   const embers = [
     { left: "4%", size: 3, delay: "0s", duration: "11s" },
@@ -407,4 +422,144 @@ export function DiwaliAmbientEmbers() {
       ))}
     </div>
   );
-}
+});
+
+// ─── 7. Subtle Royal Indian Jali Lattice Texture ─────────────────────────────
+export const FestiveJaliBackground = React.memo(function FestiveJaliBackground({
+  className = "",
+  isVisible = true,
+}: {
+  className?: string;
+  isVisible?: boolean;
+}) {
+  return (
+    <div
+      className={`fixed inset-0 pointer-events-none z-0 transition-opacity duration-700 ease-in-out ${
+        isVisible ? "opacity-[0.06]" : "opacity-0"
+      } ${className}`}
+      style={{
+        backgroundImage: `url("data:image/svg+xml,%3Csvg width='56' height='56' viewBox='0 0 56 56' xmlns='http://www.w3.org/2000/svg'%3E%3Cg stroke='%23f59e0b' stroke-width='0.75' fill='none'%3E%3Cpath d='M28 0 L38 10 L28 20 L18 10 Z'/%3E%3Cpath d='M0 28 L10 38 L0 48 L-10 38 Z'/%3E%3Cpath d='M56 28 L66 38 L56 48 L46 38 Z'/%3E%3Cpath d='M28 56 L38 66 L28 76 L18 66 Z'/%3E%3Ccircle cx='28' cy='28' r='5' stroke-width='0.5'/%3E%3Cpath d='M14 14 L28 28 L42 14 M14 42 L28 28 L42 42' stroke-width='0.5' opacity='0.7'/%3E%3Ccircle cx='0' cy='0' r='2' fill='%23f59e0b'/%3E%3Ccircle cx='56' cy='0' r='2' fill='%23f59e0b'/%3E%3Ccircle cx='0' cy='56' r='2' fill='%23f59e0b'/%3E%3Ccircle cx='56' cy='56' r='2' fill='%23f59e0b'/%3E%3C/g%3E%3C/svg%3E")`,
+        backgroundRepeat: "repeat",
+      }}
+      aria-hidden={!isVisible}
+    />
+  );
+});
+
+// ─── 8. Ornate Authentic Diwali Corner Filigree (Golden Pearls & Floral Lace) ───
+export const CornerFlourish = React.memo(function CornerFlourish({
+  position = "top-left",
+  size = 56,
+  className = "",
+}: {
+  position?: "top-left" | "top-right" | "bottom-left" | "bottom-right";
+  size?: number;
+  className?: string;
+}) {
+  const transform =
+    position === "top-left"
+      ? ""
+      : position === "top-right"
+        ? "scale-x-[-1]"
+        : position === "bottom-left"
+          ? "scale-y-[-1]"
+          : "scale-x-[-1] scale-y-[-1]";
+
+  return (
+    <svg
+      viewBox="0 0 80 80"
+      width={size}
+      height={size}
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={`pointer-events-none select-none absolute z-10 ${transform} ${className}`}
+      aria-hidden="true"
+    >
+      <defs>
+        <linearGradient id="cfGold" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#FEF08A" />
+          <stop offset="45%" stopColor="#F59E0B" />
+          <stop offset="100%" stopColor="#D97706" />
+        </linearGradient>
+      </defs>
+
+      {/* Outer Ornate Border Framing */}
+      <path
+        d="M 2 64 L 2 12 C 2 6.5, 6.5 2, 12 2 L 64 2"
+        stroke="url(#cfGold)"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+      />
+      <path
+        d="M 6 52 L 6 14 C 6 9.5, 9.5 6, 14 6 L 52 6"
+        stroke="#F59E0B"
+        strokeWidth="1.2"
+        strokeLinecap="round"
+        strokeDasharray="3 2"
+      />
+
+      {/* Decorative Scalloped Arch in the corner */}
+      <path
+        d="M 4 36 C 4 18, 18 4, 36 4"
+        stroke="url(#cfGold)"
+        strokeWidth="1.5"
+        fill="none"
+      />
+      <path
+        d="M 8 26 C 8 16, 16 8, 26 8"
+        stroke="#EA580C"
+        strokeWidth="1"
+        fill="none"
+      />
+
+      {/* Golden Auspicious Pearls along Scallop Curve */}
+      <circle cx="5" cy="42" r="2.2" fill="#FEF08A" stroke="#B45309" strokeWidth="0.5" />
+      <circle cx="8" cy="32" r="2.4" fill="#FEF08A" stroke="#B45309" strokeWidth="0.5" />
+      <circle cx="15" cy="22" r="2.6" fill="#FEF08A" stroke="#B45309" strokeWidth="0.5" />
+      <circle cx="22" cy="15" r="2.6" fill="#FEF08A" stroke="#B45309" strokeWidth="0.5" />
+      <circle cx="32" cy="8" r="2.4" fill="#FEF08A" stroke="#B45309" strokeWidth="0.5" />
+      <circle cx="42" cy="5" r="2.2" fill="#FEF08A" stroke="#B45309" strokeWidth="0.5" />
+
+      {/* Inner Elegant Paisley & Lotus Petal Scrollwork */}
+      <path
+        d="M 10 10 Q 22 14 24 24 Q 14 22 10 10 Z"
+        fill="url(#cfGold)"
+        opacity="0.45"
+      />
+      <path
+        d="M 12 24 C 12 16, 16 12, 24 12"
+        stroke="#F59E0B"
+        strokeWidth="1.2"
+        fill="none"
+      />
+      <path
+        d="M 16 28 C 16 19, 19 16, 28 16"
+        stroke="#FEF08A"
+        strokeWidth="0.9"
+        strokeDasharray="2 2"
+        fill="none"
+      />
+
+      {/* Central Auspicious Golden Pearl with Highlight */}
+      <circle cx="20" cy="20" r="3.2" fill="#FEF08A" stroke="#B45309" strokeWidth="0.6" />
+      <circle cx="19.2" cy="19.2" r="1" fill="#FFFFFF" />
+
+      {/* Radiating Micro-accent Beads */}
+      <circle cx="27" cy="21" r="1.5" fill="#F59E0B" />
+      <circle cx="21" cy="27" r="1.5" fill="#F59E0B" />
+
+      {/* Trailing Golden Stars & Flourish Finials */}
+      <path
+        d="M 64 2 L 67 0 L 70 2 L 74 2 L 71 5 L 72 9 L 68 7 L 64 9 L 65 5 Z"
+        fill="#F59E0B"
+      />
+      <circle cx="78" cy="2" r="1.8" fill="#FEF08A" />
+
+      <path
+        d="M 2 64 L 0 67 L 2 70 L 2 74 L 5 71 L 9 72 L 7 68 L 9 64 L 5 65 Z"
+        fill="#F59E0B"
+      />
+      <circle cx="2" cy="78" r="1.8" fill="#FEF08A" />
+    </svg>
+  );
+});
