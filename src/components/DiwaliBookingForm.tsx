@@ -126,9 +126,7 @@ export default function DiwaliBookingForm({
   return (
     <div
       className={`w-full rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-sm transition-all duration-700 ease-in-out relative flex flex-col ${
-        isDiwaliMode
-          ? "bg-white shadow-md text-[#1F272F]"
-          : "bg-white"
+        isDiwaliMode ? "bg-white shadow-md text-[#1F272F]" : "bg-white"
       }`}
     >
       {/* Background Watermark container with hidden overflow */}
@@ -211,32 +209,6 @@ export default function DiwaliBookingForm({
             >
               Request Diwali Pickup
             </h3>
-            <div className="flex flex-col gap-1">
-              <div
-                className={`flex items-start gap-1.5 text-[10px] sm:text-[11px] font-semibold leading-tight ${isDiwaliMode ? "text-[#58626c]" : "text-gray-500"}`}
-              >
-                <CheckCircle2
-                  className={`w-3 h-3 sm:w-3.5 sm:h-3.5 shrink-0 mt-[1px] ${isDiwaliMode ? "text-[#ED7E23]" : "text-emerald-500"}`}
-                />
-                Doorstep Pickup Across Delhi NCR, Punjab, Haryana & Gujarat
-              </div>
-              <div
-                className={`flex items-start gap-1.5 text-[10px] sm:text-[11px] font-semibold leading-tight ${isDiwaliMode ? "text-[#58626c]" : "text-gray-500"}`}
-              >
-                <CheckCircle2
-                  className={`w-3 h-3 sm:w-3.5 sm:h-3.5 shrink-0 mt-[1px] ${isDiwaliMode ? "text-[#ED7E23]" : "text-emerald-500"}`}
-                />
-                Zero Customs Hassle with Complete Documentation
-              </div>
-              <div
-                className={`flex items-start gap-1.5 text-[10px] sm:text-[11px] font-semibold leading-tight ${isDiwaliMode ? "text-[#58626c]" : "text-gray-500"}`}
-              >
-                <CheckCircle2
-                  className={`w-3 h-3 sm:w-3.5 sm:h-3.5 shrink-0 mt-[1px] ${isDiwaliMode ? "text-[#ED7E23]" : "text-emerald-500"}`}
-                />
-                Free Packaging
-              </div>
-            </div>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3">
@@ -245,7 +217,9 @@ export default function DiwaliBookingForm({
               required
               placeholder="Your Name*"
               value={inqName}
-              onChange={(e) => setInqName(e.target.value)}
+              onChange={(e) =>
+                setInqName(e.target.value.replace(/[^A-Za-z\s]/g, ""))
+              }
               className={`rounded-lg sm:rounded-xl px-3.5 sm:px-4 py-2.5 sm:py-3 text-xs font-medium focus:outline-none transition-colors ${
                 isDiwaliMode
                   ? "bg-white border-[1.5px] border-[#B4683F]/45 text-[#1F272F] placeholder:text-[#909498] focus:border-[#c4620c] focus:ring-2 focus:ring-[#ED7E23]/25"
@@ -255,9 +229,10 @@ export default function DiwaliBookingForm({
             <input
               type="tel"
               required
+              maxLength={10}
               placeholder="Contact Number*"
               value={inqPhone}
-              onChange={(e) => setInqPhone(e.target.value)}
+              onChange={(e) => setInqPhone(e.target.value.replace(/\D/g, ""))}
               className={`rounded-lg sm:rounded-xl px-3.5 sm:px-4 py-2.5 sm:py-3 text-xs font-medium focus:outline-none transition-colors ${
                 isDiwaliMode
                   ? "bg-white border-[1.5px] border-[#B4683F]/45 text-[#1F272F] placeholder:text-[#909498] focus:border-[#c4620c] focus:ring-2 focus:ring-[#ED7E23]/25"
@@ -302,7 +277,9 @@ export default function DiwaliBookingForm({
               type="text"
               placeholder="Approx Weight (kg)"
               value={inqWeight}
-              onChange={(e) => setInqWeight(e.target.value)}
+              onChange={(e) =>
+                setInqWeight(e.target.value.replace(/[^0-9.]/g, ""))
+              }
               className={`rounded-lg sm:rounded-xl px-3.5 sm:px-4 py-2.5 sm:py-3 text-xs font-medium focus:outline-none transition-colors ${
                 isDiwaliMode
                   ? "bg-white border-[1.5px] border-[#B4683F]/45 text-[#1F272F] placeholder:text-[#909498] focus:border-[#c4620c] focus:ring-2 focus:ring-[#ED7E23]/25"
@@ -345,7 +322,7 @@ export default function DiwaliBookingForm({
             {inqLoading ? (
               <Loader2 className="w-4 h-4 animate-spin" />
             ) : (
-              "Submit Diwali Pickup Request"
+              "Submit"
             )}
           </button>
         </form>
