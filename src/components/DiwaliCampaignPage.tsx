@@ -57,7 +57,7 @@ const DIWALI_ITEMS = [
   {
     icon: "🧣",
     title: "Blankets & Winter Wear",
-    desc: "Razai, blankets, shawls, sweaters, woollens, caps & mufflers , ready for the cold months abroad.",
+    desc: "Send razais, blankets, shawls, sweaters, woollens, caps, mufflers and much more to your loved ones abroad. Keep them warm and cosy through the colder months!",
     bgImage: "/Blanket and winter wear.jpeg",
   },
   {
@@ -90,24 +90,10 @@ const DIWALI_ITEMS = [
 
 const DIWALI_RATES = [
   {
-    flag: "🇦🇪",
-    country: "UAE",
-    code: "AE",
-    price: "₹301",
-    per: "per kg · starting",
-  },
-  {
-    flag: "🇺🇸",
-    country: "USA",
-    code: "US",
-    price: "₹697",
-    per: "per kg · starting",
-  },
-  {
-    flag: "🇬🇧",
-    country: "UK",
-    code: "GB",
-    price: "₹414",
+    flag: "🇦🇺",
+    country: "Australia",
+    code: "AU",
+    price: "₹333",
     per: "per kg · starting",
   },
   {
@@ -125,10 +111,24 @@ const DIWALI_RATES = [
     per: "per kg · starting",
   },
   {
-    flag: "🇦🇺",
-    country: "Australia",
-    code: "AU",
-    price: "₹333",
+    flag: "🇦🇪",
+    country: "UAE",
+    code: "AE",
+    price: "₹301",
+    per: "per kg · starting",
+  },
+  {
+    flag: "🇬🇧",
+    country: "UK",
+    code: "GB",
+    price: "₹414",
+    per: "per kg · starting",
+  },
+  {
+    flag: "🇺🇸",
+    country: "USA",
+    code: "US",
+    price: "₹697",
     per: "per kg · starting",
   },
 ];
@@ -152,14 +152,14 @@ const STEPS = [
   {
     num: "4",
     title: "Worldwide delivery",
-    desc: "We deliver to Australia, Canada, UK, USA and worldwide , 200+ countries.",
+    desc: "Delivery available to Australia, Canada, Europe, UAE, UK, USA & Worldwide 200+ countries",
   },
 ];
 
 const DIWALI_FAQS = [
   {
     q: "Will my Diwali order reach before Diwali?",
-    a: "Yes, if you book early. Book at least 7–10 days before Diwali , with express shipping (3–5 day delivery), your parcel can reach in time for the celebrations. Booking later? Message us on WhatsApp and we'll tell you what's possible.",
+    a: "Yes, if you book early! Place your order at least 7–8 days before Diwali to help ensure your parcel reaches your loved ones in time for the celebrations. Booking later? Message us on WhatsApp, and we’ll let you know what’s possible.",
   },
   {
     q: "Which cities do you pick up from?",
@@ -167,11 +167,11 @@ const DIWALI_FAQS = [
   },
   {
     q: "How much does shipping cost?",
-    a: "Festive rates start from ₹301/kg to UAE, ₹333/kg to Australia, ₹414/kg to the UK, ₹481/kg to Europe, ₹569/kg to Canada and ₹697/kg to the USA. The final price depends on actual or volumetric weight, destination and speed , share your details and we'll send an exact quote on WhatsApp.",
+    a: "Festive rates starts from ₹333/kg to Australia,₹481/kg to Europe,₹569/kg to Canada, ₹301/kg to UAE, ₹414/kg to the UK, and ₹697/kg to the USA + GST. The final price depends on actual or volumetric weight, destination and speed , share your details and we'll send an exact quote on WhatsApp.",
   },
   {
     q: "How do you make sure sweets & snacks don't break or spoil?",
-    a: "Everything is packed securely in sturdy corrugated boxes with protective cushioning to prevent breakage.",
+    a: "Everything is packed securely in sturdy boxes with protective cushioning to prevent breakage.",
   },
   {
     q: "Are there any restrictions on sending sweets and food?",
@@ -179,7 +179,7 @@ const DIWALI_FAQS = [
   },
   {
     q: "Are brass puja items, diyas and torans allowed?",
-    a: "Generally yes , brass puja items, clay diyas, torans and decorations are commonly shipped to the USA, UK, Canada and Australia. Fireworks, oil, ghee, camphor, lighters, matches, perfumes and other flammable items are not allowed.",
+    a: "Generally, yes! We ship brass puja items, clay diyas, torans and decorations, subject to destination-country regulations. WhatsApp us, and our team will guide you on shipping availability and the details for your destination. Fireworks, oil, ghee, camphor, lighters, matches, perfumes and other flammable items are not allowed.",
   },
   {
     q: "Can I send branded sweets and homemade snacks together?",
@@ -584,12 +584,12 @@ export default function DiwaliCampaignPage({
                   </div>
                   <div className="grid grid-cols-6 gap-1.5 sm:gap-2 text-center">
                     {[
-                      { country: "UAE", flag: "🇦🇪", price: "₹301" },
-                      { country: "USA", flag: "🇺🇸", price: "₹697" },
-                      { country: "UK", flag: "🇬🇧", price: "₹414" },
+                      { country: "Australia", flag: "🇦🇺", price: "₹333" },
                       { country: "Canada", flag: "🇨🇦", price: "₹569" },
                       { country: "Europe", flag: "🇪🇺", price: "₹481" },
-                      { country: "Australia", flag: "🇦🇺", price: "₹333" },
+                      { country: "UAE", flag: "🇦🇪", price: "₹301" },
+                      { country: "UK", flag: "🇬🇧", price: "₹414" },
+                      { country: "USA", flag: "🇺🇸", price: "₹697" },
                     ].map((c) => (
                       <div
                         key={c.country}
@@ -695,12 +695,12 @@ export default function DiwaliCampaignPage({
               </div>
               <div className="grid grid-cols-3 gap-1.5 sm:gap-2 text-center text-xs font-bold">
                 {[
-                  { country: "UAE", flag: "🇦🇪", price: "₹301" },
-                  { country: "USA", flag: "🇺🇸", price: "₹697" },
-                  { country: "UK", flag: "🇬🇧", price: "₹414" },
+                  { country: "Australia", flag: "🇦🇺", price: "₹333" },
                   { country: "Canada", flag: "🇨🇦", price: "₹569" },
                   { country: "Europe", flag: "🇪🇺", price: "₹481" },
-                  { country: "Australia", flag: "🇦🇺", price: "₹333" },
+                  { country: "UAE", flag: "🇦🇪", price: "₹301" },
+                  { country: "UK", flag: "🇬🇧", price: "₹414" },
+                  { country: "USA", flag: "🇺🇸", price: "₹697" },
                 ].map((c) => (
                   <div
                     key={c.country}
@@ -810,7 +810,7 @@ export default function DiwaliCampaignPage({
                 "Doorstep Pickup Across Delhi NCR, Haryana & Pan India",
                 "Complete Customs Documentation for a Hassle-Free Shipment",
                 "Free Pickup and Packaging",
-                "Delivery Available to Australia, Canada, UK, USA & Worldwide , 200+ Countries",
+                "Delivery available to Australia, Canada, Europe, UAE, UK, USA & Worldwide 200+ countries",
                 "Safe & Reliable Door-to-Door International Delivery",
                 "Easy Booking & Quick Assistance on WhatsApp",
               ].map((item, idx) => (
@@ -1091,7 +1091,8 @@ export default function DiwaliCampaignPage({
           }`}
         >
           Starting rates. Final price depends on actual/volumetric weight,
-          destination &amp; speed , get a quick quote on WhatsApp.
+          destination &amp; speed , get a quick quote on WhatsApp. *T&amp;C
+          Applied
         </p>
       </section>
 
