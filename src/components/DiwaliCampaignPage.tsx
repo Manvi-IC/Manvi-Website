@@ -501,7 +501,7 @@ export default function DiwaliCampaignPage({
               : "bg-[#1a0c02]"
           }`}
         >
-          {/* Taller aspect ratio for desktop to accommodate the form, standard for mobile */}
+          {/* Banner Image Container */}
           <div className="relative w-full aspect-[1352/486] lg:aspect-[1352/520] xl:aspect-[1352/480]">
             <Image
               src="/diwali-banner.webp"
@@ -512,8 +512,35 @@ export default function DiwaliCampaignPage({
               priority
             />
 
-            {/* Soft, natural left vignette for crystal-clear readability without obscuring the golden sunset sky */}
+            {/* Desktop soft left vignette */}
             <div className="hidden md:block absolute inset-0 bg-gradient-to-r from-black/70 via-black/35 via-35% to-transparent pointer-events-none" />
+            {/* Mobile dark vignette for text readability */}
+            <div className="block md:hidden absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent pointer-events-none" />
+
+            {/* Mobile Overlay Text */}
+            <div className="md:hidden absolute inset-0 z-10 flex flex-col justify-between px-3 py-2.5">
+              <div className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-500/30 border border-amber-400/40 text-amber-200 text-[9px] sm:text-[10px] font-black w-fit tracking-wider uppercase backdrop-blur-md shadow-md">
+                <Flame className="w-2.5 h-2.5 text-amber-400 fill-amber-400" />
+                DIWALI WITH MANVI
+              </div>
+
+              <div className="flex flex-col gap-1 sm:gap-1.5">
+                <h1 className="text-[15px] sm:text-lg font-black leading-tight text-white drop-shadow-md">
+                  Share the sweets,
+                  <br /> Share the glow,
+                  <br />
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FFF0B3] via-[#FFD666] to-[#FFA940]">
+                    Send your love where you can&apos;t go
+                    <br />
+                  </span>
+                </h1>
+
+                <p className="text-amber-100/95 text-[10px] sm:text-[11px] font-semibold italic flex items-center gap-1 drop-shadow-md">
+                  <span className="w-2.5 h-0.5 bg-[#ED7E23] inline-block" />
+                  Because miles don&apos;t matter at Manvi.
+                </p>
+              </div>
+            </div>
 
             {/* Desktop Hero Content Overlay */}
             <div className="hidden md:flex absolute inset-0 z-10 flex-row items-center justify-between px-6 lg:px-12 xl:px-16 py-4 gap-8">
@@ -625,45 +652,14 @@ export default function DiwaliCampaignPage({
 
           {/* Mobile Content (Below banner on small screens so banner artwork is 100% visible with 0 cutout) */}
           <div
-            className={`md:hidden px-4 py-5 flex flex-col gap-3 transition-colors ${
+            className={`md:hidden px-4 py-4 flex flex-col gap-3 transition-colors ${
               isDiwaliMode
                 ? "bg-gradient-to-b from-white/95 to-[#FCF6F0]/95 border-x border-b border-[#ED7E23]/30 text-[#1F272F]"
                 : "bg-[#170a02] text-white"
             }`}
           >
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/20 border border-amber-400/40 text-amber-800 text-[11px] font-extrabold w-fit tracking-wide uppercase">
-              <Flame className="w-3 h-3 text-amber-600 fill-amber-600" />
-              DIWALI WITH MANVI
-            </div>
-
-            <h1
-              className={`text-xl sm:text-2xl font-black leading-tight tracking-tight ${
-                isDiwaliMode ? "text-[#1F272F]" : "text-white"
-              }`}
-            >
-              Share the sweets, share the glow, <br />
-              <span
-                className={
-                  isDiwaliMode
-                    ? "gold-text"
-                    : "text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-orange-400 to-yellow-200"
-                }
-              >
-                send your love where you can&apos;t go
-              </span>
-            </h1>
-
-            <p
-              className={`text-xs font-semibold italic flex items-center gap-1.5 ${
-                isDiwaliMode ? "text-[#B4683F]" : "text-amber-200/90"
-              }`}
-            >
-              <span className="w-4 h-0.5 bg-[#ED7E23] inline-block" />
-              Because miles don&apos;t matter at Manvi.
-            </p>
-
             {/* Mobile Booking Form embedded below text */}
-            <div id="diwali-booking-mobile" className="w-full mt-2 lg:hidden">
+            <div id="diwali-booking-mobile" className="w-full lg:hidden">
               <DiwaliBookingForm
                 isDiwaliMode={isDiwaliMode}
                 setShowInqSuccessModal={setShowInqSuccessModal}
