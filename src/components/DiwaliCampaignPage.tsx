@@ -53,6 +53,7 @@ const DIWALI_ITEMS = [
     title: "Sweets, Puja/ Decoration Items",
     desc: "Kaju katli, laddoo, ghee, chakli, mathri etc, all securely packed for delivery. You can also send diyas, brass puja items, torans, rangoli and other festive decoration items",
     bgImage: "/Sweet, Puja.jpeg",
+    bgPosition: "center bottom",
   },
   {
     icon: "🧣",
@@ -930,7 +931,7 @@ export default function DiwaliCampaignPage({
                   style={{
                     backgroundImage: `url('${encodeURI(item.bgImage)}')`,
                     backgroundSize: "cover",
-                    backgroundPosition: "center",
+                    backgroundPosition: item.bgPosition || "center",
                   }}
                 />
               )}
@@ -939,8 +940,8 @@ export default function DiwaliCampaignPage({
               <div
                 className={`absolute inset-0 z-0 transition-opacity duration-500 bg-gradient-to-t ${
                   isDiwaliMode
-                    ? "from-[#1F272F] via-[#1F272F]/70 to-[#1F272F]/10 group-hover:from-[#1F272F]/90"
-                    : "from-black/90 via-black/50 to-black/10 group-hover:from-black/95"
+                    ? "from-[#1F272F]/95 via-[#1F272F]/30 to-transparent group-hover:via-[#1F272F]/40"
+                    : "from-black/90 via-black/30 to-transparent group-hover:via-black/40"
                 }`}
               />
 
@@ -975,23 +976,26 @@ export default function DiwaliCampaignPage({
                 <h3 className="text-lg sm:text-xl font-bold text-white group-hover:text-orange-200 transition-colors">
                   {item.title}
                 </h3>
-                <p className="text-xs sm:text-sm leading-relaxed mt-1.5 sm:mt-2 text-white/90">
-                  {item.desc}
-                </p>
-              </div>
-
-              {item.link && (
-                <div className="pt-1 relative z-10">
-                  <a
-                    href={item.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1 font-bold text-xs sm:text-sm hover:underline cursor-pointer text-orange-300"
-                  >
-                    {item.linkText || "Contact us for more info →"}
-                  </a>
+                <div className="min-h-[76px] sm:min-h-[100px] lg:min-h-[112px] xl:min-h-[84px] mt-1.5 sm:mt-2 w-full flex flex-col justify-start relative">
+                  <p className="text-xs sm:text-sm leading-relaxed text-white/90">
+                    {item.desc}
+                  </p>
+                  <div className="absolute bottom-0 right-0">
+                    {item.link && (
+                      <div className="pt-1.5 mt-auto">
+                        <a
+                          href={item.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1 font-bold text-xs sm:text-sm hover:underline cursor-pointer text-orange-300"
+                        >
+                          {item.linkText || "Contact us for more info →"}
+                        </a>
+                      </div>
+                    )}
+                  </div>
                 </div>
-              )}
+              </div>
             </div>
           ))}
         </div>
