@@ -100,7 +100,7 @@ const DIWALI_RATES = [
     flag: "🇺🇸",
     country: "USA",
     code: "US",
-    price: "₹680",
+    price: "₹697",
     per: "per kg · starting",
   },
   {
@@ -167,7 +167,7 @@ const DIWALI_FAQS = [
   },
   {
     q: "How much does shipping cost?",
-    a: "Festive rates start from ₹301/kg to UAE, ₹333/kg to Australia, ₹414/kg to the UK, ₹481/kg to Europe, ₹569/kg to Canada and ₹680/kg to the USA. The final price depends on actual or volumetric weight, destination and speed , share your details and we'll send an exact quote on WhatsApp.",
+    a: "Festive rates start from ₹301/kg to UAE, ₹333/kg to Australia, ₹414/kg to the UK, ₹481/kg to Europe, ₹569/kg to Canada and ₹697/kg to the USA. The final price depends on actual or volumetric weight, destination and speed , share your details and we'll send an exact quote on WhatsApp.",
   },
   {
     q: "How do you make sure sweets & snacks don't break or spoil?",
@@ -558,7 +558,7 @@ export default function DiwaliCampaignPage({
                   <div className="grid grid-cols-6 gap-1.5 sm:gap-2 text-center">
                     {[
                       { country: "UAE", flag: "🇦🇪", price: "₹301" },
-                      { country: "USA", flag: "🇺🇸", price: "₹680" },
+                      { country: "USA", flag: "🇺🇸", price: "₹697" },
                       { country: "UK", flag: "🇬🇧", price: "₹414" },
                       { country: "Canada", flag: "🇨🇦", price: "₹569" },
                       { country: "Europe", flag: "🇪🇺", price: "₹481" },
@@ -662,9 +662,19 @@ export default function DiwaliCampaignPage({
               Because miles don&apos;t matter at Manvi.
             </p>
 
+            {/* Mobile Booking Form embedded below text */}
+            <div id="diwali-booking-mobile" className="w-full mt-2 lg:hidden">
+              <DiwaliBookingForm
+                isDiwaliMode={isDiwaliMode}
+                setShowInqSuccessModal={setShowInqSuccessModal}
+                setSuccessAnimationPhase={setSuccessAnimationPhase}
+                setSubmittedInquiry={setSubmittedInquiry}
+              />
+            </div>
+
             {/* Rate Highlight Pill Mobile */}
             <div
-              className={`rounded-2xl p-3 ${
+              className={`rounded-2xl p-3 mt-2 ${
                 isDiwaliMode
                   ? "bg-white border border-[#ED7E23]/35 shadow-sm"
                   : "bg-white/5 border border-amber-500/30 shadow-md"
@@ -687,36 +697,38 @@ export default function DiwaliCampaignPage({
                   Starting per kg
                 </span>
               </div>
-              <div className="grid grid-cols-2 gap-2 text-center text-xs font-bold">
+              <div className="grid grid-cols-3 gap-1.5 sm:gap-2 text-center text-xs font-bold">
                 {[
-                  { country: "UK", flag: "🇬🇧", price: "₹649" },
-                  { country: "USA", flag: "🇺🇸", price: "₹679" },
-                  { country: "Canada", flag: "🇨🇦", price: "₹749" },
-                  { country: "Australia", flag: "🇦🇺", price: "₹789" },
+                  { country: "UAE", flag: "🇦🇪", price: "₹301" },
+                  { country: "USA", flag: "🇺🇸", price: "₹697" },
+                  { country: "UK", flag: "🇬🇧", price: "₹414" },
+                  { country: "Canada", flag: "🇨🇦", price: "₹569" },
+                  { country: "Europe", flag: "🇪🇺", price: "₹481" },
+                  { country: "Australia", flag: "🇦🇺", price: "₹333" },
                 ].map((c) => (
                   <div
                     key={c.country}
-                    className={`rounded-xl py-2 px-2 ${
+                    className={`rounded-xl py-2 px-1 ${
                       isDiwaliMode
                         ? "bg-[#F0F3F3]/80 border border-[#ED7E23]/25"
                         : "bg-white/10 border border-white/15"
                     }`}
                   >
                     <span
-                      className={`block text-[11px] font-bold uppercase ${
+                      className={`block text-[10px] sm:text-[11px] font-bold uppercase ${
                         isDiwaliMode ? "text-[#1F272F]" : "text-white/90"
                       }`}
                     >
                       {c.country}
                     </span>
                     <span
-                      className={`font-black text-sm block mt-0.5 ${
+                      className={`font-black text-xs sm:text-sm block mt-0.5 whitespace-nowrap ${
                         isDiwaliMode ? "text-[#c4620c]" : "text-[#FFD666]"
                       }`}
                     >
                       {c.price}
                       <span
-                        className={`text-[10px] font-normal ${
+                        className={`text-[9px] sm:text-[10px] font-normal ${
                           isDiwaliMode ? "text-[#58626c]" : "text-amber-200/70"
                         }`}
                       >
@@ -728,26 +740,16 @@ export default function DiwaliCampaignPage({
               </div>
             </div>
 
-            {/* CTA Buttons Mobile */}
-            <div className="grid grid-cols-2 gap-2 mt-1">
-              <a
-                href="#diwali-booking"
-                className={`font-extrabold text-xs py-3 rounded-xl transition-all flex items-center justify-center gap-1.5 text-center no-underline active:scale-95 ${
-                  isDiwaliMode
-                    ? "bg-gradient-to-b from-[#f79a45] to-[#ED7E23] text-[#1F272F] shadow-[0_10px_30px_-8px_rgba(237,126,35,0.6),inset_0_1px_0_#ffd9b5]"
-                    : "bg-[#e77419] hover:bg-orange-600 text-white shadow-md"
-                }`}
-              >
-                Book Diwali Parcel <ArrowUpRight className="w-3.5 h-3.5" />
-              </a>
+            {/* CTA Buttons Mobile (WhatsApp only, since Form is right above) */}
+            <div className="flex w-full mt-1">
               <a
                 href="https://wa.me/917070506070?text=Hi%2C%20I%20want%20to%20send%20a%20Diwali%20gift%20parcel%20abroad"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-[#25D366] hover:bg-[#20bd5a] text-[#052e16] font-extrabold text-xs py-3 rounded-xl transition-all shadow-md flex items-center justify-center gap-1.5 text-center no-underline active:scale-95"
+                className="w-full bg-[#25D366] hover:bg-[#20bd5a] text-[#052e16] font-extrabold text-xs sm:text-sm py-3.5 rounded-xl transition-all shadow-md flex items-center justify-center gap-1.5 text-center no-underline active:scale-95"
               >
                 <span className="w-2 h-2 rounded-full bg-emerald-900 animate-ping shrink-0" />
-                {t.contact_whatsapp || "WhatsApp"}
+                {t.contact_whatsapp || "Chat on WhatsApp"}
               </a>
             </div>
           </div>

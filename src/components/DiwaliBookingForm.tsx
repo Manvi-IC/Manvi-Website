@@ -198,7 +198,7 @@ export default function DiwaliBookingForm({
         >
           <div className="flex flex-col gap-0.5 relative z-10">
             <span
-              className={`text-[10px] sm:text-[11px] font-black uppercase tracking-widest ${isDiwaliMode ? "text-[#ED7E23]" : "text-[#f27a1a]"}`}
+              className={`hidden lg:block text-[10px] sm:text-[11px] font-black uppercase tracking-widest ${isDiwaliMode ? "text-[#ED7E23]" : "text-[#f27a1a]"}`}
             >
               Book Your Diwali Parcel Today
             </span>
