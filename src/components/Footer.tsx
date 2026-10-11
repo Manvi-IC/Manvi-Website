@@ -253,6 +253,12 @@ export default function Footer({ isDiwaliMode = false }: FooterProps = {}) {
                   {t.footer_winter_campaign}
                 </Link> */}
                 <Link
+                  href="/diwali-campaign"
+                  className="hover:text-white transition-colors font-semibold py-0.5"
+                >
+                  {t.footer_diwali_campaign}
+                </Link>
+                <Link
                   href="/shopkeeper"
                   className="hover:text-white transition-colors font-semibold py-0.5"
                 >
@@ -381,6 +387,12 @@ export default function Footer({ isDiwaliMode = false }: FooterProps = {}) {
                     >
                       {t.footer_winter_campaign}
                     </Link> */}
+                    <Link
+                      href="/diwali-campaign"
+                      className="py-1.5 hover:text-white transition-colors font-semibold"
+                    >
+                      {t.footer_diwali_campaign}
+                    </Link>
                     <Link
                       href="/shopkeeper"
                       className="py-1.5 hover:text-white transition-colors font-semibold"
