@@ -53,11 +53,12 @@ const DIWALI_ITEMS = [
     title: "Sweets, Puja/ Decoration Items",
     desc: "Kaju katli, laddoo, ghee, chakli, mathri etc, all securely packed for delivery. You can also send diyas, brass puja items, torans, rangoli and other festive decoration items",
     bgImage: "/Sweet, Puja.jpeg",
+    bgPosition: "center bottom",
   },
   {
     icon: "🧣",
     title: "Blankets & Winter Wear",
-    desc: "Razai, blankets, shawls, sweaters, woollens, caps & mufflers , ready for the cold months abroad.",
+    desc: "Send razais, blankets, shawls, sweaters, woollens, caps, mufflers and much more to your loved ones abroad. Keep them warm and cosy through the colder months!",
     bgImage: "/Blanket and winter wear.jpeg",
   },
   {
@@ -90,24 +91,10 @@ const DIWALI_ITEMS = [
 
 const DIWALI_RATES = [
   {
-    flag: "🇦🇪",
-    country: "UAE",
-    code: "AE",
-    price: "₹301",
-    per: "per kg · starting",
-  },
-  {
-    flag: "🇺🇸",
-    country: "USA",
-    code: "US",
-    price: "₹680",
-    per: "per kg · starting",
-  },
-  {
-    flag: "🇬🇧",
-    country: "UK",
-    code: "GB",
-    price: "₹414",
+    flag: "🇦🇺",
+    country: "Australia",
+    code: "AU",
+    price: "₹333",
     per: "per kg · starting",
   },
   {
@@ -125,10 +112,24 @@ const DIWALI_RATES = [
     per: "per kg · starting",
   },
   {
-    flag: "🇦🇺",
-    country: "Australia",
-    code: "AU",
-    price: "₹333",
+    flag: "🇦🇪",
+    country: "UAE",
+    code: "AE",
+    price: "₹301",
+    per: "per kg · starting",
+  },
+  {
+    flag: "🇬🇧",
+    country: "UK",
+    code: "GB",
+    price: "₹414",
+    per: "per kg · starting",
+  },
+  {
+    flag: "🇺🇸",
+    country: "USA",
+    code: "US",
+    price: "₹697",
     per: "per kg · starting",
   },
 ];
@@ -152,14 +153,14 @@ const STEPS = [
   {
     num: "4",
     title: "Worldwide delivery",
-    desc: "We deliver to Australia, Canada, UK, USA and worldwide , 200+ countries.",
+    desc: "Delivery available to Australia, Canada, Europe, UAE, UK, USA & Worldwide 200+ countries",
   },
 ];
 
 const DIWALI_FAQS = [
   {
     q: "Will my Diwali order reach before Diwali?",
-    a: "Yes, if you book early. Book at least 7–10 days before Diwali , with express shipping (3–5 day delivery), your parcel can reach in time for the celebrations. Booking later? Message us on WhatsApp and we'll tell you what's possible.",
+    a: "Yes, if you book early! Place your order at least 7–8 days before Diwali to help ensure your parcel reaches your loved ones in time for the celebrations. Booking later? Message us on WhatsApp, and we’ll let you know what’s possible.",
   },
   {
     q: "Which cities do you pick up from?",
@@ -167,11 +168,11 @@ const DIWALI_FAQS = [
   },
   {
     q: "How much does shipping cost?",
-    a: "Festive rates start from ₹301/kg to UAE, ₹333/kg to Australia, ₹414/kg to the UK, ₹481/kg to Europe, ₹569/kg to Canada and ₹680/kg to the USA. The final price depends on actual or volumetric weight, destination and speed , share your details and we'll send an exact quote on WhatsApp.",
+    a: "Festive rates starts from ₹333/kg to Australia,₹481/kg to Europe,₹569/kg to Canada, ₹301/kg to UAE, ₹414/kg to the UK, and ₹697/kg to the USA + GST. The final price depends on actual or volumetric weight, destination and speed , share your details and we'll send an exact quote on WhatsApp.",
   },
   {
     q: "How do you make sure sweets & snacks don't break or spoil?",
-    a: "Everything is packed securely in sturdy corrugated boxes with protective cushioning to prevent breakage.",
+    a: "Everything is packed securely in sturdy boxes with protective cushioning to prevent breakage.",
   },
   {
     q: "Are there any restrictions on sending sweets and food?",
@@ -179,7 +180,7 @@ const DIWALI_FAQS = [
   },
   {
     q: "Are brass puja items, diyas and torans allowed?",
-    a: "Generally yes , brass puja items, clay diyas, torans and decorations are commonly shipped to the USA, UK, Canada and Australia. Fireworks, oil, ghee, camphor, lighters, matches, perfumes and other flammable items are not allowed.",
+    a: "Generally, yes! We ship brass puja items, clay diyas, torans and decorations, subject to destination-country regulations. WhatsApp us, and our team will guide you on shipping availability and the details for your destination. Fireworks, oil, ghee, camphor, lighters, matches, perfumes and other flammable items are not allowed.",
   },
   {
     q: "Can I send branded sweets and homemade snacks together?",
@@ -501,7 +502,7 @@ export default function DiwaliCampaignPage({
               : "bg-[#1a0c02]"
           }`}
         >
-          {/* Taller aspect ratio for desktop to accommodate the form, standard for mobile */}
+          {/* Banner Image Container */}
           <div className="relative w-full aspect-[1352/486] lg:aspect-[1352/520] xl:aspect-[1352/480]">
             <Image
               src="/diwali-banner.webp"
@@ -512,8 +513,35 @@ export default function DiwaliCampaignPage({
               priority
             />
 
-            {/* Soft, natural left vignette for crystal-clear readability without obscuring the golden sunset sky */}
+            {/* Desktop soft left vignette */}
             <div className="hidden md:block absolute inset-0 bg-gradient-to-r from-black/70 via-black/35 via-35% to-transparent pointer-events-none" />
+            {/* Mobile dark vignette for text readability */}
+            <div className="block md:hidden absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent pointer-events-none" />
+
+            {/* Mobile Overlay Text */}
+            <div className="md:hidden absolute inset-0 z-10 flex flex-col justify-between px-3 py-2.5">
+              <div className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-500/30 border border-amber-400/40 text-amber-200 text-[9px] sm:text-[10px] font-black w-fit tracking-wider uppercase backdrop-blur-md shadow-md">
+                <Flame className="w-2.5 h-2.5 text-amber-400 fill-amber-400" />
+                DIWALI WITH MANVI
+              </div>
+
+              <div className="flex flex-col gap-1 sm:gap-1.5">
+                <h1 className="text-[15px] sm:text-lg font-black leading-tight text-white drop-shadow-md">
+                  Share the sweets,
+                  <br /> Share the glow,
+                  <br />
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FFF0B3] via-[#FFD666] to-[#FFA940]">
+                    Send your love where you can&apos;t go
+                    <br />
+                  </span>
+                </h1>
+
+                <p className="text-amber-100/95 text-[10px] sm:text-[11px] font-semibold italic flex items-center gap-1 drop-shadow-md">
+                  <span className="w-2.5 h-0.5 bg-[#ED7E23] inline-block" />
+                  Because miles don&apos;t matter at Manvi.
+                </p>
+              </div>
+            </div>
 
             {/* Desktop Hero Content Overlay */}
             <div className="hidden md:flex absolute inset-0 z-10 flex-row items-center justify-between px-6 lg:px-12 xl:px-16 py-4 gap-8">
@@ -557,12 +585,12 @@ export default function DiwaliCampaignPage({
                   </div>
                   <div className="grid grid-cols-6 gap-1.5 sm:gap-2 text-center">
                     {[
-                      { country: "UAE", flag: "🇦🇪", price: "₹301" },
-                      { country: "USA", flag: "🇺🇸", price: "₹680" },
-                      { country: "UK", flag: "🇬🇧", price: "₹414" },
+                      { country: "Australia", flag: "🇦🇺", price: "₹333" },
                       { country: "Canada", flag: "🇨🇦", price: "₹569" },
                       { country: "Europe", flag: "🇪🇺", price: "₹481" },
-                      { country: "Australia", flag: "🇦🇺", price: "₹333" },
+                      { country: "UAE", flag: "🇦🇪", price: "₹301" },
+                      { country: "UK", flag: "🇬🇧", price: "₹414" },
+                      { country: "USA", flag: "🇺🇸", price: "₹697" },
                     ].map((c) => (
                       <div
                         key={c.country}
@@ -625,46 +653,25 @@ export default function DiwaliCampaignPage({
 
           {/* Mobile Content (Below banner on small screens so banner artwork is 100% visible with 0 cutout) */}
           <div
-            className={`md:hidden px-4 py-5 flex flex-col gap-3 transition-colors ${
+            className={`md:hidden px-4 py-4 flex flex-col gap-3 transition-colors ${
               isDiwaliMode
                 ? "bg-gradient-to-b from-white/95 to-[#FCF6F0]/95 border-x border-b border-[#ED7E23]/30 text-[#1F272F]"
                 : "bg-[#170a02] text-white"
             }`}
           >
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/20 border border-amber-400/40 text-amber-800 text-[11px] font-extrabold w-fit tracking-wide uppercase">
-              <Flame className="w-3 h-3 text-amber-600 fill-amber-600" />
-              DIWALI WITH MANVI
+            {/* Mobile Booking Form embedded below text */}
+            <div id="diwali-booking-mobile" className="w-full lg:hidden">
+              <DiwaliBookingForm
+                isDiwaliMode={isDiwaliMode}
+                setShowInqSuccessModal={setShowInqSuccessModal}
+                setSuccessAnimationPhase={setSuccessAnimationPhase}
+                setSubmittedInquiry={setSubmittedInquiry}
+              />
             </div>
-
-            <h1
-              className={`text-xl sm:text-2xl font-black leading-tight tracking-tight ${
-                isDiwaliMode ? "text-[#1F272F]" : "text-white"
-              }`}
-            >
-              Share the sweets, share the glow, <br />
-              <span
-                className={
-                  isDiwaliMode
-                    ? "gold-text"
-                    : "text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-orange-400 to-yellow-200"
-                }
-              >
-                send your love where you can&apos;t go
-              </span>
-            </h1>
-
-            <p
-              className={`text-xs font-semibold italic flex items-center gap-1.5 ${
-                isDiwaliMode ? "text-[#B4683F]" : "text-amber-200/90"
-              }`}
-            >
-              <span className="w-4 h-0.5 bg-[#ED7E23] inline-block" />
-              Because miles don&apos;t matter at Manvi.
-            </p>
 
             {/* Rate Highlight Pill Mobile */}
             <div
-              className={`rounded-2xl p-3 ${
+              className={`rounded-2xl p-3 mt-2 ${
                 isDiwaliMode
                   ? "bg-white border border-[#ED7E23]/35 shadow-sm"
                   : "bg-white/5 border border-amber-500/30 shadow-md"
@@ -687,36 +694,38 @@ export default function DiwaliCampaignPage({
                   Starting per kg
                 </span>
               </div>
-              <div className="grid grid-cols-2 gap-2 text-center text-xs font-bold">
+              <div className="grid grid-cols-3 gap-1.5 sm:gap-2 text-center text-xs font-bold">
                 {[
-                  { country: "UK", flag: "🇬🇧", price: "₹649" },
-                  { country: "USA", flag: "🇺🇸", price: "₹679" },
-                  { country: "Canada", flag: "🇨🇦", price: "₹749" },
-                  { country: "Australia", flag: "🇦🇺", price: "₹789" },
+                  { country: "Australia", flag: "🇦🇺", price: "₹333" },
+                  { country: "Canada", flag: "🇨🇦", price: "₹569" },
+                  { country: "Europe", flag: "🇪🇺", price: "₹481" },
+                  { country: "UAE", flag: "🇦🇪", price: "₹301" },
+                  { country: "UK", flag: "🇬🇧", price: "₹414" },
+                  { country: "USA", flag: "🇺🇸", price: "₹697" },
                 ].map((c) => (
                   <div
                     key={c.country}
-                    className={`rounded-xl py-2 px-2 ${
+                    className={`rounded-xl py-2 px-1 ${
                       isDiwaliMode
                         ? "bg-[#F0F3F3]/80 border border-[#ED7E23]/25"
                         : "bg-white/10 border border-white/15"
                     }`}
                   >
                     <span
-                      className={`block text-[11px] font-bold uppercase ${
+                      className={`block text-[10px] sm:text-[11px] font-bold uppercase ${
                         isDiwaliMode ? "text-[#1F272F]" : "text-white/90"
                       }`}
                     >
                       {c.country}
                     </span>
                     <span
-                      className={`font-black text-sm block mt-0.5 ${
+                      className={`font-black text-xs sm:text-sm block mt-0.5 whitespace-nowrap ${
                         isDiwaliMode ? "text-[#c4620c]" : "text-[#FFD666]"
                       }`}
                     >
                       {c.price}
                       <span
-                        className={`text-[10px] font-normal ${
+                        className={`text-[9px] sm:text-[10px] font-normal ${
                           isDiwaliMode ? "text-[#58626c]" : "text-amber-200/70"
                         }`}
                       >
@@ -728,26 +737,16 @@ export default function DiwaliCampaignPage({
               </div>
             </div>
 
-            {/* CTA Buttons Mobile */}
-            <div className="grid grid-cols-2 gap-2 mt-1">
-              <a
-                href="#diwali-booking"
-                className={`font-extrabold text-xs py-3 rounded-xl transition-all flex items-center justify-center gap-1.5 text-center no-underline active:scale-95 ${
-                  isDiwaliMode
-                    ? "bg-gradient-to-b from-[#f79a45] to-[#ED7E23] text-[#1F272F] shadow-[0_10px_30px_-8px_rgba(237,126,35,0.6),inset_0_1px_0_#ffd9b5]"
-                    : "bg-[#e77419] hover:bg-orange-600 text-white shadow-md"
-                }`}
-              >
-                Book Diwali Parcel <ArrowUpRight className="w-3.5 h-3.5" />
-              </a>
+            {/* CTA Buttons Mobile (WhatsApp only, since Form is right above) */}
+            <div className="flex w-full mt-1">
               <a
                 href="https://wa.me/917070506070?text=Hi%2C%20I%20want%20to%20send%20a%20Diwali%20gift%20parcel%20abroad"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-[#25D366] hover:bg-[#20bd5a] text-[#052e16] font-extrabold text-xs py-3 rounded-xl transition-all shadow-md flex items-center justify-center gap-1.5 text-center no-underline active:scale-95"
+                className="w-full bg-[#25D366] hover:bg-[#20bd5a] text-[#052e16] font-extrabold text-xs sm:text-sm py-3.5 rounded-xl transition-all shadow-md flex items-center justify-center gap-1.5 text-center no-underline active:scale-95"
               >
                 <span className="w-2 h-2 rounded-full bg-emerald-900 animate-ping shrink-0" />
-                {t.contact_whatsapp || "WhatsApp"}
+                {t.contact_whatsapp || "Chat on WhatsApp"}
               </a>
             </div>
           </div>
@@ -812,7 +811,7 @@ export default function DiwaliCampaignPage({
                 "Doorstep Pickup Across Delhi NCR, Haryana & Pan India",
                 "Complete Customs Documentation for a Hassle-Free Shipment",
                 "Free Pickup and Packaging",
-                "Delivery Available to Australia, Canada, UK, USA & Worldwide , 200+ Countries",
+                "Delivery available to Australia, Canada, Europe, UAE, UK, USA & Worldwide 200+ countries",
                 "Safe & Reliable Door-to-Door International Delivery",
                 "Easy Booking & Quick Assistance on WhatsApp",
               ].map((item, idx) => (
@@ -932,7 +931,7 @@ export default function DiwaliCampaignPage({
                   style={{
                     backgroundImage: `url('${encodeURI(item.bgImage)}')`,
                     backgroundSize: "cover",
-                    backgroundPosition: "center",
+                    backgroundPosition: item.bgPosition || "center",
                   }}
                 />
               )}
@@ -941,8 +940,8 @@ export default function DiwaliCampaignPage({
               <div
                 className={`absolute inset-0 z-0 transition-opacity duration-500 bg-gradient-to-t ${
                   isDiwaliMode
-                    ? "from-[#1F272F] via-[#1F272F]/70 to-[#1F272F]/10 group-hover:from-[#1F272F]/90"
-                    : "from-black/90 via-black/50 to-black/10 group-hover:from-black/95"
+                    ? "from-[#1F272F]/95 via-[#1F272F]/30 to-transparent group-hover:via-[#1F272F]/40"
+                    : "from-black/90 via-black/30 to-transparent group-hover:via-black/40"
                 }`}
               />
 
@@ -977,23 +976,26 @@ export default function DiwaliCampaignPage({
                 <h3 className="text-lg sm:text-xl font-bold text-white group-hover:text-orange-200 transition-colors">
                   {item.title}
                 </h3>
-                <p className="text-xs sm:text-sm leading-relaxed mt-1.5 sm:mt-2 text-white/90">
-                  {item.desc}
-                </p>
-              </div>
-
-              {item.link && (
-                <div className="pt-1 relative z-10">
-                  <a
-                    href={item.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1 font-bold text-xs sm:text-sm hover:underline cursor-pointer text-orange-300"
-                  >
-                    {item.linkText || "Contact us for more info →"}
-                  </a>
+                <div className="min-h-[76px] sm:min-h-[100px] lg:min-h-[112px] xl:min-h-[84px] mt-1.5 sm:mt-2 w-full flex flex-col justify-start relative">
+                  <p className="text-xs sm:text-sm leading-relaxed text-white/90">
+                    {item.desc}
+                  </p>
+                  <div className="absolute bottom-0 right-0">
+                    {item.link && (
+                      <div className="pt-1.5 mt-auto">
+                        <a
+                          href={item.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1 font-bold text-xs sm:text-sm hover:underline cursor-pointer text-orange-300"
+                        >
+                          {item.linkText || "Contact us for more info →"}
+                        </a>
+                      </div>
+                    )}
+                  </div>
                 </div>
-              )}
+              </div>
             </div>
           ))}
         </div>
@@ -1093,7 +1095,8 @@ export default function DiwaliCampaignPage({
           }`}
         >
           Starting rates. Final price depends on actual/volumetric weight,
-          destination &amp; speed , get a quick quote on WhatsApp.
+          destination &amp; speed , get a quick quote on WhatsApp. *T&amp;C
+          Applied
         </p>
       </section>
 
