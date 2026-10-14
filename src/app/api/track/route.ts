@@ -18,6 +18,22 @@ export async function GET(request: Request) {
         cache: "no-store",
       },
     );
+    const contentType = res.headers.get("content-type") || "";
+    if (!res.ok || !contentType.includes("application/json")) {
+      const errorText = await res.text().catch(() => "");
+      return NextResponse.json(
+        {
+          Status: false,
+          Data: {
+            ErrorMessage:
+              res.status === 404
+                ? "Shipment not found for this tracking number."
+                : `Tracking service unavailable (${res.status}). Please try again later.`,
+          },
+        },
+        { status: 200 },
+      );
+    }
     const data = await res.json();
     return NextResponse.json(data);
   } catch (error: any) {

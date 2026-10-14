@@ -612,8 +612,8 @@ export default function DiwaliCampaignPage({
 
                 {/* Styled Unified Action Buttons */}
                 <div className="flex items-center gap-3">
-                  <a
-                    href="#diwali-booking"
+                  <Link
+                    href="/book-shipment"
                     className={`font-extrabold text-xs lg:text-[13px] px-6 py-2.5 rounded-full transition-all flex items-center gap-1.5 hover:scale-[1.03] active:scale-95 text-center no-underline ${
                       isDiwaliMode
                         ? "bg-gradient-to-b from-[#f79a45] to-[#ED7E23] text-[#1F272F] shadow-[0_10px_30px_-8px_rgba(237,126,35,0.6),inset_0_1px_0_#ffd9b5]"
@@ -621,7 +621,7 @@ export default function DiwaliCampaignPage({
                     }`}
                   >
                     Book Diwali Parcel <ArrowUpRight className="w-3.5 h-3.5" />
-                  </a>
+                  </Link>
                   <a
                     href="https://wa.me/917070506070?text=Hi%2C%20I%20want%20to%20send%20a%20Diwali%20gift%20parcel%20abroad"
                     target="_blank"
@@ -857,12 +857,12 @@ export default function DiwaliCampaignPage({
       <section className="w-full max-w-[1400px] mx-auto px-3 sm:px-6 py-2 sm:py-4 mb-4 sm:mb-8">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
           {[
-            { label: "Serviceable zipcodes", icon: MapPin, href: "#" },
-            { label: "Track shipment", icon: Receipt, href: "#" },
-            { label: "Our services", icon: Gift, href: "#" },
-            { label: "Contact us", icon: Phone, href: "#" },
+            { label: "Serviceable zipcodes", icon: MapPin, href: "/zipcode" },
+            { label: "Track shipment", icon: Receipt, href: "/track" },
+            { label: "Our services", icon: Gift, href: "/services" },
+            { label: "Contact us", icon: Phone, href: "/contact" },
           ].map((action, idx) => (
-            <a
+            <Link
               key={idx}
               href={action.href}
               className={`group flex items-center justify-between px-3 sm:px-4 py-3 sm:py-4 rounded-xl sm:rounded-2xl transition-all shadow-[0_8px_20px_-6px_rgba(242,122,26,0.3)] active:scale-95 text-decoration-none ${
@@ -882,7 +882,7 @@ export default function DiwaliCampaignPage({
               <span className="font-black text-[10px] sm:text-xs text-[#1a0f05] opacity-80 group-hover:translate-x-1 transition-transform">
                 →
               </span>
-            </a>
+            </Link>
           ))}
         </div>
       </section>
@@ -1268,12 +1268,12 @@ export default function DiwaliCampaignPage({
             Is Diwali, apno tak ghar ki mithaas pahunchaiye. 💖
           </p>
           <div className="hero-cta">
-            <a className="btn btn-primary offer-cta" href="#diwali-booking">
+            <Link className="btn btn-primary offer-cta" href="/book-shipment">
               <svg viewBox="0 0 24 24" fill="currentColor">
                 <path d="M12 2a10 10 0 0 0-8.6 15.06L2 22l5.06-1.32A10 10 0 1 0 12 2Zm5.3 14.1c-.22.62-1.3 1.2-1.8 1.24-.46.05-1.03.07-1.66-.1a13.6 13.6 0 0 1-5.9-4.53c-.44-.58-1.1-1.56-1.1-2.98 0-1.42.75-2.12 1.02-2.4a1.05 1.05 0 0 1 .77-.36c.19 0 .38 0 .55.01.18.01.42-.07.65.5.24.6.8 2.02.87 2.16.07.15.12.32.02.5-.1.19-.15.3-.3.47-.15.18-.3.4-.44.53-.15.15-.3.3-.13.6.18.3.8 1.3 1.7 2.1 1.18 1.05 2.16 1.37 2.47 1.53.3.15.48.12.65-.08.18-.2.75-.87.95-1.17.2-.3.4-.25.66-.15.27.1 1.7.8 2 .95.3.15.5.22.57.34.07.13.07.72-.15 1.34Z" />
               </svg>
               Book now &mdash; offer ends 2 Nov
-            </a>
+            </Link>
             <a className="btn btn-ghost" href="tel:+917070506070">
               Call +91 70 70 50 60 70
             </a>
@@ -1289,8 +1289,8 @@ export default function DiwaliCampaignPage({
             : "bg-[#1a0c02]/95 border-amber-500/20"
         }`}
       >
-        <a
-          href="#diwali-booking"
+        <Link
+          href="/book-shipment"
           className={`flex-1 font-bold text-xs py-2.5 px-3 rounded-lg flex items-center justify-center gap-1.5 active:scale-95 transition-all text-center no-underline ${
             isDiwaliMode
               ? "bg-gradient-to-b from-[#f79a45] to-[#ED7E23] text-[#1F272F] shadow-sm"
@@ -1298,7 +1298,7 @@ export default function DiwaliCampaignPage({
           }`}
         >
           Book Diwali Parcel <ArrowUpRight className="w-3.5 h-3.5" />
-        </a>
+        </Link>
         <a
           href="https://wa.me/917070506070?text=Hi%2C%20I%20want%20to%20send%20a%20Diwali%20gift%20parcel%20abroad"
           target="_blank"

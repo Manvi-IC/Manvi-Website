@@ -177,9 +177,14 @@ export default function ZipcodePage() {
 
   useEffect(() => {
     fetch('/api/site-settings')
-      .then(res => res.json())
+      .then(res => {
+        if (!res.ok) return null;
+        const ct = res.headers.get("content-type");
+        if (!ct || !ct.includes("application/json")) return null;
+        return res.json();
+      })
       .then(data => {
-        if (data.success && data.data && data.data.countryServiceMapping) {
+        if (data && data.success && data.data && data.data.countryServiceMapping) {
           setCountryMappings(data.data.countryServiceMapping);
         }
       })
