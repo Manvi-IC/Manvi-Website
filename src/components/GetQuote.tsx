@@ -1438,6 +1438,17 @@ export default function GetQuote() {
       const data = await res.json();
 
       if (!data.success) throw new Error(data.message || "Failed to get quote");
+
+      // Aramex has no USA zone in the sheet and is invalid for USA
+      const selectedCountry = (zoningCountry || destination || "").toUpperCase().trim();
+      if (selectedCountry === "USA" || selectedCountry.includes("UNITED STATES")) {
+        data.quotes = (data.quotes || []).filter((q: any) => {
+          const net = (q.network || "").toUpperCase();
+          const serv = (q.service || "").toLowerCase();
+          return net !== "ARA" && !serv.includes("aramex");
+        });
+      }
+
       if (data.quotes.length === 0)
         throw new Error(
           "No services available for this destination / weight combination.",

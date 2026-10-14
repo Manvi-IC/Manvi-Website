@@ -1286,7 +1286,22 @@ function QuoteCalculator({
       });
       const data = await res.json();
       if (data.success && data.quotes?.length > 0) {
-        const fetchedQuotes: Quote[] = data.quotes;
+        // Aramex has no USA zone in the sheet and is invalid for USA
+        const selectedCountry = (zoningCountry || destination || "").toUpperCase().trim();
+        const validQuotes = (selectedCountry === "USA" || selectedCountry.includes("UNITED STATES"))
+          ? data.quotes.filter((q: any) => {
+              const net = (q.network || "").toUpperCase();
+              const serv = (q.service || "").toLowerCase();
+              return net !== "ARA" && !serv.includes("aramex");
+            })
+          : data.quotes;
+
+        if (validQuotes.length === 0) {
+          setFormError("No services available for this destination/weight combination.");
+          return;
+        }
+
+        const fetchedQuotes: Quote[] = validQuotes;
         setQuotes(fetchedQuotes);
         const firstKey = `${fetchedQuotes[0].service}__${fetchedQuotes[0].rateType}`;
         setSelectedService(firstKey);

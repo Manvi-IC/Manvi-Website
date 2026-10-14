@@ -810,20 +810,37 @@ export default function ProposalPage() {
     return match ? parseInt(match[0], 10) : 999;
   };
 
+  const isUSADestination = useMemo(() => {
+    const dest = (zoningCountry || destination || "").toUpperCase().trim();
+    return dest === "USA" || dest.includes("UNITED STATES");
+  }, [zoningCountry, destination]);
+
+  /* ── Filtered Valid Quotes for Destination (Aramex has no USA zone) ── */
+  const validQuotesForDest = useMemo(() => {
+    if (isUSADestination) {
+      return quotes.filter((q) => {
+        const net = (q.network || "").toUpperCase();
+        const serv = (q.service || "").toLowerCase();
+        return net !== "ARA" && !serv.includes("aramex");
+      });
+    }
+    return quotes;
+  }, [quotes, isUSADestination]);
+
   /* ── Min Price & Fastest TAT for Badging ── */
   const lowestPrice = useMemo(() => {
-    if (quotes.length === 0) return 0;
-    return Math.min(...quotes.map((q) => q.totalPrice));
-  }, [quotes]);
+    if (validQuotesForDest.length === 0) return 0;
+    return Math.min(...validQuotesForDest.map((q) => q.totalPrice));
+  }, [validQuotesForDest]);
 
   const fastestTatDays = useMemo(() => {
-    if (quotes.length === 0) return 999;
-    return Math.min(...quotes.map((q) => parseTatDays(q.tat)));
-  }, [quotes]);
+    if (validQuotesForDest.length === 0) return 999;
+    return Math.min(...validQuotesForDest.map((q) => parseTatDays(q.tat)));
+  }, [validQuotesForDest]);
 
   /* ── Filtered & Sorted Available Services ── */
   const displayedQuotes = useMemo(() => {
-    let list = [...quotes];
+    let list = [...validQuotesForDest];
 
     // Filter by carrier network
     if (networkFilter !== "ALL") {
@@ -852,14 +869,14 @@ export default function ProposalPage() {
     }
 
     return list;
-  }, [quotes, networkFilter, searchFilter, filterSort]);
+  }, [validQuotesForDest, networkFilter, searchFilter, filterSort]);
 
   /* ── Selected Quotes for Comparison ── */
   const selectedQuotes = useMemo(() => {
-    return quotes.filter((q) =>
+    return validQuotesForDest.filter((q) =>
       selectedServiceKeys.includes(`${q.service}__${q.rateType}`),
     );
-  }, [quotes, selectedServiceKeys]);
+  }, [validQuotesForDest, selectedServiceKeys]);
 
   /* ── Fetch Real Live Rates from Backend API ── */
   const fetchQuotes = async (e?: React.FormEvent) => {
@@ -926,17 +943,37 @@ export default function ProposalPage() {
       const data = await res.json();
 
       if (data.success && data.quotes && data.quotes.length > 0) {
-        setQuotes(data.quotes);
+        // Aramex does not have a USA zone in the sheet and is invalid for USA
+        const destName = (zoningCountry || destination || "").toUpperCase().trim();
+        const isUSA = destName === "USA" || destName.includes("UNITED STATES");
+        const validQuotes = isUSA
+          ? data.quotes.filter((q: Quote) => {
+              const net = (q.network || "").toUpperCase();
+              const serv = (q.service || "").toLowerCase();
+              return net !== "ARA" && !serv.includes("aramex");
+            })
+          : data.quotes;
 
-        // Auto-select top 2-3 cheapest courier options for instant side-by-side comparison
-        const sorted = [...data.quotes].sort(
-          (a: Quote, b: Quote) => a.totalPrice - b.totalPrice,
-        );
-        const topKeys = sorted
-          .slice(0, 3)
-          .map((q: Quote) => `${q.service}__${q.rateType}`);
-        setSelectedServiceKeys(topKeys);
-        setRecommendedKey(topKeys[0] || null);
+        if (validQuotes.length > 0) {
+          setQuotes(validQuotes);
+
+          // Auto-select top 2-3 cheapest courier options for instant side-by-side comparison
+          const sorted = [...validQuotes].sort(
+            (a: Quote, b: Quote) => a.totalPrice - b.totalPrice,
+          );
+          const topKeys = sorted
+            .slice(0, 3)
+            .map((q: Quote) => `${q.service}__${q.rateType}`);
+          setSelectedServiceKeys(topKeys);
+          setRecommendedKey(topKeys[0] || null);
+        } else {
+          setQuotes([]);
+          setSelectedServiceKeys([]);
+          setRecommendedKey(null);
+          setErrorMsg(
+            "No courier rates found for this weight and destination combination.",
+          );
+        }
       } else {
         setQuotes([]);
         setSelectedServiceKeys([]);
@@ -2673,7 +2710,7 @@ export default function ProposalPage() {
                     <option value="DHL">DHL Express</option>
                     <option value="FED">FedEx</option>
                     <option value="UPS">UPS</option>
-                    <option value="ARA">Aramex</option>
+                    {!isUSADestination && <option value="ARA">Aramex</option>}
                   </select>
                   <ChevronDown
                     size={12}

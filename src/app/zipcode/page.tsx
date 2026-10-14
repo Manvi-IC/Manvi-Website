@@ -207,7 +207,7 @@ export default function ZipcodePage() {
   }, [country, subCountry]);
 
   const defaultMappings = [
-    { country: "USA", services: ["DHL", "ARAMEX", "UPS", "FEDEX", "SELF - DUTY Paid"] },
+    { country: "USA", services: ["DHL", "UPS", "FEDEX", "SELF - DUTY Paid"] },
     { country: "UK", services: ["DHL", "ARAMEX", "UPS", "FEDEX", "SELF - DUTY Paid"] },
     { country: "AUSTRALIA", services: ["DHL", "ARAMEX", "UPS", "FEDEX", "SELF - DUTY Paid"] },
     { country: "CANADA", services: ["DHL", "ARAMEX", "UPS", "FEDEX", "SELF - DUTY Paid"] },
