@@ -93,6 +93,13 @@ interface Destination {
 
 const DESTINATIONS: Destination[] = [
   {
+    label: "USA",
+    value: "USA",
+    requiresZip: false,
+    requiresSubCountry: false,
+    flag: "🇺🇸",
+  },
+  {
     label: "United Kingdom",
     value: "UK",
     requiresZip: false,
