@@ -370,22 +370,12 @@ export default function Header({ isDiwaliMode = false }: HeaderProps = {}) {
                           <b id="cd-s">{timeLeft.seconds}</b>s
                         </span>
                       </div>
-                      <a 
-                        href={pathname === "/diwali-campaign" ? "#diwali-booking" : "/diwali-campaign#diwali-booking"}
-                        onClick={(e) => {
-                          if (pathname === "/diwali-campaign") {
-                            e.preventDefault();
-                            const el = document.getElementById("diwali-booking");
-                            if (el) {
-                              const y = el.getBoundingClientRect().top + window.scrollY - 100;
-                              window.scrollTo({ top: y, behavior: "smooth" });
-                            }
-                          }
-                        }}
+                      <Link 
+                        href="/diwali-campaign"
                         className="an-link"
                       >
                         Book now &rarr;
-                      </a>
+                      </Link>
                     </>
                   ) : (
                     <span className="offer-end" id="offerEnd">
