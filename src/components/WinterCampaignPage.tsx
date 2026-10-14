@@ -78,6 +78,7 @@ const STEPS = [
 ];
 
 const DESTINATIONS = [
+  { label: "USA", value: "USA", requiresZip: false, requiresSubCountry: false, flag: "🇺🇸" },
   { label: "Australia", value: "AUSTRALIA", requiresZip: true, requiresSubCountry: false, flag: "🇦🇺" },
   { label: "Canada", value: "CANADA", requiresZip: true, requiresSubCountry: false, flag: "🇨🇦" },
   { label: "United Kingdom", value: "UK", requiresZip: false, requiresSubCountry: false, flag: "🇬🇧" },

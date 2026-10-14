@@ -27,6 +27,13 @@ const DB_NAME = process.env.NEXT_PUBLIC_X_DATABASE || "manvi";
 
 export const DESTINATIONS = [
   {
+    label: "USA",
+    value: "USA",
+    requiresZip: false,
+    requiresSubCountry: false,
+    flag: "🇺🇸",
+  },
+  {
     label: "Australia",
     value: "AUSTRALIA",
     requiresZip: true,
@@ -466,7 +473,6 @@ export const INTERNATIONAL_COUNTRIES = [
   "UNITED REPUBLIC OF TANZANIA",
   "URUGUAY",
   "US VIRGIN ISLANDS",
-  "USA",
   "UZBEKISTAN",
   "VANUATU",
   "VATICAN CITY (ITALY)",
