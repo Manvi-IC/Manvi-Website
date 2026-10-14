@@ -1312,9 +1312,24 @@ export default function Hero() {
       });
       const data = await res.json();
       if (data.success && data.quotes?.length > 0) {
-        setQuotes(data.quotes);
+        // Aramex has no USA zone in the sheet and is invalid for USA
+        const selectedCountry = (zoningCountry || destination || "").toUpperCase().trim();
+        const validQuotes = (selectedCountry === "USA" || selectedCountry.includes("UNITED STATES"))
+          ? data.quotes.filter((q: any) => {
+              const net = (q.network || "").toUpperCase();
+              const serv = (q.service || "").toLowerCase();
+              return net !== "ARA" && !serv.includes("aramex");
+            })
+          : data.quotes;
+
+        if (validQuotes.length === 0) {
+          alert("No services available for this destination/weight combination.");
+          return;
+        }
+
+        setQuotes(validQuotes);
         setSelectedService(
-          `${data.quotes[0].service}__${data.quotes[0].rateType}`,
+          `${validQuotes[0].service}__${validQuotes[0].rateType}`,
         );
         setShowModal(true);
       } else {
