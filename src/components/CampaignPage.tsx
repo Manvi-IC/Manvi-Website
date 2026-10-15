@@ -101,6 +101,13 @@ const FAQS = [
 // ─── GET QUOTE FORM DATA (ported from Hero.tsx) ──────────────────────────────
 const DESTINATIONS = [
   {
+    label: "USA",
+    value: "USA",
+    requiresZip: false,
+    requiresSubCountry: false,
+    flag: "🇺🇸",
+  },
+  {
     label: "Australia",
     value: "AUSTRALIA",
     requiresZip: true,

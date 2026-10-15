@@ -1,7 +1,7 @@
 "use client";
 import SearchableCountryDropdown from "@/components/SearchableCountryDropdown";
 
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useState, useMemo, useEffect, useRef } from "react";
 import * as XLSX from "xlsx";
 import {
   Package,
@@ -92,6 +92,13 @@ interface Destination {
 }
 
 const DESTINATIONS: Destination[] = [
+  {
+    label: "USA",
+    value: "USA",
+    requiresZip: false,
+    requiresSubCountry: false,
+    flag: "🇺🇸",
+  },
   {
     label: "United Kingdom",
     value: "UK",
@@ -607,6 +614,29 @@ export default function ProposalPage() {
   const [zoningCountry, setZoningCountry] = useState<string>("");
   const [zipcode, setZipcode] = useState<string>("");
   const [showSuggestions, setShowSuggestions] = useState(false);
+  const cityWrapperRef = useRef<HTMLDivElement>(null);
+
+  /* Close Australia City Dropdown on Outside Click & Auto-resolve */
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (cityWrapperRef.current && !cityWrapperRef.current.contains(e.target as Node)) {
+        setShowSuggestions(false);
+        // If user typed "MELB" or "MELBOURNE" without picking, auto-resolve to best match
+        if (destination === "AUSTRALIA" && zipcode.trim() && !zipcode.includes(" - ")) {
+          const q = zipcode.trim().toUpperCase();
+          const match = AUSTRALIA_CITIES.find(c => {
+            const cName = c.split(" - ")[0].trim().toUpperCase();
+            return cName === q || cName.startsWith(q) || c.includes(` - ${q}`);
+          });
+          if (match) {
+            setZipcode(match);
+          }
+        }
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [destination, zipcode]);
 
   /* ── 4. Pickup & Handover Details ── */
   const [pickupRequired, setPickupRequired] = useState(false);
@@ -810,20 +840,89 @@ export default function ProposalPage() {
     return match ? parseInt(match[0], 10) : 999;
   };
 
+  const isUSADestination = useMemo(() => {
+    const dest = (zoningCountry || destination || "").toUpperCase().trim();
+    return dest === "USA" || dest.includes("UNITED STATES");
+  }, [zoningCountry, destination]);
+
+  /* ── Australia / Destination Postal / Pincode Details ── */
+  const destinationPincodeDetails = useMemo(() => {
+    if (!zipcode.trim()) return { city: "", pin: "", zone: "", label: "" };
+    if (destination === "AUSTRALIA") {
+      const raw = zipcode.trim();
+      const m = raw.match(/^(.*?)\s*-\s*(\d{4})\s*(?:\((Zone\s*\d+)\))?/i);
+      if (m) {
+        return {
+          city: m[1].trim(),
+          pin: m[2].trim(),
+          zone: m[3] ? m[3].trim() : "",
+          label: `${m[1].trim()} (PIN: ${m[2].trim()})`
+        };
+      }
+      const pinMatch = raw.match(/\b\d{4}\b/);
+      if (pinMatch) {
+        const found = AUSTRALIA_CITIES.find(c => c.includes(` - ${pinMatch[0]}`));
+        if (found) {
+          const fm = found.match(/^(.*?)\s*-\s*(\d{4})\s*(?:\((Zone\s*\d+)\))?/i);
+          if (fm) {
+            return {
+              city: fm[1].trim(),
+              pin: fm[2].trim(),
+              zone: fm[3] ? fm[3].trim() : "",
+              label: `${fm[1].trim()} (PIN: ${fm[2].trim()})`
+            };
+          }
+        }
+        return { city: "", pin: pinMatch[0], zone: "", label: `PIN: ${pinMatch[0]}` };
+      }
+      // Fallback: If user typed city name like "MELB" or "MELBOURNE" without typing pincode
+      const qCity = raw.toUpperCase();
+      const foundCity = AUSTRALIA_CITIES.find(c => {
+        const cName = c.split(" - ")[0].trim().toUpperCase();
+        return cName === qCity || cName.startsWith(qCity);
+      });
+      if (foundCity) {
+        const fm = foundCity.match(/^(.*?)\s*-\s*(\d{4})\s*(?:\((Zone\s*\d+)\))?/i);
+        if (fm) {
+          return {
+            city: fm[1].trim(),
+            pin: fm[2].trim(),
+            zone: fm[3] ? fm[3].trim() : "",
+            label: `${fm[1].trim()} (PIN: ${fm[2].trim()})`
+          };
+        }
+      }
+      return { city: raw, pin: "", zone: "", label: raw };
+    }
+    return { city: "", pin: zipcode.trim(), zone: "", label: `PIN: ${zipcode.trim()}` };
+  }, [destination, zipcode]);
+
+  /* ── Filtered Valid Quotes for Destination (Aramex has no USA zone) ── */
+  const validQuotesForDest = useMemo(() => {
+    if (isUSADestination) {
+      return quotes.filter((q) => {
+        const net = (q.network || "").toUpperCase();
+        const serv = (q.service || "").toLowerCase();
+        return net !== "ARA" && !serv.includes("aramex");
+      });
+    }
+    return quotes;
+  }, [quotes, isUSADestination]);
+
   /* ── Min Price & Fastest TAT for Badging ── */
   const lowestPrice = useMemo(() => {
-    if (quotes.length === 0) return 0;
-    return Math.min(...quotes.map((q) => q.totalPrice));
-  }, [quotes]);
+    if (validQuotesForDest.length === 0) return 0;
+    return Math.min(...validQuotesForDest.map((q) => q.totalPrice));
+  }, [validQuotesForDest]);
 
   const fastestTatDays = useMemo(() => {
-    if (quotes.length === 0) return 999;
-    return Math.min(...quotes.map((q) => parseTatDays(q.tat)));
-  }, [quotes]);
+    if (validQuotesForDest.length === 0) return 999;
+    return Math.min(...validQuotesForDest.map((q) => parseTatDays(q.tat)));
+  }, [validQuotesForDest]);
 
   /* ── Filtered & Sorted Available Services ── */
   const displayedQuotes = useMemo(() => {
-    let list = [...quotes];
+    let list = [...validQuotesForDest];
 
     // Filter by carrier network
     if (networkFilter !== "ALL") {
@@ -852,14 +951,14 @@ export default function ProposalPage() {
     }
 
     return list;
-  }, [quotes, networkFilter, searchFilter, filterSort]);
+  }, [validQuotesForDest, networkFilter, searchFilter, filterSort]);
 
   /* ── Selected Quotes for Comparison ── */
   const selectedQuotes = useMemo(() => {
-    return quotes.filter((q) =>
+    return validQuotesForDest.filter((q) =>
       selectedServiceKeys.includes(`${q.service}__${q.rateType}`),
     );
-  }, [quotes, selectedServiceKeys]);
+  }, [validQuotesForDest, selectedServiceKeys]);
 
   /* ── Fetch Real Live Rates from Backend API ── */
   const fetchQuotes = async (e?: React.FormEvent) => {
@@ -911,7 +1010,10 @@ export default function ProposalPage() {
         if (boxes[0].height) params.append("height", boxes[0].height.trim());
       }
 
-      if (zipcode) params.append("zipcode", zipcode.trim());
+      const cleanPostCode = destination === "AUSTRALIA"
+        ? (destinationPincodeDetails.pin || zipcode.match(/\b\d{4}\b/)?.[0] || zipcode.trim())
+        : zipcode.trim();
+      if (cleanPostCode) params.append("zipcode", cleanPostCode);
       if (zoningCountry) params.append("zoningCountry", zoningCountry.trim());
 
       const apiBaseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
@@ -926,17 +1028,37 @@ export default function ProposalPage() {
       const data = await res.json();
 
       if (data.success && data.quotes && data.quotes.length > 0) {
-        setQuotes(data.quotes);
+        // Aramex does not have a USA zone in the sheet and is invalid for USA
+        const destName = (zoningCountry || destination || "").toUpperCase().trim();
+        const isUSA = destName === "USA" || destName.includes("UNITED STATES");
+        const validQuotes = isUSA
+          ? data.quotes.filter((q: Quote) => {
+              const net = (q.network || "").toUpperCase();
+              const serv = (q.service || "").toLowerCase();
+              return net !== "ARA" && !serv.includes("aramex");
+            })
+          : data.quotes;
 
-        // Auto-select top 2-3 cheapest courier options for instant side-by-side comparison
-        const sorted = [...data.quotes].sort(
-          (a: Quote, b: Quote) => a.totalPrice - b.totalPrice,
-        );
-        const topKeys = sorted
-          .slice(0, 3)
-          .map((q: Quote) => `${q.service}__${q.rateType}`);
-        setSelectedServiceKeys(topKeys);
-        setRecommendedKey(topKeys[0] || null);
+        if (validQuotes.length > 0) {
+          setQuotes(validQuotes);
+
+          // Auto-select top 2-3 cheapest courier options for instant side-by-side comparison
+          const sorted = [...validQuotes].sort(
+            (a: Quote, b: Quote) => a.totalPrice - b.totalPrice,
+          );
+          const topKeys = sorted
+            .slice(0, 3)
+            .map((q: Quote) => `${q.service}__${q.rateType}`);
+          setSelectedServiceKeys(topKeys);
+          setRecommendedKey(topKeys[0] || null);
+        } else {
+          setQuotes([]);
+          setSelectedServiceKeys([]);
+          setRecommendedKey(null);
+          setErrorMsg(
+            "No courier rates found for this weight and destination combination.",
+          );
+        }
       } else {
         setQuotes([]);
         setSelectedServiceKeys([]);
@@ -1197,7 +1319,8 @@ export default function ProposalPage() {
       Destination: r.zoningCountry
         ? `${r.zoningCountry} (${r.destination})`
         : r.destination,
-      "Postal / Zip": r.zipcode || "",
+      "Postal Code / Pincode": (r.zipcode && r.zipcode.match(/\b\d{4}\b/)?.[0]) || r.zipcode || "",
+      "Destination City": (r.zipcode && r.zipcode.replace(/-\s*\d{4}.*$/, "").trim()) || "",
       Boxes: r.boxes ? r.boxes.length : 1,
       "Total Act Wt (kg)": r.totalActualWt ? r.totalActualWt.toFixed(1) : "",
       "Chargeable Wt (kg)": r.totalChargeableWt || "",
@@ -1491,16 +1614,23 @@ export default function ProposalPage() {
 
               <div>
                 <span className="text-slate-400 uppercase text-[8px] font-bold block mb-0.5">
-                  Destination Country
+                  Destination & Pincode
                 </span>
-                <span className="font-bold text-slate-900 block">
+                <span className="font-bold text-slate-900 block truncate">
                   {zoningCountry
                     ? `${zoningCountry} (${destination})`
                     : destination || "International"}
-                  {zipcode ? ` - ${zipcode}` : ""}
+                  {destinationPincodeDetails.city ? ` — ${destinationPincodeDetails.city}` : ""}
                 </span>
+                {destinationPincodeDetails.pin ? (
+                  <span className="inline-block font-extrabold text-[#f27a1a] text-[9.5px] font-mono">
+                    📮 PINCODE: {destinationPincodeDetails.pin}
+                  </span>
+                ) : (
+                  zipcode && <span className="text-slate-600 text-[8.5px] block font-mono">Zip/Postal: {zipcode}</span>
+                )}
                 <span className="text-slate-500 text-[8.5px] block">
-                  Zone Direct Routing
+                  {destinationPincodeDetails.zone ? `${destinationPincodeDetails.zone} Routing` : "Zone Direct Routing"}
                 </span>
               </div>
 
@@ -1696,7 +1826,12 @@ export default function ProposalPage() {
                             }
                           >
                             <td className="py-1.5 px-2.5 font-bold text-slate-900">
-                              {carrier}
+                              <div>{carrier}</div>
+                              {destinationPincodeDetails.pin && (
+                                <span className="block text-[7.5px] font-mono text-[#f27a1a] font-bold">
+                                  📮 PIN: {destinationPincodeDetails.pin}
+                                </span>
+                              )}
                             </td>
                             <td className="py-1.5 px-2.5 text-center text-slate-700">
                               {q.tat}
@@ -1800,6 +1935,11 @@ export default function ProposalPage() {
                                   ✓ Lowest Cost Option
                                 </span>
                               )}
+                              {destinationPincodeDetails.pin && (
+                                <span className="text-[8px] font-mono font-black px-1.5 py-0.5 rounded bg-orange-100 text-[#f27a1a] border border-orange-200">
+                                  📮 PIN: {destinationPincodeDetails.pin}
+                                </span>
+                              )}
                             </div>
 
                             <div
@@ -1810,7 +1950,7 @@ export default function ProposalPage() {
                                 Estimated Delivery (TAT):
                               </span>
                               <span className="font-extrabold">
-                                {q.tat} (Door-to-Door Express)
+                                {q.tat} (Door-to-Door Express to {destinationPincodeDetails.city ? `${destinationPincodeDetails.city}, ` : ""}{destinationPincodeDetails.pin ? `PIN: ${destinationPincodeDetails.pin}` : (destination || "Destination")})
                               </span>
                             </div>
                           </div>
@@ -2168,53 +2308,185 @@ export default function ProposalPage() {
 
               {/* Zipcode Field (Australia, Canada) */}
               {requiresZip && (
-                <div className="space-y-1.5 relative">
-                  <label className="text-xs font-bold text-slate-700 flex items-center gap-1.5">
-                    <span>📮</span> {destination === "AUSTRALIA" ? "Select City (or Enter Postal Code)" : "Postal / Zip Code"}{" "}
-                    <span className="text-[#f27a1a]">*</span>
+                <div className="space-y-1.5 relative" ref={cityWrapperRef}>
+                  <label className="text-xs font-bold text-slate-700 flex items-center justify-between">
+                    <span className="flex items-center gap-1.5">
+                      <span>📮</span> {destination === "AUSTRALIA" ? "Select City & Postal / Pincode" : "Postal / Zip Code"}{" "}
+                      <span className="text-[#f27a1a]">*</span>
+                    </span>
+                    {destination === "AUSTRALIA" && destinationPincodeDetails.pin && (
+                      <span className="text-[11px] font-mono font-black text-[#f27a1a] bg-orange-100 px-2 py-0.5 rounded border border-orange-200">
+                        PIN: {destinationPincodeDetails.pin}
+                      </span>
+                    )}
                   </label>
-                  <input
-                    type="text"
-                    value={zipcode}
-                    onChange={(e) => {
-                      setZipcode(e.target.value.toUpperCase());
-                      if (destination === "AUSTRALIA") setShowSuggestions(true);
-                    }}
-                    onFocus={() => {
-                      if (destination === "AUSTRALIA") setShowSuggestions(true);
-                    }}
-                    onBlur={() => {
-                      if (destination === "AUSTRALIA") {
-                        setTimeout(() => setShowSuggestions(false), 200);
+                  <div className="relative">
+                    <input
+                      type="text"
+                      value={zipcode}
+                      onChange={(e) => {
+                        setZipcode(e.target.value.toUpperCase());
+                        if (destination === "AUSTRALIA") setShowSuggestions(true);
+                      }}
+                      onFocus={() => {
+                        if (destination === "AUSTRALIA") setShowSuggestions(true);
+                      }}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" && destination === "AUSTRALIA" && zipcode.trim()) {
+                          e.preventDefault();
+                          const q = zipcode.trim().toUpperCase();
+                          const MAJOR = ['MELBOURNE', 'SYDNEY', 'BRISBANE', 'PERTH', 'ADELAIDE', 'CANBERRA', 'HOBART', 'DARWIN', 'GOLD COAST'];
+                          const matched = AUSTRALIA_CITIES.filter(c => c.toUpperCase().includes(q)).sort((a, b) => {
+                            const aCity = a.split(" - ")[0].trim().toUpperCase();
+                            const bCity = b.split(" - ")[0].trim().toUpperCase();
+                            const aExact = aCity === q;
+                            const bExact = bCity === q;
+                            if (aExact && !bExact) return -1;
+                            if (!aExact && bExact) return 1;
+                            const aStarts = aCity.startsWith(q);
+                            const bStarts = bCity.startsWith(q);
+                            if (aStarts && !bStarts) return -1;
+                            if (!aStarts && bStarts) return 1;
+                            const aMajor = MAJOR.includes(aCity);
+                            const bMajor = MAJOR.includes(bCity);
+                            if (aMajor && !bMajor) return -1;
+                            if (!aMajor && bMajor) return 1;
+                            return a.localeCompare(b);
+                          });
+                          if (matched.length > 0) {
+                            setZipcode(matched[0]);
+                            setShowSuggestions(false);
+                          }
+                        }
+                      }}
+                      placeholder={
+                        destination === "AUSTRALIA"
+                          ? "Type city name (e.g. Melbourne) or Pincode (e.g. 3000)..."
+                          : "e.g. M5V, V6B"
                       }
-                    }}
-                    placeholder={
-                      destination === "AUSTRALIA"
-                        ? "Search city..."
-                        : "e.g. M5V, V6B"
-                    }
-                    required
-                    className="w-full bg-slate-50 text-slate-900 text-xs font-semibold rounded-xl px-3.5 py-2.5 border border-orange-300 focus:outline-none focus:border-[#f27a1a] focus:bg-white transition-colors placeholder:text-slate-400 font-mono uppercase"
-                  />
+                      required
+                      className="w-full bg-slate-50 text-slate-900 text-xs font-semibold rounded-xl pl-3.5 pr-8 py-2.5 border border-orange-300 focus:outline-none focus:border-[#f27a1a] focus:bg-white transition-colors placeholder:text-slate-400 font-mono uppercase"
+                    />
+                    {zipcode && (
+                      <button
+                        type="button"
+                        onMouseDown={(e) => e.preventDefault()}
+                        onClick={() => {
+                          setZipcode("");
+                          setShowSuggestions(true);
+                        }}
+                        className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700 p-1 rounded-full hover:bg-slate-200/60 transition-colors"
+                        title="Clear selection"
+                      >
+                        <X size={13} />
+                      </button>
+                    )}
+                  </div>
+
+                  {/* Highlight Selected City & Pincode Status */}
+                  {destination === "AUSTRALIA" && (
+                    <div className="mt-1">
+                      {destinationPincodeDetails.pin ? (
+                        <div className="flex items-center justify-between bg-emerald-50 border border-emerald-200 rounded-xl px-3 py-1.5 text-xs text-emerald-950">
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <CheckCircle2 size={13} className="text-emerald-600 shrink-0" />
+                            <span className="text-slate-700">City: <strong className="text-slate-900 font-bold">{destinationPincodeDetails.city || "Australia"}</strong></span>
+                            <span className="text-emerald-300">•</span>
+                            <span className="bg-[#f27a1a] text-white text-[11px] font-black font-mono px-2 py-0.5 rounded shadow-2xs">
+                              📮 PINCODE: {destinationPincodeDetails.pin}
+                            </span>
+                            {destinationPincodeDetails.zone && (
+                              <>
+                                <span className="text-emerald-300">•</span>
+                                <span className="text-slate-600 font-bold text-[10px] bg-white px-1.5 py-0.5 rounded border border-emerald-200 font-mono">
+                                  {destinationPincodeDetails.zone}
+                                </span>
+                              </>
+                            )}
+                          </div>
+                        </div>
+                      ) : (
+                        <p className="text-[11px] text-amber-800 bg-amber-50 border border-amber-200 rounded-lg px-2.5 py-1 flex items-center gap-1.5 font-medium">
+                          <Info size={12} className="text-amber-600 shrink-0" />
+                          Type city (e.g. <strong>Melbourne</strong>) or 4-digit pincode (e.g. <strong>3000</strong>) to select your area.
+                        </p>
+                      )}
+                    </div>
+                  )}
+
+                  {/* Dropdown Suggestions */}
                   {showSuggestions && destination === "AUSTRALIA" && AUSTRALIA_CITIES.length > 0 && zipcode.trim() && (
                     (() => {
-                      const filtered = AUSTRALIA_CITIES.filter(c => c.toLowerCase().includes(zipcode.toLowerCase())).slice(0, 50);
+                      const q = zipcode.trim().toUpperCase();
+                      const MAJOR = ['MELBOURNE', 'SYDNEY', 'BRISBANE', 'PERTH', 'ADELAIDE', 'CANBERRA', 'HOBART', 'DARWIN', 'GOLD COAST'];
+                      const filtered = AUSTRALIA_CITIES.filter(c => c.toUpperCase().includes(q))
+                        .sort((a, b) => {
+                          const aCity = a.split(" - ")[0].trim().toUpperCase();
+                          const bCity = b.split(" - ")[0].trim().toUpperCase();
+                          const aExact = aCity === q;
+                          const bExact = bCity === q;
+                          if (aExact && !bExact) return -1;
+                          if (!aExact && bExact) return 1;
+                          const aStarts = aCity.startsWith(q);
+                          const bStarts = bCity.startsWith(q);
+                          if (aStarts && !bStarts) return -1;
+                          if (!aStarts && bStarts) return 1;
+                          const aMajor = MAJOR.includes(aCity);
+                          const bMajor = MAJOR.includes(bCity);
+                          if (aMajor && !bMajor) return -1;
+                          if (!aMajor && bMajor) return 1;
+                          return a.localeCompare(b);
+                        })
+                        .slice(0, 50);
                       if (filtered.length === 0) return null;
                       return (
-                        <div className="absolute left-0 right-0 top-full mt-1 bg-white border border-slate-200 rounded-xl shadow-lg z-50 overflow-hidden max-h-60 overflow-y-auto">
-                          {filtered.map((s, idx) => (
-                            <button
-                              key={idx}
-                              type="button"
-                              onClick={() => {
-                                setZipcode(s);
-                                setShowSuggestions(false);
-                              }}
-                              className="w-full text-left px-4 py-2.5 hover:bg-slate-50 text-[12px] text-slate-700 font-semibold transition-colors border-b border-slate-100 last:border-0"
-                            >
-                              {s}
-                            </button>
-                          ))}
+                        <div className="absolute left-0 right-0 top-full mt-1 bg-white border border-slate-200 rounded-xl shadow-xl z-50 overflow-hidden max-h-64 overflow-y-auto">
+                          <div className="p-2 bg-slate-50 border-b border-slate-100 text-[11px] text-slate-500 font-semibold flex items-center justify-between">
+                            <span>Matching Australian Suburbs & Pincodes ({filtered.length})</span>
+                            <span className="text-[10px] text-[#f27a1a]">Click to select</span>
+                          </div>
+                          {filtered.map((s, idx) => {
+                            const m = s.match(/^(.*?)\s*-\s*(\d{4})\s*(?:\((Zone\s*\d+)\))?/i);
+                            const cName = m ? m[1].trim() : s;
+                            const cPin = m ? m[2].trim() : "";
+                            const cZone = m ? m[3].trim() : "";
+                            const isSelected = zipcode === s || (cPin && destinationPincodeDetails.pin === cPin);
+
+                            return (
+                              <button
+                                key={idx}
+                                type="button"
+                                onMouseDown={(e) => {
+                                  e.preventDefault();
+                                  setZipcode(s);
+                                  setShowSuggestions(false);
+                                }}
+                                onClick={() => {
+                                  setZipcode(s);
+                                  setShowSuggestions(false);
+                                }}
+                                className={`w-full text-left px-3.5 py-2 hover:bg-orange-50/80 transition-colors border-b border-slate-100 last:border-0 flex items-center justify-between gap-2 ${
+                                  isSelected ? "bg-orange-50 font-bold" : ""
+                                }`}
+                              >
+                                <div className="flex items-center gap-2 truncate">
+                                  <span className="text-[12px] text-slate-800 font-bold truncate">
+                                    {cName}
+                                  </span>
+                                  {cPin && (
+                                    <span className="bg-orange-100 text-[#f27a1a] text-[10.5px] font-black px-1.5 py-0.2 rounded font-mono shrink-0 border border-orange-200">
+                                      PIN: {cPin}
+                                    </span>
+                                  )}
+                                </div>
+                                {cZone && (
+                                  <span className="text-[10px] text-slate-500 font-semibold px-1.5 py-0.5 rounded bg-slate-100 border border-slate-200 shrink-0">
+                                    {cZone}
+                                  </span>
+                                )}
+                              </button>
+                            );
+                          })}
                         </div>
                       );
                     })()
@@ -2623,11 +2895,19 @@ export default function ProposalPage() {
                   <h3 className="font-extrabold text-[#0D1527] text-base">
                     Available Courier Services ({displayedQuotes.length})
                   </h3>
-                  <span className="text-[11px] bg-slate-100 text-slate-700 font-mono font-semibold px-2 py-0.5 rounded-md border border-slate-200">
-                    {activeDestObj?.flag}{" "}
-                    {zoningCountry || activeDestObj?.label} •{" "}
-                    {boxCalculations.totalChargeableWt} kg ({boxes.length}{" "}
-                    {boxes.length === 1 ? "Box" : "Boxes"})
+                  <span className="text-[11px] bg-slate-100 text-slate-700 font-mono font-semibold px-2.5 py-0.5 rounded-md border border-slate-200 inline-flex items-center gap-1.5 flex-wrap">
+                    <span>{activeDestObj?.flag}</span>
+                    <span className="font-bold text-slate-900">{zoningCountry || activeDestObj?.label}</span>
+                    {destinationPincodeDetails.city && (
+                      <span className="text-slate-600 font-sans">• {destinationPincodeDetails.city}</span>
+                    )}
+                    {destinationPincodeDetails.pin && (
+                      <span className="bg-orange-100 text-[#f27a1a] font-bold px-1.5 py-0.2 rounded text-[10.5px] border border-orange-200">
+                        📮 PIN: {destinationPincodeDetails.pin}
+                      </span>
+                    )}
+                    <span>• {boxCalculations.totalChargeableWt} kg ({boxes.length}{" "}
+                    {boxes.length === 1 ? "Box" : "Boxes"})</span>
                   </span>
                 </div>
                 <p className="text-xs text-slate-500 mt-0.5">
@@ -2673,7 +2953,7 @@ export default function ProposalPage() {
                     <option value="DHL">DHL Express</option>
                     <option value="FED">FedEx</option>
                     <option value="UPS">UPS</option>
-                    <option value="ARA">Aramex</option>
+                    {!isUSADestination && <option value="ARA">Aramex</option>}
                   </select>
                   <ChevronDown
                     size={12}
@@ -2828,10 +3108,19 @@ export default function ProposalPage() {
                           <div className="font-bold text-slate-900 leading-tight group-hover:text-[#f27a1a] transition-colors">
                             {q.service}
                           </div>
-                          <span className="text-[10px] text-slate-400 font-mono">
-                            Zone {q.zone} •{" "}
-                            {q.rateType === "S" ? "Slab Rate" : "Per-Kg Rate"}
-                          </span>
+                          <div className="flex items-center gap-1.5 flex-wrap text-[10px] text-slate-500 font-mono mt-0.5">
+                            <span className="font-bold text-slate-700">Zone {q.zone}</span>
+                            {destinationPincodeDetails.pin && (
+                              <>
+                                <span>•</span>
+                                <span className="bg-orange-100 text-[#f27a1a] font-bold px-1.5 py-0.2 rounded border border-orange-200">
+                                  📮 PIN: {destinationPincodeDetails.pin}
+                                </span>
+                              </>
+                            )}
+                            <span>•</span>
+                            <span>{q.rateType === "S" ? "Slab Rate" : "Per-Kg Rate"}</span>
+                          </div>
                         </td>
 
                         {/* Transit Time (TAT) */}
@@ -3088,12 +3377,16 @@ export default function ProposalPage() {
                             <h4 className="font-extrabold text-[#0D1527] text-base leading-snug">
                               {q.service}
                             </h4>
-                            <p className="text-[11px] text-slate-400 font-mono mt-0.5">
-                              Zone {q.zone} •{" "}
-                              {q.rateType === "S"
-                                ? "Slab Tier Rate"
-                                : "Per-Kg Rate"}
-                            </p>
+                            <div className="flex items-center gap-1.5 flex-wrap text-[11px] text-slate-500 font-mono mt-0.5">
+                              <span className="font-bold text-slate-700">Zone {q.zone}</span>
+                              {destinationPincodeDetails.pin && (
+                                <span className="bg-orange-100 text-[#f27a1a] font-bold px-1.5 py-0.2 rounded border border-orange-200">
+                                  📮 PIN: {destinationPincodeDetails.pin}
+                                </span>
+                              )}
+                              <span>•</span>
+                              <span>{q.rateType === "S" ? "Slab Tier Rate" : "Per-Kg Rate"}</span>
+                            </div>
                           </div>
 
                           {/* Pricing & Difference Block */}
@@ -3172,6 +3465,17 @@ export default function ProposalPage() {
                                 {q.tat}
                               </span>
                             </div>
+
+                            {destinationPincodeDetails.pin && (
+                              <div className="flex items-center justify-between bg-orange-50/70 px-3 py-2 rounded-lg border border-orange-200">
+                                <span className="text-slate-700 font-medium flex items-center gap-1.5">
+                                  <span>📮</span> Destination Pincode
+                                </span>
+                                <span className="font-mono font-black text-[#f27a1a] text-xs">
+                                  PIN: {destinationPincodeDetails.pin} {destinationPincodeDetails.city ? `(${destinationPincodeDetails.city})` : ""}
+                                </span>
+                              </div>
+                            )}
 
                             <div className="flex items-center justify-between bg-slate-50 px-3 py-2 rounded-lg border border-slate-200/70">
                               <span className="text-slate-500 font-medium flex items-center gap-1.5">
@@ -3551,8 +3855,8 @@ export default function ProposalPage() {
                             : record.destination}
                         </span>
                         {record.zipcode && (
-                          <span className="text-[11px] text-slate-500 font-mono block">
-                            ZIP: {record.zipcode}
+                          <span className="text-[11px] text-[#f27a1a] font-mono font-bold block">
+                            📮 PINCODE: {record.zipcode.match(/\b\d{4}\b/)?.[0] || record.zipcode}
                           </span>
                         )}
                       </div>

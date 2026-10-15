@@ -207,7 +207,7 @@ export default function DiwaliBookingForm({
                 isDiwaliMode ? "text-[#1F272F]" : "text-[#1c1f2e]"
               }`}
             >
-              Request Diwali Pickup
+              Book Your Free Pickup
             </h3>
           </div>
 
