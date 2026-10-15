@@ -110,7 +110,7 @@ const DEFAULT_SERVICES: ServiceItem[] = [
   {
     service: "EX DEL VIA LHR FEDEX IE",
     network: "FED",
-    destinations: ["UK", "USA"],
+    destinations: ["USA"],
     hasRates: true,
     enabled: true,
   },
